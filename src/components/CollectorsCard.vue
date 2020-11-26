@@ -1,5 +1,5 @@
 <template>
-    <div class="card" :style="{'background-position': (-(card.x-1)*250)+'px ' + (-(card.y-1)*350)+'px'}">
+    <div class="card" :style="{'background-position': (-(card.x-1)*250)+'px ' + (-(card.y-1)*317)+'px'}">
 
       {{card.item}} 
       {{card.skill}}
@@ -22,8 +22,8 @@ export default {
     color:red;
     user-select: none;
     width:250px;
-    height:350px;
-    background-image: url('/images/collectors-cards.png');
+    height:317px;
+    background-image: url('/images/collectors-cards-new.png');  
     border-radius: 10px;
   }
 
