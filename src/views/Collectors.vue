@@ -5,8 +5,8 @@
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
-        :itemsOnSale="itemsOnSale" 
-        :marketValues="marketValues" 
+        :itemsOnSale="itemsOnSale"
+        :marketValues="marketValues"
         :placement="buyPlacement"
         @buyCard="buyCard($event)"
         @placeBottle="placeBottle('buy', $event)"/>
@@ -14,8 +14,8 @@
       <CollectorsSkillActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
-        :skillsOnSale="skillsOnSale" 
-        :marketValues="marketValues" 
+        :skillsOnSale="skillsOnSale"
+        :marketValues="marketValues"
         :placement="buyPlacement"
         @buySkill="buySkill($event)"
         @placeBottle="placeBottle('buy', $event)"/>
@@ -23,7 +23,7 @@
 
       <div class="buttons">
         <button @click="drawCard">
-          {{ labels.draw }} 
+          {{ labels.draw }}
         </button>
       </div>
 <<<<<<< HEAD
@@ -56,14 +56,14 @@
           Hand
           <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
         </div>
-        <!-- 
+        <!--
 
                     VIKTIGT!!!
 
-        Just nu är Skills och Items slotsen för spelarens items/skills. Här måste vi göra så att dessa är för spelplanen 
+        Just nu är Skills och Items slotsen för spelarens items/skills. Här måste vi göra så att dessa är för spelplanen
         det vill säga flytta in köpegrejerna in i divarna här. Sen måste det göras nya divvar inne i spelarens hand (som borde bli player board eller
         liknande istället. Här ska Hand, Items, skills visas som de visas nu. Alla kort måste skalas om i visningen enligt samma princip som rutorna.
-        --> 
+        -->
 
         <div class="cardslots items" v-if="players[playerId]">
           Items
@@ -82,9 +82,8 @@
           Ruta för att visa grid lättare: 4
         </div>
       </section>
-=======
     
-     
+
       Auction
       <div class="cardslots">
         <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
@@ -130,13 +129,13 @@ export default {
     CollectorsCard,
     CollectorsBuyActions,
     CollectorsSkillActions
-    
+
   },
   data: function () {
     return {
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
-      maxSizes: { x: 0, 
+      maxSizes: { x: 0,
                   y: 0 },
       labels: {},
       players: {},
@@ -153,11 +152,11 @@ export default {
       skillPlacement: [],
       auctionPlacement: [],
       marketPlacement: [],
-      chosenPlacementCost: null, 
-      marketValues: { fastaval: 0, 
-                     movie: 0, 
-                     technology: 0, 
-                     figures: 0, 
+      chosenPlacementCost: null,
+      marketValues: { fastaval: 0,
+                     movie: 0,
+                     technology: 0,
+                     figures: 0,
                      music: 0 },
       itemsOnSale: [],
       skillsOnSale: [],
@@ -187,11 +186,11 @@ export default {
     if (this.$route.params.id + "?id=" + this.$route.query.id !== newRoute)
       this.$router.push(newRoute);
 
-    this.$store.state.socket.emit('collectorsLoaded', 
-      { roomId: this.$route.params.id, 
+    this.$store.state.socket.emit('collectorsLoaded',
+      { roomId: this.$route.params.id,
         playerId: this.playerId } );
 
-    this.$store.state.socket.on('collectorsInitialize', 
+    this.$store.state.socket.on('collectorsInitialize',
       function(d) {
         this.labels = d.labels;
         this.players = d.players;
@@ -205,7 +204,7 @@ export default {
         this.auctionPlacement = d.placements.auctionPlacement;
       }.bind(this));
 
-    this.$store.state.socket.on('collectorsBottlePlaced', 
+    this.$store.state.socket.on('collectorsBottlePlaced',
       function(d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
@@ -215,7 +214,7 @@ export default {
 
     this.$store.state.socket.on('collectorsPointsUpdated', (d) => this.points = d );
 
-    this.$store.state.socket.on('collectorsCardDrawn', 
+    this.$store.state.socket.on('collectorsCardDrawn',
       function(d) {
           //this has been refactored to not single out one player's cards
           //better to update the state of all cards
@@ -223,14 +222,14 @@ export default {
       }.bind(this)
     );
 
-    this.$store.state.socket.on('collectorsCardBought', 
+    this.$store.state.socket.on('collectorsCardBought',
       function(d) {
         console.log(d.playerId, "bought a card");
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
       }.bind(this)
     );
-    this.$store.state.socket.on('collectorsSkillBought', 
+    this.$store.state.socket.on('collectorsSkillBought',
       function(d) {
         console.log(d.playerId, "bought a skill");
         this.players = d.players;
@@ -244,42 +243,42 @@ export default {
     },
     placeBottle: function (action, cost) {
       this.chosenPlacementCost = cost;
-      this.$store.state.socket.emit('collectorsPlaceBottle', { 
-          roomId: this.$route.params.id, 
+      this.$store.state.socket.emit('collectorsPlaceBottle', {
+          roomId: this.$route.params.id,
           playerId: this.playerId,
-          action: action, 
-          cost: cost, 
+          action: action,
+          cost: cost,
         }
       );
     },
     drawCard: function () {
-      this.$store.state.socket.emit('collectorsDrawCard', { 
-          roomId: this.$route.params.id, 
+      this.$store.state.socket.emit('collectorsDrawCard', {
+          roomId: this.$route.params.id,
           playerId: this.playerId
         }
       );
     },
     buyCard: function (card) {
       console.log("buyCard", card);
-      this.$store.state.socket.emit('collectorsBuyCard', { 
-          roomId: this.$route.params.id, 
+      this.$store.state.socket.emit('collectorsBuyCard', {
+          roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
-          cost: this.marketValues[card.market] + this.chosenPlacementCost 
+          cost: this.marketValues[card.market] + this.chosenPlacementCost
         }
       );
-      
+
     },
      buySkill: function (card) {
       console.log("buySkill", card);
-      this.$store.state.socket.emit('collectorsBuySkill', { 
-          roomId: this.$route.params.id, 
+      this.$store.state.socket.emit('collectorsBuySkill', {
+          roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
-          cost: this.marketValues[card.market] + this.chosenPlacementCost 
+          cost: this.marketValues[card.market] + this.chosenPlacementCost
         }
       );
-      
+
     }
 
   },
@@ -357,12 +356,12 @@ export default {
     grid-column: 1;
     grid-row: 2 /span 3;
     background-color: #7e2174;
-    height: 25vw;         
+    height: 25vw;
   }
-  /*  På alla dessa finns max-height eller motsvarande, dessa får vi leka runt med tills vi hittar något bra 
+  /*  På alla dessa finns max-height eller motsvarande, dessa får vi leka runt med tills vi hittar något bra
       Men korten måste skalas bra innan vi kan göra detta ordentligt
   */
-  .playerTop{ 
+  .playerTop{
     grid-column: 2 /span 3;
     grid-row: 1;
     background-color: #19b3a7;
@@ -385,7 +384,7 @@ export default {
   }
 
   /*
-  Här nedan är CSS specifika för kort rutorna 
+  Här nedan är CSS specifika för kort rutorna
   */
 
   .items{
