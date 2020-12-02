@@ -31,6 +31,17 @@ function sockets(io, socket, data) {
         }
       );
     });
+    socket.on('collectorsBuySkill', function(d) {
+      data.buySkill(d.roomId, d.playerId, d.card, d.cost)
+      io.to(d.roomId).emit('collectorsSkillBought', { 
+          playerId: d.playerId,
+          players: data.getPlayers(d.roomId),
+          skillsOnSale: data.getSkillsOnSale(d.roomId) 
+        }
+      );
+    });
+    
+    
     socket.on('collectorsPlaceBottle', function(d) {
       data.placeBottle(d.roomId, d.playerId, d.action, d.cost);
       io.to(d.roomId).emit('collectorsBottlePlaced', data.getPlacements(d.roomId)

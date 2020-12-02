@@ -1,7 +1,7 @@
 <template>
   <div>
     <main>
-      {{buyPlacement}} {{chosenPlacementCost}}
+     {{buyPlacement}} {{chosenPlacementCost}}
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -10,15 +10,24 @@
         :placement="buyPlacement"
         @buyCard="buyCard($event)"
         @placeBottle="placeBottle('buy', $event)"/>
+ {{buyPlacement}} {{chosenPlacementCost}}
+      <CollectorsSkillActions v-if="players[playerId]"
+        :labels="labels"
+        :player="players[playerId]"
+        :skillsOnSale="skillsOnSale" 
+        :marketValues="marketValues" 
+        :placement="buyPlacement"
+        @buySkill="buySkill($event)"
+        @placeBottle="placeBottle('buy', $event)"/>
+
+
       <div class="buttons">
         <button @click="drawCard">
           {{ labels.draw }} 
         </button>
       </div>
-      Skills
-      <div class="cardslots">
-        <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
-      </div>
+    
+     
       Auction
       <div class="cardslots">
         <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
@@ -26,6 +35,10 @@
       Hand
       <div class="cardslots" v-if="players[playerId]">
         <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
+      </div>
+      Skills
+       <div class="cardslots" v-if="players[playerId]">
+        <CollectorsCard v-for="(card, index) in players[playerId].skills" :card="card" :availableAction="card.available" :key="index"/>
       </div>
       Items
       <div class="cardslots" v-if="players[playerId]">
@@ -51,12 +64,15 @@
 
 import CollectorsCard from '@/components/CollectorsCard.vue'
 import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
+import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 
 export default {
   name: 'Collectors',
   components: {
     CollectorsCard,
-    CollectorsBuyActions
+    CollectorsBuyActions,
+    CollectorsSkillActions
+    
   },
   data: function () {
     return {
@@ -156,6 +172,13 @@ export default {
         this.itemsOnSale = d.itemsOnSale;
       }.bind(this)
     );
+    this.$store.state.socket.on('collectorsSkillBought', 
+      function(d) {
+        console.log(d.playerId, "bought a skill");
+        this.players = d.players;
+        this.skillsOnSale = d.skillsOnSale;
+      }.bind(this)
+    );
   },
   methods: {
     selectAll: function (n) {
@@ -187,7 +210,20 @@ export default {
           cost: this.marketValues[card.market] + this.chosenPlacementCost 
         }
       );
+      
+    },
+     buySkill: function (card) {
+      console.log("buySkill", card);
+      this.$store.state.socket.emit('collectorsBuySkill', { 
+          roomId: this.$route.params.id, 
+          playerId: this.playerId,
+          card: card,
+          cost: this.marketValues[card.market] + this.chosenPlacementCost 
+        }
+      );
+      
     }
+
   },
 }
 </script>
