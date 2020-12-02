@@ -26,7 +26,7 @@
           {{ labels.draw }}
         </button>
       </div>
-<<<<<<< HEAD
+      HEAD
       <section id="grid">
         <div class="player playerLeft">
           PlayerLeft
@@ -71,36 +71,26 @@
         </div>
         <div class="gridedge1">
           Ruta för att visa grid lättare: 1
+          <br>
+          Här kan man t.ex. ha en logga
         </div>
         <div class="gridedge2">
           Ruta för att visa grid lättare: 2
+          <br>
+          Här kan man t.ex. ha korthögen
         </div>
         <div class="gridedge3">
           Ruta för att visa grid lättare: 3
+          <br>
+          Här kan man t.ex. ha vissa viktiga knappar
         </div>
         <div class="gridedge4">
           Ruta för att visa grid lättare: 4
+          <br>
+          Här kan man t.ex. ha vissa viktiga meny-knappar
         </div>
       </section>
-    
 
-      Auction
-      <div class="cardslots">
-        <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
-      </div>
-      Hand
-      <div class="cardslots" v-if="players[playerId]">
-        <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
-      </div>
-      Skills
-       <div class="cardslots" v-if="players[playerId]">
-        <CollectorsCard v-for="(card, index) in players[playerId].skills" :card="card" :availableAction="card.available" :key="index"/>
-      </div>
-      Items
-      <div class="cardslots" v-if="players[playerId]">
-        <CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>
-      </div>
->>>>>>> f7ff1844c6ffec4fe93462071a0ed6ac441315f2
     </main>
     {{players}}
     {{marketValues}}
@@ -306,7 +296,7 @@ export default {
   }
   .cardslots {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 130px);
+    grid-template-columns: repeat(auto-fill, 130px); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
     grid-template-rows: repeat(auto-fill, 180px);
   }
   .cardslots div {
@@ -328,7 +318,7 @@ export default {
     align-items:center;
   }
   /*
-  Om det inte går så bra med centering etc kan vi testa att göra om allt till en 3x3 grid
+  Om det inte går så bra med centrering etc kan vi testa att göra om allt till en 3x3 grid
   med att 2x2 platsen (mitten) har ett inre grid som är 3x3 där:
 
   Auction: column 1 row /span 3,
@@ -358,7 +348,8 @@ export default {
     background-color: #7e2174;
     height: 25vw;
   }
-  /*  På alla dessa finns max-height eller motsvarande, dessa får vi leka runt med tills vi hittar något bra
+  /*  
+      På alla dessa finns max-height eller motsvarande, dessa får vi leka runt med tills vi hittar något bra
       Men korten måste skalas bra innan vi kan göra detta ordentligt
   */
   .playerTop{
@@ -384,7 +375,7 @@ export default {
   }
 
   /*
-  Här nedan är CSS specifika för kort rutorna
+  Här nedan är CSS specifika för kortrutorna
   */
 
   .items{
