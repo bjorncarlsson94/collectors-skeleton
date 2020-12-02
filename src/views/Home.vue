@@ -7,6 +7,9 @@
           <a @click="setupCollectors(i+1, 'en')">Set up a game of Collectors for {{i+1}} players</a>.
         </li>
       </ul>
+      <div id="testcolour">
+
+      </div>
       <ul>
         <li v-for="i in 3" :key="i">
           <a @click="setupCollectors(i+1, 'se')">Spela Collectors med {{i+1}} spelare</a>.
@@ -41,5 +44,11 @@ export default {
     justify-content: center;
     height: 100vh;
     padding: 1em;
+  }
+
+  #testcolour{
+    background-color:rgb(175, 10, 10);
+    height: 50px;
+    border-radius: 15vh;
   }
 </style>

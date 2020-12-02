@@ -1,7 +1,7 @@
 <template>
   <div>
     <main>
-      {{buyPlacement}} {{chosenPlacementCost}}
+     {{buyPlacement}} {{chosenPlacementCost}}
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -10,15 +10,81 @@
         :placement="buyPlacement"
         @buyCard="buyCard($event)"
         @placeBottle="placeBottle('buy', $event)"/>
+ {{buyPlacement}} {{chosenPlacementCost}}
+      <CollectorsSkillActions v-if="players[playerId]"
+        :labels="labels"
+        :player="players[playerId]"
+        :skillsOnSale="skillsOnSale" 
+        :marketValues="marketValues" 
+        :placement="buyPlacement"
+        @buySkill="buySkill($event)"
+        @placeBottle="placeBottle('buy', $event)"/>
+
+
       <div class="buttons">
         <button @click="drawCard">
           {{ labels.draw }} 
         </button>
       </div>
-      Skills
-      <div class="cardslots">
-        <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
-      </div>
+<<<<<<< HEAD
+      <section id="grid">
+        <div class="player playerLeft">
+          PlayerLeft
+          <!--Here are the player specific things-->
+        </div>
+        <div class="player playerTop">
+          PlayerTop
+          <!--Here are the player specific things-->
+        </div>
+        <div class="player playerRight">
+          PlayerRight
+          <!--Here are the player specific things-->
+        </div>
+        <div class="cardslots skills">
+          Skills
+          <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
+        </div>
+        <div class="cardslots auction">
+          Auction
+          <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
+        </div>
+        <div class="cardslots raiseValue">
+          Raise Value
+          <!-- Här måste vi fixa en RAISE VALUE CARDS som med item, skill, auction etc-->
+        </div>
+        <div class="cardslots hand" v-if="players[playerId]">
+          Hand
+          <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
+        </div>
+        <!-- 
+
+                    VIKTIGT!!!
+
+        Just nu är Skills och Items slotsen för spelarens items/skills. Här måste vi göra så att dessa är för spelplanen 
+        det vill säga flytta in köpegrejerna in i divarna här. Sen måste det göras nya divvar inne i spelarens hand (som borde bli player board eller
+        liknande istället. Här ska Hand, Items, skills visas som de visas nu. Alla kort måste skalas om i visningen enligt samma princip som rutorna.
+        --> 
+
+        <div class="cardslots items" v-if="players[playerId]">
+          Items
+          <CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>
+        </div>
+        <div class="gridedge1">
+          Ruta för att visa grid lättare: 1
+        </div>
+        <div class="gridedge2">
+          Ruta för att visa grid lättare: 2
+        </div>
+        <div class="gridedge3">
+          Ruta för att visa grid lättare: 3
+        </div>
+        <div class="gridedge4">
+          Ruta för att visa grid lättare: 4
+        </div>
+      </section>
+=======
+    
+     
       Auction
       <div class="cardslots">
         <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
@@ -27,10 +93,15 @@
       <div class="cardslots" v-if="players[playerId]">
         <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
       </div>
+      Skills
+       <div class="cardslots" v-if="players[playerId]">
+        <CollectorsCard v-for="(card, index) in players[playerId].skills" :card="card" :availableAction="card.available" :key="index"/>
+      </div>
       Items
       <div class="cardslots" v-if="players[playerId]">
         <CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>
       </div>
+>>>>>>> f7ff1844c6ffec4fe93462071a0ed6ac441315f2
     </main>
     {{players}}
     {{marketValues}}
@@ -51,12 +122,15 @@
 
 import CollectorsCard from '@/components/CollectorsCard.vue'
 import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
+import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 
 export default {
   name: 'Collectors',
   components: {
     CollectorsCard,
-    CollectorsBuyActions
+    CollectorsBuyActions,
+    CollectorsSkillActions
+    
   },
   data: function () {
     return {
@@ -156,6 +230,13 @@ export default {
         this.itemsOnSale = d.itemsOnSale;
       }.bind(this)
     );
+    this.$store.state.socket.on('collectorsSkillBought', 
+      function(d) {
+        console.log(d.playerId, "bought a skill");
+        this.players = d.players;
+        this.skillsOnSale = d.skillsOnSale;
+      }.bind(this)
+    );
   },
   methods: {
     selectAll: function (n) {
@@ -187,7 +268,20 @@ export default {
           cost: this.marketValues[card.market] + this.chosenPlacementCost 
         }
       );
+      
+    },
+     buySkill: function (card) {
+      console.log("buySkill", card);
+      this.$store.state.socket.emit('collectorsBuySkill', { 
+          roomId: this.$route.params.id, 
+          playerId: this.playerId,
+          card: card,
+          cost: this.marketValues[card.market] + this.chosenPlacementCost 
+        }
+      );
+      
     }
+
   },
 }
 </script>
@@ -226,6 +320,145 @@ export default {
     transform: scale(1)translate(-25%,0);
     z-index: 1;
   }
+
+  #grid {
+    display: grid;
+    grid-gap: 1.5vw;
+    margin: 2vw;
+    justify-content:center;   /* dessa 2 centrerar horisontellt respektive vertikalt */
+    align-items:center;
+  }
+  /*
+  Om det inte går så bra med centering etc kan vi testa att göra om allt till en 3x3 grid
+  med att 2x2 platsen (mitten) har ett inre grid som är 3x3 där:
+
+  Auction: column 1 row /span 3,
+  Items column 2 /span 2 row 1,
+  Skills column 2 /span 2 row 2,
+  Raise Value column 2 /span 2 row 3
+
+  */
+
+  .player{
+    padding: 1vw;
+  }
+  .cardslots{
+    padding: 1vw;
+  }
+
+  /*
+  Här nedan är CSS specifika för player rutorna
+  */
+
+  .player{
+    border-radius: 15px;
+  }
+  .playerLeft{
+    grid-column: 1;
+    grid-row: 2 /span 3;
+    background-color: #7e2174;
+    height: 25vw;         
+  }
+  /*  På alla dessa finns max-height eller motsvarande, dessa får vi leka runt med tills vi hittar något bra 
+      Men korten måste skalas bra innan vi kan göra detta ordentligt
+  */
+  .playerTop{ 
+    grid-column: 2 /span 3;
+    grid-row: 1;
+    background-color: #19b3a7;
+    height: 10vw;
+    max-width: 25vw;
+    text-align: center;
+    margin-left: 11vw; /* Denna måste också justeras, nu är den framhöftad för att centrera Player Top någorlunda */
+  }
+  .playerRight{
+    grid-column: 5;
+    grid-row: 2 /span 3;
+    background-color: #ca9e68;
+    height: 25vw;
+  }
+  .hand{  /* Denna ska göras om till "Player board" eller liknande där handen inkluderas*/
+    border-radius: 15px;
+    background-color: rgb(217, 240, 247); /* Choose colour based on the 4 player colours */
+    grid-column: 2 /span 3;
+    grid-row: 5;
+  }
+
+  /*
+  Här nedan är CSS specifika för kort rutorna 
+  */
+
+  .items{
+    border-radius: 15px;
+    background-color:#f8dcce;
+    grid-column: 3 /span 2;
+    grid-row: 2;
+    width: 30vw;
+    height: 10vw;
+  }
+  .skills{
+    border-radius: 15px;
+    background-color: #dfeccc;
+    grid-column: 3 /span 2;
+    grid-row: 3;
+    width: 30vw;
+    height: 10vw;
+  }
+  .raiseValue{
+    border-radius: 15px;
+    background-color: #cfdcf2;
+    grid-column: 3 /span 2;
+    grid-row: 4;
+    width: 30vw;
+    height: 10vw;
+  }
+  .auction{
+    border-radius: 15px;
+    background-color: #f5f2cc;
+    grid-column: 2;
+    grid-row: 2 /span 3;
+    max-width: 15vw;
+  }
+
+  /*
+  Dessa nedan är bara provisoriska och ska göras om eller tas bort i slutändan.
+  */
+
+  .gridedge1{
+    grid-column: 1;
+    grid-row: 1;
+    background-color:rgb(194, 194, 194);
+    border-radius: 10px;
+    padding:20px;
+    height: 10vw;
+  }
+  .gridedge2{
+    grid-column: 5;
+    grid-row: 1;
+    background-color:rgb(194, 194, 194);
+    border-radius: 10px;
+    padding:20px;
+    height: 10vw;
+  }
+  .gridedge3{
+    grid-column: 1;
+    grid-row: 5;
+    background-color:rgb(194, 194, 194);
+    border-radius: 10px;
+    padding:20px;
+    height: 10vw;
+  }
+  .gridedge4{
+    grid-column: 5;
+    grid-row: 5;
+    background-color:rgb(194, 194, 194);
+    border-radius: 10px;
+    padding:20px;
+    height: 10vw;
+  }
+
+
+
 
   @media screen and (max-width: 800px) {
     main {
