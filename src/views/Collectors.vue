@@ -52,9 +52,14 @@
           Raise Value
           <!-- Här måste vi fixa en RAISE VALUE CARDS som med item, skill, auction etc-->
         </div>
-        <div class="cardslots hand" v-if="players[playerId]">
+        
+        
+          <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
+        <div class="cardslots playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
           Hand
           <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
+          
+
         </div>
         <!--
 
@@ -123,6 +128,7 @@ export default {
   },
   data: function () {
     return {
+      isActive: false,
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
       maxSizes: { x: 0,
@@ -231,6 +237,13 @@ export default {
     selectAll: function (n) {
       n.target.select();
     },
+
+    expandPlayerBoard: function(){
+      console.log("Click click mf");
+      this.isActive = !this.isActive;
+      console.log("status: "+ this.isActive);
+    },
+
     placeBottle: function (action, cost) {
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit('collectorsPlaceBottle', {
@@ -367,12 +380,30 @@ export default {
     background-color: #ca9e68;
     height: 25vw;
   }
-  .hand{  /* Denna ska göras om till "Player board" eller liknande där handen inkluderas*/
+  .playerboard{  /* Denna ska göras om till "Player board" eller liknande där handen inkluderas*/
     border-radius: 15px;
     background-color: rgb(217, 240, 247); /* Choose colour based on the 4 player colours */
     grid-column: 2 /span 3;
     grid-row: 5;
   }
+
+  .playerboard:hover{
+    background-color: hotpink;
+  }
+
+  
+/* Om man klickar på handen aktiveras denna. Denna ger attribut bara om isActive på divven = true */
+  .active{
+    background-color: hotpink;
+    height: 300%;
+    align-self: end;
+    width: 110%;
+    justify-self: center;
+  }
+
+
+
+
 
   /*
   Här nedan är CSS specifika för kortrutorna
