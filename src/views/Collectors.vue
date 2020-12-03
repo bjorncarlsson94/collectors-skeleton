@@ -1,7 +1,7 @@
 <template>
   <div>
     <main>
-     {{buyPlacement}} {{chosenPlacementCost}}
+      {{buyPlacement}} {{chosenPlacementCost}}
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -10,15 +10,15 @@
         :placement="buyPlacement"
         @buyCard="buyCard($event)"
         @placeBottle="placeBottle('buy', $event)"/>
- {{buyPlacement}} {{chosenPlacementCost}}
+      {{skillPlacement}} {{chosenPlacementCost}}
       <CollectorsSkillActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
         :skillsOnSale="skillsOnSale"
         :marketValues="marketValues"
-        :placement="buyPlacement"
+        :placement="skillPlacement"
         @buySkill="buySkill($event)"
-        @placeBottle="placeBottle('buy', $event)"/>
+        @placeBottle="placeBottle('skill', $event)"/>
 
 
       <div class="buttons">
