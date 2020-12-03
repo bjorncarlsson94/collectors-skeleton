@@ -329,6 +329,8 @@ export default {
     margin: 2vw;
     justify-content:center;   /* dessa 2 centrerar horisontellt respektive vertikalt */
     align-items:center;
+    min-height: 0;
+    object-fit: contain;
   }
   /*
   Om det inte går så bra med centrering etc kan vi testa att göra om allt till en 3x3 grid
@@ -385,6 +387,7 @@ export default {
     background-color: rgb(217, 240, 247); /* Choose colour based on the 4 player colours */
     grid-column: 2 /span 3;
     grid-row: 5;
+    min-height: 0;
   }
 
   .playerboard:hover{
@@ -395,7 +398,8 @@ export default {
 /* Om man klickar på handen aktiveras denna. Denna ger attribut bara om isActive på divven = true */
   .active{
     background-color: hotpink;
-    height: 300%;
+    margin-top: -100%;
+    height: 50vh;
     align-self: end;
     width: 110%;
     justify-self: center;
