@@ -19,8 +19,11 @@
         :placement="skillPlacement"
         @buySkill="buySkill($event)"
         @placeBottle="placeBottle('skill', $event)"/>
-
-
+      
+      <div></div>
+      <button v-if="players[playerId]" @click="startTurn()">
+      Slumpa startare. 
+      </button>
       <div class="buttons">
         <button @click="drawCard">
           {{ labels.draw }}
@@ -232,6 +235,12 @@ export default {
         this.skillsOnSale = d.skillsOnSale;
       }.bind(this)
     );
+    this.$store.state.socket.on('firstPlayerPicked',
+      function(d) {
+        console.log( "spelare vald");
+        this.players = d.players;
+      }.bind(this)
+    );
   },
   methods: {
     selectAll: function (n) {
@@ -279,6 +288,15 @@ export default {
           playerId: this.playerId,
           card: card,
           cost: this.marketValues[card.market] + this.chosenPlacementCost
+        }
+      );
+
+    },
+    startTurn: function () {
+      console.log("hola",);
+  
+      this.$store.state.socket.emit('startTurn', {
+        roomId:this.$route.params.id
         }
       );
 

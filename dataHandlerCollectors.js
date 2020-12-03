@@ -107,7 +107,8 @@ Data.prototype.joinGame = function (roomId, playerId) {
                                  skills: [],
                                  items: [],
                                  income: [],
-                                 secret: [] };
+                                 secret: [],
+                                 turn: false };
       return true;
     }
     console.log("Player", playerId, "was declined due to player limit");
@@ -285,6 +286,24 @@ Data.prototype.getAuctionCards = function(roomId){
     return room.auctionCards;
   }
   else return [];
+}
+
+//slumpar vilken av spelarna som ska får starta. 
+Data.prototype.startTurn = function(roomId){
+  let room = this.rooms[roomId];
+  console.log("hola 3")
+  
+  if (typeof room !== 'undefined') {
+   // x=Math.floor(Math.random()*2)
+   
+    var keys = Object.keys(room.players);
+    room.players[keys[ keys.length * Math.random() << 0]].turn=true;
+    console.log(room.players[keys[Math.floor( keys.length *Math.random())]].turn)
+    return room.players;
+    
+  }
+  
+
 }
 
 module.exports = Data;

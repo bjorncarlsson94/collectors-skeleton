@@ -47,6 +47,16 @@ function sockets(io, socket, data) {
       io.to(d.roomId).emit('collectorsBottlePlaced', data.getPlacements(d.roomId)
       );
     });
+    socket.on('startTurn', function(d) {
+      data.startTurn(d.roomId);
+      console.log("hola 2");
+      
+      io.to(d.roomId).emit('firstPlayerPicked', { 
+        players:data.getPlayers(d.roomId)
+
+      }
+      );
+    });
 }
 
 module.exports = sockets;
