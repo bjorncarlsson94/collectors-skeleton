@@ -22,8 +22,11 @@
         @placeBottle="placeBottle('skill', $event)"/>
       
       <div></div>
-      <button v-if="players[playerId]" @click="startTurn()">
+      <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
       Slumpa startare. 
+      </button>
+      <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
+      Nästa spelare. 
       </button>
       <div class="buttons">
         <button @click="drawCard">
@@ -32,7 +35,7 @@
       </div>
       HEAD
       <section id="grid">
-        <div class="player playerLeft">
+        <div class="player playerLeftehhehehehhehe">
           PlayerLeft
           <!--Here are the player specific things-->
         </div>
@@ -132,6 +135,7 @@ export default {
   },
   data: function () {
     return {
+      gameStarted: false,
       isActive: false,
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
@@ -236,9 +240,10 @@ export default {
         this.skillsOnSale = d.skillsOnSale;
       }.bind(this)
     );
-    this.$store.state.socket.on('firstPlayerPicked',
+    this.$store.state.socket.on('playerPicked',
       function(d) {
         console.log( "spelare vald");
+        this.gameStarted = true;
         this.players = d.players;
       }.bind(this)
     );
@@ -298,6 +303,13 @@ export default {
   
       this.$store.state.socket.emit('startTurn', {
         roomId:this.$route.params.id
+        }
+      );
+    },
+    nextPlayer: function () {
+      this.$store.state.socket.emit('nextPlayer', {
+        roomId: this.$route.params.id,
+        playerId: this.playerId
         }
       );
 

@@ -169,13 +169,13 @@ Data.prototype.buyCard = function (roomId, playerId, card, cost) {
         break;
       }
     }
-    console.log(cost);
     room.players[playerId].items.push(...c);
     room.players[playerId].money -= cost;
     
   }
 }
 Data.prototype.buySkill = function (roomId, playerId, card, cost) {
+  console.log(playerId)
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     let c = null;
@@ -291,14 +291,31 @@ Data.prototype.getAuctionCards = function(roomId){
 //slumpar vilken av spelarna som ska får starta. 
 Data.prototype.startTurn = function(roomId){
   let room = this.rooms[roomId];
-  console.log("hola 3")
   
   if (typeof room !== 'undefined') {
    // x=Math.floor(Math.random()*2)
    
     var keys = Object.keys(room.players);
-    room.players[keys[ keys.length * Math.random() << 0]].turn=true;
+    room.players[keys[ keys.length * Math.random() << 0]].turn= true;
     console.log(room.players[keys[Math.floor( keys.length *Math.random())]].turn)
+    return room.players;
+    
+  }
+  
+
+}
+//Byter spelare till nästa i arrayen 
+Data.prototype.nextPlayer = function(roomId, playerId){
+  let room = this.rooms[roomId];
+  let index = null;
+  if (typeof room !== 'undefined') {
+    var keys = Object.keys(room.players);
+    let i = Object.keys(room.players).indexOf(playerId)
+    room.players[keys[i]].turn = false;
+    if (i === keys.length-1){
+        i=-1
+    }
+    room.players[keys[i+1]].turn=true;
     return room.players;
     
   }

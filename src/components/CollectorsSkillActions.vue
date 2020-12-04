@@ -14,7 +14,7 @@
         <div class="buttons" v-for="(p, index) in placement" :key="index">
           <button
             v-if="p.playerId===null"
-            :disabled="cannotAfford(p.cost)" 
+            :disabled="notYourTurn() || cannotAfford(p.cost)" 
             @click="placeBottle(p)" >
             ${{p.cost}}
           </button>
@@ -83,6 +83,9 @@ export default {
         this.$emit('buySkill', card)
         this.highlightAvailableCards()
       }
+    },
+    notYourTurn: function () {
+      return (this.player.turn== false)
     }
 
   }
