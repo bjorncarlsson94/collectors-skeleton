@@ -35,7 +35,7 @@
       </div>
       HEAD
       <section id="grid">
-        <div class="player playerLeftehhehehehhehe">
+        <div class="player playerLeft">
           PlayerLeft
           <!--Here are the player specific things-->
         </div>
