@@ -65,7 +65,7 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
   room.skillsOnSale = room.deck.splice(0, 5);
   room.auctionCards = room.deck.splice(0, 4);
   room.raiseItems = room.deck.splice(0, 7);
-  
+  room.cardInAuction = [];
   room.market = [];
   room.round = 0;
   room.startingPlayerId = null;
@@ -288,7 +288,7 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
         break;
       }
     }
-    room.players[playerId].skills.push(...c);
+    room.cardInAuction.push(...c);
     room.players[playerId].money -= cost;
 
   }
@@ -316,6 +316,16 @@ Data.prototype.placeBottle = function (roomId, playerId, action, cost) {
     }
   }
 }
+
+Data.prototype.getCardInAuction = function(roomId){
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.cardInAuction;
+  }
+  else return [];
+}
+
+
 /* returns the hand of the player */
 Data.prototype.getCards = function (roomId, playerId) {
   let room = this.rooms[roomId];

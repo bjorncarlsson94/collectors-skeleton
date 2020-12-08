@@ -43,7 +43,8 @@ function sockets(io, socket, data) {
     io.to(d.roomId).emit('collectorsAuctionStarted', {
       playerId: d.playerId,
       players: data.getPlayers(d.roomId),
-      auctionCards: data.getAuctionCards(d.roomId)
+      auctionCards: data.getAuctionCards(d.roomId),
+      cardInAuction: data.getCardInAuction(d.roomId)
     });
   });
 
