@@ -45,15 +45,15 @@
        
       <br> 
       <section id="grid">
-        <div class="player playerLeft">
+        <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
           PlayerLeft
           <!--Here are the player specific things-->
         </div>
-        <div class="player playerTop">
+        <div class="player playerTop" v-on:click="expandTopBoard"  v-bind:class="{ active: topIsActive }">
           PlayerTop
           <!--Here are the player specific things-->
         </div>
-        <div class="player playerRight">
+        <div class="player playerRight" v-on:click="expandRightBoard"  v-bind:class="{ active: rightIsActive }">
           PlayerRight
           <!--Here are the player specific things-->
         </div>
@@ -76,8 +76,6 @@
         <div class="cardslots playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
           Hand
           <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
-          
-
         </div>
         <!--
 
@@ -151,6 +149,10 @@ export default {
     return {
       gameStarted: false,
       isActive: false,
+      leftIsActive: false,
+      rightIsActive: false,
+      topIsActive: false,
+
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
       maxSizes: { x: 0,
@@ -277,6 +279,21 @@ export default {
       console.log("Click click mf");
       this.isActive = !this.isActive;
       console.log("status: "+ this.isActive);
+    },
+    expandLeftBoard: function(){
+      console.log("Left click mf");
+      this.leftIsActive = !this.leftIsActive;
+      console.log("status: "+ this.leftIsActive);
+    },
+    expandRightBoard: function(){
+      console.log("Right click mf");
+      this.rightIsActive = !this.rightIsActive;
+      console.log("status: "+ this.rightIsActive);
+    },
+    expandTopBoard: function(){
+      console.log("Top click mf");
+      this.topIsActive = !this.topIsActive;
+      console.log("status: "+ this.topIsActive);
     },
 
     placeBottle: function (action, cost) {
@@ -424,7 +441,7 @@ export default {
     grid-row: 1;
     background-color: #19b3a7;
     height: 10vw;
-    max-width: 25vw;
+    width: 25vw;
     text-align: center;
     margin-left: 11vw; /* Denna måste också justeras, nu är den framhöftad för att centrera Player Top någorlunda */
   }
@@ -436,28 +453,68 @@ export default {
   }
   .playerboard{  /* Denna ska göras om till "Player board" eller liknande där handen inkluderas*/
     border-radius: 15px;
-    background-color: rgb(217, 240, 247); /* Choose colour based on the 4 player colours */
+    background-color: rgb(70, 181, 214); /* Choose colour based on the 4 player colours */
     grid-column: 2 /span 3;
     grid-row: 5;
     min-height: 0;
   }
 
+
+/* Hover över spelarområdena*/
   .playerboard:hover{
-    background-color: hotpink;
+    background-color: rgb(95, 216, 253);
+  }
+  .playerLeft:hover{
+   background-color:#c236b4;
+  }
+  .playerRight:hover{
+    background-color: #fdc683;
+  }
+  .playerTop:hover{
+    background-color: #20ccbe;
   }
 
   
 /* Om man klickar på handen aktiveras denna. Denna ger attribut bara om isActive på divven = true */
-  .active{
-    background-color: hotpink;
+  .playerboard.active{
+    background-color: rgb(95, 216, 253);
     margin-top: -100%;
     height: 50vh;
     align-self: end;
     width: 110%;
     justify-self: center;
+    z-index: 1;
   }
 
+/* Om man klickar på spelaren i topp */
+ .playerTop.active{
+    background-color: #20ccbe;
+    height: 150%;
+    width: 100%;
+    align-self: baseline;
+    justify-self: center;
+    margin-left: initial;
+    z-index: 1;
+  }
 
+/* Om man klickar på spelaren till vänster */
+.playerLeft.active {
+    background-color:#c236b4;
+    margin-right: -100%;
+    width: 130%;
+    height: 80%;
+    justify-self:self-start;
+    z-index: 1;
+  }
+
+/* Om man klickar på spelaren till höger */
+  .playerRight.active {
+    background-color: #fdc683;
+    width: 130%;
+    height: 80%;
+    justify-self: end;
+    z-index: 1;
+  }
 
 
 
