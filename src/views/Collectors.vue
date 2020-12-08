@@ -1,4 +1,4 @@
-<!--hej hugo-->
+
 <template>
   <div>
     <main>
@@ -33,7 +33,17 @@
           {{ labels.draw }}
         </button>
       </div>
-      HEAD
+
+        <!--Raise value div. with 4 random cards in it at the moment-->
+       <!--Raise value div. with 4 random cards in it at the moment 
+       They are diplayed in the correct raiseValue columm-->
+        
+      <CollectorsRaiseValue v-if="players[playerId]"
+        :labels="labels"
+        :player="players[playerId]"
+        :raiseItems="raiseItems"/> 
+       
+      <br> 
       <section id="grid">
         <div class="player playerLeft">
           PlayerLeft
@@ -57,7 +67,8 @@
         </div>
         <div class="cardslots raiseValue">
           Raise Value
-          <!-- Här måste vi fixa en RAISE VALUE CARDS som med item, skill, auction etc-->
+        <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
+          <!-- Här måste vi fixa en AISRE VALUE CARDS som med item, skill, auction etc-->
         </div>
         
         
@@ -124,13 +135,15 @@
 import CollectorsCard from '@/components/CollectorsCard.vue'
 import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
 import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
+import CollectorsRaiseValue from '@/components/CollectorsRaiseValue.vue'
 
 export default {
   name: 'Collectors',
   components: {
     CollectorsCard,
     CollectorsBuyActions,
-    CollectorsSkillActions
+    CollectorsSkillActions,
+    CollectorsRaiseValue
 
   },
   data: function () {
@@ -165,6 +178,7 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
+      raiseItems:[],
       playerid: 0
     }
   },
@@ -202,6 +216,7 @@ export default {
         this.marketValues = d.marketValues;
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
+        this.raiseItems=d.raiseItems;
         this.buyPlacement = d.placements.buyPlacement;
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;

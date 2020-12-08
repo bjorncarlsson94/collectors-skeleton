@@ -63,6 +63,8 @@ Data.prototype.createRoom = function(roomId, playerCount, lang="en") {
   room.itemsOnSale = room.deck.splice(0, 5);
   room.skillsOnSale = room.deck.splice(0, 5);
   room.auctionCards = room.deck.splice(0, 4);
+  room.raiseItems = room.deck.splice(0, 7);
+  
   room.market = [];
   room.buyPlacement = [ {cost:1, playerId: null},
                         {cost:1, playerId: null},
@@ -247,6 +249,7 @@ Data.prototype.getPlacements = function(roomId){
              skillPlacement: room.skillPlacement,
              auctionPlacement: room.auctionPlacement,
              marketPlacement: room.marketPlacement }
+             
   }
   else return {};
 }
@@ -262,6 +265,13 @@ Data.prototype.getSkillsOnSale = function(roomId){
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     return room.skillsOnSale;
+  }
+  else return [];
+}
+Data.prototype.getRaiseItems = function(roomId){
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.raiseItems;
   }
   else return [];
 }
