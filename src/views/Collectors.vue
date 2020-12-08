@@ -95,7 +95,7 @@
         <div class="gridedge1">
           Ruta för att visa grid lättare: 1
           <br>
-          Här kan man t.ex. ha en logga
+           Det är runda: ,{{ round }}
         </div>
         <div class="gridedge2">
           Ruta för att visa grid lättare: 2
@@ -108,6 +108,7 @@
           Här kan man t.ex. ha vissa viktiga knappar
         </div>
         <div class="gridedge4">
+          
           Ruta för att visa grid lättare: 4
           <br>
           Här kan man t.ex. ha vissa viktiga meny-knappar
@@ -178,8 +179,10 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
-      raiseItems:[],
-      playerid: 0
+      playerid: 0,
+      round: 0,
+      startingPlayerId: null
+      
     }
   },
   computed: {
@@ -260,6 +263,8 @@ export default {
         console.log( "spelare vald");
         this.gameStarted = true;
         this.players = d.players;
+        this.round = d.round;
+         console.log( "Det är runda: " + this.round);
       }.bind(this)
     );
   },
@@ -324,7 +329,8 @@ export default {
     nextPlayer: function () {
       this.$store.state.socket.emit('nextPlayer', {
         roomId: this.$route.params.id,
-        playerId: this.playerId
+        
+        playerId: this.playerId,
         }
       );
 

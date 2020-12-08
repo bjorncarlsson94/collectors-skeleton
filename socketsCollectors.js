@@ -47,15 +47,17 @@ function sockets(io, socket, data) {
   socket.on('startTurn', function (d) {
     data.startTurn(d.roomId);
     io.to(d.roomId).emit('playerPicked', {
-      players: data.getPlayers(d.roomId)
+      players: data.getPlayers(d.roomId),
+      round: data.getRound(d.roomId)
     });
   });
 
 
   socket.on('nextPlayer', function (d) {
-    data.nextPlayer(d.roomId, d.playerId);
+    data.nextPlayer(d.roomId, d.playerId, d.round);
     io.to(d.roomId).emit('playerPicked', {
-      players: data.getPlayers(d.roomId)
+      players: data.getPlayers(d.roomId),
+      round: data.getRound(d.roomId)
     });
   });
 }
