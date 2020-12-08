@@ -1,6 +1,21 @@
 <template>
 
-    <div v-if="card.x>0" :class="['card', {'available-to-choose': availableAction}]" :style="{'background-position': (-(card.x-1)*250)+'px ' + (-(card.y-1)*317)+'px'}" @click="doAction">
+    <div v-if="card.x>0" :class="['card', {'available-to-choose': availableAction}]" 
+      :style="{'zoom':scalefactor,'background-position': (-(card.x-1)*250)+'px ' + (-(card.y-1)*317)+'px'}" @click="doAction"> 
+
+      <!-- LÅT DETTA STÅ, BJÖRN FORTSÄTTER MED DENNA GREJ
+
+      här ska vi lägga till en canvas och vilken bilddata den har -->
+      <!-- style ovan ska "bort" -->
+      <!-- 
+      <div>
+        <canvas id="cardCanvas" width="7500" height="952" src="/images/collectors-cards-new.png"></canvas>
+        <img
+          src="/images/collectors-cards-new.png"
+          alt="CanvasImage"
+          title="Canvas image title"
+        />
+      </div> -->
 
       {{card.item}} 
       {{card.skill}}
@@ -11,6 +26,11 @@
 <script>
 export default {
   name: 'CollectorsCard',
+  data: function() {
+    return{
+      scalefactor: window.innerWidth/5000   // Här dyker en skalning upp - det är faktiskt här och inte i collectors.vue som det sker. Se även ovan där kortens koordinater bestäms.
+    }
+  },
   props: {
     card: Object,
     availableAction: Boolean
@@ -19,7 +39,12 @@ export default {
     doAction: function() {
       this.$emit('doAction');
     }
-  }
+  },
+  mounted() {
+  window.addEventListener('resize', () => {
+    this.scalefactor = window.innerWidth/5000
+    })
+  },
 }
 </script>
 

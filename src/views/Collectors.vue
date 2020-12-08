@@ -20,6 +20,14 @@
         :placement="skillPlacement"
         @buySkill="buySkill($event)"
         @placeBottle="placeBottle('skill', $event)"/>
+        <CollectorsStartAuction v-if="players[playerId]"
+        :labels="labels"
+        :player="players[playerId]"
+        :auctionCards="auctionCards"
+        :marketValues="marketValues"
+        :placement="auctionPlacement"
+        @startAuction="startAuction($event)"
+        @placeBottle="placeBottle('auction', $event)"/>
       
       <div></div>
       <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
@@ -44,7 +52,9 @@
         :raiseItems="raiseItems"/> 
        
       <br> 
-      <section id="grid">
+     
+      <section id="wrapper">
+      <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
           PlayerLeft
           <!--Here are the player specific things-->
@@ -57,26 +67,32 @@
           PlayerRight
           <!--Here are the player specific things-->
         </div>
-        <div class="cardslots skills">
-          Skills
-          <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
+        <div class="skills">
+          <div class="skillsgrid">
+            <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
+          </div>
         </div>
         <div class="cardslots auction">
-          Auction
-          <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
+          <div class="auctiongrid">
+            <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
+          </div>
         </div>
         <div class="cardslots raiseValue">
-          Raise Value
-        <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
-          <!-- Här måste vi fixa en AISRE VALUE CARDS som med item, skill, auction etc-->
+          <div class="raiseValuegrid">
+            <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
+          </div>
         </div>
         
         
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
         <div class="cardslots playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
           Hand
+          
+        </div>
+        <div class="cardslots hand" v-if="players[playerId]">
           <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
         </div>
+
         <!--
 
                     VIKTIGT!!!
@@ -84,12 +100,21 @@
         Just nu är Skills och Items slotsen för spelarens items/skills. Här måste vi göra så att dessa är för spelplanen
         det vill säga flytta in köpegrejerna in i divarna här. Sen måste det göras nya divvar inne i spelarens hand (som borde bli player board eller
         liknande istället. Här ska Hand, Items, skills visas som de visas nu. Alla kort måste skalas om i visningen enligt samma princip som rutorna.
+
         -->
 
-        <div class="cardslots items" v-if="players[playerId]">
-          Items
-          <CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>
+        <div class="items">
+          <div class="itemgrid">
+            <CollectorsCard v-for="(card, index) in itemsOnSale" :card="card" :key="index"/>
+          <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
+          </div>
         </div>
+        <div class="work">
+          
+          <!--{{index}}; LÄGG TILL SÅ DET ÄR ITEMS ON SALE HÄR SOM SYNS -->
+          Work
+        </div>
+
         <div class="gridedge1">
           Ruta för att visa grid lättare: 1
           <br>
@@ -111,8 +136,8 @@
           <br>
           Här kan man t.ex. ha vissa viktiga meny-knappar
         </div>
+      </div>
       </section>
-
     </main>
     {{players}}
     {{marketValues}}
@@ -135,6 +160,7 @@ import CollectorsCard from '@/components/CollectorsCard.vue'
 import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
 import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 import CollectorsRaiseValue from '@/components/CollectorsRaiseValue.vue'
+import CollectorsStartAuction from '@/components/CollectorsStartAuction.vue'
 
 export default {
   name: 'Collectors',
@@ -142,7 +168,8 @@ export default {
     CollectorsCard,
     CollectorsBuyActions,
     CollectorsSkillActions,
-    CollectorsRaiseValue
+    CollectorsRaiseValue,
+    CollectorsStartAuction
 
   },
   data: function () {
@@ -183,12 +210,19 @@ export default {
       auctionCards: [],
       playerid: 0,
       round: 0,
-      startingPlayerId: null
+      startingPlayerId: null,
       
+      scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
+                                            //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
     }
   },
   computed: {
-    playerId: function() { return this.$store.state.playerId}
+    playerId: function() { return this.$store.state.playerId},
+  },
+  mounted() {
+  window.addEventListener('resize', () => {
+    this.scalefactor = window.innerWidth/8000   // Här är funktionen för skalningen. Denna gör specifikt så att det ändras baserat på skärmskalan.
+    })
   },
   watch: {
     players: function(newP, oldP) {
@@ -260,6 +294,15 @@ export default {
         this.skillsOnSale = d.skillsOnSale;
       }.bind(this)
     );
+
+    this.$store.state.socket.on('collectorsAuctionStarted',
+      function(d) {
+        console.log(d.playerId, "started auction");
+        this.players = d.players;
+        this.auctionCards = d.auctionCards;
+      }.bind(this)
+    );
+
     this.$store.state.socket.on('playerPicked',
       function(d) {
         console.log( "spelare vald");
@@ -330,11 +373,25 @@ export default {
           roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
-          cost: this.marketValues[card.market] + this.chosenPlacementCost
+          cost: this.chosenPlacementCost
         }
       );
 
     },
+
+     startAuction: function (card) {
+      console.log("startAuction", card);
+      this.$store.state.socket.emit('collectorsStartAuction', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          card: card,
+          cost: this.chosenPlacementCost
+        }
+      );
+
+    },
+
+
     startTurn: function () {
       console.log("hola",);
   
@@ -356,6 +413,7 @@ export default {
   },
 }
 </script>
+
 <style scoped>
   header {
     user-select: none;
@@ -378,29 +436,48 @@ export default {
   }
   .cardslots {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 130px); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
-    grid-template-rows: repeat(auto-fill, 180px);
+    grid-row: 1;
+    grid-template-columns: repeat(auto-fill, 12vw); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
+    grid-template-rows: repeat(auto-fill, 12vw);
+    /*justify-content: space-evenly;*/
   }
+  .card{
+    position: relative;
+  }
+  /* transform: scale(0.5)translate(-50%,-50%);*/
+  
   .cardslots div {
-    transform: scale(0.5)translate(-50%,-50%);
+    
     transition:0.2s;
     transition-timing-function: ease-out;
     z-index: 0;
   }
+  
   .cardslots div:hover {
     transform: scale(1)translate(-25%,0);
     z-index: 1;
   }
 
+  #wrapper{
+    margin: 5vw;
+    padding: 5vw;
+    justify-self: center;
+  }
+
   #grid {
     display: grid;
-    grid-gap: 1.5vw;
+    grid-gap: 1vw;
     margin: 2vw;
     justify-content:center;   /* dessa 2 centrerar horisontellt respektive vertikalt */
     align-items:center;
     min-height: 0;
     object-fit: contain;
   }
+  /*
+  Här kan vi testa att sätta en storlek på grid eller wrapper och göra om storlekarna nedan till t.ex. %avParent för att få till så det hamnar inne i skärmen.
+  Det här är bara en påminnelse till mig själv /Björn
+  */
+
   /*
   Om det inte går så bra med centrering etc kan vi testa att göra om allt till en 3x3 grid
   med att 2x2 platsen (mitten) har ett inre grid som är 3x3 där:
@@ -427,29 +504,29 @@ export default {
     border-radius: 15px;
   }
   .playerLeft{
-    grid-column: 1;
-    grid-row: 2 /span 3;
+    grid-column: 2;
+    grid-row: 1;
     background-color: #7e2174;
-    height: 25vw;
+    text-align:center;
+    height:10vw;
   }
   /*  
       På alla dessa finns max-height eller motsvarande, dessa får vi leka runt med tills vi hittar något bra
       Men korten måste skalas bra innan vi kan göra detta ordentligt
   */
   .playerTop{
-    grid-column: 2 /span 3;
+    grid-column: 3;
     grid-row: 1;
     background-color: #19b3a7;
     height: 10vw;
-    width: 25vw;
     text-align: center;
-    margin-left: 11vw; /* Denna måste också justeras, nu är den framhöftad för att centrera Player Top någorlunda */
   }
   .playerRight{
-    grid-column: 5;
-    grid-row: 2 /span 3;
+    grid-column: 4;
+    grid-row: 1;
     background-color: #ca9e68;
-    height: 25vw;
+    text-align:center;
+    height:10vw;
   }
   .playerboard{  /* Denna ska göras om till "Player board" eller liknande där handen inkluderas*/
     border-radius: 15px;
@@ -457,6 +534,8 @@ export default {
     grid-column: 2 /span 3;
     grid-row: 5;
     min-height: 0;
+    margin-top: -10%;
+    align-self: end;
   }
 
 
@@ -489,11 +568,12 @@ export default {
 /* Om man klickar på spelaren i topp */
  .playerTop.active{
     background-color: #20ccbe;
-    height: 150%;
-    width: 100%;
-    align-self: baseline;
+    text-align: center;
+    height: 80%;
+    width: 250%;
     justify-self: center;
     margin-left: initial;
+    margin-top: 100px;
     z-index: 1;
   }
 
@@ -501,22 +581,22 @@ export default {
 .playerLeft.active {
     background-color:#c236b4;
     margin-right: -100%;
-    width: 130%;
+    width: 250%;
     height: 80%;
     justify-self:self-start;
+    margin-top: 100px;
     z-index: 1;
   }
 
 /* Om man klickar på spelaren till höger */
   .playerRight.active {
     background-color: #fdc683;
-    width: 130%;
+    width: 250%;
     height: 80%;
     justify-self: end;
+    margin-top: 100px;
     z-index: 1;
   }
-
-
 
   /*
   Här nedan är CSS specifika för kortrutorna
@@ -525,33 +605,75 @@ export default {
   .items{
     border-radius: 15px;
     background-color:#f8dcce;
-    grid-column: 3 /span 2;
+    grid-column: 2 /span 3;
     grid-row: 2;
-    width: 30vw;
-    height: 10vw;
+    margin-top: 2.5vw;
+    margin-right: 2.5vw;
+    contain:content;
+    justify-content:center;
+    align-content:center;
   }
+  .itemgrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;/*20% 20% 20% 20% 20%;*/
+    /*padding-top: 2vw;
+    padding-left: 2vw;*/
+    padding:2vw;
+  }
+
   .skills{
     border-radius: 15px;
     background-color: #dfeccc;
-    grid-column: 3 /span 2;
+    grid-column: 2 /span 3;
     grid-row: 3;
-    width: 30vw;
-    height: 10vw;
+    margin-right: 2.5vw;
+    contain:content;
+    justify-content:center;
+    align-content:center;
   }
+  .skillsgrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding-top: 2vw;        /* Detta måste göras om... Otroligt ful lösning för tillfället. */
+    padding-left: 2vw;
+    padding:2vw;
+  }
+
   .raiseValue{
     border-radius: 15px;
     background-color: #cfdcf2;
-    grid-column: 3 /span 2;
-    grid-row: 4;
-    width: 30vw;
-    height: 10vw;
+    grid-column: 2 /span 3;
+    grid-row: 4;      /* This might need to change to 32 when we implement cards with padding-left: 2vw in here. */ 
+    margin-bottom: 2.5vw;
+    margin-right: 2.5vw;
+  }
+  .raiseValuegrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding:2vw;
   }
   .auction{
     border-radius: 15px;
     background-color: #f5f2cc;
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 2 /span 3;
-    max-width: 15vw;
+    width: 15vw;
+    height: 37vw; /* items+skills+raise value+distanceBetween på ett ungefär*/
+  }
+  .auctiongrid{
+    display:grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  }
+  .auctiongrid div{
+    zoom: 0.4;
+  }
+  .work{
+    text-align:center;
+    border-radius: 15px;
+    background-color: grey;
+    grid-column: 5;
+    grid-row: 2 /span 3;
+    height: 37vw;
   }
 
   /*
@@ -591,12 +713,18 @@ export default {
     height: 10vw;
   }
 
-
-
-
   @media screen and (max-width: 800px) {
     main {
       width:90vw;
     }
   }
 </style>
+
+/*                      NOTES: 
+    Here are notes from the supervision sessions
+
+    https://stackoverflow.com/questions/47219272/how-can-i-use-window-size-in-vue-how-do-i-detect-the-soft-keyboard
+    split image into tiles: https://codepen.io/Escu/pen/KVLBYP
+    
+
+*/

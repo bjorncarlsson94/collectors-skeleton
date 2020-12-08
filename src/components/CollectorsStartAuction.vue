@@ -1,12 +1,12 @@
 <template>
     <div>
-      <h1>{{ labels.buySkill }}</h1>
-      <div class="buy-skills">
-        <div v-for="(card, index) in skillsOnSale" :key="index">
+      <h1>{{ labels.startAuction }}</h1>
+      <div class="start-auction">
+        <div v-for="(card, index) in auctionCards" :key="index">
           <CollectorsCard 
             :card="card" 
             :availableAction="card.available" 
-            @doAction="buySkill(card)"/>
+            @doAction="startAuction(card)"/>
           {{ cardCost(card) }}
         </div>
       </div>
@@ -30,14 +30,14 @@
 import CollectorsCard from '@/components/CollectorsCard.vue'
 
 export default {
-  name: 'CollectorsSkillActions',
+  name: 'CollectorsStartAuction',
   components: {
     CollectorsCard
   },
   props: {
     labels: Object,
     player: Object,
-    skillsOnSale: Array,
+    auctionCards: Array,
     marketValues: Object,
     placement: Array
   },
@@ -58,13 +58,12 @@ export default {
       this.highlightAvailableCards(p.cost);
     },
     highlightAvailableCards: function (cost=100) {
-      
-      for (let i = 0; i < this.skillsOnSale.length; i += 1) {
-        if (this.marketValues[this.skillsOnSale[i].item] <= this.player.money - cost) {
-          this.$set(this.skillsOnSale[i], "available", true);
+      for (let i = 0; i < this.auctionCards.length; i += 1) {
+        if (this.marketValues[this.auctionCards[i].item] <= this.player.money - cost) {
+          this.$set(this.auctionCards[i], "available", true);
         }
         else {
-          this.$set(this.skillsOnSale[i], "available", false);
+          this.$set(this.auctionCards[i], "available", false);
         }
         this.chosenPlacementCost = cost; 
       }
@@ -79,22 +78,21 @@ export default {
         }
       }
     },
-    buySkill: function (card) {
+    startAuction: function (card) {
       if (card.available) {
-        this.$emit('buySkill', card)
+        this.$emit('startAuction', card)
         this.highlightAvailableCards()
       }
     },
     notYourTurn: function () {
       return (this.player.turn== false)
     }
-
   }
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .buy-skills, .buttons {
+  .start-auction, .buttons {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
   }

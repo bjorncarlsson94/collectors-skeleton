@@ -7,7 +7,7 @@
             :card="card" 
             :availableAction="card.available" 
             @doAction="buyCard(card)"/>
-          {{ cardCost(card) }}
+          <!--{{ cardCost(card) }}-->
         </div>
       </div>
       <div>
