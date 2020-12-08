@@ -38,7 +38,14 @@ function sockets(io, socket, data) {
       skillsOnSale: data.getSkillsOnSale(d.roomId)
     });
   });
-
+  socket.on('collectorsStartAuction', function (d) {
+    data.startAuction(d.roomId, d.playerId, d.card, d.cost)
+    io.to(d.roomId).emit('collectorsAuctionStarted', {
+      playerId: d.playerId,
+      players: data.getPlayers(d.roomId),
+      auctionCards: data.getAuctionCards(d.roomId)
+    });
+  });
 
   socket.on('collectorsPlaceBottle', function (d) {
     data.placeBottle(d.roomId, d.playerId, d.action, d.cost);

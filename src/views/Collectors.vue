@@ -20,6 +20,14 @@
         :placement="skillPlacement"
         @buySkill="buySkill($event)"
         @placeBottle="placeBottle('skill', $event)"/>
+        <CollectorsStartAuction v-if="players[playerId]"
+        :labels="labels"
+        :player="players[playerId]"
+        :auctionCards="auctionCards"
+        :marketValues="marketValues"
+        :placement="auctionPlacement"
+        @startAuction="startAuction($event)"
+        @placeBottle="placeBottle('auction', $event)"/>
       
       <div></div>
       <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
@@ -157,6 +165,7 @@ import CollectorsCard from '@/components/CollectorsCard.vue'
 import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
 import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 import CollectorsRaiseValue from '@/components/CollectorsRaiseValue.vue'
+import CollectorsStartAuction from '@/components/CollectorsRaiseValue.vue'
 
 export default {
   name: 'Collectors',
@@ -164,7 +173,8 @@ export default {
     CollectorsCard,
     CollectorsBuyActions,
     CollectorsSkillActions,
-    CollectorsRaiseValue
+    CollectorsRaiseValue,
+    CollectorsStartAuction
 
   },
   data: function () {
@@ -285,6 +295,15 @@ export default {
         this.skillsOnSale = d.skillsOnSale;
       }.bind(this)
     );
+
+    this.$store.state.socket.on('collectorsAuctionStarted',
+      function(d) {
+        console.log(d.playerId, "started auction");
+        this.players = d.players;
+        this.auctionCards = d.auctionCards;
+      }.bind(this)
+    );
+
     this.$store.state.socket.on('playerPicked',
       function(d) {
         console.log( "spelare vald");
@@ -340,11 +359,25 @@ export default {
           roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
-          cost: this.marketValues[card.market] + this.chosenPlacementCost
+          cost: this.chosenPlacementCost
         }
       );
 
     },
+
+     startAuction: function (card) {
+      console.log("startAuction", card);
+      this.$store.state.socket.emit('collectorsStartAuction', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          card: card,
+          cost: this.chosenPlacementCost
+        }
+      );
+
+    },
+
+
     startTurn: function () {
       console.log("hola",);
   
