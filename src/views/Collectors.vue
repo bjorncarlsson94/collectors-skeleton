@@ -78,19 +78,16 @@
           </div>
         </div>
         <div class="cardslots raiseValue">
-          Raise Value
-        <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
-          <!-- Här måste vi fixa en AISRE VALUE CARDS som med item, skill, auction etc-->
+          <div class="raiseValuegrid">
+            <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
+          </div>
         </div>
         
         
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
         <div class="cardslots playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
           Hand
-          <div class="raiseValuegrid">
-            Fixa RaiseValueCards
-            <!-- <CollectorsCard v-for="(card, index) in raiseValueCards" :card="card" :key="index"/>-->
-          </div>
+          
         </div>
         <div class="cardslots hand" v-if="players[playerId]">
           <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
@@ -535,11 +532,8 @@ export default {
     align-self: end;
     width: 110%;
     justify-self: center;
+    z-index: 100;       /* Denna gör så att handen hamnar på "nivå 100" - alltså garanterad över allt annat. */
   }
-
-
-
-
 
   /*
   Här nedan är CSS specifika för kortrutorna
