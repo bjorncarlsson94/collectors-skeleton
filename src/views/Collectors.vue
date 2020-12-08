@@ -85,13 +85,11 @@
         
         
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
-        <div class="cardslots playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
+        <div class="cardslots hand playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
           Hand
-          
-        </div>
-        <div class="cardslots hand" v-if="players[playerId]">
           <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
         </div>
+        
 
         <!--
 
