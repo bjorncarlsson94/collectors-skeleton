@@ -74,6 +74,9 @@
         </div>
         <div class="cardslots auction">
           <div class="auctiongrid">
+            <div class="upforAuction">
+              
+            </div>
             <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
           </div>
         </div>
@@ -657,10 +660,21 @@ export default {
     grid-row: 2 /span 3;
     width: 15vw;
     height: 37vw; /* items+skills+raise value+distanceBetween på ett ungefär*/
+    justify-content:center;
   }
   .auctiongrid{
     display:grid;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    justify-content:center;
+  }
+  .upforAuction{
+    width: 14vw;
+    height: 17vw;
+    background-color: #f5efa0;
+    border-radius: 1vw;
+    border-style: solid;
+    border-color: black;
+    z-index:50;
   }
   .auctiongrid div{
     zoom: 0.4;
