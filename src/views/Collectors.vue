@@ -162,7 +162,7 @@ import CollectorsCard from '@/components/CollectorsCard.vue'
 import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
 import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 import CollectorsRaiseValue from '@/components/CollectorsRaiseValue.vue'
-import CollectorsStartAuction from '@/components/CollectorsRaiseValue.vue'
+import CollectorsStartAuction from '@/components/CollectorsStartAuction.vue'
 
 export default {
   name: 'Collectors',
