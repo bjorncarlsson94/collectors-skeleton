@@ -16,7 +16,7 @@
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
             @click="placeBottle(p)" >
-            ${{p.cost}}
+            ${{p.cost}}p
           </button>
           <div v-if="p.playerId !== null">
             {{p.playerId}}
