@@ -50,7 +50,7 @@ function sockets(io, socket, data) {
       playerId: d.playerId,
       players: data.getPlayers(d.roomId),
       auctionCards: data.getAuctionCards(d.roomId),
-      cardInAuction: data.getCardInAuction(d.roomID)
+      cardInAuction: data.getCardInAuction(d.roomId)
     });
   });
 

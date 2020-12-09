@@ -290,11 +290,15 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
         break;
       }
     }
+    console.log("Det här är kortet :")
+    console.log(card)
     console.log(room.players[playerId].hand)
     console.log(room.auctionCards)
     room.cardInAuction.push(card);
     room.players[playerId].money -= cost;
     console.log(room.auctionCards)
+    console.log("Det här är kortet :")
+    console.log(room.cardInAuction)
 
   }
 }
