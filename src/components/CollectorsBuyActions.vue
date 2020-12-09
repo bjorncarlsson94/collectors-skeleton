@@ -1,7 +1,7 @@
 <template>
     <div>
-      <h1>{{ labels.buyCard }}</h1>
-      <div class="buy-cards">
+      <!--<h1>{{ labels.buyCard }}</h1>-->
+      <div class="buy-cards itemgrid">
         <div v-for="(card, index) in itemsOnSale" :key="index">
           <CollectorsCard 
             :card="card" 
@@ -92,8 +92,18 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .buy-cards, .buttons {
+  .buy-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
+  }
+  .buttons{
+    padding: 1vw;
+    display:inline-block;
+  }
+  .itemgrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding:2vw;
+    justify-items:center;
   }
 </style>

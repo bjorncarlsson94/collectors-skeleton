@@ -2,7 +2,8 @@
 <template>
   <div>
     <main>
-       {{buyPlacement}} {{chosenPlacementCost}}
+       <!--
+         {{buyPlacement}} {{chosenPlacementCost}}
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -28,11 +29,11 @@
         :placement="auctionPlacement"
         @startAuction="startAuction($event)"
         @placeBottle="placeBottle('auction', $event)"/>
-
-        <!--Raise value div. with 4 random cards in it at the moment-->
+      -->
+        <!-- Raise value div. with 4 random cards in it at the moment-->
        <!--Raise value div. with 4 random cards in it at the moment 
        They are diplayed in the correct raiseValue columm-->
-        
+
       <CollectorsRaiseValue v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -61,13 +62,27 @@
         </div>
         <div class="skills">
           <div class="skillsgrid">
-            <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
+            <CollectorsSkillActions v-if="players[playerId]"
+                :labels="labels"
+                :player="players[playerId]"
+                :skillsOnSale="skillsOnSale"
+                :marketValues="marketValues"
+                :placement="skillPlacement"
+                @buySkill="buySkill($event)"
+                @placeBottle="placeBottle('skill', $event)"/>
+            <!--<CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>-->
           </div>
         </div>
         <div class="auction">
           <div class="auctiongrid">
-            
-            <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
+              <CollectorsStartAuction v-if="players[playerId]"
+                :labels="labels"
+                :player="players[playerId]"
+                :auctionCards="auctionCards"
+                :marketValues="marketValues"
+                :placement="auctionPlacement"
+                @startAuction="startAuction($event)"
+                @placeBottle="placeBottle('auction', $event)"/>
           </div>
         </div>
         <div class="raiseValue">
@@ -102,7 +117,14 @@
 
         <div class="items">
           <div class="itemgrid">
-            <CollectorsCard v-for="(card, index) in itemsOnSale" :card="card" :key="index"/>
+            <CollectorsBuyActions v-if="players[playerId]"
+              :labels="labels"
+              :player="players[playerId]"
+              :itemsOnSale="itemsOnSale"
+              :marketValues="marketValues"
+              :placement="buyPlacement"
+              @buyCard="buyCard($event)"
+              @placeBottle="placeBottle('buy', $event)"/>
           <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
           </div>
         </div>
@@ -501,7 +523,6 @@ export default {
     grid-row: 1;
     grid-template-columns: repeat(auto-fill, 12vw); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
     grid-template-rows: repeat(auto-fill, 12vw);
-    /*justify-content: space-evenly;*/
   }
   .card{
     position: relative;
@@ -676,13 +697,14 @@ export default {
     grid-row: 2;
     width:31vw;
   }
+  /*
   .itemgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
     justify-items:center;
   }
-
+  */
   .skills{
     border-radius: 2vw;
     background-color: #dfeccc;
@@ -690,13 +712,14 @@ export default {
     grid-row: 3;
     width:31vw;
   }
+  /*
   .skillsgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
     justify-items:center;
   }
-
+  */
   .raiseValue{
     border-radius: 2vw;
     background-color: #cfdcf2;
@@ -751,12 +774,14 @@ export default {
     justify-content:center;
     justify-self: right;
   }
+  /*
   .auctiongrid{
     display:grid;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     padding: 1vw;
     justify-items: center;
   }
+  */
   .upforAuction{
     position: absolute;
     width: 30vw;
@@ -769,9 +794,6 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
-  .auctiongrid div{   /* Denna gör inget just nu, men låt stå - kan vara användbart för påminnelse */
-    zoom: 0.4;
   }
   .work{
     text-align:center;

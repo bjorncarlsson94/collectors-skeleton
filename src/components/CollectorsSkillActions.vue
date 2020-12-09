@@ -1,13 +1,13 @@
 <template>
     <div>
-      <h1>{{ labels.buySkill }}</h1>
-      <div class="buy-skills">
+      <!--<h1>{{ labels.buySkill }}</h1>-->
+      <div class="buy-skills skillsgrid">
         <div v-for="(card, index) in skillsOnSale" :key="index">
           <CollectorsCard 
             :card="card" 
             :availableAction="card.available" 
             @doAction="buySkill(card)"/>
-          {{ cardCost(card) }}
+          <!--{{ cardCost(card) }}-->
         </div>
       </div>
       <div>
@@ -94,8 +94,18 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .buy-skills, .buttons {
+  .buy-skills{
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
+  }
+  .buttons{
+    padding: 1vw;
+    display:inline-block;
+  }
+  .skillsgrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding:2vw;
+    justify-items:center;
   }
 </style>

@@ -1,13 +1,13 @@
 <template>
     <div>
-      <h1>{{ labels.startAuction }}</h1>
-      <div class="start-auction">
+      <!--<h1>{{ labels.startAuction }}</h1>-->
+      <div class="start-auction auctiongrid">
         <div v-for="(card, index) in auctionCards" :key="index">
           <CollectorsCard 
             :card="card" 
             :availableAction="card.available" 
             @doAction="startAuction(card)"/>
-          {{ cardCost(card) }}
+          <!--{{ cardCost(card) }}-->
         </div>
       </div>
       <div>
@@ -92,8 +92,18 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .start-auction, .buttons {
+  .start-auction {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
+  }
+  .buttons{
+    padding: 1vw;
+    display:inline-block;
+  }
+  .auctiongrid{
+    display:grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    padding: 1vw;
+    justify-items: center;
   }
 </style>
