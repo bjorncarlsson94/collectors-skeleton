@@ -13,6 +13,7 @@ function sockets(io, socket, data) {
         raiseItems:data.getRaiseItems(d.roomId),
         skillsOnSale: data.getSkillsOnSale(d.roomId),
         auctionCards: data.getAuctionCards(d.roomId),
+        cardInAuction: data.getCardInAuction(d.roomID),
         placements: data.getPlacements(d.roomId)
       });
     }
