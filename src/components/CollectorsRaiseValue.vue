@@ -11,11 +11,11 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
      <div v-for="values in marketOrder" :key="values" class="raiseValues" >
             <p>{{values}} {{ cardCost(values)}}</p>
             
-             {{ log() }}
+          
              <div v-for="(card, index) in raiseItems"  :key="index" >
                  <div v-if="card.market==values" class="raiseValuesChild">
                 
-                     {{ log() }}
+                     
                     <CollectorsCard
                         :card="card" 
                         :availableAction="card.available" 
@@ -65,7 +65,6 @@ export default {
 
     },
     cardCost: function (values) {
-      console.log("hej "+this.raiseValue);
        if(values=="fastaval"){
     return this.raiseValue.fastaval;
 
