@@ -28,19 +28,6 @@
         :placement="auctionPlacement"
         @startAuction="startAuction($event)"
         @placeBottle="placeBottle('auction', $event)"/>
-      
-      <div></div>
-      <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
-      Slumpa startare. 
-      </button>
-      <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
-      Nästa spelare. 
-      </button>
-      <div class="buttons">
-        <button @click="drawCard">
-          {{ labels.draw }}
-        </button>
-      </div>
 
         <!--Raise value div. with 4 random cards in it at the moment-->
        <!--Raise value div. with 4 random cards in it at the moment 
@@ -73,7 +60,7 @@
             <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
           </div>
         </div>
-        <div class="cardslots auction">
+        <div class="auction">
           <div class="auctiongrid">
             <div class="upforAuction">
               
@@ -81,7 +68,7 @@
             <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
           </div>
         </div>
-        <div class="cardslots raiseValue">
+        <div class="raiseValue">
           <div class="raiseValuegrid">
             <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
           </div>
@@ -112,31 +99,37 @@
           </div>
         </div>
         <div class="work">
-          
-          <!--{{index}}; LÄGG TILL SÅ DET ÄR ITEMS ON SALE HÄR SOM SYNS -->
-          Work
+          <div class="workgrid">
+            <div class="workslots5"></div>
+            <div class="workslots4"></div>
+            <div class="workslots3"></div>
+            <div class="workslots2"></div>
+            <div class="workslots1"></div>
+          </div>
         </div>
 
-        <div class="gridedge1">
-          Ruta för att visa grid lättare: 1
-          <br>
-           Det är runda: ,{{ round }}
+        <div class="roundCounter">
+           Det är runda: {{ round }}
         </div>
-        <div class="gridedge2">
-          Ruta för att visa grid lättare: 2
-          <br>
-          Här kan man t.ex. ha korthögen
+        <div class="drawCardSpace">
+          <div class="buttons">
+            <button @click="drawCard">
+            {{ labels.draw }}
+          </button>
+        </div>
         </div>
         <div class="gridedge3">
           Ruta för att visa grid lättare: 3
           <br>
           Här kan man t.ex. ha vissa viktiga knappar
         </div>
-        <div class="gridedge4">
-          
-          Ruta för att visa grid lättare: 4
-          <br>
-          Här kan man t.ex. ha vissa viktiga meny-knappar
+        <div class="menuSpace">
+          <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
+            Slumpa startare. 
+          </button>
+          <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
+            Nästa spelare. 
+            </button>
         </div>
       </div>
       </section>
@@ -556,7 +549,7 @@ export default {
    background-color:#c236b4;
   }
   .playerRight:hover{
-    background-color: #fdc683;
+    background-color: #e9b77a;
   }
   .playerTop:hover{
     background-color: #20ccbe;
@@ -599,7 +592,7 @@ export default {
 
 /* Om man klickar på spelaren till höger */
   .playerRight.active {
-    background-color: #fdc683;
+    background-color: #e9b77a;
     width: 250%;
     height: 80%;
     justify-self: end;
@@ -617,16 +610,14 @@ export default {
     grid-column: 2 /span 3;
     grid-row: 2;
     margin-top: 2.5vw;
-    margin-right: 2.5vw;
     contain:content;
     justify-content:center;
     align-content:center;
+    justify-self: center;
   }
   .itemgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;/*20% 20% 20% 20% 20%;*/
-    /*padding-top: 2vw;
-    padding-left: 2vw;*/
     padding:2vw;
   }
 
@@ -635,16 +626,14 @@ export default {
     background-color: #dfeccc;
     grid-column: 2 /span 3;
     grid-row: 3;
-    margin-right: 2.5vw;
     contain:content;
     justify-content:center;
     align-content:center;
+    justify-self: center;
   }
   .skillsgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding-top: 2vw;        /* Detta måste göras om... Otroligt ful lösning för tillfället. */
-    padding-left: 2vw;
     padding:2vw;
   }
 
@@ -652,9 +641,11 @@ export default {
     border-radius: 15px;
     background-color: #cfdcf2;
     grid-column: 2 /span 3;
-    grid-row: 4;      /* This might need to change to 32 when we implement cards with padding-left: 2vw in here. */ 
+    grid-row: 4; 
     margin-bottom: 2.5vw;
-    margin-right: 2.5vw;
+    justify-content:center;
+    align-content:center;
+    justify-self: center;
   }
   .raiseValuegrid{
     display:grid;
@@ -669,11 +660,13 @@ export default {
     width: 15vw;
     height: 37vw; /* items+skills+raise value+distanceBetween på ett ungefär*/
     justify-content:center;
+    justify-self: center;
   }
   .auctiongrid{
     display:grid;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    justify-content:center;
+    padding: 1vw;
+    justify-items: center;
   }
   .upforAuction{
     width: 14vw;
@@ -694,43 +687,91 @@ export default {
     grid-column: 5;
     grid-row: 2 /span 3;
     height: 37vw;
+    width: 15vw;
+    justify-self: center;
+  }
+  .workgrid{
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5vw 5vw 5vw 5vw 5vw;
+    grid-gap: 2vw;
+    padding: 2vw;
+  }
+  .workgrid div{
+    background-color: rgb(207, 207, 207);
+    border-radius: 1vw;
+    border-style: dotted;
+    border-color: black;
+    height: 5vw;
+    width: auto;
+  }
+  .workslots1{
+    background-image: url("/images/Work1_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .workslots2{
+    background-image: url("/images/Work2_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .workslots3{
+    background-image: url("/images/Work3_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .workslots4{
+    background-image: url("/images/Work4_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   /*
   Dessa nedan är bara provisoriska och ska göras om eller tas bort i slutändan.
   */
 
-  .gridedge1{
+  .roundCounter{
     grid-column: 1;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
-    border-radius: 10px;
-    padding:20px;
-    height: 10vw;
+    border-radius: 15px;
+    padding:2vw;
+    max-height: 10vw;
+    max-width: auto;
+    text-align: center;
   }
-  .gridedge2{
+  .drawCardSpace{
     grid-column: 5;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
-    border-radius: 10px;
-    padding:20px;
-    height: 10vw;
+    border-radius: 15px;
+    padding:2vw;
+    max-height: 10vw;
+    max-width: auto;
+    text-align: center;
   }
   .gridedge3{
     grid-column: 1;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
-    border-radius: 10px;
-    padding:20px;
-    height: 10vw;
+    border-radius: 15px;
+    padding:2vw;
+    max-height: 10vw;
+    max-width: auto;
   }
-  .gridedge4{
+  .menuSpace{
     grid-column: 5;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
-    border-radius: 10px;
-    padding:20px;
-    height: 10vw;
+    border-radius: 15px;
+    padding: 2vw;
+    max-height: 10vw;
+    max-width: auto;
+    text-align: center;
   }
 
   @media screen and (max-width: 800px) {
