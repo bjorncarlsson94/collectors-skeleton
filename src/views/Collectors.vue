@@ -358,23 +358,46 @@ export default {
       console.log("status: "+ this.auctionActive);
     },
     expandPlayerBoard: function(){
-      console.log("Click click mf");
+      console.log("Player click");
       this.isActive = !this.isActive;
+
+      /* Stänger de andra */
+      this.rightIsActive = false;
+      this.topIsActive = false;
+      this.leftIsActive = false;
+
       console.log("status: "+ this.isActive);
     },
     expandLeftBoard: function(){
-      console.log("Left click mf");
+      console.log("Left click");
       this.leftIsActive = !this.leftIsActive;
+      
+      /* Stänger de andra */
+      this.rightIsActive = false;
+      this.topIsActive = false;
+      this.isActive = false;
+
       console.log("status: "+ this.leftIsActive);
     },
     expandRightBoard: function(){
-      console.log("Right click mf");
+      console.log("Right click");
       this.rightIsActive = !this.rightIsActive;
+      
+      /* Stänger de andra */
+      this.leftIsActive = false;
+      this.topIsActive = false;
+      this.isActive = false;
       console.log("status: "+ this.rightIsActive);
     },
     expandTopBoard: function(){
-      console.log("Top click mf");
+      console.log("Top click");
       this.topIsActive = !this.topIsActive;
+
+      /* Stänger de andra */
+      this.leftIsActive = false;
+      this.rightIsActive = false;
+      this.isActive = false;
+
       console.log("status: "+ this.topIsActive);
     },
 
