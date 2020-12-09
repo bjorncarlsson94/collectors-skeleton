@@ -28,14 +28,6 @@
         :placement="auctionPlacement"
         @startAuction="startAuction($event)"
         @placeBottle="placeBottle('auction', $event)"/>
-      
-      
-      
-      <div class="buttons">
-        <button @click="drawCard">
-          {{ labels.draw }}
-        </button>
-      </div>
 
         <!--Raise value div. with 4 random cards in it at the moment-->
        <!--Raise value div. with 4 random cards in it at the moment 
@@ -146,10 +138,10 @@
         </div>
         <div class="menuSpace">
           <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
-            Slumpa startare. 
+            Slumpa startare 
           </button>
           <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
-            Nästa spelare. 
+            Nästa spelare 
             </button>
           <button v-if="players[playerId]" @click="auctionBoard()">
             visa aktion 
@@ -857,6 +849,21 @@ export default {
     max-height: 8vw;
     max-width: 11vw;
     text-align: center;
+  }
+  .buttons{
+    display:inline-block;
+    color: grey;
+    background-color: lightcoral;
+    border-radius:1vw;
+    box-shadow: 0 0.3vw #999;
+  }
+  .buttons:active{
+    background-color: coral;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
+  }
+  .buttons:hover{
+    background-color: coral;
   }
   .gridedge3{
     grid-column: 1;
