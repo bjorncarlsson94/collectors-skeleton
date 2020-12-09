@@ -711,28 +711,32 @@ export default {
     justify-items:center;
   }
   .raiseValuegrid div{
-    grid-template-columns: (repeat(auto-fill, 0vw));
     font-size: 1vw;
     font-weight:bold;
     color: black;
   }
   .fastaval{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
     grid-column: 1;
     grid-row: 1;
   }
   .figures{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
     grid-column: 2;
     grid-row: 1;
   }
   .music{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
     grid-column: 3;
     grid-row: 1;
   }
   .movie{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
     grid-column: 4;
     grid-row: 1;
   }
   .technology{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
     grid-column: 5;
     grid-row: 1;
   }
