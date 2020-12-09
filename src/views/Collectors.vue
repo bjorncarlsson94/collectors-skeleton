@@ -28,25 +28,14 @@
         :placement="auctionPlacement"
         @startAuction="startAuction($event)"
         @placeBottle="placeBottle('auction', $event)"/>
-<<<<<<< HEAD
       
-      <div></div>
-      <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
-      Slumpa startare. 
-      </button>
-      <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
-      Nästa spelare. 
-      </button>
-       <button v-if="players[playerId]" @click="auctionBoard()">
-      visa aktion 
-      </button>
+      
+      
       <div class="buttons">
         <button @click="drawCard">
           {{ labels.draw }}
         </button>
       </div>
-=======
->>>>>>> 2646e8c8ed5e51bf073b9e692895b1a9953cb082
 
         <!--Raise value div. with 4 random cards in it at the moment-->
        <!--Raise value div. with 4 random cards in it at the moment 
@@ -130,7 +119,12 @@
         </div>
 
         <div class="roundCounter">
+          <p>
            Det är runda: {{ round }}
+           </p>
+           <p>
+           Det är {{ currentPlayer() }} tur att spela!
+           </p>
         </div>
         <div class="drawCardSpace">
           <div class="buttons">
@@ -151,6 +145,9 @@
           <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
             Nästa spelare. 
             </button>
+          <button v-if="players[playerId]" @click="auctionBoard()">
+            visa aktion 
+          </button>
         </div>
       </div>
       </section>
@@ -235,6 +232,7 @@ export default {
       round: 0,
       startingPlayerId: null,
       auctionActive: false,
+      currentPlayerId: null,
       
       scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
@@ -336,12 +334,23 @@ export default {
         this.players = d.players;
         this.round = d.round;
          console.log( "Det är runda: " + this.round);
+         
       }.bind(this)
     );
   },
   methods: {
     selectAll: function (n) {
       n.target.select();
+    },
+    currentPlayer: function (){
+      var keys = Object.keys(this.players);
+      
+      for (var i = 0; i < keys.length; i++){
+        if (this.players[keys[i]].turn == true){
+          this.currentPlayerId = keys[i];
+        }
+      }
+      return this.currentPlayerId
     },
     auctionBoard: function(){
       console.log("auction rutaa");
@@ -417,6 +426,7 @@ export default {
           card: card,
           cost: this.chosenPlacementCost
         }
+        
       );
 
     },
@@ -437,7 +447,6 @@ export default {
         playerId: this.playerId,
         }
       );
-
     }
 
   },
