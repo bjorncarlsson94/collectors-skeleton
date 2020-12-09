@@ -2,7 +2,7 @@
 <template>
   <div>
     <main>
-      {{buyPlacement}} {{chosenPlacementCost}}
+       {{buyPlacement}} {{chosenPlacementCost}}
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -28,6 +28,14 @@
         :placement="auctionPlacement"
         @startAuction="startAuction($event)"
         @placeBottle="placeBottle('auction', $event)"/>
+      
+      
+      
+      <div class="buttons">
+        <button @click="drawCard">
+          {{ labels.draw }}
+        </button>
+      </div>
 
         <!--Raise value div. with 4 random cards in it at the moment-->
        <!--Raise value div. with 4 random cards in it at the moment 
@@ -42,6 +50,10 @@
       <br> 
      
       <section id="wrapper">
+
+        <div class="upforAuction" v-show="auctionActive">
+             hej 
+      </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
           PlayerLeft
@@ -62,9 +74,7 @@
         </div>
         <div class="auction">
           <div class="auctiongrid">
-            <div class="upforAuction">
-              
-            </div>
+            
             <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
           </div>
         </div>
@@ -115,7 +125,12 @@
         </div>
 
         <div class="roundCounter">
+          <p>
            Det är runda: {{ round }}
+           </p>
+           <p>
+           Det är {{ currentPlayer() }} tur att spela!
+           </p>
         </div>
         <div class="drawCardSpace">
           <div class="buttons">
@@ -136,9 +151,13 @@
           <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
             Nästa spelare. 
             </button>
+          <button v-if="players[playerId]" @click="auctionBoard()">
+            visa aktion 
+          </button>
         </div>
       </div>
       </section>
+     
     </main>
     {{players}}
     {{marketValues}}
@@ -209,6 +228,7 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
+      cardInAuction:[],
       raiseItems:[],
       raiseValue:{ fastaval: 0,
                      movie: 0,
@@ -218,6 +238,8 @@ export default {
       playerid: 0,
       round: 0,
       startingPlayerId: null,
+      auctionActive: false,
+      currentPlayerId: null,
       
       scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
@@ -262,6 +284,7 @@ export default {
         this.marketValues = d.marketValues;
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
+        this.cardInAuction = d.cardInAuction;
         //här skapas både raise Item och Raise value. innan denna körs så finns inget rum. Följ raise Value till datahandler.
         this.raiseItems=d.raiseItems;
         this.raiseValue=d.raiseValue;
@@ -319,6 +342,7 @@ export default {
         this.players = d.players;
         this.round = d.round;
          console.log( "Det är runda: " + this.round);
+         
       }.bind(this)
     );
   },
@@ -326,7 +350,21 @@ export default {
     selectAll: function (n) {
       n.target.select();
     },
-
+    currentPlayer: function (){
+      var keys = Object.keys(this.players);
+      
+      for (var i = 0; i < keys.length; i++){
+        if (this.players[keys[i]].turn == true){
+          this.currentPlayerId = keys[i];
+        }
+      }
+      return this.currentPlayerId
+    },
+    auctionBoard: function(){
+      console.log("auction rutaa");
+      this.auctionActive = !this.auctionActive;
+      console.log("status: "+ this.auctionActive);
+    },
     expandPlayerBoard: function(){
       console.log("Player click");
       this.isActive = !this.isActive;
@@ -419,6 +457,7 @@ export default {
           card: card,
           cost: this.chosenPlacementCost
         }
+        
       );
 
     },
@@ -439,7 +478,6 @@ export default {
         playerId: this.playerId,
         }
       );
-
     }
 
   },
@@ -715,13 +753,17 @@ export default {
     justify-items: center;
   }
   .upforAuction{
-    width: 14vw;
-    height: 17vw;
+    position: absolute;
+    width: 30vw;
+    height: 30vw;
     background-color: #f5efa0;
     border-radius: 1vw;
     border-style: solid;
     border-color: black;
     z-index:50;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .auctiongrid div{
     zoom: 0.4;
