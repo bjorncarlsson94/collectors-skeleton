@@ -202,6 +202,7 @@ Data.prototype.drawCard = function (roomId, playerId) {
     room.players[playerId].hand.push(card);
     return room.players;
   } else return [];
+  
 }
 
 /* moves card from itemsOnSale to a player's hand */
@@ -266,7 +267,6 @@ Data.prototype.buySkill = function (roomId, playerId, card, cost) {
 }
 
 Data.prototype.startAuction = function (roomId, playerId, card, cost) {
-  console.log(playerId)
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     let c = null;
@@ -290,8 +290,11 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
         break;
       }
     }
-    room.cardInAuction.push(...c);
+    console.log(room.players[playerId].hand)
+    console.log(room.auctionCards)
+    room.cardInAuction.push(card);
     room.players[playerId].money -= cost;
+    console.log(room.auctionCards)
 
   }
 }
