@@ -44,8 +44,29 @@
      
       <section id="wrapper">
 
-        <div class="upforAuction" v-show="auctionActive">
-             hej 
+        <div class="upforAuction" v-show="auctionActive" v-if="players[playerId]">
+             <!-- <CollectorsAuction v-if="players[playerId]"
+              :labels="labels"
+              :player="players[playerId]"
+              :cardInAuction="cardInAuction"
+              :marketValues="marketValues"
+              :auctionPrice ="auctionPrice"
+              :auctionActive ="auctionActive"/>-->
+          <div class="auctionMoney">
+            {{bid}}$
+            </div>
+             <div class="auctionCardView">
+              <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
+              </div>
+              <button class="auctionButtons" v-if="players[playerId]" @click="auctionBoard()">
+            visa aktion 
+          </button>
+          <button class="auctionButtons" v-if="players[playerId]" @click="bid -= 1">
+            -
+          </button>
+          <button class="auctionButtons" v-if="players[playerId]" @click="bid += 1">
+             +
+          </button>
       </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
@@ -195,6 +216,7 @@ import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
 import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 import CollectorsRaiseValue from '@/components/CollectorsRaiseValue.vue'
 import CollectorsStartAuction from '@/components/CollectorsStartAuction.vue'
+//import CollectorsAuction from '@/components/CollectorsAuction.vue'
 
 export default {
   name: 'Collectors',
@@ -203,7 +225,8 @@ export default {
     CollectorsBuyActions,
     CollectorsSkillActions,
     CollectorsRaiseValue,
-    CollectorsStartAuction
+    CollectorsStartAuction,
+   // CollectorsAuction
 
   },
   data: function () {
@@ -254,7 +277,8 @@ export default {
       startingPlayerId: null,
       auctionActive: false,
       currentPlayerId: null,
-      
+      auctionPrice: 0,
+      bid: 0,
       scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
     }
@@ -299,6 +323,7 @@ export default {
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
         this.cardInAuction = d.cardInAuction;
+        this.auctionPrice = d.auctionPrice
         //här skapas både raise Item och Raise value. innan denna körs så finns inget rum. Följ raise Value till datahandler.
         this.raiseItems=d.raiseItems;
         this.raiseValue=d.raiseValue;
@@ -343,9 +368,12 @@ export default {
 
     this.$store.state.socket.on('collectorsAuctionStarted',
       function(d) {
-        console.log(d.playerId, "started auction");
+        console.log(d.playerId, "started auction "+ this.cardInAuction);
         this.players = d.players;
         this.auctionCards = d.auctionCards;
+        this.cardInAuction = d.cardInAuction;
+        this.auctionActive = true;
+
       }.bind(this)
     );
 
@@ -764,6 +792,12 @@ export default {
     grid-column: 5;
     grid-row: 1;
   }
+ 
+
+.auctiongrid div{
+    zoom: 0.4;
+  }
+  
   .auction{
     border-radius: 2vw;
     background-color: #f5f2cc;
@@ -783,9 +817,12 @@ export default {
   }
   */
   .upforAuction{
+    display: grid;
     position: absolute;
-    width: 30vw;
-    height: 30vw;
+    grid-template-rows: 20% 60% auto;
+    grid-template-columns: auto auto auto;
+    width: 40vw;
+    height: 40vw;
     background-color: #f5efa0;
     border-radius: 2vw;
     border-style: solid;
@@ -794,6 +831,35 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+  }
+  .auctiongrid div{   /* Denna gör inget just nu, men låt stå - kan vara användbart för påminnelse */
+    zoom: 0.4;
+  }
+   .auctionCardView{
+    zoom: 4;
+    position: absolute;
+    align-content: center;
+    transition: auto;
+    transform: translate(50%, 20%);
+  }
+  .auctionButtons{
+    border: 1vw;
+    border-color: black;
+    grid-row-start: 3;
+    align-self: bottom;
+    background-color:grey;
+    transition-duration: 0.2;
+    cursor:pointer;
+  }
+  .auctionButtons:hover{
+    background-color: greenyellow;
+  }
+  .auctionMoney{
+    font-size: 300%;
+    grid-column: 3;
+    text-align: center;
+    color: darkgreen;
   }
   .work{
     text-align:center;
