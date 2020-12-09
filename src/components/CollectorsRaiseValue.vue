@@ -1,9 +1,15 @@
+<!--Hejsan kompisar. Här är koden så att vi får ut raise value. Imorgon kommer jag sitta för att räkna hur många värden det 
+
+Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poäng man får än. 
+
+-->
+
 <template>
     <div>
       <h1>{{labels.raiseValue}}</h1>
       <div class="wrapper1">
      <div v-for="values in marketOrder" :key="values" class="raiseValues" >
-            <p>{{values}}</p>
+            <p>{{values}} {{ cardCost(values)}}</p>
             
              {{ log() }}
              <div v-for="(card, index) in raiseItems"  :key="index" >
@@ -14,8 +20,11 @@
                         :card="card" 
                         :availableAction="card.available" 
                     />
+                     
                      </div>
+                     
             </div>
+           
              </div>       
     
       
@@ -35,7 +44,7 @@ export default {
   },
   data: function(){
       return{
-       marketOrder:["fastival","figures","music","movie","technology"]
+       marketOrder:["fastaval","figures","music","movie","technology"]
 };
 
  },
@@ -44,6 +53,7 @@ export default {
     labels: Object,
     player: Object,
     raiseItems: Array,
+    raiseValue:Object
    
     
     
@@ -51,11 +61,32 @@ export default {
   },
   methods: {
     log(){
-        console.log("hej "+this.raiseItems);
+        console.log("hejsan "+this.raiseItems);
 
-    }
-   
+    },
+    cardCost: function (values) {
+      console.log("hej "+this.raiseValue);
+       if(values=="fastaval"){
+    return this.raiseValue.fastaval;
+
+  }else if (values=="figures"){
+    return this.raiseValue.figures;
+
+  }else if(values=="music"){
+    return this.raiseValue.music;
+
+  }else if(values=="movie"){
+
+    return this.raiseValue.movie;
+  }else if(values=="technology"){
+    return this.raiseValue.technology;
+
   }
+
+  }
+  }
+   
+  
 }
 </script>
 
@@ -64,7 +95,7 @@ export default {
 
   .wrapper1{
     display: grid;
-    grid-template-columns: repeat(auto-fill, 317px);
+    grid-template-columns: repeat(auto-fill, 180px);
     margin-bottom: 250px;
     
   }

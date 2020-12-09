@@ -64,7 +64,9 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
   room.itemsOnSale = room.deck.splice(0, 5);
   room.skillsOnSale = room.deck.splice(0, 5);
   room.auctionCards = room.deck.splice(0, 4);
-  room.raiseItems = room.deck.splice(0, 7);
+  room.raiseItems = room.deck.splice(0, 6);
+  room.raiseValue=null;
+ 
   room.cardInAuction = [];
   room.market = [];
   room.round = 0;
@@ -367,7 +369,7 @@ Data.prototype.getRaiseItems = function(roomId){
   else return [];
 }
 
-Data.prototype.getMarketValues = function (roomId) {
+Data.prototype.getMarketValues = function (roomId,) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     return room.market.reduce(function (acc, curr) {
@@ -411,6 +413,20 @@ Data.prototype.getRound = function (roomId) {
     return room.round;
   } else return [];
 }
+Data.prototype.getCardValue = function (roomId) {
+  
+  let room = this.rooms[roomId];
+  console.log("jag kom hit"+room.raiseValue);
+  if(room.raiseValue !==null){
+   if (typeof room !== 'undefined') {
+      return room.raiseValue;
+    } else return [];
+}else {
+  room.raiseValue=this.cardValue(roomId);
+  return room.raiseValue;
+}
+}
+
 //Byter spelare till nästa i arrayen 
 Data.prototype.nextPlayer = function (roomId, playerId) {
   let room = this.rooms[roomId];
@@ -431,6 +447,53 @@ Data.prototype.nextPlayer = function (roomId, playerId) {
   }
 
 
+}
+Data.prototype.cardValue = function (roomId) {
+  var fastaval=0;
+  var figures=0;
+  var music=0;
+  var movie=0;
+  var technology=0;
+ 
+  let room = this.rooms[roomId];
+  //marketOrder:["fastaval","figures","music","movie","technology"]
+  if (typeof room !== 'undefined') {
+    
+    for (let i = 0; i < room.raiseItems.length; i += 1) {
+    if (room.raiseItems[i].market === "fastaval") {
+      fastaval+=1;
+     
+    } else if (room.raiseItems[i].market === "figures") {
+      figures+=1;
+    } else if (room.raiseItems[i].market === "music") {
+      music+=1;
+    } else if (room.raiseItems[i].market === "movie") {
+      movie+=1;
+    }else if (room.raiseItems[i].market === "technology") {
+      technology+=1;
+    }
+    
+  }
+ 
+  console.log(fastaval);
+    console.log(figures);
+
+    console.log(music);
+    console.log(movie);
+    
+    console.log(technology);
+    return{
+      fastaval:fastaval,
+      figures:figures,
+      music:music,
+      movie:movie,
+      technology:technology,
+
+    }
+}else {
+  
+  return [];
+}
 }
 
 module.exports = Data;

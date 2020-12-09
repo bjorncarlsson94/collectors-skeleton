@@ -11,6 +11,7 @@ function sockets(io, socket, data) {
         itemsOnSale: data.getItemsOnSale(d.roomId),
         marketValues: data.getMarketValues(d.roomId),
         raiseItems:data.getRaiseItems(d.roomId),
+        raiseValue:data.getCardValue(d.roomId),
         skillsOnSale: data.getSkillsOnSale(d.roomId),
         auctionCards: data.getAuctionCards(d.roomId),
         placements: data.getPlacements(d.roomId)
@@ -38,15 +39,7 @@ function sockets(io, socket, data) {
       skillsOnSale: data.getSkillsOnSale(d.roomId)
     });
   });
-  socket.on('collectorsStartAuction', function (d) {
-    data.startAuction(d.roomId, d.playerId, d.card, d.cost)
-    io.to(d.roomId).emit('collectorsAuctionStarted', {
-      playerId: d.playerId,
-      players: data.getPlayers(d.roomId),
-      auctionCards: data.getAuctionCards(d.roomId),
-      cardInAuction: data.getCardInAuction(d.roomId)
-    });
-  });
+
 
   socket.on('collectorsPlaceBottle', function (d) {
     data.placeBottle(d.roomId, d.playerId, d.action, d.cost);
@@ -55,17 +48,15 @@ function sockets(io, socket, data) {
   socket.on('startTurn', function (d) {
     data.startTurn(d.roomId);
     io.to(d.roomId).emit('playerPicked', {
-      players: data.getPlayers(d.roomId),
-      round: data.getRound(d.roomId)
+      players: data.getPlayers(d.roomId)
     });
   });
 
 
   socket.on('nextPlayer', function (d) {
-    data.nextPlayer(d.roomId, d.playerId, d.round);
+    data.nextPlayer(d.roomId, d.playerId);
     io.to(d.roomId).emit('playerPicked', {
-      players: data.getPlayers(d.roomId),
-      round: data.getRound(d.roomId)
+      players: data.getPlayers(d.roomId)
     });
   });
 }

@@ -49,7 +49,8 @@
       <CollectorsRaiseValue v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
-        :raiseItems="raiseItems"/> 
+        :raiseItems="raiseItems"
+        :raiseValue="raiseValue"/> 
        
       <br> 
      
@@ -209,6 +210,12 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
+      raiseItems:[],
+      raiseValue:{ fastaval: 0,
+                     movie: 0,
+                     technology: 0,
+                     figures: 0,
+                     music: 0 },
       playerid: 0,
       round: 0,
       startingPlayerId: null,
@@ -257,6 +264,7 @@ export default {
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
         this.raiseItems=d.raiseItems;
+        this.raiseValue=d.raiseValue;
         this.buyPlacement = d.placements.buyPlacement;
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
