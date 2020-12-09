@@ -2,7 +2,7 @@
 <template>
   <div>
     <main>
-      {{buyPlacement}} {{chosenPlacementCost}}
+       {{buyPlacement}} {{chosenPlacementCost}}
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -29,13 +29,8 @@
         @startAuction="startAuction($event)"
         @placeBottle="placeBottle('auction', $event)"/>
       
-      <div></div>
-      <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
-      Slumpa startare. 
-      </button>
-      <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
-      Nästa spelare. 
-      </button>
+      
+      
       <div class="buttons">
         <button @click="drawCard">
           {{ labels.draw }}
@@ -49,11 +44,16 @@
       <CollectorsRaiseValue v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
-        :raiseItems="raiseItems"/> 
+        :raiseItems="raiseItems"
+        :raiseValue="raiseValue"/> 
        
       <br> 
      
       <section id="wrapper">
+
+        <div class="upforAuction" v-show="auctionActive">
+             hej 
+      </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
           PlayerLeft
@@ -72,15 +72,13 @@
             <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
           </div>
         </div>
-        <div class="cardslots auction">
+        <div class="auction">
           <div class="auctiongrid">
-            <div class="upforAuction">
-              
-            </div>
+            
             <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
           </div>
         </div>
-        <div class="cardslots raiseValue">
+        <div class="raiseValue">
           <div class="raiseValuegrid">
             <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
           </div>
@@ -111,34 +109,49 @@
           </div>
         </div>
         <div class="work">
-          
-          <!--{{index}}; LÄGG TILL SÅ DET ÄR ITEMS ON SALE HÄR SOM SYNS -->
-          Work
+          <div class="workgrid">
+            <div class="workslots5"></div>
+            <div class="workslots4"></div>
+            <div class="workslots3"></div>
+            <div class="workslots2"></div>
+            <div class="workslots1"></div>
+          </div>
         </div>
 
-        <div class="gridedge1">
-          Ruta för att visa grid lättare: 1
-          <br>
-           Det är runda: ,{{ round }}
+        <div class="roundCounter">
+          <p>
+           Det är runda: {{ round }}
+           </p>
+           <p>
+           Det är {{ currentPlayer() }} tur att spela!
+           </p>
         </div>
-        <div class="gridedge2">
-          Ruta för att visa grid lättare: 2
-          <br>
-          Här kan man t.ex. ha korthögen
+        <div class="drawCardSpace">
+          <div class="buttons">
+            <button @click="drawCard">
+            {{ labels.draw }}
+          </button>
+        </div>
         </div>
         <div class="gridedge3">
           Ruta för att visa grid lättare: 3
           <br>
           Här kan man t.ex. ha vissa viktiga knappar
         </div>
-        <div class="gridedge4">
-          
-          Ruta för att visa grid lättare: 4
-          <br>
-          Här kan man t.ex. ha vissa viktiga meny-knappar
+        <div class="menuSpace">
+          <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
+            Slumpa startare. 
+          </button>
+          <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
+            Nästa spelare. 
+            </button>
+          <button v-if="players[playerId]" @click="auctionBoard()">
+            visa aktion 
+          </button>
         </div>
       </div>
       </section>
+     
     </main>
     {{players}}
     {{marketValues}}
@@ -209,9 +222,17 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
+      raiseItems:[],
+      raiseValue:{ fastaval: 0,
+                     movie: 0,
+                     technology: 0,
+                     figures: 0,
+                     music: 0 },
       playerid: 0,
       round: 0,
       startingPlayerId: null,
+      auctionActive: false,
+      currentPlayerId: null,
       
       scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
@@ -256,7 +277,9 @@ export default {
         this.marketValues = d.marketValues;
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
+        //här skapas både raise Item och Raise value. innan denna körs så finns inget rum. Följ raise Value till datahandler.
         this.raiseItems=d.raiseItems;
+        this.raiseValue=d.raiseValue;
         this.buyPlacement = d.placements.buyPlacement;
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
@@ -311,6 +334,7 @@ export default {
         this.players = d.players;
         this.round = d.round;
          console.log( "Det är runda: " + this.round);
+         
       }.bind(this)
     );
   },
@@ -318,25 +342,62 @@ export default {
     selectAll: function (n) {
       n.target.select();
     },
-
+    currentPlayer: function (){
+      var keys = Object.keys(this.players);
+      
+      for (var i = 0; i < keys.length; i++){
+        if (this.players[keys[i]].turn == true){
+          this.currentPlayerId = keys[i];
+        }
+      }
+      return this.currentPlayerId
+    },
+    auctionBoard: function(){
+      console.log("auction rutaa");
+      this.auctionActive = !this.auctionActive;
+      console.log("status: "+ this.auctionActive);
+    },
     expandPlayerBoard: function(){
-      console.log("Click click mf");
+      console.log("Player click");
       this.isActive = !this.isActive;
+
+      /* Stänger de andra */
+      this.rightIsActive = false;
+      this.topIsActive = false;
+      this.leftIsActive = false;
+
       console.log("status: "+ this.isActive);
     },
     expandLeftBoard: function(){
-      console.log("Left click mf");
+      console.log("Left click");
       this.leftIsActive = !this.leftIsActive;
+      
+      /* Stänger de andra */
+      this.rightIsActive = false;
+      this.topIsActive = false;
+      this.isActive = false;
+
       console.log("status: "+ this.leftIsActive);
     },
     expandRightBoard: function(){
-      console.log("Right click mf");
+      console.log("Right click");
       this.rightIsActive = !this.rightIsActive;
+      
+      /* Stänger de andra */
+      this.leftIsActive = false;
+      this.topIsActive = false;
+      this.isActive = false;
       console.log("status: "+ this.rightIsActive);
     },
     expandTopBoard: function(){
-      console.log("Top click mf");
+      console.log("Top click");
       this.topIsActive = !this.topIsActive;
+
+      /* Stänger de andra */
+      this.leftIsActive = false;
+      this.rightIsActive = false;
+      this.isActive = false;
+
       console.log("status: "+ this.topIsActive);
     },
 
@@ -388,6 +449,7 @@ export default {
           card: card,
           cost: this.chosenPlacementCost
         }
+        
       );
 
     },
@@ -408,7 +470,6 @@ export default {
         playerId: this.playerId,
         }
       );
-
     }
 
   },
@@ -463,6 +524,7 @@ export default {
     margin: 5vw;
     padding: 5vw;
     justify-self: center;
+    position: relative;
   }
 
   #grid {
@@ -548,7 +610,7 @@ export default {
    background-color:#c236b4;
   }
   .playerRight:hover{
-    background-color: #fdc683;
+    background-color: #e9b77a;
   }
   .playerTop:hover{
     background-color: #20ccbe;
@@ -591,7 +653,7 @@ export default {
 
 /* Om man klickar på spelaren till höger */
   .playerRight.active {
-    background-color: #fdc683;
+    background-color: #e9b77a;
     width: 250%;
     height: 80%;
     justify-self: end;
@@ -609,16 +671,14 @@ export default {
     grid-column: 2 /span 3;
     grid-row: 2;
     margin-top: 2.5vw;
-    margin-right: 2.5vw;
     contain:content;
     justify-content:center;
     align-content:center;
+    justify-self: center;
   }
   .itemgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;/*20% 20% 20% 20% 20%;*/
-    /*padding-top: 2vw;
-    padding-left: 2vw;*/
     padding:2vw;
   }
 
@@ -627,16 +687,14 @@ export default {
     background-color: #dfeccc;
     grid-column: 2 /span 3;
     grid-row: 3;
-    margin-right: 2.5vw;
     contain:content;
     justify-content:center;
     align-content:center;
+    justify-self: center;
   }
   .skillsgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding-top: 2vw;        /* Detta måste göras om... Otroligt ful lösning för tillfället. */
-    padding-left: 2vw;
     padding:2vw;
   }
 
@@ -644,9 +702,11 @@ export default {
     border-radius: 15px;
     background-color: #cfdcf2;
     grid-column: 2 /span 3;
-    grid-row: 4;      /* This might need to change to 32 when we implement cards with padding-left: 2vw in here. */ 
+    grid-row: 4; 
     margin-bottom: 2.5vw;
-    margin-right: 2.5vw;
+    justify-content:center;
+    align-content:center;
+    justify-self: center;
   }
   .raiseValuegrid{
     display:grid;
@@ -661,20 +721,26 @@ export default {
     width: 15vw;
     height: 37vw; /* items+skills+raise value+distanceBetween på ett ungefär*/
     justify-content:center;
+    justify-self: center;
   }
   .auctiongrid{
     display:grid;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    justify-content:center;
+    padding: 1vw;
+    justify-items: center;
   }
   .upforAuction{
-    width: 14vw;
-    height: 17vw;
+    position: absolute;
+    width: 30vw;
+    height: 30vw;
     background-color: #f5efa0;
     border-radius: 1vw;
     border-style: solid;
     border-color: black;
     z-index:50;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .auctiongrid div{
     zoom: 0.4;
@@ -686,43 +752,91 @@ export default {
     grid-column: 5;
     grid-row: 2 /span 3;
     height: 37vw;
+    width: 15vw;
+    justify-self: center;
+  }
+  .workgrid{
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5vw 5vw 5vw 5vw 5vw;
+    grid-gap: 2vw;
+    padding: 2vw;
+  }
+  .workgrid div{
+    background-color: rgb(207, 207, 207);
+    border-radius: 1vw;
+    border-style: dotted;
+    border-color: black;
+    height: 5vw;
+    width: auto;
+  }
+  .workslots1{
+    background-image: url("/images/Work1_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .workslots2{
+    background-image: url("/images/Work2_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .workslots3{
+    background-image: url("/images/Work3_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .workslots4{
+    background-image: url("/images/Work4_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   /*
   Dessa nedan är bara provisoriska och ska göras om eller tas bort i slutändan.
   */
 
-  .gridedge1{
+  .roundCounter{
     grid-column: 1;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
-    border-radius: 10px;
-    padding:20px;
-    height: 10vw;
+    border-radius: 15px;
+    padding:2vw;
+    max-height: 10vw;
+    max-width: auto;
+    text-align: center;
   }
-  .gridedge2{
+  .drawCardSpace{
     grid-column: 5;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
-    border-radius: 10px;
-    padding:20px;
-    height: 10vw;
+    border-radius: 15px;
+    padding:2vw;
+    max-height: 10vw;
+    max-width: auto;
+    text-align: center;
   }
   .gridedge3{
     grid-column: 1;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
-    border-radius: 10px;
-    padding:20px;
-    height: 10vw;
+    border-radius: 15px;
+    padding:2vw;
+    max-height: 10vw;
+    max-width: auto;
   }
-  .gridedge4{
+  .menuSpace{
     grid-column: 5;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
-    border-radius: 10px;
-    padding:20px;
-    height: 10vw;
+    border-radius: 15px;
+    padding: 2vw;
+    max-height: 10vw;
+    max-width: auto;
+    text-align: center;
   }
 
   @media screen and (max-width: 800px) {
