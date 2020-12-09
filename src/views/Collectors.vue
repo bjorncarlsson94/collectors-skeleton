@@ -792,12 +792,6 @@ export default {
     grid-column: 5;
     grid-row: 1;
   }
- 
-
-.auctiongrid div{
-    zoom: 0.4;
-  }
-  
   .auction{
     border-radius: 2vw;
     background-color: #f5f2cc;
@@ -832,9 +826,6 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
 
-  }
-  .auctiongrid div{   /* Denna gör inget just nu, men låt stå - kan vara användbart för påminnelse */
-    zoom: 0.4;
   }
    .auctionCardView{
     zoom: 4;

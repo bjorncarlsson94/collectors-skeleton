@@ -103,7 +103,11 @@ export default {
   .itemgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding:2vw;
-    justify-items:center;
+    padding: 1vw;
+    margin: 1vw;
+    justify-items: center;
+    border-style: dotted;
+    border-color: grey;
+    border-radius: 2vw;
   }
 </style>
