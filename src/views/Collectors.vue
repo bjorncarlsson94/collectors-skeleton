@@ -28,19 +28,6 @@
         :placement="auctionPlacement"
         @startAuction="startAuction($event)"
         @placeBottle="placeBottle('auction', $event)"/>
-      
-      <div></div>
-      <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
-      Slumpa startare. 
-      </button>
-      <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
-      Nästa spelare. 
-      </button>
-      <div class="buttons">
-        <button @click="drawCard">
-          {{ labels.draw }}
-        </button>
-      </div>
 
         <!--Raise value div. with 4 random cards in it at the moment-->
        <!--Raise value div. with 4 random cards in it at the moment 
@@ -112,40 +99,36 @@
         </div>
         <div class="work">
           <div class="workgrid">
-            <div class="workslots5">
-            </div>
-            <div class="workslots4">
-            </div>
-            <div class="workslots3">
-            </div>
-            <div class="workslots2">
-            </div>
-            <div class="workslots1">
-            </div>
-            
+            <div class="workslots5"></div>
+            <div class="workslots4"></div>
+            <div class="workslots3"></div>
+            <div class="workslots2"></div>
+            <div class="workslots1"></div>
           </div>
         </div>
 
-        <div class="gridedge1">
-          Ruta för att visa grid lättare: 1
-          <br>
-           Det är runda: ,{{ round }}
+        <div class="roundCounter">
+           Det är runda: {{ round }}
         </div>
-        <div class="gridedge2">
-          Ruta för att visa grid lättare: 2
-          <br>
-          Här kan man t.ex. ha korthögen
+        <div class="drawCardSpace">
+          <div class="buttons">
+            <button @click="drawCard">
+            {{ labels.draw }}
+          </button>
+        </div>
         </div>
         <div class="gridedge3">
           Ruta för att visa grid lättare: 3
           <br>
           Här kan man t.ex. ha vissa viktiga knappar
         </div>
-        <div class="gridedge4">
-          
-          Ruta för att visa grid lättare: 4
-          <br>
-          Här kan man t.ex. ha vissa viktiga meny-knappar
+        <div class="menuSpace">
+          <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
+            Slumpa startare. 
+          </button>
+          <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
+            Nästa spelare. 
+            </button>
         </div>
       </div>
       </section>
@@ -743,7 +726,7 @@ export default {
   Dessa nedan är bara provisoriska och ska göras om eller tas bort i slutändan.
   */
 
-  .gridedge1{
+  .roundCounter{
     grid-column: 1;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
@@ -751,8 +734,9 @@ export default {
     padding:2vw;
     max-height: 10vw;
     max-width: auto;
+    text-align: center;
   }
-  .gridedge2{
+  .drawCardSpace{
     grid-column: 5;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
@@ -760,6 +744,7 @@ export default {
     padding:2vw;
     max-height: 10vw;
     max-width: auto;
+    text-align: center;
   }
   .gridedge3{
     grid-column: 1;
@@ -770,7 +755,7 @@ export default {
     max-height: 10vw;
     max-width: auto;
   }
-  .gridedge4{
+  .menuSpace{
     grid-column: 5;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
@@ -778,6 +763,7 @@ export default {
     padding: 2vw;
     max-height: 10vw;
     max-width: auto;
+    text-align: center;
   }
 
   @media screen and (max-width: 800px) {
