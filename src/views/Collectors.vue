@@ -116,11 +116,11 @@
         </div>
         <div class="work">
           <div class="workgrid">
-            <div class="workslots5">This is where the quarter-cards go</div>
-            <div class="workslots4"></div>
-            <div class="workslots3"></div>
-            <div class="workslots2"></div>
-            <div class="workslots1"></div>
+            <div class="workslot5"></div>
+            <div class="workslot4"></div>
+            <div class="workslot3"></div>
+            <div class="workslot2"></div>
+            <div class="workslot1"></div>
           </div>
         </div>
 
@@ -572,14 +572,16 @@ export default {
   */
 
   .player{
-    border-radius: 15px;
+    border-radius: 2vw;
   }
   .playerLeft{
     grid-column: 2;
     grid-row: 1;
     background-color: #7e2174;
     text-align:center;
-    height:10vw;
+    height:8vw;
+    width: 8vw;
+    font-size: 1.5vw;
   }
   /*  
       På alla dessa finns max-height eller motsvarande, dessa får vi leka runt med tills vi hittar något bra
@@ -589,18 +591,22 @@ export default {
     grid-column: 3;
     grid-row: 1;
     background-color: #19b3a7;
-    height: 10vw;
+    height: 8vw;
+    width: 8vw;
     text-align: center;
+    font-size: 1.5vw;
   }
   .playerRight{
     grid-column: 4;
     grid-row: 1;
     background-color: #ca9e68;
     text-align:center;
-    height:10vw;
+    height:8vw;
+    width: 8vw;
+    font-size: 1.5vw;
   }
   .playerboard{ 
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: rgb(70, 181, 214); /* Choose colour based on the 4 player colours */
     grid-column: 2 /span 3;
     grid-row: 5;
@@ -676,6 +682,7 @@ export default {
     background-color:#f8dcce;
     grid-column: 2 /span 3;
     grid-row: 2;
+    width:31vw;
   }
   .itemgrid{
     display:grid;
@@ -689,6 +696,7 @@ export default {
     background-color: #dfeccc;
     grid-column: 2 /span 3;
     grid-row: 3;
+    width:31vw;
   }
   .skillsgrid{
     display:grid;
@@ -698,11 +706,12 @@ export default {
   }
 
   .raiseValue{
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: #cfdcf2;
     grid-column: 2 /span 3;
     grid-row: 4; 
     justify-content:center;
+    width:31vw;
   }
   .raiseValuegrid{
     display:grid;
@@ -741,7 +750,7 @@ export default {
     grid-row: 1;
   }
   .auction{
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: #f5f2cc;
     grid-column: 1;
     grid-row: 2 /span 3;
@@ -761,7 +770,7 @@ export default {
     width: 30vw;
     height: 30vw;
     background-color: #f5efa0;
-    border-radius: 1vw;
+    border-radius: 2vw;
     border-style: solid;
     border-color: black;
     z-index:50;
@@ -769,12 +778,12 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  .auctiongrid div{
+  .auctiongrid div{   /* Denna gör inget just nu, men låt stå - kan vara användbart för påminnelse */
     zoom: 0.4;
   }
   .work{
     text-align:center;
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: grey;
     grid-column: 5;
     grid-row: 2 /span 3;
@@ -797,74 +806,80 @@ export default {
     height: 5vw;
     width: auto;
   }
-  .workslots1{
+  .workslot1{
     background-image: url("/images/Work1_png.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
   }
-  .workslots2{
+  .workslot2{
     background-image: url("/images/Work2_png.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
   }
-  .workslots3{
+  .workslot3{
     background-image: url("/images/Work3_png.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
   }
-  .workslots4{
+  .workslot4{
     background-image: url("/images/Work4_png.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
   }
   .workslot5{
-    text-align:center;
+    background-image: url("/images/Work5_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .roundCounter{
     grid-column: 1;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
-    border-radius: 15px;
+    border-radius: 2vw;
     padding:2vw;
-    max-height: 10vw;
-    max-width: 10vw;
+    max-height: 8vw;
+    max-width: 11vw;
     justify-self: right;
     text-align: center;
-    font-size: 1.5vw;
+    font-size: 1vw;
   }
   .drawCardSpace{
     grid-column: 5;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
-    border-radius: 15px;
+    border-radius: 2vw;
     padding:2vw;
-    max-height: 10vw;
-    max-width: 10vw;
+    max-height: 8vw;
+    max-width: 11vw;
     text-align: center;
   }
   .gridedge3{
     grid-column: 1;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
-    border-radius: 15px;
+    border-radius: 2vw;
     padding:2vw;
-    max-height: 10vw;
-    max-width: 10vw;
+    max-height: 8vw;
+    max-width: 11vw;
     font-size: 1vw;
   }
   .menuSpace{
     grid-column: 5;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
-    border-radius: 15px;
+    border-radius: 2vw;
     padding: 2vw;
-    max-height: 10vw;
-    max-width: 10vw;
+    max-height: 8vw;
+    max-width: 11vw;
     text-align: center;
+  }
+  .menuSpace > * {  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
+    zoom: 0.8;
   }
 
   @media screen and (max-width: 800px) {
