@@ -80,6 +80,7 @@ export default {
     },
     startAuction: function (card) {
       if (card.available) {
+        console.log(card)
         this.$emit('startAuction', card)
         this.highlightAvailableCards()
       }
