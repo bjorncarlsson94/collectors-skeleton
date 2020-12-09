@@ -70,14 +70,20 @@
         </div>
         <div class="raiseValue">
           <div class="raiseValuegrid">
+            <div class="fastaval">fastaval</div>
+            <div class="figures">figures</div>
+            <div class="music">music</div>
+            <div class="movie">movie</div>
+            <div class="technology">technology</div>
             <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
           </div>
         </div>
         
-        
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
-        <div class="cardslots hand playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
-          Hand
+        <div class="playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
+          <div class="playerItems"></div>
+          <div class="playerSkill"></div>
+          <div class="playerIncome"></div>
           <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
         </div>
         
@@ -100,7 +106,7 @@
         </div>
         <div class="work">
           <div class="workgrid">
-            <div class="workslots5"></div>
+            <div class="workslots5">This is where the quarter-cards go</div>
             <div class="workslots4"></div>
             <div class="workslots3"></div>
             <div class="workslots2"></div>
@@ -488,11 +494,12 @@ export default {
     margin: 5vw;
     padding: 5vw;
     justify-self: center;
+    position: relative;
   }
 
   #grid {
     display: grid;
-    grid-gap: 1vw;
+    grid-gap: 0.5vw;
     margin: 2vw;
     justify-content:center;   /* dessa 2 centrerar horisontellt respektive vertikalt */
     align-items:center;
@@ -554,14 +561,12 @@ export default {
     text-align:center;
     height:10vw;
   }
-  .playerboard{  /* Denna ska göras om till "Player board" eller liknande där handen inkluderas*/
+  .playerboard{ 
     border-radius: 15px;
     background-color: rgb(70, 181, 214); /* Choose colour based on the 4 player colours */
     grid-column: 2 /span 3;
     grid-row: 5;
-    min-height: 0;
-    margin-top: -10%;
-    align-self: end;
+    min-height: 10vw;
   }
 
 
@@ -629,36 +634,29 @@ export default {
   */
 
   .items{
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color:#f8dcce;
     grid-column: 2 /span 3;
     grid-row: 2;
-    margin-top: 2.5vw;
-    contain:content;
-    justify-content:center;
-    align-content:center;
-    justify-self: center;
   }
   .itemgrid{
     display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;/*20% 20% 20% 20% 20%;*/
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
+    justify-items:center;
   }
 
   .skills{
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: #dfeccc;
     grid-column: 2 /span 3;
     grid-row: 3;
-    contain:content;
-    justify-content:center;
-    align-content:center;
-    justify-self: center;
   }
   .skillsgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
+    justify-items:center;
   }
 
   .raiseValue{
@@ -666,15 +664,39 @@ export default {
     background-color: #cfdcf2;
     grid-column: 2 /span 3;
     grid-row: 4; 
-    margin-bottom: 2.5vw;
     justify-content:center;
-    align-content:center;
-    justify-self: center;
   }
   .raiseValuegrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
+    justify-items:center;
+  }
+  .raiseValuegrid div{
+    grid-template-columns: (repeat(auto-fill, 0vw));
+    font-size: 1vw;
+    font-weight:bold;
+    color: black;
+  }
+  .fastaval{
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .figures{
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .music{
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .movie{
+    grid-column: 4;
+    grid-row: 1;
+  }
+  .technology{
+    grid-column: 5;
+    grid-row: 1;
   }
   .auction{
     border-radius: 15px;
@@ -684,7 +706,7 @@ export default {
     width: 15vw;
     height: 37vw; /* items+skills+raise value+distanceBetween på ett ungefär*/
     justify-content:center;
-    justify-self: center;
+    justify-self: right;
   }
   .auctiongrid{
     display:grid;
@@ -712,7 +734,7 @@ export default {
     grid-row: 2 /span 3;
     height: 37vw;
     width: 15vw;
-    justify-self: center;
+    justify-self: left;
   }
   .workgrid{
     display:grid;
@@ -753,11 +775,9 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
   }
-
-  /*
-  Dessa nedan är bara provisoriska och ska göras om eller tas bort i slutändan.
-  */
-
+  .workslot5{
+    text-align:center;
+  }
   .roundCounter{
     grid-column: 1;
     grid-row: 1;
@@ -765,8 +785,10 @@ export default {
     border-radius: 15px;
     padding:2vw;
     max-height: 10vw;
-    max-width: auto;
+    max-width: 10vw;
+    justify-self: right;
     text-align: center;
+    font-size: 1.5vw;
   }
   .drawCardSpace{
     grid-column: 5;
@@ -775,7 +797,7 @@ export default {
     border-radius: 15px;
     padding:2vw;
     max-height: 10vw;
-    max-width: auto;
+    max-width: 10vw;
     text-align: center;
   }
   .gridedge3{
@@ -785,7 +807,8 @@ export default {
     border-radius: 15px;
     padding:2vw;
     max-height: 10vw;
-    max-width: auto;
+    max-width: 10vw;
+    font-size: 1vw;
   }
   .menuSpace{
     grid-column: 5;
@@ -794,7 +817,7 @@ export default {
     border-radius: 15px;
     padding: 2vw;
     max-height: 10vw;
-    max-width: auto;
+    max-width: 10vw;
     text-align: center;
   }
 
