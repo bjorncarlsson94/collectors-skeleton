@@ -413,6 +413,9 @@ Data.prototype.getRound = function (roomId) {
     return room.round;
   } else return [];
 }
+
+//getCardValue är den som körs när rummet initiseras. Därav if och else satsen. Detta som jag tror kan lösas snyggare. 
+//Följ till cardValue.
 Data.prototype.getCardValue = function (roomId) {
   
   let room = this.rooms[roomId];
@@ -448,6 +451,7 @@ Data.prototype.nextPlayer = function (roomId, playerId) {
 
 
 }
+//I cardvalue så sätts alla värden på korten. Om det ligger 1 kort med market=fastaval så kommer fastaval ökas med 1. 
 Data.prototype.cardValue = function (roomId) {
   var fastaval=0;
   var figures=0;
@@ -456,7 +460,6 @@ Data.prototype.cardValue = function (roomId) {
   var technology=0;
  
   let room = this.rooms[roomId];
-  //marketOrder:["fastaval","figures","music","movie","technology"]
   if (typeof room !== 'undefined') {
     
     for (let i = 0; i < room.raiseItems.length; i += 1) {
@@ -474,14 +477,7 @@ Data.prototype.cardValue = function (roomId) {
     }
     
   }
- 
-  console.log(fastaval);
-    console.log(figures);
 
-    console.log(music);
-    console.log(movie);
-    
-    console.log(technology);
     return{
       fastaval:fastaval,
       figures:figures,

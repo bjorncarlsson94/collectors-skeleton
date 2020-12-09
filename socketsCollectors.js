@@ -5,12 +5,15 @@ function sockets(io, socket, data) {
   socket.on('collectorsLoaded', function (d) {
     socket.join(d.roomId);
     if (data.joinGame(d.roomId, d.playerId)) {
+
+      //denna som körs från collectors.vue när spelet startas. 
       socket.emit('collectorsInitialize', {
         labels: data.getUILabels(d.roomId),
         players: data.getPlayers(d.roomId),
         itemsOnSale: data.getItemsOnSale(d.roomId),
         marketValues: data.getMarketValues(d.roomId),
         raiseItems:data.getRaiseItems(d.roomId),
+        //här kallar vi på getCardValue
         raiseValue:data.getCardValue(d.roomId),
         skillsOnSale: data.getSkillsOnSale(d.roomId),
         auctionCards: data.getAuctionCards(d.roomId),
