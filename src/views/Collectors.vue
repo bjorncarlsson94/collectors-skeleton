@@ -595,8 +595,8 @@ export default {
  .playerTop.active{
     background-color: #20ccbe;
     text-align: center;
-    height: 80%;
-    width: 250%;
+    width: 310%;
+    height: 100%;
     justify-self: center;
     margin-left: initial;
     margin-top: 100px;
@@ -607,8 +607,8 @@ export default {
 .playerLeft.active {
     background-color:#c236b4;
     margin-right: -100%;
-    width: 250%;
-    height: 80%;
+    width: 310%;
+    height: 100%;
     justify-self:self-start;
     margin-top: 100px;
     z-index: 1;
@@ -617,8 +617,8 @@ export default {
 /* Om man klickar på spelaren till höger */
   .playerRight.active {
     background-color: #e9b77a;
-    width: 250%;
-    height: 80%;
+    width: 310%;
+    height: 100%;
     justify-self: end;
     margin-top: 100px;
     z-index: 1;
