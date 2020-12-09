@@ -923,6 +923,8 @@ export default {
 
     https://stackoverflow.com/questions/47219272/how-can-i-use-window-size-in-vue-how-do-i-detect-the-soft-keyboard
     split image into tiles: https://codepen.io/Escu/pen/KVLBYP
+
+    https://stackoverflow.com/questions/2430206/how-can-i-scale-an-image-in-a-css-sprite
     
 
 */
