@@ -2,7 +2,7 @@
 <template>
   <div>
     <main>
-      {{buyPlacement}} {{chosenPlacementCost}}
+       {{buyPlacement}} {{chosenPlacementCost}}
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -36,6 +36,9 @@
       <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
       Nästa spelare. 
       </button>
+       <button v-if="players[playerId]" @click="auctionBoard()">
+      visa aktion 
+      </button>
       <div class="buttons">
         <button @click="drawCard">
           {{ labels.draw }}
@@ -54,6 +57,10 @@
       <br> 
      
       <section id="wrapper">
+
+        <div class="upforAuction" v-show="auctionActive">
+             hej 
+      </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
           PlayerLeft
@@ -74,9 +81,7 @@
         </div>
         <div class="cardslots auction">
           <div class="auctiongrid">
-            <div class="upforAuction">
-              
-            </div>
+            
             <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
           </div>
         </div>
@@ -139,6 +144,7 @@
         </div>
       </div>
       </section>
+     
     </main>
     {{players}}
     {{marketValues}}
@@ -212,6 +218,7 @@ export default {
       playerid: 0,
       round: 0,
       startingPlayerId: null,
+      auctionActive: false,
       
       scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
@@ -318,7 +325,11 @@ export default {
     selectAll: function (n) {
       n.target.select();
     },
-
+    auctionBoard: function(){
+      console.log("auction rutaa");
+      this.auctionActive = !this.auctionActive;
+      console.log("status: "+ this.auctionActive);
+    },
     expandPlayerBoard: function(){
       console.log("Click click mf");
       this.isActive = !this.isActive;
@@ -463,6 +474,7 @@ export default {
     margin: 5vw;
     padding: 5vw;
     justify-self: center;
+    position: relative;
   }
 
   #grid {
@@ -668,13 +680,17 @@ export default {
     justify-content:center;
   }
   .upforAuction{
-    width: 14vw;
-    height: 17vw;
+    position: absolute;
+    width: 30vw;
+    height: 30vw;
     background-color: #f5efa0;
     border-radius: 1vw;
     border-style: solid;
     border-color: black;
     z-index:50;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .auctiongrid div{
     zoom: 0.4;
