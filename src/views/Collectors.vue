@@ -222,6 +222,7 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
+      cardInAuction:[],
       raiseItems:[],
       raiseValue:{ fastaval: 0,
                      movie: 0,
@@ -277,6 +278,7 @@ export default {
         this.marketValues = d.marketValues;
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
+        this.cardInAuction = d.cardInAuction;
         //här skapas både raise Item och Raise value. innan denna körs så finns inget rum. Följ raise Value till datahandler.
         this.raiseItems=d.raiseItems;
         this.raiseValue=d.raiseValue;
