@@ -1,18 +1,16 @@
 <template>
     <div>
-      <h1>{{ labels.startAuction }}</h1>
-      <div class="start-auction">
+      <!--<h1>{{ labels.startAuction }}</h1>-->
+      <div class="start-auction auctiongrid">
         <div v-for="(card, index) in auctionCards" :key="index">
           <CollectorsCard 
             :card="card" 
             :availableAction="card.available" 
             @doAction="startAuction(card)"/>
-          {{ cardCost(card) }}
+          <!--{{ cardCost(card) }}-->
         </div>
-      </div>
-      <div>
-        <div class="buttons" v-for="(p, index) in placement" :key="index">
-          <button
+        <div v-for="(p, index) in placement" :key="index">
+          <button class="button"
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
             @click="placeBottle(p)" >
@@ -80,6 +78,7 @@ export default {
     },
     startAuction: function (card) {
       if (card.available) {
+        console.log(card)
         this.$emit('startAuction', card)
         this.highlightAvailableCards()
       }
@@ -92,8 +91,34 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .start-auction, .buttons {
+  .start-auction {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
+  }
+  .button{
+    float:left;
+    font-size: 1vw;
+    justify-content: space-around;
+    margin: 1vw;
+    padding:0.2vw;
+    color: black;
+    background-color: #f5ef9e;
+    border-radius:1vw;
+    box-shadow: 0 0.3vw #999;
+  }
+  .button:active{
+    background-color: #d6ce58;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
+  }
+  .button:hover{
+    background-color: #d6ce58;
+  }
+  .auctiongrid{
+    display:grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    padding: 1vw;
+    justify-items: center;
   }
 </style>

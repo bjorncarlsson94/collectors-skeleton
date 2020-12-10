@@ -1,18 +1,18 @@
 <template>
     <div>
-      <h1>{{ labels.buySkill }}</h1>
-      <div class="buy-skills">
+      <!--<h1>{{ labels.buySkill }}</h1>-->
+      <div class="buy-skills skillsgrid">
         <div v-for="(card, index) in skillsOnSale" :key="index">
           <CollectorsCard 
             :card="card" 
             :availableAction="card.available" 
             @doAction="buySkill(card)"/>
-          {{ cardCost(card) }}
+     
+          <!--{{ cardCost(card) }}-->
+          
         </div>
-      </div>
-      <div>
-        <div class="buttons" v-for="(p, index) in placement" :key="index">
-          <button
+        <div v-for="(p, index) in placement" :key="index">
+          <button class="button"
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
             @click="placeBottle(p)" >
@@ -38,7 +38,7 @@ export default {
     labels: Object,
     player: Object,
     skillsOnSale: Array,
-    marketValues: Object,
+    
     placement: Array
   },
   methods: {
@@ -94,8 +94,37 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .buy-skills, .buttons {
+  .buy-skills{
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
+  }
+  .button{
+    float:left;
+    font-size: 1vw;
+    justify-content: space-around;
+    margin: 1vw;
+    padding:0.2vw;
+    color: black;
+    background-color: #d2ebad;
+    border-radius:1vw;
+    box-shadow: 0 0.3vw #999;
+  }
+  .button:active{
+    background-color: #aeda6e;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
+  }
+  .button:hover{
+    background-color: #aeda6e;
+  }
+  .skillsgrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding: 1vw;
+    margin: 1vw;
+    justify-items: center;
+    border-style: dotted;
+    border-color: grey;
+    border-radius: 2vw;
   }
 </style>
