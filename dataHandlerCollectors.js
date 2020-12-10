@@ -231,8 +231,7 @@ Data.prototype.buyCard = function (roomId, playerId, card, cost) {
       }
     }
     room.players[playerId].items.push(...c);
-    console.log(cost);
-    console.log(room.raiseValue[card.item]);
+
     room.players[playerId].money -= cost+room.raiseValue[card.item];
 
   }

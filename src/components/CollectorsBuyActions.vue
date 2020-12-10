@@ -17,6 +17,7 @@
       <div>
         <div class="buttons" v-for="(p, index) in placement" :key="index">
           <button
+          
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
             @click="placeBottle(p)" >
@@ -105,7 +106,7 @@ export default {
     },
     highlightAvailableCards: function (cost) {
       for (let i = 0; i < this.itemsOnSale.length; i += 1) {
-        console.log("Card "+this.itemsOnSale[i].item+" values "+this.currentValues[this.itemsOnSale[i].item]);
+        
         if (this.currentValues[this.itemsOnSale[i].item] <= this.player.money) {
           this.$set(this.itemsOnSale[i], "available", true);
         }

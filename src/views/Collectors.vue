@@ -197,7 +197,7 @@
      
     </main>
     {{players}}
-    {{marketValues}}
+    {{raiseValue}}
     <button v-if="players[playerId]" @click="players[playerId].money += 1">
       fake more money
     </button>
