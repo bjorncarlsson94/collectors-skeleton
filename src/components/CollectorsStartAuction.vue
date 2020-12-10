@@ -116,8 +116,8 @@ export default {
   }
   .auctiongrid{
     display:grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     padding: 1vw;
     justify-items: center;
   }
