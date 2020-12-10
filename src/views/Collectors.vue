@@ -2,7 +2,8 @@
 <template>
   <div>
     <main>
-       {{buyPlacement}} {{chosenPlacementCost}}
+       <!--
+         {{buyPlacement}} {{chosenPlacementCost}}
       <CollectorsBuyActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -29,19 +30,11 @@
         :placement="auctionPlacement"
         @startAuction="startAuction($event)"
         @placeBottle="placeBottle('auction', $event)"/>
-      
-      
-      
-      <div class="buttons">
-        <button @click="drawCard">
-          {{ labels.draw }}
-        </button>
-      </div>
-
-        <!--Raise value div. with 4 random cards in it at the moment-->
+      -->
+        <!-- Raise value div. with 4 random cards in it at the moment-->
        <!--Raise value div. with 4 random cards in it at the moment 
        They are diplayed in the correct raiseValue columm-->
-        
+
       <CollectorsRaiseValue v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
@@ -52,8 +45,29 @@
      
       <section id="wrapper">
 
-        <div class="upforAuction" v-show="auctionActive">
-             hej 
+        <div class="upforAuction" v-show="auctionActive" v-if="players[playerId]">
+             <!-- <CollectorsAuction v-if="players[playerId]"
+              :labels="labels"
+              :player="players[playerId]"
+              :cardInAuction="cardInAuction"
+              :marketValues="marketValues"
+              :auctionPrice ="auctionPrice"
+              :auctionActive ="auctionActive"/>-->
+          <div class="auctionMoney">
+            {{bid}}$
+            </div>
+             <div class="auctionCardView">
+              <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
+              </div>
+              <button class="auctionButtons" v-if="players[playerId]" @click="auctionBoard()">
+            visa aktion 
+          </button>
+          <button class="auctionButtons" v-if="players[playerId]" @click="bid -= 1">
+            -
+          </button>
+          <button class="auctionButtons" v-if="players[playerId]" @click="bid += 1">
+             +
+          </button>
       </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
@@ -70,25 +84,45 @@
         </div>
         <div class="skills">
           <div class="skillsgrid">
-            <CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>
+            <CollectorsSkillActions v-if="players[playerId]"
+                :labels="labels"
+                :player="players[playerId]"
+                :skillsOnSale="skillsOnSale"
+                :marketValues="marketValues"
+                :placement="skillPlacement"
+                @buySkill="buySkill($event)"
+                @placeBottle="placeBottle('skill', $event)"/>
+            <!--<CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>-->
           </div>
         </div>
         <div class="auction">
           <div class="auctiongrid">
-            
-            <CollectorsCard v-for="(card, index) in auctionCards" :card="card" :key="index"/>
+              <CollectorsStartAuction v-if="players[playerId]"
+                :labels="labels"
+                :player="players[playerId]"
+                :auctionCards="auctionCards"
+                :marketValues="marketValues"
+                :placement="auctionPlacement"
+                @startAuction="startAuction($event)"
+                @placeBottle="placeBottle('auction', $event)"/>
           </div>
         </div>
         <div class="raiseValue">
           <div class="raiseValuegrid">
+            <div class="fastaval">fastaval</div>
+            <div class="figures">figures</div>
+            <div class="music">music</div>
+            <div class="movie">movie</div>
+            <div class="technology">technology</div>
             <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
           </div>
         </div>
         
-        
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
-        <div class="cardslots hand playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
-          Hand
+        <div class="playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
+          <div class="playerItems"></div>
+          <div class="playerSkill"></div>
+          <div class="playerIncome"></div>
           <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCard(card)" :key="index"/>
         </div>
         
@@ -105,17 +139,24 @@
 
         <div class="items">
           <div class="itemgrid">
-            <CollectorsCard v-for="(card, index) in itemsOnSale" :card="card" :key="index"/>
+            <CollectorsBuyActions v-if="players[playerId]"
+              :labels="labels"
+              :player="players[playerId]"
+              :itemsOnSale="itemsOnSale"
+              :marketValues="marketValues"
+              :placement="buyPlacement"
+              @buyCard="buyCard($event)"
+              @placeBottle="placeBottle('buy', $event)"/>
           <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
           </div>
         </div>
         <div class="work">
           <div class="workgrid">
-            <div class="workslots5"></div>
-            <div class="workslots4"></div>
-            <div class="workslots3"></div>
-            <div class="workslots2"></div>
-            <div class="workslots1"></div>
+            <div class="workslot5"></div>
+            <div class="workslot4"></div>
+            <div class="workslot3"></div>
+            <div class="workslot2"></div>
+            <div class="workslot1"></div>
           </div>
         </div>
 
@@ -141,10 +182,10 @@
         </div>
         <div class="menuSpace">
           <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
-            Slumpa startare. 
+            Slumpa startare 
           </button>
           <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
-            Nästa spelare. 
+            Nästa spelare 
             </button>
           <button v-if="players[playerId]" @click="auctionBoard()">
             visa aktion 
@@ -176,6 +217,7 @@ import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
 import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 import CollectorsRaiseValue from '@/components/CollectorsRaiseValue.vue'
 import CollectorsStartAuction from '@/components/CollectorsStartAuction.vue'
+//import CollectorsAuction from '@/components/CollectorsAuction.vue'
 
 export default {
   name: 'Collectors',
@@ -184,7 +226,8 @@ export default {
     CollectorsBuyActions,
     CollectorsSkillActions,
     CollectorsRaiseValue,
-    CollectorsStartAuction
+    CollectorsStartAuction,
+   // CollectorsAuction
 
   },
   data: function () {
@@ -223,6 +266,7 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
+      cardInAuction:[],
       raiseItems:[],
       raiseValue:{ fastaval: 0,
                      movie: 0,
@@ -234,7 +278,8 @@ export default {
       startingPlayerId: null,
       auctionActive: false,
       currentPlayerId: null,
-      
+      auctionPrice: 0,
+      bid: 0,
       scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
     }
@@ -278,6 +323,8 @@ export default {
         this.marketValues = d.marketValues;
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
+        this.cardInAuction = d.cardInAuction;
+        this.auctionPrice = d.auctionPrice
         //här skapas både raise Item och Raise value. innan denna körs så finns inget rum. Följ raise Value till datahandler.
         this.raiseItems=d.raiseItems;
         this.raiseValue=d.raiseValue;
@@ -322,9 +369,12 @@ export default {
 
     this.$store.state.socket.on('collectorsAuctionStarted',
       function(d) {
-        console.log(d.playerId, "started auction");
+        console.log(d.playerId, "started auction "+ this.cardInAuction);
         this.players = d.players;
         this.auctionCards = d.auctionCards;
+        this.cardInAuction = d.cardInAuction;
+        this.auctionActive = true;
+
       }.bind(this)
     );
 
@@ -502,7 +552,6 @@ export default {
     grid-row: 1;
     grid-template-columns: repeat(auto-fill, 12vw); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
     grid-template-rows: repeat(auto-fill, 12vw);
-    /*justify-content: space-evenly;*/
   }
   .card{
     position: relative;
@@ -530,7 +579,7 @@ export default {
 
   #grid {
     display: grid;
-    grid-gap: 1vw;
+    grid-gap: 0.5vw;
     margin: 2vw;
     justify-content:center;   /* dessa 2 centrerar horisontellt respektive vertikalt */
     align-items:center;
@@ -565,14 +614,16 @@ export default {
   */
 
   .player{
-    border-radius: 15px;
+    border-radius: 2vw;
   }
   .playerLeft{
     grid-column: 2;
     grid-row: 1;
     background-color: #7e2174;
     text-align:center;
-    height:10vw;
+    height:8vw;
+    width: 8vw;
+    font-size: 1.5vw;
   }
   /*  
       På alla dessa finns max-height eller motsvarande, dessa får vi leka runt med tills vi hittar något bra
@@ -582,24 +633,26 @@ export default {
     grid-column: 3;
     grid-row: 1;
     background-color: #19b3a7;
-    height: 10vw;
+    height: 8vw;
+    width: 8vw;
     text-align: center;
+    font-size: 1.5vw;
   }
   .playerRight{
     grid-column: 4;
     grid-row: 1;
     background-color: #ca9e68;
     text-align:center;
-    height:10vw;
+    height:8vw;
+    width: 8vw;
+    font-size: 1.5vw;
   }
-  .playerboard{  /* Denna ska göras om till "Player board" eller liknande där handen inkluderas*/
-    border-radius: 15px;
+  .playerboard{ 
+    border-radius: 2vw;
     background-color: rgb(70, 181, 214); /* Choose colour based on the 4 player colours */
     grid-column: 2 /span 3;
     grid-row: 5;
-    min-height: 0;
-    margin-top: -10%;
-    align-self: end;
+    min-height: 10vw;
   }
 
 
@@ -667,94 +720,148 @@ export default {
   */
 
   .items{
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color:#f8dcce;
     grid-column: 2 /span 3;
     grid-row: 2;
-    margin-top: 2.5vw;
-    contain:content;
-    justify-content:center;
-    align-content:center;
-    justify-self: center;
+    width:31vw;
   }
+  /*
   .itemgrid{
     display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;/*20% 20% 20% 20% 20%;*/
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
+    justify-items:center;
   }
-
+  */
   .skills{
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: #dfeccc;
     grid-column: 2 /span 3;
     grid-row: 3;
-    contain:content;
-    justify-content:center;
-    align-content:center;
-    justify-self: center;
+    width:31vw;
   }
+  /*
   .skillsgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
+    justify-items:center;
   }
-
+  */
   .raiseValue{
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: #cfdcf2;
     grid-column: 2 /span 3;
     grid-row: 4; 
-    margin-bottom: 2.5vw;
     justify-content:center;
-    align-content:center;
-    justify-self: center;
+    width:31vw;
   }
   .raiseValuegrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
+    justify-items:center;
+  }
+  .raiseValuegrid div{
+    font-size: 1vw;
+    font-weight:bold;
+    color: black;
+  }
+  .fastaval{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .figures{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .music{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .movie{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 4;
+    grid-row: 1;
+  }
+  .technology{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 5;
+    grid-row: 1;
   }
   .auction{
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: #f5f2cc;
     grid-column: 1;
     grid-row: 2 /span 3;
     width: 15vw;
     height: 37vw; /* items+skills+raise value+distanceBetween på ett ungefär*/
     justify-content:center;
-    justify-self: center;
+    justify-self: right;
   }
+  /*
   .auctiongrid{
     display:grid;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     padding: 1vw;
     justify-items: center;
   }
+  */
   .upforAuction{
+    display: grid;
     position: absolute;
-    width: 30vw;
-    height: 30vw;
+    grid-template-rows: 20% 60% auto;
+    grid-template-columns: auto auto auto;
+    width: 40vw;
+    height: 40vw;
     background-color: #f5efa0;
-    border-radius: 1vw;
+    border-radius: 2vw;
     border-style: solid;
     border-color: black;
     z-index:50;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
   }
-  .auctiongrid div{
-    zoom: 0.4;
+   .auctionCardView{
+    zoom: 4;
+    position: absolute;
+    align-content: center;
+    transition: auto;
+    transform: translate(50%, 20%);
+  }
+  .auctionButtons{
+    border: 1vw;
+    border-color: black;
+    grid-row-start: 3;
+    align-self: bottom;
+    background-color:grey;
+    transition-duration: 0.2;
+    cursor:pointer;
+  }
+  .auctionButtons:hover{
+    background-color: greenyellow;
+  }
+  .auctionMoney{
+    font-size: 300%;
+    grid-column: 3;
+    text-align: center;
+    color: darkgreen;
   }
   .work{
     text-align:center;
-    border-radius: 15px;
+    border-radius: 2vw;
     background-color: grey;
     grid-column: 5;
     grid-row: 2 /span 3;
     height: 37vw;
     width: 15vw;
-    justify-self: center;
+    justify-self: left;
   }
   .workgrid{
     display:grid;
@@ -771,73 +878,95 @@ export default {
     height: 5vw;
     width: auto;
   }
-  .workslots1{
+  .workslot1{
     background-image: url("/images/Work1_png.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
   }
-  .workslots2{
+  .workslot2{
     background-image: url("/images/Work2_png.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
   }
-  .workslots3{
+  .workslot3{
     background-image: url("/images/Work3_png.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
   }
-  .workslots4{
+  .workslot4{
     background-image: url("/images/Work4_png.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
   }
-
-  /*
-  Dessa nedan är bara provisoriska och ska göras om eller tas bort i slutändan.
-  */
-
+  .workslot5{
+    background-image: url("/images/Work5_png.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
   .roundCounter{
     grid-column: 1;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
-    border-radius: 15px;
+    border-radius: 2vw;
     padding:2vw;
-    max-height: 10vw;
-    max-width: auto;
+    max-height: 8vw;
+    max-width: 11vw;
+    justify-self: right;
     text-align: center;
+    font-size: 1vw;
   }
   .drawCardSpace{
     grid-column: 5;
     grid-row: 1;
     background-color:rgb(194, 194, 194);
-    border-radius: 15px;
+    border-radius: 2vw;
     padding:2vw;
-    max-height: 10vw;
-    max-width: auto;
+    max-height: 8vw;
+    max-width: 11vw;
     text-align: center;
+  }
+  .buttons{
+    display:inline-block;
+    color: grey;
+    background-color: lightcoral;
+    border-radius:1vw;
+    box-shadow: 0 0.3vw #999;
+  }
+  .buttons:active{
+    background-color: coral;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
+  }
+  .buttons:hover{
+    background-color: coral;
   }
   .gridedge3{
     grid-column: 1;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
-    border-radius: 15px;
+    border-radius: 2vw;
     padding:2vw;
-    max-height: 10vw;
-    max-width: auto;
+    max-height: 8vw;
+    max-width: 11vw;
+    font-size: 1vw;
   }
   .menuSpace{
     grid-column: 5;
     grid-row: 5;
     background-color:rgb(194, 194, 194);
-    border-radius: 15px;
+    border-radius: 2vw;
     padding: 2vw;
-    max-height: 10vw;
-    max-width: auto;
+    max-height: 8vw;
+    max-width: 11vw;
     text-align: center;
+  }
+  .menuSpace > * {  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
+    zoom: 0.8;
   }
 
   @media screen and (max-width: 800px) {
@@ -852,6 +981,8 @@ export default {
 
     https://stackoverflow.com/questions/47219272/how-can-i-use-window-size-in-vue-how-do-i-detect-the-soft-keyboard
     split image into tiles: https://codepen.io/Escu/pen/KVLBYP
+
+    https://stackoverflow.com/questions/2430206/how-can-i-scale-an-image-in-a-css-sprite
     
 
 */
