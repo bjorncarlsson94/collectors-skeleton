@@ -145,6 +145,7 @@
               :itemsOnSale="itemsOnSale"
               :marketValues="marketValues"
               :placement="buyPlacement"
+              :raiseValue="raiseValue"
               @buyCard="buyCard($event)"
               @placeBottle="placeBottle('buy', $event)"/>
           <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
