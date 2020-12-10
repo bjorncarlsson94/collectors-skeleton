@@ -204,7 +204,7 @@
      
     </main>
     {{players}}
-    {{marketValues}}
+    {{raiseValue}}
     <button v-if="players[playerId]" @click="players[playerId].money += 1">
       fake more money
     </button>
@@ -483,7 +483,7 @@ export default {
           roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
-          cost: this.marketValues[card.market] + this.chosenPlacementCost
+          cost: this.chosenPlacementCost
         }
       );
 

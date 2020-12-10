@@ -9,20 +9,20 @@
             @doAction="buyCard(card)"/>
           
           <div class="cardcost" v-for="(value,key) in currentValues" :key="key">
-            <p v-if="card.market===key">{{value}}</p>
+            <p v-if="card.item===key">{{value}}</p>
           </div>
        
         </div>
-          <div v-for="(p, index) in placement" :key="index">
-            <button class="button"
-              v-if="p.playerId===null"
-              :disabled="notYourTurn() || cannotAfford(p.cost)" 
-              @click="placeBottle(p)" >
-              ${{p.cost}}p
-            </button>
-            <div v-if="p.playerId !== null">
-              {{p.playerId}}
-            </div>
+        <div v-for="(p, index) in placement" :key="index">
+          <button class="button"
+            v-if="p.playerId===null"
+            :disabled="notYourTurn() || cannotAfford(p.cost)" 
+            @click="placeBottle(p)" >
+            ${{p.cost}}p
+          </button>
+          <div v-if="p.playerId !== null">
+            {{p.playerId}}
+          </div>
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@ export default {
      
       for(const key in this.raiseValue){
         if(key ==card.market){
-          return this.raiseValue[key];
+          return this.currentValues[key]
 
         }
       }  return 0;
@@ -85,7 +85,7 @@ export default {
       },
       cardCostUppdate: function (cost) {
      
-
+        
         this.currentValues.fastaval=this.raiseValue.fastaval+cost;
         this.currentValues.movie=this.raiseValue.movie+cost;
         this.currentValues.technology=this.raiseValue.technology+cost;
@@ -101,26 +101,28 @@ export default {
       
       this.highlightAvailableCards(p.cost);
     },
-    highlightAvailableCards: function (cost=100) {
+    highlightAvailableCards: function (cost) {
       for (let i = 0; i < this.itemsOnSale.length; i += 1) {
         
-        if (this.marketValues[this.itemsOnSale[i].item] <= this.player.money - cost) {
+        if (this.currentValues[this.itemsOnSale[i].item] <= this.player.money) {
           this.$set(this.itemsOnSale[i], "available", true);
         }
         else {
           this.$set(this.itemsOnSale[i], "available", false);
         }
-        this.chosenPlacementCost = cost; 
-        this.cardCost(this.itemsOnSale[i],cost);
+        this.chosenPlacementCost = cost;
+        
       }
       for (let i = 0; i < this.player.hand.length; i += 1) {
-        if (this.marketValues[this.player.hand[i].item] <= this.player.money - cost) {
+        if (this.currentValues[this.player.hand[i].item] <= this.player.money) {
           this.$set(this.player.hand[i], "available", true);
           this.chosenPlacementCost = cost;
         }
         else {
+
           this.$set(this.player.hand[i], "available", false);
-          this.chosenPlacementCost = cost; 
+          
+          this.chosenPlacementCost = cost;
         }
       }
     },
@@ -129,7 +131,7 @@ export default {
         
         this.cardCostUppdate(0)
         this.$emit('buyCard', card)
-        this.highlightAvailableCards()
+        this.highlightAvailableCards(0)
       }
      
     },
