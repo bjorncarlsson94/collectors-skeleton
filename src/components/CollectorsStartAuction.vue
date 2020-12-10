@@ -9,10 +9,8 @@
             @doAction="startAuction(card)"/>
           <!--{{ cardCost(card) }}-->
         </div>
-      </div>
-      <div>
-        <div class="buttons" v-for="(p, index) in placement" :key="index">
-          <button
+        <div v-for="(p, index) in placement" :key="index">
+          <button class="button"
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
             @click="placeBottle(p)" >
@@ -22,6 +20,8 @@
             {{p.playerId}}
           </div>
         </div>
+      </div>
+      <div>
       </div>
     </div>
 </template>
@@ -97,9 +97,24 @@ export default {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
   }
-  .buttons{
-    padding: 1vw;
-    display:inline-block;
+  .button{
+    float:left;
+    font-size: 1vw;
+    justify-content: space-around;
+    margin: 1vw;
+    padding:0.2vw;
+    color: black;
+    background-color: #f5ef9e;
+    border-radius:1vw;
+    box-shadow: 0 0.3vw #999;
+  }
+  .button:active{
+    background-color: #d6ce58;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
+  }
+  .button:hover{
+    background-color: #d6ce58;
   }
   .auctiongrid{
     display:grid;

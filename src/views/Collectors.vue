@@ -34,13 +34,13 @@
         <!-- Raise value div. with 4 random cards in it at the moment-->
        <!--Raise value div. with 4 random cards in it at the moment 
        They are diplayed in the correct raiseValue columm-->
-
+    <!--
       <CollectorsRaiseValue v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
         :raiseItems="raiseItems"
         :raiseValue="raiseValue"/> 
-       
+    -->
       <br> 
      
       <section id="wrapper">
@@ -60,14 +60,14 @@
               <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
               </div>
               <button class="auctionButtons" v-if="players[playerId]" @click="auctionBoard()">
-            visa aktion 
-          </button>
-          <button class="auctionButtons" v-if="players[playerId]" @click="bid -= 1">
-            -
-          </button>
-          <button class="auctionButtons" v-if="players[playerId]" @click="bid += 1">
-             +
-          </button>
+                visa aktion 
+              </button>
+              <button class="auctionButtons" v-if="players[playerId]" @click="bid -= 1">
+                -
+              </button>
+              <button class="auctionButtons" v-if="players[playerId]" @click="bid += 1">
+                +
+              </button>
       </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
@@ -109,12 +109,19 @@
         </div>
         <div class="raiseValue">
           <div class="raiseValuegrid">
+            <CollectorsRaiseValue v-if="players[playerId]"
+              :labels="labels"
+              :player="players[playerId]"
+              :raiseItems="raiseItems"
+              :raiseValue="raiseValue"/>
+        <!--
             <div class="fastaval">fastaval</div>
             <div class="figures">figures</div>
             <div class="music">music</div>
             <div class="movie">movie</div>
             <div class="technology">technology</div>
             <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
+            -->
           </div>
         </div>
         
@@ -654,6 +661,7 @@ export default {
     grid-column: 2 /span 3;
     grid-row: 5;
     min-height: 10vw;
+    padding:2vw;
   }
 
 
@@ -758,12 +766,14 @@ export default {
     justify-content:center;
     width:31vw;
   }
+  /*
   .raiseValuegrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding:2vw;
     justify-items:center;
   }
+  */
   .raiseValuegrid div{
     font-size: 1vw;
     font-weight:bold;

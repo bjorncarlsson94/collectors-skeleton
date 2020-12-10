@@ -6,29 +6,29 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
 
 <template>
     <div>
-      <h1>{{labels.raiseValue}}</h1>
-      <div class="wrapper1">
-     <div v-for="values in marketOrder" :key="values" class="raiseValues" >
-            <p>{{values}} {{ cardCost(values)}}</p>
-            
+      <!--<h1>{{labels.raiseValue}}</h1>-->
+      <div class="wrapper1 raiseValuegrid">
+        <div v-for="values in marketOrder" :key="values"  >
+            <p class="valueSlot">{{values}} 
+              <br>
+            {{ cardCost(values)}}</p>          
           
-             <div v-for="(card, index) in raiseItems"  :key="index" >
-                 <div v-if="card.market==values" class="raiseValuesChild">
-                
+            <div class="cardslots" v-for="(card, index) in raiseItems"  :key="index" >
+               <div v-if="card.market==values" >
                      
-                    <CollectorsCard
-                        :card="card" 
-                        :availableAction="card.available" 
-                    />
+                  <CollectorsCard
+                      :card="card" 
+                      :availableAction="card.available" 
+                  />
                      
-                     </div>
+                </div>
                      
             </div>
            
-             </div>       
+        </div>      
     
-      
-        </div>
+      </div>
+
    </div> 
     
 </template>
@@ -92,21 +92,30 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  .wrapper1{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 180px);
-    margin-bottom: 250px;
-    
-  }
-   
-  .raiseValuesChild {
-
-      display:grid;
-      grid-template-rows: repeat(auto-fill, 50px);
+.wrapper1{
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 130px);
 }
-  
-
-
+.raiseValuegrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding:2vw;
+  justify-self:space-evenly;
+  text-align:center;
+  grid-template-rows: 1fr 1fr;
+  margin-bottom: 2vw;
+}
+.cardslots{
+  display: grid;
+  grid-row: 1;
+  grid-template-rows: repeat(auto-fill, 0px);
+}
+.valueSlot{
+  color:black;
+  background-color: #94b5ee;
+  border-radius: 1vw;
+  font-size: 0.8vw;
+}
   
 /*
   .available-to-choose {

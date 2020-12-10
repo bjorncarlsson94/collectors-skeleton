@@ -9,11 +9,10 @@
             @doAction="buySkill(card)"/>
      
           <!--{{ cardCost(card) }}-->
+          
         </div>
-      </div>
-      <div>
-        <div class="buttons" v-for="(p, index) in placement" :key="index">
-          <button
+        <div v-for="(p, index) in placement" :key="index">
+          <button class="button"
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
             @click="placeBottle(p)" >
@@ -99,9 +98,24 @@ export default {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
   }
-  .buttons{
-    padding: 1vw;
-    display:inline-block;
+  .button{
+    float:left;
+    font-size: 1vw;
+    justify-content: space-around;
+    margin: 1vw;
+    padding:0.2vw;
+    color: black;
+    background-color: #d2ebad;
+    border-radius:1vw;
+    box-shadow: 0 0.3vw #999;
+  }
+  .button:active{
+    background-color: #aeda6e;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
+  }
+  .button:hover{
+    background-color: #aeda6e;
   }
   .skillsgrid{
     display:grid;

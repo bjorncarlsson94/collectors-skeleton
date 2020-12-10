@@ -8,23 +8,21 @@
             :availableAction="card.available" 
             @doAction="buyCard(card)"/>
           
-        <div v-for="(value,key) in currentValues" :key="key">
+          <div class="cardcost" v-for="(value,key) in currentValues" :key="key">
             <p v-if="card.market===key">{{value}}</p>
           </div>
        
         </div>
-      </div>
-      <div>
-        <div class="buttons" v-for="(p, index) in placement" :key="index">
-          <button
-            v-if="p.playerId===null"
-            :disabled="notYourTurn() || cannotAfford(p.cost)" 
-            @click="placeBottle(p)" >
-            ${{p.cost}}p
-          </button>
-          <div v-if="p.playerId !== null">
-            {{p.playerId}}
-          </div>
+          <div v-for="(p, index) in placement" :key="index">
+            <button class="button"
+              v-if="p.playerId===null"
+              :disabled="notYourTurn() || cannotAfford(p.cost)" 
+              @click="placeBottle(p)" >
+              ${{p.cost}}p
+            </button>
+            <div v-if="p.playerId !== null">
+              {{p.playerId}}
+            </div>
         </div>
       </div>
     </div>
@@ -149,9 +147,27 @@ export default {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
   }
-  .buttons{
-    padding: 1vw;
-    display:inline-block;
+  .button{
+    float:left;
+    font-size: 1vw;
+    justify-content: space-around;
+    margin:1vw;
+    padding:0.2vw;
+    color: black;
+    background-color: #ffbe9e;
+    border-radius:1vw;
+    box-shadow: 0 0.3vw #999;
+  }
+  .button:active{
+    background-color: #da855a;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
+  }
+  .button:hover{
+    background-color: #da855a;
+  }
+  .cardcost{
+    text-align: center;
   }
   .itemgrid{
     display:grid;
