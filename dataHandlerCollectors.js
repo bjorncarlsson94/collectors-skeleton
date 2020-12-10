@@ -164,7 +164,7 @@ Data.prototype.joinGame = function (roomId, playerId) {
       console.log("Player", playerId, "joined for the first time");
       room.players[playerId] = {
         hand: [],
-        money: 8,
+        money: 3,
         points: 0,
         skills: [],
         items: [],
@@ -231,7 +231,9 @@ Data.prototype.buyCard = function (roomId, playerId, card, cost) {
       }
     }
     room.players[playerId].items.push(...c);
-    room.players[playerId].money -= cost;
+    console.log(cost);
+    console.log(room.raiseValue[card.item]);
+    room.players[playerId].money -= cost+room.raiseValue[card.item];
 
   }
 }
