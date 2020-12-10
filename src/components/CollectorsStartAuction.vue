@@ -21,8 +21,6 @@
           </div>
         </div>
       </div>
-      <div>
-      </div>
     </div>
 </template>
 
@@ -119,6 +117,7 @@ export default {
   .auctiongrid{
     display:grid;
     grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     padding: 1vw;
     justify-items: center;
   }
