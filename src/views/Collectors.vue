@@ -126,27 +126,53 @@
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
         
           <div
-            class="hand playerboard"
+            class="playerboard"
             v-if="players[playerId]"
             v-on:click="expandPlayerBoard"
             v-bind:class="{ active: isActive }"
           >
             <!-- Visas när handen är stängd-->
-            <h1 v-if="!isActive">Total value:</h1>
-
+            <div v-if="!isActive">
+            <h1>Total value:</h1>
+            </div>
+            
+            
             <!-- Visas när handen är öppen-->
-            <h2 v-if="isActive">
-              Collection:
-              <CollectorsCard
-                v-for="(card, index) in players[playerId].hand"
-                :card="card"
-                :availableAction="card.available"
-                @doAction="buyCard(card)"
-                :key="index"
-              />
-            </h2>
-            <h2 v-if="isActive">Hidden:</h2>
+            <div class= "playerBoardGrid" v-if="isActive">
+            
+              <div class= "collection" >
+                Collection:
+                <h2>
+                  <CollectorsCard
+                  v-for="(card, index) in players[playerId].items"
+                 :card="card"
+                 :availableAction="card.available"
+                 @doAction="buyCard(card)"
+                 :key="index"
+               />
+
+                </h2>
+              
+                <h2>Hidden:</h2>
+
+                <h2>Total value:</h2>
+              </div>
+            
+
+              <div class = "hand">
+              Hand:
+                <CollectorsCard
+                  v-for="(card, index) in players[playerId].hand"
+                 :card="card"
+                 :availableAction="card.available"
+                 @doAction="buyCard(card)"
+                 :key="index"
+               />
+             </div>
+
           </div>
+            
+        </div>
         
         
 
@@ -709,12 +735,31 @@ export default {
 /* Om man klickar på handen aktiveras denna. Denna ger attribut bara om isActive på divven = true */
 .playerboard.active {
   background-color: rgb(95, 216, 253);
-  margin-top: -100%;
-  height: 50vh;
+  margin-top: -110%;
+  width: 150%;
+  height: 60vh;
   align-self: end;
-  width: 110%;
   justify-self: center;
   z-index: 1;
+}
+
+.playerBoardGrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+.collection{
+ grid-row: 1/3;
+ grid-column: 1/4;
+ background-color: lawngreen;
+}
+.hand{
+ grid-row: 4;
+ grid-column: 1/5;
+ max-height: 15vh;
+ background-color: red;
+ overflow: hidden;
 }
 
 /* Om man klickar på spelaren i topp */
