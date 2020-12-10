@@ -201,7 +201,7 @@
             Slumpa startare 
           </button>
           <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
-            Nästa spelare 
+            {{labels.endTurn}}
             </button>
           <button v-if="players[playerId]" @click="auctionBoard()">
             visa aktion 

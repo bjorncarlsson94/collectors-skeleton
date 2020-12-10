@@ -109,6 +109,7 @@ export default {
   display: grid;
   grid-row: 1;
   grid-template-rows: repeat(auto-fill, 0px);
+  justify-items:center;
 }
 .valueSlot{
   color:black;
