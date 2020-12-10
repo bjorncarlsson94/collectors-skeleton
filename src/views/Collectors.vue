@@ -67,15 +67,15 @@
              <div class="auctionCardView">
               <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
               </div>
-              <button class="auctionButtons" v-if="players[playerId]" @click="auctionBoard()">
-                visa aktion 
-              </button>
-              <button class="auctionButtons" v-if="players[playerId]" @click="bid -= 1">
-                -
-              </button>
-              <button class="auctionButtons" v-if="players[playerId]" @click="bid += 1">
-                +
-              </button>
+              <button class="auctionButtons" v-if="players[playerId]" :disabled="bid<auctionPrice || !players[playerId].turn" @click="placeBid()">
+            Place Bid 
+          </button>
+          <button class="auctionButtons" v-if="players[playerId]" :disabled="!players[playerId].turn || bid<auctionPrice+1" @click="bid -= 1">
+            -
+          </button>
+          <button class="auctionButtons" v-if="players[playerId]" :disabled="!players[playerId].turn || players[playerId].money<bid+1" @click="bid += 1">
+             +
+          </button>
       </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
@@ -340,6 +340,8 @@ export default {
       currentPlayerId: null,
       auctionPrice: 0,
       bid: 0,
+      auctionLeaderId: null,
+      auctionWinnerId: null,
       scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
     }
@@ -434,10 +436,23 @@ export default {
         this.auctionCards = d.auctionCards;
         this.cardInAuction = d.cardInAuction;
         this.auctionActive = true;
+        this.auctionPrice = 0;
 
       }.bind(this)
     );
-
+    this.$store.state.socket.on('auctionRound',
+      function(d) {
+        this.auctionPrice = d.auctionPrice;
+        this.auctionLeaderId = d.auctionLeaderId
+        console.log(this.auctionLeaderId+"started leder"+ this.auctionPrice);
+        this.players = d.players;
+        this.bid = d.auctionPrice;
+        //this.cardInAuction =d.cardInauction;
+        if (this.cardInAuction <1){
+        console.log(this.auctionLeaderId, "någon vann"+ this.auctionPrice);
+        }
+      }.bind(this)
+    );
     this.$store.state.socket.on('playerPicked',
       function(d) {
         console.log( "spelare vald");
@@ -556,7 +571,7 @@ export default {
     },
 
      startAuction: function (card) {
-      console.log("startAuction", card);
+      console.log("startAuction"+ card);
       this.$store.state.socket.emit('collectorsStartAuction', {
           roomId: this.$route.params.id,
           playerId: this.playerId,
@@ -567,6 +582,7 @@ export default {
       );
 
     },
+
 
     buyCardOrAuction: function(card){
       if(this.auctionAvailable == true){
@@ -581,6 +597,18 @@ export default {
 
 
 
+    placeBid: function () {
+      console.log("bid innan:"+this.bid);
+       this.$store.state.socket.emit('auctionBid', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          bid: this.bid,
+          auctionPrice: this.auctionPrice
+        }
+      );
+    },
+
+
     startTurn: function () {
       console.log("hola",);
   
@@ -592,8 +620,8 @@ export default {
     nextPlayer: function () {
       this.$store.state.socket.emit('nextPlayer', {
         roomId: this.$route.params.id,
-        
         playerId: this.playerId,
+        auctionActive: this.auctionActive
         }
       );
     }

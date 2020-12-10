@@ -304,6 +304,22 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
   }
 }
 
+
+Data.prototype.auctionWon = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  let card = null;
+  if (typeof room !== 'undefined') {
+    let c = null;
+        card = cardInAuction[0];
+        c = room.cardInAuction.splice(0, 1, {});
+      }
+      console.log("kortet ges till vinnaren"+playerId)
+      console.log(card)
+      room.players[playerId].hand.push(card);
+      room.players[playerId].money -= AuctionPrice;
+}
+    // ...then check if it is in the hand. It cannot be in both so it's safe
+
 Data.prototype.placeBottle = function (roomId, playerId, action, cost) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
@@ -415,10 +431,23 @@ Data.prototype.startTurn = function (roomId) {
 
 
 }
+
 Data.prototype.getRound = function (roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     return room.round;
+  } else return [];
+}
+Data.prototype.getAuctionLeaderId = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.auctionLeaderId;
+  } else return [];
+}
+Data.prototype.getAuctionPrice = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.auctionPrice;
   } else return [];
 }
 
@@ -439,7 +468,7 @@ Data.prototype.getCardValue = function (roomId) {
 }
 
 //Byter spelare till nästa i arrayen 
-Data.prototype.nextPlayer = function (roomId, playerId) {
+Data.prototype.nextPlayer = function (roomId, playerId, auctionActive) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     console.log(room.round)
@@ -450,7 +479,8 @@ Data.prototype.nextPlayer = function (roomId, playerId) {
       i = -1
     }
     room.players[keys[i + 1]].turn = true;
-    if (room.startingPlayerId === keys[i+1]) {
+    console.log(auctionActive)
+    if (room.startingPlayerId === keys[i+1] && !auctionActive) {
       room.round += 1;
     }
     return room.players, room.round;
@@ -459,6 +489,46 @@ Data.prototype.nextPlayer = function (roomId, playerId) {
 
 
 }
+//budgivning vid auction
+Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
+  let room = this.rooms[roomId];
+  console.log("bid::" + bid)
+  if (typeof room !== 'undefined') {
+    if (bid > auctionPrice){
+      auctionPrice = bid;
+      room.auctionLeaderId = playerId;
+    }
+
+    else{
+      var keys = Object.keys(room.players);
+      let i = Object.keys(room.players).indexOf(playerId)
+      console.log(i +"ör lika med"+keys.length-1)
+      if (i === keys.length - 1){
+        if(keys[0] === room.auctionLeaderId){
+          console.log("varför1")
+          //this.auctionWinner(room, room.auctionLeaderId)
+          
+        }
+      }
+      else if (room.players[keys[i+1]]=== room.auctionLeaderId){
+        console.log("varför2")
+        //this.auctionWinner(room, room.auctionLeaderId)
+      }
+    }
+    room.auctionPrice = auctionPrice;
+    console.log("PirceA::"+auctionPrice)
+    this.nextPlayer(roomId, playerId, true)
+    return room.player
+}
+}
+
+//vinnar budet 
+
+Data.prototype.auctionBid = function (roomId, playerId, bid, auctionPrice){
+
+}
+
+
 //I cardvalue så sätts alla värden på korten. Om det ligger 1 kort med market=fastaval så kommer fastaval ökas med 1. 
 Data.prototype.cardValue = function (roomId) {
   var fastaval=0;
