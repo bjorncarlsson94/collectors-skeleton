@@ -7,7 +7,7 @@
             :card="card" 
             :availableAction="card.available" 
             @doAction="buySkill(card)"/>
-          {{ cardCost(card) }}
+     
         </div>
       </div>
       <div>
@@ -38,7 +38,7 @@ export default {
     labels: Object,
     player: Object,
     skillsOnSale: Array,
-    marketValues: Object,
+    
     placement: Array
   },
   methods: {

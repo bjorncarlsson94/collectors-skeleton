@@ -7,7 +7,11 @@
             :card="card" 
             :availableAction="card.available" 
             @doAction="buyCard(card)"/>
-          <!--{{ cardCost(card) }}-->
+          
+        <div v-for="(value,key) in currentValues" :key="key">
+            <p v-if="card.market===key">{{value}}</p>
+          </div>
+       
         </div>
       </div>
       <div>
@@ -34,14 +38,33 @@ export default {
   components: {
     CollectorsCard
   },
+  data: function(){
+      return{
+       currentValues:{
+         fastaval: this.raiseValue.fastaval,
+         movie: this.raiseValue.movie,
+         technology: this.raiseValue.technology,
+         figures: this.raiseValue.figures,
+         music: this.raiseValue.music },
+       
+       
+
+       };
+},
+
   props: {
     labels: Object,
     player: Object,
     itemsOnSale: Array,
     marketValues: Object,
-    placement: Array
-  },
+    placement: Array,
+    raiseValue:Object  },
+
   methods: {
+    log(value,key){
+        console.log("value "+value+" key"+key);
+
+    },
     cannotAfford: function (cost) {
       let minCost = 100;
       for(let key in this.marketValues) {
@@ -51,14 +74,38 @@ export default {
       return (this.player.money < minCost);
     },
     cardCost: function (card) {
-      return this.marketValues[card.market];
-    },
+     
+      for(const key in this.raiseValue){
+        if(key ==card.market){
+          return this.raiseValue[key];
+
+        }
+      }  return 0;
+     
+
+
+      },
+      cardCostUppdate: function (cost) {
+     
+
+        this.currentValues.fastaval=this.raiseValue.fastaval+cost;
+        this.currentValues.movie=this.raiseValue.movie+cost;
+        this.currentValues.technology=this.raiseValue.technology+cost;
+        this.currentValues.figures=this.raiseValue.figures+cost;
+        this.currentValues.music=this.raiseValue.music+cost;
+
+      
+  },
+     
     placeBottle: function (p) {
+      this.cardCostUppdate(p.cost);
       this.$emit('placeBottle', p.cost);
+      
       this.highlightAvailableCards(p.cost);
     },
     highlightAvailableCards: function (cost=100) {
       for (let i = 0; i < this.itemsOnSale.length; i += 1) {
+        
         if (this.marketValues[this.itemsOnSale[i].item] <= this.player.money - cost) {
           this.$set(this.itemsOnSale[i], "available", true);
         }
@@ -66,6 +113,7 @@ export default {
           this.$set(this.itemsOnSale[i], "available", false);
         }
         this.chosenPlacementCost = cost; 
+        this.cardCost(this.itemsOnSale[i],cost);
       }
       for (let i = 0; i < this.player.hand.length; i += 1) {
         if (this.marketValues[this.player.hand[i].item] <= this.player.money - cost) {
@@ -80,15 +128,20 @@ export default {
     },
     buyCard: function (card) {
       if (card.available) {
+        
+        this.cardCostUppdate(0)
         this.$emit('buyCard', card)
         this.highlightAvailableCards()
       }
+     
     },
     notYourTurn: function () {
       return (this.player.turn== false)
     }
-  }
 }
+  }
+  
+
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>

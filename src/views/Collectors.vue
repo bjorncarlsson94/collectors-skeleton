@@ -9,6 +9,7 @@
         :itemsOnSale="itemsOnSale"
         :marketValues="marketValues"
         :placement="buyPlacement"
+        :raiseValue="raiseValue"
         @buyCard="buyCard($event)"
         @placeBottle="placeBottle('buy', $event)"/>
       {{skillPlacement}} {{chosenPlacementCost}}
@@ -16,7 +17,7 @@
         :labels="labels"
         :player="players[playerId]"
         :skillsOnSale="skillsOnSale"
-        :marketValues="marketValues"
+        
         :placement="skillPlacement"
         @buySkill="buySkill($event)"
         @placeBottle="placeBottle('skill', $event)"/>
