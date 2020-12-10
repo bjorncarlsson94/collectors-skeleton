@@ -55,20 +55,20 @@
               :auctionActive ="auctionActive"/>-->
           <div class="auctionMoney">
             {{bid}}$
-            </div>
+          </div>
              <div class="auctionCardView">
               <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
               </div>
               <button class="auctionButtons" v-if="players[playerId]" @click="auctionBoard()">
-                visa aktion 
+                Visa aktion 
               </button>
               <button class="auctionButtons" v-if="players[playerId]" @click="bid -= 1">
-                -
+                Bjud lägre
               </button>
               <button class="auctionButtons" v-if="players[playerId]" @click="bid += 1">
-                +
+                Bjud högre
               </button>
-      </div>
+        </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
           PlayerLeft
@@ -109,19 +109,11 @@
         </div>
         <div class="raiseValue">
           <div class="raiseValuegrid">
-            <CollectorsRaiseValue v-if="players[playerId]"
-              :labels="labels"
-              :player="players[playerId]"
-              :raiseItems="raiseItems"
-              :raiseValue="raiseValue"/>
-        <!--
-            <div class="fastaval">fastaval</div>
-            <div class="figures">figures</div>
-            <div class="music">music</div>
-            <div class="movie">movie</div>
-            <div class="technology">technology</div>
-            <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
-            -->
+              <CollectorsRaiseValue v-if="players[playerId]"
+                :labels="labels"
+                :player="players[playerId]"
+                :raiseItems="raiseItems"
+                :raiseValue="raiseValue"/>
           </div>
         </div>
         
@@ -735,14 +727,6 @@ export default {
     grid-row: 2;
     width:31vw;
   }
-  /*
-  .itemgrid{
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding:2vw;
-    justify-items:center;
-  }
-  */
   .skills{
     border-radius: 2vw;
     background-color: #dfeccc;
@@ -750,14 +734,6 @@ export default {
     grid-row: 3;
     width:31vw;
   }
-  /*
-  .skillsgrid{
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding:2vw;
-    justify-items:center;
-  }
-  */
   .raiseValue{
     border-radius: 2vw;
     background-color: #cfdcf2;
@@ -766,43 +742,10 @@ export default {
     justify-content:center;
     width:31vw;
   }
-  /*
-  .raiseValuegrid{
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding:2vw;
-    justify-items:center;
-  }
-  */
   .raiseValuegrid div{
     font-size: 1vw;
     font-weight:bold;
     color: black;
-  }
-  .fastaval{
-    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .figures{
-    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .music{
-    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
-    grid-column: 3;
-    grid-row: 1;
-  }
-  .movie{
-    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
-    grid-column: 4;
-    grid-row: 1;
-  }
-  .technology{
-    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
-    grid-column: 5;
-    grid-row: 1;
   }
   .auction{
     border-radius: 2vw;
@@ -814,14 +757,6 @@ export default {
     justify-content:center;
     justify-self: right;
   }
-  /*
-  .auctiongrid{
-    display:grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    padding: 1vw;
-    justify-items: center;
-  }
-  */
   .upforAuction{
     display: grid;
     position: absolute;
@@ -832,6 +767,7 @@ export default {
     background-color: #f5efa0;
     border-radius: 2vw;
     border-style: solid;
+    border-width: 0.4vw;
     border-color: black;
     z-index:50;
     top: 50%;
@@ -847,22 +783,30 @@ export default {
     transform: translate(50%, 20%);
   }
   .auctionButtons{
+    margin: 1vw;
     border: 1vw;
+    border-radius: 2vw;
     border-color: black;
     grid-row-start: 3;
     align-self: bottom;
-    background-color:grey;
+    background-color:rgb(212, 212, 212);
     transition-duration: 0.2;
     cursor:pointer;
+    box-shadow: 0 0.3vw #999;
   }
   .auctionButtons:hover{
-    background-color: greenyellow;
+    background-color: rgb(176, 255, 145);
+    
+  }
+  .auctionButtons:active{
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
   }
   .auctionMoney{
     font-size: 300%;
     grid-column: 3;
     text-align: center;
-    color: darkgreen;
+    color: black;
   }
   .work{
     text-align:center;

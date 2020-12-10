@@ -170,6 +170,9 @@ export default {
   }
   .cardcost{
     text-align: center;
+    color: black;
+    font-weight: bold;
+    font-size: 1vw;
   }
   .itemgrid{
     display:grid;
