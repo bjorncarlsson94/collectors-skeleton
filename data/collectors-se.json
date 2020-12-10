@@ -3,5 +3,7 @@
 	"invite": "Bjud in andra spelare med den här länken:",
 	"endTurn": "Avsluta runda",
 	"buyCard": "Köp ett kort",
+	"buySkill": "Köp en skill",
+	"raiseValue":"Höj värdet",
 	"startAuction": "Starta en auktion"
 }
