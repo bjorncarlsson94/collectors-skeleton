@@ -12,43 +12,45 @@
         :placement="buyPlacement"
         :raiseValue="raiseValue"
         @buyCard="buyCard($event)"
-        @placeBottle="placeBottle('buy', $event)"
-      />
-      {{ skillPlacement }} {{ chosenPlacementCost }}
-      <CollectorsSkillActions
-        v-if="players[playerId]"
+        @placeBottle="placeBottle('buy', $event)"/>
+      {{skillPlacement}} {{chosenPlacementCost}}
+      <CollectorsSkillActions v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
         :skillsOnSale="skillsOnSale"
         
         :placement="skillPlacement"
         @buySkill="buySkill($event)"
-        @placeBottle="placeBottle('skill', $event)"
-      />
-      <CollectorsStartAuction
-        v-if="players[playerId]"
+        @placeBottle="placeBottle('skill', $event)"/>
+        <CollectorsStartAuction v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
         :auctionCards="auctionCards"
         :marketValues="marketValues"
         :placement="auctionPlacement"
         @startAuction="startAuction($event)"
-        @placeBottle="placeBottle('auction', $event)"
-      />
+        @placeBottle="placeBottle('auction', $event)"/>
       -->
-      <!--Raise value div. with 4 random cards in it at the moment-->
-      <!--Raise value div. with 4 random cards in it at the moment 
-       They are diplayed in the correct raiseValue columm-->
-
-      <!-- <CollectorsRaiseValue
-        v-if="players[playerId]"
+        <!-- Raise value div. with 4 random cards in it at the moment-->
+       <!--Raise value div. with 4 random cards in it at the moment 
+        Raise value div. with 4 random cards in it at the moment 
+        Raise value div. with 4 random cards in it at the moment 
+        Raise value div. with 4 random cards in it at the moment 
+        Raise value div. with 4 random cards in it at the moment 
+        Raise value div. with 4 random cards in it at the moment 
+        Raise value div. with 4 random cards in it at the moment 
+        Raise value div. with 4 random cards in it at the moment 
+        Raise value div. with 4 random cards in it at the moment 
+        They are diplayed in the correct raiseValue columm-->
+    <!--
+      <CollectorsRaiseValue v-if="players[playerId]"
         :labels="labels"
         :player="players[playerId]"
         :raiseItems="raiseItems"
-        :raiseValue="raiseValue"
-      />
-       -->
-
+        :raiseValue="raiseValue"/> 
+    -->
+      <br> 
+     
       <section id="wrapper">
 
         <div class="upforAuction" v-show="auctionActive" v-if="players[playerId]">
@@ -61,20 +63,20 @@
               :auctionActive ="auctionActive"/>-->
           <div class="auctionMoney">
             {{bid}}$
-          </div>
+            </div>
              <div class="auctionCardView">
               <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
               </div>
               <button class="auctionButtons" v-if="players[playerId]" @click="auctionBoard()">
-                Visa aktion 
+                visa aktion 
               </button>
               <button class="auctionButtons" v-if="players[playerId]" @click="bid -= 1">
-                Bjud lägre
+                -
               </button>
               <button class="auctionButtons" v-if="players[playerId]" @click="bid += 1">
-                Bjud högre
+                +
               </button>
-        </div>
+      </div>
       <div id="grid">
         <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
           PlayerLeft
@@ -90,14 +92,14 @@
         </div>
         <div class="skills">
           <div class="skillsgrid">
-            <CollectorsSkillActions v-if="players[playerId]" 
+            <CollectorsSkillActions v-if="players[playerId]"
                 :labels="labels"
                 :player="players[playerId]"
                 :skillsOnSale="skillsOnSale"
                 :marketValues="marketValues"
                 :placement="skillPlacement"
                 @buySkill="buySkill($event)"
-                @placeBottle="placeBottle('skill', $event)"/> 
+                @placeBottle="placeBottle('skill', $event)"/>
             <!--<CollectorsCard v-for="(card, index) in skillsOnSale" :card="card" :key="index"/>-->
           </div>
         </div>
@@ -115,42 +117,32 @@
         </div>
         <div class="raiseValue">
           <div class="raiseValuegrid">
-              <CollectorsRaiseValue v-if="players[playerId]"
-                :labels="labels"
-                :player="players[playerId]"
-                :raiseItems="raiseItems"
-                :raiseValue="raiseValue"/>
+            <CollectorsRaiseValue v-if="players[playerId]"
+              :labels="labels"
+              :player="players[playerId]"
+              :raiseItems="raiseItems"
+              :raiseValue="raiseValue"/>
+        <!--
+            <div class="fastaval">fastaval</div>
+            <div class="figures">figures</div>
+            <div class="music">music</div>
+            <div class="movie">movie</div>
+            <div class="technology">technology</div>
+            <CollectorsCard v-for="(card, index) in raiseItems" :card="card" :key="index"/>
+            -->
           </div>
         </div>
         
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
-        
-          <div
-            class="hand playerboard"
-            v-if="players[playerId]"
-            v-on:click="expandPlayerBoard"
-            v-bind:class="{ active: isActive }"
-          >
-            <!-- Visas när handen är stängd-->
-            <h1 v-if="!isActive">Total value:</h1>
-
-            <!-- Visas när handen är öppen-->
-            <h2 v-if="isActive">
-              Collection:
-              <CollectorsCard
-                v-for="(card, index) in players[playerId].hand"
-                :card="card"
-                :availableAction="card.available"
-                @doAction="buyCard(card)"
-                :key="index"
-              />
-            </h2>
-            <h2 v-if="isActive">Hidden:</h2>
-          </div>
-        
+        <div class="playerboard" v-if="players[playerId]" v-on:click="expandPlayerBoard"  v-bind:class="{ active: isActive }"> 
+          <div class="playerItems"></div>
+          <div class="playerSkill"></div>
+          <div class="playerIncome"></div>
+          <CollectorsCard v-for="(card, index) in players[playerId].hand" :card="card" :availableAction="card.available" @doAction="buyCardOrAuction(card)" :key="index"/>
+        </div>
         
 
-          <!--
+        <!--
 
                     VIKTIGT!!!
 
@@ -215,7 +207,7 @@
             visa aktion 
           </button>
         </div>
-        </div>
+      </div>
       </section>
      
     </main>
@@ -225,15 +217,10 @@
       fake more money
     </button>
     <footer>
-      <p>
-        {{ labels.invite }}
-        <input
-          type="text"
-          :value="publicPath + $route.path"
-          @click="selectAll"
-          readonly="readonly"
-        />
-      </p>
+        <p>
+          {{ labels.invite }}
+          <input type="text" :value="publicPath + $route.path" @click="selectAll" readonly="readonly">
+        </p>
     </footer>
   </div>
 </template>
@@ -249,7 +236,7 @@ import CollectorsStartAuction from '@/components/CollectorsStartAuction.vue'
 //import CollectorsAuction from '@/components/CollectorsAuction.vue'
 
 export default {
-  name: "Collectors",
+  name: 'Collectors',
   components: {
     CollectorsCard,
     CollectorsBuyActions,
@@ -269,7 +256,8 @@ export default {
 
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
-      maxSizes: { x: 0, y: 0 },
+      maxSizes: { x: 0,
+                  y: 0 },
       labels: {},
       players: {},
       // playerId: {
@@ -286,13 +274,11 @@ export default {
       auctionPlacement: [],
       marketPlacement: [],
       chosenPlacementCost: null,
-      marketValues: {
-        fastaval: 0,
-        movie: 0,
-        technology: 0,
-        figures: 0,
-        music: 0,
-      },
+      marketValues: { fastaval: 0,
+                     movie: 0,
+                     technology: 0,
+                     figures: 0,
+                     music: 0 },
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
@@ -306,6 +292,7 @@ export default {
       playerid: 0,
       round: 0,
       startingPlayerId: null,
+      auctionAvailable: false,
       auctionActive: false,
       currentPlayerId: null,
       auctionPrice: 0,
@@ -315,42 +302,38 @@ export default {
     }
   },
   computed: {
-    playerId: function () {
-      return this.$store.state.playerId;
-    },
+    playerId: function() { return this.$store.state.playerId},
   },
   mounted() {
-    window.addEventListener("resize", () => {
-      this.scalefactor = window.innerWidth / 8000; // Här är funktionen för skalningen. Denna gör specifikt så att det ändras baserat på skärmskalan.
-    });
+  window.addEventListener('resize', () => {
+    this.scalefactor = window.innerWidth/8000   // Här är funktionen för skalningen. Denna gör specifikt så att det ändras baserat på skärmskalan.
+    })
   },
   watch: {
-    players: function (newP, oldP) {
-      console.log(newP, oldP);
+    players: function(newP, oldP) {
+      console.log(newP, oldP)
       for (let p in this.players) {
-        for (let c = 0; c < this.players[p].hand.length; c += 1) {
+        for(let c = 0; c < this.players[p].hand.length; c += 1) {
           if (typeof this.players[p].hand[c].item !== "undefined")
-            this.$set(this.players[p].hand[c], "available", false);
+          this.$set(this.players[p].hand[c], "available", false);
         }
       }
-    },
+    }
   },
   created: function () {
-    this.$store.commit("SET_PLAYER_ID", this.$route.query.id);
+    this.$store.commit('SET_PLAYER_ID', this.$route.query.id)
     //TODO! Fix this ugly hack
     //background: https://github.com/quasarframework/quasar/issues/5672
     const newRoute = this.$route.params.id + "?id=" + this.playerId;
     if (this.$route.params.id + "?id=" + this.$route.query.id !== newRoute)
       this.$router.push(newRoute);
 
-    this.$store.state.socket.emit("collectorsLoaded", {
-      roomId: this.$route.params.id,
-      playerId: this.playerId,
-    });
+    this.$store.state.socket.emit('collectorsLoaded',
+      { roomId: this.$route.params.id,
+        playerId: this.playerId } );
 
-    this.$store.state.socket.on(
-      "collectorsInitialize",
-      function (d) {
+    this.$store.state.socket.on('collectorsInitialize',
+      function(d) {
         this.labels = d.labels;
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
@@ -360,50 +343,41 @@ export default {
         this.cardInAuction = d.cardInAuction;
         this.auctionPrice = d.auctionPrice
         //här skapas både raise Item och Raise value. innan denna körs så finns inget rum. Följ raise Value till datahandler.
-        this.raiseItems = d.raiseItems;
-        this.raiseValue = d.raiseValue;
+        this.raiseItems=d.raiseItems;
+        this.raiseValue=d.raiseValue;
         this.buyPlacement = d.placements.buyPlacement;
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
-      }.bind(this)
-    );
+      }.bind(this));
 
-    this.$store.state.socket.on(
-      "collectorsBottlePlaced",
-      function (d) {
+    this.$store.state.socket.on('collectorsBottlePlaced',
+      function(d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
         this.auctionPlacement = d.auctionPlacement;
+      }.bind(this));
+
+    this.$store.state.socket.on('collectorsPointsUpdated', (d) => this.points = d );
+
+    this.$store.state.socket.on('collectorsCardDrawn',
+      function(d) {
+          //this has been refactored to not single out one player's cards
+          //better to update the state of all cards
+          this.players = d;
       }.bind(this)
     );
 
-    this.$store.state.socket.on(
-      "collectorsPointsUpdated",
-      (d) => (this.points = d)
-    );
-
-    this.$store.state.socket.on(
-      "collectorsCardDrawn",
-      function (d) {
-        //this has been refactored to not single out one player's cards
-        //better to update the state of all cards
-        this.players = d;
-      }.bind(this)
-    );
-
-    this.$store.state.socket.on(
-      "collectorsCardBought",
-      function (d) {
+    this.$store.state.socket.on('collectorsCardBought',
+      function(d) {
         console.log(d.playerId, "bought a card");
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
       }.bind(this)
     );
-    this.$store.state.socket.on(
-      "collectorsSkillBought",
-      function (d) {
+    this.$store.state.socket.on('collectorsSkillBought',
+      function(d) {
         console.log(d.playerId, "bought a skill");
         this.players = d.players;
         this.skillsOnSale = d.skillsOnSale;
@@ -421,10 +395,9 @@ export default {
       }.bind(this)
     );
 
-    this.$store.state.socket.on(
-      "playerPicked",
-      function (d) {
-        console.log("spelare vald");
+    this.$store.state.socket.on('playerPicked',
+      function(d) {
+        console.log( "spelare vald");
         this.gameStarted = true;
         this.players = d.players;
         this.round = d.round;
@@ -461,30 +434,30 @@ export default {
       this.topIsActive = false;
       this.leftIsActive = false;
 
-      console.log("status: " + this.isActive);
+      console.log("status: "+ this.isActive);
     },
-    expandLeftBoard: function () {
+    expandLeftBoard: function(){
       console.log("Left click");
       this.leftIsActive = !this.leftIsActive;
-
+      
       /* Stänger de andra */
       this.rightIsActive = false;
       this.topIsActive = false;
       this.isActive = false;
 
-      console.log("status: " + this.leftIsActive);
+      console.log("status: "+ this.leftIsActive);
     },
-    expandRightBoard: function () {
+    expandRightBoard: function(){
       console.log("Right click");
       this.rightIsActive = !this.rightIsActive;
-
+      
       /* Stänger de andra */
       this.leftIsActive = false;
       this.topIsActive = false;
       this.isActive = false;
-      console.log("status: " + this.rightIsActive);
+      console.log("status: "+ this.rightIsActive);
     },
-    expandTopBoard: function () {
+    expandTopBoard: function(){
       console.log("Top click");
       this.topIsActive = !this.topIsActive;
 
@@ -493,23 +466,28 @@ export default {
       this.rightIsActive = false;
       this.isActive = false;
 
-      console.log("status: " + this.topIsActive);
+      console.log("status: "+ this.topIsActive);
     },
 
     placeBottle: function (action, cost) {
+      if (action==='auction'){
+        this.auctionAvailable = true;
+      }
       this.chosenPlacementCost = cost;
-      this.$store.state.socket.emit("collectorsPlaceBottle", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-        action: action,
-        cost: cost,
-      });
+      this.$store.state.socket.emit('collectorsPlaceBottle', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          action: action,
+          cost: cost,
+        }
+      );
     },
     drawCard: function () {
-      this.$store.state.socket.emit("collectorsDrawCard", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-      });
+      this.$store.state.socket.emit('collectorsDrawCard', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId
+        }
+      );
     },
     buyCard: function (card) {
       console.log("buyCard", card);
@@ -522,17 +500,19 @@ export default {
       );
 
     },
-    buySkill: function (card) {
+     buySkill: function (card) {
       console.log("buySkill", card);
-      this.$store.state.socket.emit("collectorsBuySkill", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-        card: card,
-        cost: this.chosenPlacementCost,
-      });
+      this.$store.state.socket.emit('collectorsBuySkill', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          card: card,
+          cost: this.chosenPlacementCost
+        }
+      );
+
     },
 
-    startAuction: function (card) {
+     startAuction: function (card) {
       console.log("startAuction", card);
       this.$store.state.socket.emit('collectorsStartAuction', {
           roomId: this.$route.params.id,
@@ -545,21 +525,38 @@ export default {
 
     },
 
-    startTurn: function () {
-      console.log("hola");
+    buyCardOrAuction: function(card){
+      if(this.auctionAvailable == true){
+        console.log("Starta en auktion");
+        return this.startAuction(card)
+      }
+      else{
+        console.log("Köp ett kort istället");
+        return this.buyCard(card)
+      }
+    },
 
-      this.$store.state.socket.emit("startTurn", {
-        roomId: this.$route.params.id,
-      });
+
+
+    startTurn: function () {
+      console.log("hola",);
+  
+      this.$store.state.socket.emit('startTurn', {
+        roomId:this.$route.params.id
+        }
+      );
     },
     nextPlayer: function () {
-      this.$store.state.socket.emit("nextPlayer", {
+      this.$store.state.socket.emit('nextPlayer', {
         roomId: this.$route.params.id,
+        
         playerId: this.playerId,
-      });
-    },
+        }
+      );
+    }
+
   },
-};
+}
 </script>
 
 <style scoped>
@@ -626,7 +623,7 @@ export default {
   Det här är bara en påminnelse till mig själv /Björn
   */
 
-/*
+  /*
   Om det inte går så bra med centrering etc kan vi testa att göra om allt till en 3x3 grid
   med att 2x2 platsen (mitten) har ett inre grid som är 3x3 där:
 
@@ -637,14 +634,14 @@ export default {
 
   */
 
-.player {
-  padding: 1vw;
-}
-.cardslots {
-  padding: 1vw;
-}
+  .player{
+    padding: 1vw;
+  }
+  .cardslots{
+    padding: 1vw;
+  }
 
-/*
+  /*
   Här nedan är CSS specifika för player rutorna
   */
 
@@ -693,64 +690,65 @@ export default {
 
 
 /* Hover över spelarområdena*/
-.playerboard:hover {
-  background-color: rgb(95, 216, 253);
-}
-.playerLeft:hover {
-  background-color: #c236b4;
-}
-.playerRight:hover {
-  background-color: #e9b77a;
-}
-.playerTop:hover {
-  background-color: #20ccbe;
-}
+  .playerboard:hover{
+    background-color: rgb(95, 216, 253);
+  }
+  .playerLeft:hover{
+   background-color:#c236b4;
+  }
+  .playerRight:hover{
+    background-color: #e9b77a;
+  }
+  .playerTop:hover{
+    background-color: #20ccbe;
+  }
 
+  
 /* Om man klickar på handen aktiveras denna. Denna ger attribut bara om isActive på divven = true */
-.playerboard.active {
-  background-color: rgb(95, 216, 253);
-  margin-top: -100%;
-  height: 50vh;
-  align-self: end;
-  width: 110%;
-  justify-self: center;
-  z-index: 1;
-}
+  .playerboard.active{
+    background-color: rgb(95, 216, 253);
+    margin-top: -100%;
+    height: 50vh;
+    align-self: end;
+    width: 110%;
+    justify-self: center;
+    z-index: 1;
+  }
 
 /* Om man klickar på spelaren i topp */
-.playerTop.active {
-  background-color: #20ccbe;
-  text-align: center;
-  width: 310%;
-  height: 100%;
-  justify-self: center;
-  margin-left: initial;
-  margin-top: 100px;
-  z-index: 1;
-}
+ .playerTop.active{
+    background-color: #20ccbe;
+    text-align: center;
+    height: 80%;
+    width: 250%;
+    justify-self: center;
+    margin-left: initial;
+    margin-top: 100px;
+    z-index: 1;
+  }
 
 /* Om man klickar på spelaren till vänster */
 .playerLeft.active {
-  background-color: #c236b4;
-  margin-right: -100%;
-  width: 310%;
-  height: 100%;
-  justify-self: self-start;
-  margin-top: 100px;
-  z-index: 1;
-}
+    background-color:#c236b4;
+    margin-right: -100%;
+    width: 250%;
+    height: 80%;
+    justify-self:self-start;
+    margin-top: 100px;
+    z-index: 1;
+  }
 
 /* Om man klickar på spelaren till höger */
-.playerRight.active {
-  background-color: #e9b77a;
-  width: 310%;
-  height: 100%;
-  justify-self: end;
-  margin-top: 100px;
-  z-index: 1;
-}
+  .playerRight.active {
+    background-color: #e9b77a;
+    width: 250%;
+    height: 80%;
+    justify-self: end;
+    margin-top: 100px;
+    z-index: 1;
+  }
 
-/*
+  /*
   Här nedan är CSS specifika för kortrutorna
   */
 
@@ -761,6 +759,14 @@ export default {
     grid-row: 2;
     width:31vw;
   }
+  /*
+  .itemgrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding:2vw;
+    justify-items:center;
+  }
+  */
   .skills{
     border-radius: 2vw;
     background-color: #dfeccc;
@@ -768,6 +774,14 @@ export default {
     grid-row: 3;
     width:31vw;
   }
+  /*
+  .skillsgrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding:2vw;
+    justify-items:center;
+  }
+  */
   .raiseValue{
     border-radius: 2vw;
     background-color: #cfdcf2;
@@ -776,10 +790,43 @@ export default {
     justify-content:center;
     width:31vw;
   }
+  /*
+  .raiseValuegrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding:2vw;
+    justify-items:center;
+  }
+  */
   .raiseValuegrid div{
     font-size: 1vw;
     font-weight:bold;
     color: black;
+  }
+  .fastaval{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .figures{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .music{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .movie{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 4;
+    grid-row: 1;
+  }
+  .technology{
+    grid-template-columns: (repeat(auto-fill, 0vw));    /* Vet inte om dessa behövs i slutändan - men tanken är att denna gör att korten läggs på hög. */
+    grid-column: 5;
+    grid-row: 1;
   }
   .auction{
     border-radius: 2vw;
@@ -791,6 +838,14 @@ export default {
     justify-content:center;
     justify-self: right;
   }
+  /*
+  .auctiongrid{
+    display:grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    padding: 1vw;
+    justify-items: center;
+  }
+  */
   .upforAuction{
     display: grid;
     position: absolute;
@@ -823,24 +878,19 @@ export default {
     border-color: black;
     grid-row-start: 3;
     align-self: bottom;
-    background-color:rgb(212, 212, 212);
+    background-color:grey;
     transition-duration: 0.2;
     cursor:pointer;
     box-shadow: 0 0.3vw #999;
   }
   .auctionButtons:hover{
-    background-color: rgb(176, 255, 145);
-    
-  }
-  .auctionButtons:active{
-    box-shadow: 0 0.2vw #999;
-    transform: translateY(0.1vw);
+    background-color: greenyellow;
   }
   .auctionMoney{
     font-size: 300%;
     grid-column: 3;
     text-align: center;
-    color: black;
+    color: darkgreen;
   }
   .work{
     text-align:center;
@@ -958,11 +1008,11 @@ export default {
     zoom: 0.8;
   }
 
-@media screen and (max-width: 800px) {
-  main {
-    width: 90vw;
+  @media screen and (max-width: 800px) {
+    main {
+      width:90vw;
+    }
   }
-}
 </style>
 
 /*                      NOTES: 
