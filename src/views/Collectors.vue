@@ -5,16 +5,16 @@
       <section id="wrapper">
       <div id="grid">
           <div class="otherPlayers">
-          <div class="player playerLeft" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
-            PlayerLeft
+          <div class="player player2" v-on:click="expandLeftBoard"  v-bind:class="{ active: leftIsActive }">
+            {{labels.player2}}
             <!--Here are the player specific things-->
           </div>
-          <div class="player playerTop" v-on:click="expandTopBoard"  v-bind:class="{ active: topIsActive }">
-            PlayerTop
+          <div class="player player3" v-on:click="expandTopBoard"  v-bind:class="{ active: topIsActive }">
+            {{labels.player3}}
             <!--Here are the player specific things-->
           </div>
-          <div class="player playerRight" v-on:click="expandRightBoard"  v-bind:class="{ active: rightIsActive }">
-            PlayerRight
+          <div class="player player4" v-on:click="expandRightBoard"  v-bind:class="{ active: rightIsActive }">
+            {{labels.player4}}
             <!--Here are the player specific things-->
           </div>
         </div>
@@ -79,6 +79,7 @@
           </div>
         </div>
         
+        
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
           <div
             class="playerboard"
@@ -120,21 +121,8 @@
                  :key="index"
                />
              </div>
-
           </div>
-            
         </div>
-        
-        <!--
-
-                    VIKTIGT!!!
-
-        Just nu är Skills och Items slotsen för spelarens items/skills. Här måste vi göra så att dessa är för spelplanen
-        det vill säga flytta in köpegrejerna in i divarna här. Sen måste det göras nya divvar inne i spelarens hand (som borde bli player board eller
-        liknande istället. Här ska Hand, Items, skills visas som de visas nu. Alla kort måste skalas om i visningen enligt samma princip som rutorna.
-
-        -->
-
         <div class="items">
           <div class="itemgrid">
             <CollectorsBuyActions v-if="players[playerId]"
@@ -161,7 +149,7 @@
 
         <div class="roundCounter">
           <p>
-            Det är runda: {{ round }}
+            {{labels.roundcounter}} {{ round }}
           </p>
           <p>
             Det är {{ currentPlayer() }} tur att spela!
@@ -181,13 +169,13 @@
         </div>
         <div class="menuSpace">
           <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
-            Slumpa startare 
+            {{labels.randomplayer}}
           </button>
           <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
             {{labels.endTurn}}
             </button>
           <button v-if="players[playerId]" @click="auctionBoard()">
-            visa aktion 
+            {{labels.showAuction}} 
           </button>
         </div>
       </div>
@@ -666,7 +654,7 @@ export default {
     grid-column: 6;
     grid-row: 2;
   }
-  .playerLeft{
+  .player2{
     grid-column: 2;
     grid-row: 1;
     background-color: #7e2174;
@@ -676,7 +664,7 @@ export default {
     font-size: 1.5vw;
     margin-bottom: 0.5vw;
   }
-  .playerTop{
+  .player3{
     grid-column: 3;
     grid-row: 1;
     background-color: #19b3a7;
@@ -686,7 +674,7 @@ export default {
     font-size: 1.5vw;
     margin-bottom: 0.5vw;
   }
-  .playerRight{
+  .player4{
     grid-column: 4;
     grid-row: 1;
     background-color: #ca9e68;
@@ -711,13 +699,13 @@ export default {
   .playerboard:hover{
     background-color: rgb(95, 216, 253);
   }
-  .playerLeft:hover{
+  .player2:hover{
    background-color:#c236b4;
   }
-  .playerRight:hover{
+  .player4:hover{
     background-color: #e9b77a;
   }
-  .playerTop:hover{
+  .player3:hover{
     background-color: #20ccbe;
   }
   
@@ -758,7 +746,7 @@ export default {
   }
 
   /* Om man klickar på spelaren i topp */
-  .playerTop.active{
+  .player3.active{
     background-color: #20ccbe;
     text-align: center;
     height: 80%;
@@ -770,7 +758,7 @@ export default {
   }
 
   /* Om man klickar på spelaren till vänster */
-  .playerLeft.active {
+  .player2.active {
     background-color:#c236b4;
     margin-right: -100%;
     width: 250%;
@@ -781,7 +769,7 @@ export default {
   }
 
   /* Om man klickar på spelaren till höger */
-  .playerRight.active {
+  .player4.active {
     background-color: #e9b77a;
     width: 250%;
     height: 80%;
