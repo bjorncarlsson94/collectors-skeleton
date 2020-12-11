@@ -1,12 +1,8 @@
 <template>
   <div class="center">
     <div>
-      <div id="outer">
+      <div class="outer">
       <h1>Collectors</h1>
-        <div class="image">
-          <!--<img src="/images/collectors-cards-new.png"
-          id="img">-->
-        </div>
         <div class="gameSetUp" v-for="i in 3" :key="i"> 
           <button class="buttons" @click="setupCollectors(i+1, 'en')">Set up a game of Collectors for {{i+1}} players</button>
         </div>
@@ -45,22 +41,14 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    padding: 1em;
-    position:relative;
-    overflow:hidden;
+    background-image: url("/images/collectors-cards-new.png");
   }
-  #outer{
+  .outer{
     width: 25vw;
     background-color: rgb(103, 151, 223);
     border-radius: 1vw;
     padding: 2vw;
-    contain:content;
-    overflow: hidden;
-  }
-  .image{
-    background-image: url("/images/collectors-cards-new.png");
-    z-index:1;
-    position:absolute;
+    z-index: 20;
   }
   .gameSetUp{
     width: 20vw;
@@ -70,7 +58,7 @@ export default {
   .buttons{
     display:inline-block;
     color: black;
-    background-color: rgb(173, 178, 255);
+    background-color: rgb(206, 210, 255);
     border-radius:1vw;
     box-shadow: 0 0.3vw rgb(101, 105, 151);
     cursor: pointer;
