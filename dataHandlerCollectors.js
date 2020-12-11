@@ -305,18 +305,20 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
 }
 
 
-Data.prototype.auctionWon = function (roomId, playerId) {
+Data.prototype.auctionWon = function (roomId, playerId, auctionPrice) {
   let room = this.rooms[roomId];
-  let card = null;
   if (typeof room !== 'undefined') {
     let c = null;
-        card = cardInAuction[0];
+        let card = room.cardInAuction[0];
         c = room.cardInAuction.splice(0, 1, {});
-      }
+        
       console.log("kortet ges till vinnaren"+playerId)
       console.log(card)
+      console.log("cardinauction"+room.cardInAuction);
       room.players[playerId].hand.push(card);
-      room.players[playerId].money -= AuctionPrice;
+      room.players[playerId].money -= auctionPrice;
+      console.log("spelarens kort"+room.players[playerId].hand)
+}
 }
     // ...then check if it is in the hand. It cannot be in both so it's safe
 
@@ -498,28 +500,30 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
       auctionPrice = bid;
       room.auctionLeaderId = playerId;
     }
-
     else{
       var keys = Object.keys(room.players);
       let i = Object.keys(room.players).indexOf(playerId)
-      console.log(i +"ör lika med"+keys.length-1)
+      console.log(keys[i+1] +" 3 är lika med " + room.auctionLeaderId);
       if (i === keys.length - 1){
-        if(keys[0] === room.auctionLeaderId){
+        console.log(keys[0] +" 2 är lika med " + room.auctionLeaderId)
+        if(keys[0] == room.auctionLeaderId){
           console.log("varför1")
-          //this.auctionWinner(room, room.auctionLeaderId)
-          
+          this.auctionWon(roomId, room.auctionLeaderId)
+          room.auctionLeaderId = null
         }
+      } 
+      else if (keys[i+1] == room.auctionLeaderId){
+        console.log("varför2 + 3")
+        console.log("ge mig den")
+        this.auctionWon(roomId, room.auctionLeaderId)
+        room.auctionLeaderId = null
       }
-      else if (room.players[keys[i+1]]=== room.auctionLeaderId){
-        console.log("varför2")
-        //this.auctionWinner(room, room.auctionLeaderId)
-      }
-    }
+   } 
     room.auctionPrice = auctionPrice;
     console.log("PirceA::"+auctionPrice)
     this.nextPlayer(roomId, playerId, true)
     return room.player
-}
+  }
 }
 
 //vinnar budet 

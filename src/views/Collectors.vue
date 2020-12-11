@@ -43,14 +43,24 @@
           </div>
         </div>
         <div class="upforAuction" v-show="auctionActive" v-if="players[playerId]">
-          <div class="auctionMoney">
-            {{bid}}$
+          <div class="auctionLeader">
+             Leader: {{auctionLeaderId}}
+             </div>
+             <div class="auctionBid">
+             {{bid-auctionPrice}}+
+             </div>
+             <div class="auctionMoney">
+             {{auctionPrice}}$
           </div>
           <div class="auctionCardView">
             <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
           </div>
-          <button class="auctionButtons" v-if="players[playerId]" :disabled="bid<auctionPrice || !players[playerId].turn" @click="placeBid()">
-            Place Bid 
+          
+          <button class="auctionButtons" v-if="players[playerId]" :disabled="!bid==auctionPrice || !players[playerId].turn || bid<1" @click="placeBid()">
+            Skip 
+          </button>
+          <button class="auctionButtons" v-if="players[playerId]" :disabled="bid<auctionPrice+1 || !players[playerId].turn" @click="placeBid()">
+            Place bid 
           </button>
           <button class="auctionButtons" v-if="players[playerId]" :disabled="!players[playerId].turn || bid<auctionPrice+1" @click="bid -= 1">
             -
@@ -360,15 +370,21 @@ export default {
     );
     this.$store.state.socket.on('auctionRound',
       function(d) {
-        this.auctionPrice = d.auctionPrice;
-        this.auctionLeaderId = d.auctionLeaderId
-        console.log(this.auctionLeaderId+"started leder"+ this.auctionPrice);
-        this.players = d.players;
-        this.bid = d.auctionPrice;
-        //this.cardInAuction =d.cardInauction;
-        if (this.cardInAuction <1){
-        console.log(this.auctionLeaderId, "någon vann"+ this.auctionPrice);
+        if (d.auctionLeaderId == null){
+          this.auctionPrice = 0;
+          this.auctionLeaderId = null;
+          this.bid = 0;
+          this.cardInAuction = d.cardInAuction;
+          this.auctionActive = false;
         }
+        else {
+          this.auctionPrice = d.auctionPrice;
+          this.auctionLeaderId = d.auctionLeaderId;
+          this.players = d.players;
+          this.bid = d.auctionPrice;
+          this.cardInAuction = d.cardInAuction;
+      }
+        this.players = d.players;
       }.bind(this)
     );
     this.$store.state.socket.on('playerPicked',
@@ -808,7 +824,7 @@ export default {
     display: grid;
     position: absolute;
     grid-template-rows: 20% 60% auto;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     width: 40vw;
     height: 40vw;
     background-color: #f5efa0;
@@ -826,12 +842,13 @@ export default {
     position: absolute;
     align-content: center;
     transition: auto;
-    transform: translate(50%, 20%);
+    transform: translate(50%, 25%);
   }
   .auctionButtons{
     margin: 1vw;
     border: 1vw;
     border-radius: 2vw;
+    font-size: 2vw;
     border-color: black;
     grid-row-start: 3;
     align-self: bottom;
@@ -844,10 +861,27 @@ export default {
     background-color: greenyellow;
   }
   .auctionMoney{
-    font-size: 300%;
-    grid-column: 3;
+    
+    grid-row: 1;
+    font-size: 5vw;
+    grid-column-start: 4;
     text-align: center;
     color: darkgreen;
+  }
+  .auctionBid{
+    
+    grid-row: 1;
+    font-size: 5vw;
+    grid-column-start: 3;
+    text-align: left;
+    color: rgb(0, 209, 0);
+  }
+  .auctionLeader{
+    font-size: 2.5vw;
+    grid-row: 1;
+    grid-column: 1/3;
+    text-align: center;
+    color: rgb(0, 0, 0);
   }
   .work{
     text-align:center;
