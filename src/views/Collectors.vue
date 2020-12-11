@@ -50,13 +50,13 @@
              {{bid-auctionPrice}}+
              </div>
              <div class="auctionMoney">
-             {{auctionPrice}}$
+             {{bid}}$
           </div>
           <div class="auctionCardView">
             <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
           </div>
           
-          <button class="auctionButtons" v-if="players[playerId]" :disabled="!bid==auctionPrice || !players[playerId].turn || bid<1" @click="placeBid()">
+          <button class="auctionButtons" v-if="players[playerId]" :disabled="0<bid-auctionPrice || !players[playerId].turn || bid<1" @click="placeBid()">
             Skip 
           </button>
           <button class="auctionButtons" v-if="players[playerId]" :disabled="bid<auctionPrice+1 || !players[playerId].turn" @click="placeBid()">
@@ -216,7 +216,7 @@ import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
 import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 import CollectorsRaiseValue from '@/components/CollectorsRaiseValue.vue'
 import CollectorsStartAuction from '@/components/CollectorsStartAuction.vue'
-//import CollectorsAuction from '@/components/CollectorsAuction.vue'
+
 
 export default {
   name: 'Collectors',
@@ -226,7 +226,6 @@ export default {
     CollectorsSkillActions,
     CollectorsRaiseValue,
     CollectorsStartAuction,
-   // CollectorsAuction
 
   },
   data: function () {
@@ -517,7 +516,7 @@ export default {
     },
 
      startAuction: function (card) {
-      console.log("startAuction"+ card);
+      this.auctionAvailable = false;
       this.$store.state.socket.emit('collectorsStartAuction', {
           roomId: this.$route.params.id,
           playerId: this.playerId,
