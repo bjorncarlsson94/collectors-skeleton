@@ -14,7 +14,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             {{ cardCost(values)}}</p>          
           
             <div class="cardslots" v-for="(card, index) in raiseItems"  :key="index" >
-               <div v-if="card.market==values" >
+                <div v-if="card.market==values" >
                      
                   <CollectorsCard
                       :card="card" 

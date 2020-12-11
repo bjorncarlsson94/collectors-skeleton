@@ -3,31 +3,20 @@
     <div>
       <div id="outer">
       <h1>Collectors</h1>
-      <!--<img src="/images/collectors-cards-new.png"
-        id="img">-->
-      <!--<ul>
-        <li class="gameSetUp" v-for="i in 3" :key="i">
-          <button @click="setupCollectors(i+1, 'en')">Set up a game of Collectors for {{i+1}} players</button>
-        </li>
-      </ul> 
-      -->
+        <div class="image">
+          <!--<img src="/images/collectors-cards-new.png"
+          id="img">-->
+        </div>
         <div class="gameSetUp" v-for="i in 3" :key="i"> 
           <button class="buttons" @click="setupCollectors(i+1, 'en')">Set up a game of Collectors for {{i+1}} players</button>
         </div>
       <br>
-      <div>
-        <div class="gameSetUp" v-for="i in 3" :key="i">
-          <button class="buttons" @click="setupCollectors(i+1, 'se')">Spela Collectors med {{i+1}} spelare</button>
+        <div>
+          <div class="gameSetUp" v-for="i in 3" :key="i">
+            <button class="buttons" @click="setupCollectors(i+1, 'se')">Spela Collectors med {{i+1}} spelare</button>
+          </div>
         </div>
       </div>
-      </div>
-      <!--
-      <ul>
-        <li class="gameSetUp" v-for="i in 3" :key="i">
-          <a @click="setupCollectors(i+1, 'se')">Spela Collectors med {{i+1}} spelare</a>.
-        </li>
-      </ul>
-      -->
     </div>
   </div>
 </template>
@@ -66,6 +55,12 @@ export default {
     border-radius: 1vw;
     padding: 2vw;
     contain:content;
+    overflow: hidden;
+  }
+  .image{
+    background-image: url("/images/collectors-cards-new.png");
+    z-index:1;
+    position:absolute;
   }
   .gameSetUp{
     width: 20vw;

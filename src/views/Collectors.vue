@@ -2,55 +2,6 @@
 <template>
   <div>
     <main>
-       <!--
-         {{buyPlacement}} {{chosenPlacementCost}}
-      <CollectorsBuyActions v-if="players[playerId]"
-        :labels="labels"
-        :player="players[playerId]"
-        :itemsOnSale="itemsOnSale"
-        :marketValues="marketValues"
-        :placement="buyPlacement"
-        :raiseValue="raiseValue"
-        @buyCard="buyCard($event)"
-        @placeBottle="placeBottle('buy', $event)"/>
-      {{skillPlacement}} {{chosenPlacementCost}}
-      <CollectorsSkillActions v-if="players[playerId]"
-        :labels="labels"
-        :player="players[playerId]"
-        :skillsOnSale="skillsOnSale"
-        
-        :placement="skillPlacement"
-        @buySkill="buySkill($event)"
-        @placeBottle="placeBottle('skill', $event)"/>
-        <CollectorsStartAuction v-if="players[playerId]"
-        :labels="labels"
-        :player="players[playerId]"
-        :auctionCards="auctionCards"
-        :marketValues="marketValues"
-        :placement="auctionPlacement"
-        @startAuction="startAuction($event)"
-        @placeBottle="placeBottle('auction', $event)"/>
-      -->
-        <!-- Raise value div. with 4 random cards in it at the moment-->
-       <!--Raise value div. with 4 random cards in it at the moment 
-        Raise value div. with 4 random cards in it at the moment 
-        Raise value div. with 4 random cards in it at the moment 
-        Raise value div. with 4 random cards in it at the moment 
-        Raise value div. with 4 random cards in it at the moment 
-        Raise value div. with 4 random cards in it at the moment 
-        Raise value div. with 4 random cards in it at the moment 
-        Raise value div. with 4 random cards in it at the moment 
-        Raise value div. with 4 random cards in it at the moment 
-        They are diplayed in the correct raiseValue columm-->
-    <!--
-      <CollectorsRaiseValue v-if="players[playerId]"
-        :labels="labels"
-        :player="players[playerId]"
-        :raiseItems="raiseItems"
-        :raiseValue="raiseValue"/> 
-    -->
-      <br> 
-     
       <section id="wrapper">
       <div id="grid">
           <div class="otherPlayers">
