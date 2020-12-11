@@ -49,6 +49,9 @@ export default {
     border-radius: 1vw;
     padding: 2vw;
     z-index: 20;
+    border-style:solid;
+    border-width: 0.5vw;
+    border-color: rgb(66, 66, 66);
   }
   .gameSetUp{
     width: 20vw;

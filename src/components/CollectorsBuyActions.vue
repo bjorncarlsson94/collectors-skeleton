@@ -11,7 +11,6 @@
           <div class="cardcost" v-for="(value,key) in currentValues" :key="key">
             <p v-if="card.item===key">{{value}}</p>
           </div>
-       
         </div>
         <div v-for="(p, index) in placement" :key="index">
           <button class="button"
