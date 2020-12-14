@@ -119,21 +119,28 @@
         </div>
         
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
+          
           <div
             class="playerboard"
             v-if="players[playerId]"
-            v-on:click="expandPlayerBoard"
+            @click="expandPlayerBoard()"
             v-bind:class="{ active: isActive }"
           >
             <!-- Visas när handen är stängd-->
             <div v-if="!isActive">
-            <h1>Total value:</h1>
+            
+            <h1>Your board</h1>
+            <h1>Total collection value:</h1>
             </div>
             
             
             <!-- Visas när handen är öppen-->
             <div class= "playerBoardGrid" v-if="isActive">
-              <div class= "collection" >
+             
+             
+          
+              
+              <div class= "boardCollection" >
                 Collection:
                   <CollectorsCard
                   v-for="(card, index) in players[playerId].items"
@@ -142,16 +149,26 @@
                     @doAction="buyCard(card)"
                     :key="index"
                   />
-                <div class="hidden">  
+                <div>  
                   Hidden:
                 </div>
-                <div class="totalValue">
+                <div>
                   Total value:
                 </div>
               </div>
-              <div class = "hand">
-              Hand:
+              <div class = "boardSkills">
+              Skills:
                 <CollectorsCard
+                  v-for="(card, index) in players[playerId].skill"
+                 :card="card"
+                 :availableAction="card.available"
+                 @doAction="buyCard(card)"
+                 :key="index"
+               />
+             </div>
+             <div class = "boardHand">
+              Hand:
+                <CollectorsCard class= "cardinhand"
                   v-for="(card, index) in players[playerId].hand"
                  :card="card"
                  :availableAction="card.available"
@@ -163,6 +180,11 @@
           </div>
             
         </div>
+        
+        <button v-if="isActive" @click="closeBoard" class="boardclosebutton">
+              Close!
+              </button>
+        
         
         <!--
 
@@ -419,6 +441,7 @@ export default {
 
       }.bind(this)
     );
+
     this.$store.state.socket.on('auctionRound',
       function(d) {
         this.auctionPrice = d.auctionPrice;
@@ -464,14 +487,36 @@ export default {
     },
     expandPlayerBoard: function(){
       console.log("Player click");
-      this.isActive = !this.isActive;
+      
+      // Sätter till true för att öppna brädet
+      if(this.isActive === true)
+			{
+				return;
+      }
 
+      this.openBoard();
+			
+      
       /* Stänger de andra */
       this.rightIsActive = false;
       this.topIsActive = false;
       this.leftIsActive = false;
 
-      console.log("status: "+ this.isActive);
+      console.log("Status: "+ this.isActive);
+    },
+    openBoard: function(){
+      console.log("Open board");
+      // Sätter till true för att öppna brädet
+        this.isActive = true;
+      console.log("Status: "+ this.isActive);
+    },
+    closeBoard: function(){
+      console.log("Close BUTTON!");
+      
+      // Sätter till false för att stänga brädet
+      this.isActive = false;
+
+      console.log("Status: "+ this.isActive);
     },
     expandLeftBoard: function(){
       console.log("Left click");
@@ -738,6 +783,7 @@ export default {
     width: 20vw;
     padding:2vw;
     justify-self:center;
+    align-self: flex-end;
     font-size: 1vw;
   }
 
@@ -772,23 +818,43 @@ export default {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     border-radius: 2vw;
+    height: 100%;
   }
 
-  .collection{
-    grid-row: 1;
-    grid-column: 1 /span 4;
-    background-color: rgb(133, 211, 125);
+  .boardCollection{
+    grid-row: 1/4;
+    grid-column: 1 /4;
+    background-color: rgb(223, 26, 26);
     border-radius: 2vw 2vw 0 0;
     padding: 1vw;
   }
-  .hand{
+  .boardHand{
     grid-row: 4;
     grid-column: 1 /span 4;
-    max-height: 15vh;
+    
+    max-height: 7vh;
     background-color: rgb(255, 103, 103);
     overflow: hidden;
     border-radius: 0 0 2vw 2vw;
     padding: 1vw;
+  }
+  .cardinhand{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 0px);
+  }
+
+.boardSkills{
+    border-radius: 2vw;
+    background-color: #dfeccc;
+    grid-column: 3/5;
+    grid-row: 1/4;
+  }
+
+  .boardclosebutton{
+    grid-row: 3;
+    grid-column: 3;
+    align-self: flex-end;
+    z-index: 1;
   }
 
   /* Om man klickar på spelaren i topp */
