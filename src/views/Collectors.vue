@@ -49,8 +49,9 @@
         :raiseItems="raiseItems"
         :raiseValue="raiseValue"/> 
     -->
+
       <br> 
-     
+
       <section id="wrapper">
       <div id="grid">
           <div class="otherPlayers">
@@ -133,6 +134,7 @@
             
             <!-- Visas när handen är öppen-->
             <div class= "playerBoardGrid" v-if="isActive">
+              <div class="help"><p>?</p></div>
               <div class= "collection" >
                 Collection:
                   <CollectorsCard
@@ -155,7 +157,7 @@
                   v-for="(card, index) in players[playerId].hand"
                  :card="card"
                  :availableAction="card.available"
-                 @doAction="buyCard(card)"
+                 @doAction="buyCard(card)"              
                  :key="index"
                />
              </div>
@@ -221,6 +223,7 @@
         <div class="menuSpace">
           <button v-if="players[playerId]" :disabled="this.gameStarted" @click="startTurn()">
             Slumpa startare 
+            {{labels.test1}}
           </button>
           <button v-if="players[playerId]" :disabled="!players[playerId].turn" @click="nextPlayer()">
             {{labels.endTurn}}
@@ -233,6 +236,7 @@
       </section>
      
     </main>
+    
     {{players}}
     {{raiseValue}}
     <button v-if="players[playerId]" @click="players[playerId].money += 1">
@@ -245,6 +249,7 @@
         </p>
     </footer>
   </div>
+  
 </template>
 
 <script>
@@ -606,6 +611,7 @@ export default {
     }
 
   },
+ 
 }
 </script>
 
@@ -650,6 +656,13 @@ export default {
   .cardslots div:hover {
     transform: scale(1)translate(-25%,0);
     z-index: 1;
+  }
+  .helpText{
+    width: 100%;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+
   }
 
   #wrapper{
@@ -769,6 +782,7 @@ export default {
 
   .playerBoardGrid{
     display: grid;
+    position: relative;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     border-radius: 2vw;
@@ -1028,6 +1042,19 @@ export default {
   .menuSpace > * {  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
     zoom: 0.8;
   }
+  .help{
+    width:40px;
+    height: 40px;
+    border-radius: 25px;
+    position: absolute;
+    right:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: blue;
+  }
+ 
 
   @media screen and (max-width: 800px) {
     main {
