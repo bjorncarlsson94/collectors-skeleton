@@ -14,7 +14,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             {{ cardCost(values)}}</p>          
           
             <div class="cardslots" v-for="(card, index) in raiseItems"  :key="index" >
-               <div v-if="card.market==values" >
+                <div v-if="card.market==values" >
                      
                   <CollectorsCard
                       :card="card" 
@@ -66,7 +66,7 @@ export default {
     },
     cardCost: function (values) {
        if(values=="fastaval"){
-    return this.raiseValue.fastaval;
+      return this.raiseValue.fastaval;
 
   }else if (values=="figures"){
     return this.raiseValue.figures;
@@ -87,6 +87,13 @@ export default {
    
   
 }
+//
+//highlight last card from items and last card from auction pool and skill pool
+// Highlight hand. 
+// If click from hand then ad it to the market pool acording to the number of seals. 
+// så vi behöver positions för dem. därför behöver vi in hit skicka med skillsONSale och AuctionOnSale. 
+//
+//
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
