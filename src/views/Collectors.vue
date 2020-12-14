@@ -99,13 +99,13 @@
             <!-- Visas när handen är öppen-->
             <div class= "playerBoardGrid" v-if="isActive">
              
-             
-          
-              
               <div class= "boardCollection" >
               <div class="help"><p>?</p></div>
-                Collection:
-                <div class= "collectiongrid">
+                <div class="boardcollectiongrid">
+                
+                <div class= "playercollection">
+                  Collection:
+                  <div class="collectioncards">
                   <CollectorsCard
                   v-for="(card, index) in players[playerId].items"
                     :card="card"
@@ -114,6 +114,7 @@
                     :key="index"
                   />
                   </div>
+                  </div>
                 <div>  
                   Hidden:
                 </div>
@@ -121,19 +122,23 @@
                   Total value:
                 </div>
               </div>
+
+              </div>
               <div class = "boardSkills">
               Skills:
+                <div class="skillsinhand">
                 <CollectorsCard
-                  v-for="(card, index) in players[playerId].skill"
+                  v-for="(card, index) in players[playerId].skills"
                  :card="card"
                  :availableAction="card.available"
                  @doAction="buyCard(card)"
                  :key="index"
                />
+               </div>
              </div>
              <div class = "boardHand">
-              Hand:
-              <div class= "cardinhand">
+              <p id="handTitle">Hand:</p>
+              <div class= "cardsinhand">
                 <CollectorsCard
                   v-for="(card, index) in players[playerId].hand"
                  :card="card"
@@ -143,6 +148,9 @@
                />
                </div>
              </div>
+
+            <div class="boardNextTurnInfo">Next turn info</div>
+
           </div>
         </div>
         
@@ -765,6 +773,8 @@ export default {
     justify-self:center;
     align-self: flex-end;
     font-size: 1vw;
+    
+    cursor: pointer;
   }
 
 /* Hover över spelarområdena*/
@@ -791,61 +801,97 @@ export default {
     justify-self: center;
     z-index: 1;
     font-size: 1vw;
+    cursor:default;
   }
 
   .playerBoardGrid{
     display: grid;
     position: relative;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 2fr;
     border-radius: 2vw;
     height: 100%;
   }
 
   .boardCollection{
     grid-row: 1/4;
-    grid-column: 1 /4;
+    grid-column: 1 /3;
     border-radius: 2vw 0 0 0;
-    background-color: rgb(223, 26, 26);
-    border-radius: 2vw 2vw 0 0;
+    background-color:#ca6058;
     padding: 1vw;
     overflow: hidden;
   }
 
-  .collectiongrid{
+  .boardcollectiongrid{
     display: grid;
-    grid-template-columns: repeat(auto-fill, 10px);
+    position: relative;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 4fr 1fr;
+    height: 100%;
+  }
 
+  .playercollection{ 
+    grid-row: 1;
+    grid-column: 1;
+    background-color:#d47871;
+    border-radius: 2vw;
+  }
+  .collectioncards{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 1.5vw);
   }
 
   .boardHand{
     grid-row: 4;
-    grid-column: 1 /span 4;
-    
-    
+    grid-column: 1 / 3;
     overflow: hidden;
-    background-color: rgb(255, 103, 103);
+    background-color: #e9e78a;
     
-    border-radius: 0 0 2vw 2vw;
+    border-radius: 0 0 0 2vw;
     padding: 1vw;
   }
-  .cardinhand{
+  .cardsinhand{
     display: grid;
-    grid-template-columns: repeat(auto-fill, 10px);
+    grid-template-columns: repeat(auto-fill, 2vw);
+    padding: 0.5vw;
+    background-color: #eeedb8;
+    border-radius: 2vw;
+  }
+  #handTitle{
+    position: absolute;
+    background-color: gray;
+    border-radius: 2vw;
   }
 
 .boardSkills{
     border-radius: 0 2vw 0 0;
-    background-color: #dfeccc;
+    background-color: #bddf8c;
     grid-column: 3/5;
     grid-row: 1/4;
   }
+
+.skillsinhand{
+ display: grid;
+  grid-template-columns: repeat(auto-fill, 2.5vw);
+  z-index: 1;
+  margin: 1vw;
+  border-radius: 2vw;
+  background-color: #cde0b2;
+  }
+
+.boardNextTurnInfo{
+  grid-row: 4;
+  grid-column: 3/5;
+  background-color: gray;
+  border-radius: 0 0 2vw 0;
+}
 
   .boardclosebutton{
     grid-row: 3;
     grid-column: 3;
     align-self: flex-end;
     z-index: 1;
+    cursor: pointer;
   }
 
   /* Om man klickar på spelaren i topp */
