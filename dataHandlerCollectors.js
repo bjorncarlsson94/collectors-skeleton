@@ -4,6 +4,7 @@ let csv = require("csvtojson");
 
 let collectorsDeck = "collectors-cards";
 let languages = ["en", "se"];
+let auctonStarterId = null;
 /* https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array */
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
@@ -238,7 +239,9 @@ Data.prototype.buyCard = function (roomId, playerId, card, cost) {
 }
 Data.prototype.buySkill = function (roomId, playerId, card, cost) {
   console.log(playerId)
+  
   let room = this.rooms[roomId];
+
   if (typeof room !== 'undefined') {
     let c = null;
     /// check first if the card is among the items on sale
@@ -248,6 +251,10 @@ Data.prototype.buySkill = function (roomId, playerId, card, cost) {
       if (room.skillsOnSale[i].x === card.x &&
         room.skillsOnSale[i].y === card.y) {
         c = room.skillsOnSale.splice(i, 1, {});
+        console.log("kolla här"+c.market);
+        console.log(c.market);
+        console.log("olle,"+room.skillsOnSale[i].item);
+        console.log(room.skillsOnSale.length);
         break;
       }
     }
@@ -261,6 +268,7 @@ Data.prototype.buySkill = function (roomId, playerId, card, cost) {
         break;
       }
     }
+  
     room.players[playerId].skills.push(...c);
     room.players[playerId].money -= cost;
 
@@ -316,8 +324,11 @@ Data.prototype.auctionWon = function (roomId, playerId, auctionPrice) {
       console.log(card)
       console.log("cardinauction"+room.cardInAuction);
       room.players[playerId].hand.push(card);
+      console.log("spelarens kort"+room.players[playerId].money)
+      
       room.players[playerId].money -= auctionPrice;
-      console.log("spelarens kort"+room.players[playerId].hand)
+      
+      console.log("spelarens kort"+room.players[playerId].money)
 }
 }
     // ...then check if it is in the hand. It cannot be in both so it's safe
@@ -452,13 +463,36 @@ Data.prototype.getAuctionPrice = function (roomId) {
     return room.auctionPrice;
   } else return [];
 }
+Data.prototype.moveCards = function(roomId){
+  let c = null;
+  
+  let room =this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    
+    if(room.skillsOnSale[room.skillsOnSale.length-1].market){
+      
+      c = room.skillsOnSale.splice(-1, 1, {});
+      room.raiseItems.push(...c);
+      room.raiseValue=this.cardValue(roomId);
+     
+
+
+    }else{
+      
+
+    }
+
+  } else return [];
+
+
+}
 
 //getCardValue är den som körs när rummet initiseras. Därav if och else satsen. Detta som jag tror kan lösas snyggare. 
 //Följ till cardValue.
 Data.prototype.getCardValue = function (roomId) {
   
   let room = this.rooms[roomId];
-  console.log("jag kom hit"+room.raiseValue);
+
   if(room.raiseValue !==null){
    if (typeof room !== 'undefined') {
       return room.raiseValue;
@@ -496,6 +530,9 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
   let room = this.rooms[roomId];
   console.log("bid::" + bid)
   if (typeof room !== 'undefined') {
+    if (auctionPrice == 0){
+      auctonStarterId = playerId;
+    }
     if (bid > auctionPrice){
       auctionPrice = bid;
       room.auctionLeaderId = playerId;
@@ -508,28 +545,33 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
         console.log(keys[0] +" 2 är lika med " + room.auctionLeaderId)
         if(keys[0] == room.auctionLeaderId){
           console.log("varför1")
-          this.auctionWon(roomId, room.auctionLeaderId)
-          room.auctionLeaderId = null
+          this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
+          room.players[playerId].turn = false;
+          room.players[auctonStarterId].turn = true;
+          room.auctionLeaderId = null;
+          auctonStarterId = null;
+          
         }
       } 
       else if (keys[i+1] == room.auctionLeaderId){
         console.log("varför2 + 3")
         console.log("ge mig den")
-        this.auctionWon(roomId, room.auctionLeaderId)
-        room.auctionLeaderId = null
+        this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
+        room.players[playerId].turn = false;
+        room.players[auctonStarterId].turn = true;
+        room.auctionLeaderId = null;
+        auctonStarterId = null;
       }
    } 
     room.auctionPrice = auctionPrice;
     console.log("PirceA::"+auctionPrice)
-    this.nextPlayer(roomId, playerId, true)
+    if(auctonStarterId !== null){
+      console.log("bytspelare")
+      this.nextPlayer(roomId, playerId, true)
+    }
+    
     return room.player
   }
-}
-
-//vinnar budet 
-
-Data.prototype.auctionBid = function (roomId, playerId, bid, auctionPrice){
-
 }
 
 
@@ -540,26 +582,28 @@ Data.prototype.cardValue = function (roomId) {
   var music=0;
   var movie=0;
   var technology=0;
- 
+
+  
   let room = this.rooms[roomId];
+ 
   if (typeof room !== 'undefined') {
     
     for (let i = 0; i < room.raiseItems.length; i += 1) {
-    if (room.raiseItems[i].market === "fastaval") {
+    if (room.raiseItems[i].market == "fastaval") {
       fastaval+=1;
      
-    } else if (room.raiseItems[i].market === "figures") {
+    } else if (room.raiseItems[i].market == "figures") {
       figures+=1;
-    } else if (room.raiseItems[i].market === "music") {
+    } else if (room.raiseItems[i].market == "music") {
       music+=1;
-    } else if (room.raiseItems[i].market === "movie") {
+    } else if (room.raiseItems[i].market == "movie") {
       movie+=1;
-    }else if (room.raiseItems[i].market === "technology") {
+    }else if (room.raiseItems[i].market == "technology") {
       technology+=1;
     }
     
   }
-
+   
     return{
       fastaval:fastaval,
       figures:figures,

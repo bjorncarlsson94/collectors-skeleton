@@ -75,6 +75,16 @@ function sockets(io, socket, data) {
       round:data.getRound(d.roomId)
     });
   });
+  socket.on('moveCards', function (d) {
+    data.moveCards(d.roomId,);
+    io.to(d.roomId).emit('cardsMoved', {
+      players: data.getPlayers(d.roomId),
+      round:data.getRound(d.roomId),
+      raiseItems: data.getRaiseItems(d.roomId),
+      raiseValue: data.getCardValue(d.roomId),
+      skillsOnSale: data.getSkillsOnSale(d.roomId),
+    });
+  });
 
   socket.on('auctionBid', function (d) {
     data.auctionBids(d.roomId, d.playerId, d.bid, d.auctionPrice);
