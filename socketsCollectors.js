@@ -67,6 +67,36 @@ function sockets(io, socket, data) {
     });
   });
 
+    //------------------WORK metoder----------------------
+    socket.on("collectorsWorkDrawCard", function(d) {
+      //funktion för att dra kort genom WORK
+      io.to(d.roomId).emit(
+        "collectorsWorkCardDrawn",
+        data.workDrawCard(d.roomId, d.playerId, 1)
+      );
+    });
+    socket.on("collectorsWorkDrawTwoCards", function(d) {
+      //funktion för att dra 2 kort genom WORK
+      io.to(d.roomId).emit(
+        "collectorsWorkCardDrawn",
+        data.workDrawCard(d.roomId, d.playerId, 2)
+      );
+    });
+    socket.on("collectorsBottleRecycle", function(d) {
+      console.log("socket körs");
+      io.to(d.roomId).emit(
+        "collectorsBottleRecycled",
+        data.bottleRecycled(d.roomId, d.playerId)
+      );
+    });
+    socket.on("collectorsBottleRecycled4thRound", function(d) {
+      console.log("socket körs");
+      io.to(d.roomId).emit(
+        "collectorsBottleRecycled4thRound",
+        data.bottleRecycled4thRound(d.roomId, d.playerId)
+      );
+    });
+    //---------------------------------------------------
 
   socket.on('nextPlayer', function (d) {
     data.nextPlayer(d.roomId, d.playerId, d.auctionActive);

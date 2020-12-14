@@ -165,6 +165,7 @@ Data.prototype.joinGame = function (roomId, playerId) {
       room.players[playerId] = {
         hand: [],
         money: 3,
+        bottles: 2,
         points: 0,
         skills: [],
         items: [],
@@ -304,6 +305,42 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
   }
 }
 
+//-------------------WORK metoder-----------------------
+Data.prototype.workDrawCard = function (roomId, playerId, quantity) {     //Dra kort genom WORK
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    for (var i = 0; i < quantity; i++) {
+      let card = room.deck.pop();
+      room.players[playerId].hand.push(card);
+    }
+    return room.players;
+  } else return [];
+}
+Data.prototype.bottleRecycled = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    console.log(room.players[playerId].bottles + " bottles");
+    console.log(room.players[playerId].money + " money");
+    room.players[playerId].bottles--;
+    room.players[playerId].money++;
+    console.log(room.players[playerId].bottles + " bottles");
+    console.log(room.players[playerId].money + " money");
+    return room.players;
+  } else return [];
+}
+Data.prototype.bottleRecycled4thRound = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    console.log(room.players[playerId].bottles + " bottles");
+    console.log(room.players[playerId].money + " money");
+    room.players[playerId].bottles--;
+    room.players[playerId].money += 3;
+    console.log(room.players[playerId].bottles + " bottles");
+    console.log(room.players[playerId].money + " money");
+    return room.players;
+  } else return [];
+}
+//------------------------------------------------------
 
 Data.prototype.auctionWon = function (roomId, playerId, auctionPrice) {
   let room = this.rooms[roomId];
