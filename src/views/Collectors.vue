@@ -100,11 +100,12 @@
             <div class= "playerBoardGrid" v-if="isActive">
              
               <div class= "boardCollection" >
+                <div id="collectiontitle">Collection:</div> 
               <div class="help"><p>?</p></div>
                 <div class="boardcollectiongrid">
                 
                 <div class= "playercollection">
-                  Collection:
+                  
                   <div class="collectioncards">
                   <CollectorsCard
                   v-for="(card, index) in players[playerId].items"
@@ -115,12 +116,9 @@
                   />
                   </div>
                   </div>
-                <div>  
-                  Hidden:
-                </div>
-                <div>
-                  Total value:
-                </div>
+                <div id= "hidden">Hidden:</div>
+                
+                <div id="totalvalue">Total value:</div>
               </div>
 
               </div>
@@ -137,7 +135,7 @@
                </div>
              </div>
              <div class = "boardHand">
-              <p id="handTitle">Hand:</p>
+               <div id="handTitle">Hand:</div>
               <div class= "cardsinhand">
                 <CollectorsCard
                   v-for="(card, index) in players[playerId].hand"
@@ -802,6 +800,8 @@ export default {
     z-index: 1;
     font-size: 1vw;
     cursor:default;
+    border: solid;
+    border-color: black;
   }
 
   .playerBoardGrid{
@@ -819,6 +819,7 @@ export default {
     border-radius: 2vw 0 0 0;
     background-color:#ca6058;
     padding: 1vw;
+    padding-bottom: 0.8vw;
     overflow: hidden;
   }
 
@@ -826,7 +827,7 @@ export default {
     display: grid;
     position: relative;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows: 4fr 1fr;
+    grid-template-rows: 5fr 1fr;
     height: 100%;
   }
 
@@ -835,10 +836,14 @@ export default {
     grid-column: 1;
     background-color:#d47871;
     border-radius: 2vw;
+    overflow: hidden;
   }
   .collectioncards{
     display: grid;
     grid-template-columns: repeat(auto-fill, 1.5vw);
+    grid-template-rows: repeat(2, 4vh);
+    margin-right: 3.5vw;
+    margin-left: 0.5vw;
   }
 
   .boardHand{
@@ -849,18 +854,28 @@ export default {
     
     border-radius: 0 0 0 2vw;
     padding: 1vw;
+    align-items: center;
   }
   .cardsinhand{
     display: grid;
     grid-template-columns: repeat(auto-fill, 2vw);
     padding: 0.5vw;
+    height: 80%;
     background-color: #eeedb8;
     border-radius: 2vw;
   }
   #handTitle{
+    margin-left: 10vw;
     position: absolute;
     background-color: gray;
     border-radius: 2vw;
+    padding: 0.3vw;
+    z-index: 1;
+  }
+  #totalvalue{
+    background-color: gray;
+    border-radius: 2vw;
+    text-align: center;
   }
 
 .boardSkills{
