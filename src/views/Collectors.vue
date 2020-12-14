@@ -42,33 +42,25 @@
                 @placeBottle="placeBottle('auction', $event)"/>
           </div>
         </div>
-        <div class="upforAuction" v-show="auctionActive" v-if="players[playerId]">
-          <div class="auctionLeader">
-             Leader: {{auctionLeaderId}}
-             </div>
-             <div class="auctionBid">
-             {{bid-auctionPrice}}+
-             </div>
-             <div class="auctionMoney">
-             {{bid}}$
-          </div>
-          <div class="auctionCardView">
+        <div class="auctionMini" v-show="auctionMiniActive"  v-if="players[playerId]" @click="auctionMiniActiveNow()">
+          {{bid}}$
+         <div class="auctionCardViewMini">
             <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
           </div>
-          
-          <button class="auctionButtons" v-if="players[playerId]" :disabled="0<bid-auctionPrice || !players[playerId].turn || bid<1" @click="placeBid()">
-            Skip 
-          </button>
-          <button class="auctionButtons" v-if="players[playerId]" :disabled="bid<auctionPrice+1 || !players[playerId].turn" @click="placeBid()">
-            Place bid 
-          </button>
-          <button class="auctionButtons" v-if="players[playerId]" :disabled="!players[playerId].turn || bid<auctionPrice+1" @click="bid -= 1">
-            -
-          </button>
-          <button class="auctionButtons" v-if="players[playerId]" :disabled="!players[playerId].turn || players[playerId].money<bid+1" @click="bid += 1">
-             +
-          </button>
-        </div>
+          </div>
+          <CollectorsAuction v-if="players[playerId]"
+              :auctionActive="auctionActive"
+              :labels="labels"
+              :cardInAuction="cardInAuction"
+              :players="players"
+              :bid="bid"
+              :auctionLeaderId="auctionLeaderId"
+              :auctionPrice="auctionPrice"
+              :playerId="playerId"
+              :auctionMiniActiveNow="auctionMiniActiveNow"
+              :addBid="addBid"
+              :subBid="subBid"/>
+
         <div class="raiseValue">
           <div class="raiseValuegrid">
             <CollectorsRaiseValue v-if="players[playerId]"
@@ -255,6 +247,7 @@ import CollectorsBuyActions from '@/components/CollectorsBuyActions.vue'
 import CollectorsSkillActions from '@/components/CollectorsSkillActions.vue'
 import CollectorsRaiseValue from '@/components/CollectorsRaiseValue.vue'
 import CollectorsStartAuction from '@/components/CollectorsStartAuction.vue'
+import CollectorsAuction from '@/components/CollectorsAuction.vue'
 
 
 export default {
@@ -265,6 +258,7 @@ export default {
     CollectorsSkillActions,
     CollectorsRaiseValue,
     CollectorsStartAuction,
+    CollectorsAuction,
 
   },
   data: function () {
@@ -315,6 +309,7 @@ export default {
       startingPlayerId: null,
       auctionAvailable: false,
       auctionActive: false,
+      auctionMiniActive: false,
       currentPlayerId: null,
       auctionPrice: 0,
       bid: 0,
@@ -461,6 +456,12 @@ export default {
     selectAll: function (n) {
       n.target.select();
     },
+    addBid: function(){
+       this.bid +=1;
+   },
+  subBid: function(){
+       this.bid -=1;
+   },
     currentPlayer: function (){
       var keys = Object.keys(this.players);
       
@@ -598,7 +599,17 @@ export default {
 
     },
 
+    auctionMiniActiveNow: function(){
+      if(this.auctionMiniActive == true){
+        this.auctionMiniActive = false;
+        this.auctionActive = true;
+      }
+      else {
+        this.auctionMiniActive = true;
+        this.auctionActive = false;
+      }
 
+    },
     buyCardOrAuction: function(card){
       if(this.auctionAvailable == true){
         console.log("Starta en auktion");
@@ -988,68 +999,44 @@ export default {
     justify-content:center;
     justify-self: center;
   }
-  .upforAuction{
-    display: grid;
+    .auctionCardViewMini{
+    zoom: 1.65;
     position: absolute;
+    align-content: center;
+    transition: auto;
+    transform: translate(5%, 40%);
+  }
+  .auctionButtonMini{
+  background-image: url("https://www.pngrepo.com/download/120575/minimize.png");
+  background-position: center;
+  transform: rotate(270deg);
+  background-repeat: no-repeat;
+  background-size: 3vw;
+  margin: 1vw;
+  background-color:rgb(180, 180, 180);
+  cursor:pointer;
+  box-shadow: 0 0.3vw #999;
+  border-radius: 2vw;
+  border: 0vw;
+  
+}
+.auctionMini{
+    display: grid;
+    grid-column: 6;
     grid-template-rows: 20% 60% auto;
-    grid-template-columns: auto auto auto auto;
-    width: 40vw;
-    height: 40vw;
+    grid-template-columns: auto;
+    width: 9vw;
+    height: 16vw;
     background-color: #f5efa0;
     border-radius: 2vw;
     border-style: solid;
     border-width: 0.4vw;
     border-color: black;
-    z-index:50;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-   .auctionCardView{
-    zoom: 4;
-    position: absolute;
-    align-content: center;
-    transition: auto;
-    transform: translate(50%, 25%);
-  }
-  .auctionButtons{
-    margin: 1vw;
-    border: 1vw;
-    border-radius: 2vw;
-    font-size: 2vw;
-    border-color: black;
-    grid-row-start: 3;
-    align-self: bottom;
-    background-color:rgb(180, 180, 180);
-    transition-duration: 0.2;
-    cursor:pointer;
-    box-shadow: 0 0.3vw #999;
-  }
-  .auctionButtons:hover{
-    background-color: greenyellow;
-  }
-  .auctionMoney{
-    
-    grid-row: 1;
-    font-size: 5vw;
-    grid-column-start: 4;
-    text-align: center;
+    z-index: 50;
     color: darkgreen;
-  }
-  .auctionBid{
-    
-    grid-row: 1;
-    font-size: 5vw;
-    grid-column-start: 3;
-    text-align: left;
-    color: rgb(0, 209, 0);
-  }
-  .auctionLeader{
-    font-size: 2.5vw;
-    grid-row: 1;
-    grid-column: 1/3;
+    font-size: 3vw;
     text-align: center;
-    color: rgb(0, 0, 0);
+    cursor:pointer;
   }
   .work{
     text-align:center;
