@@ -211,6 +211,9 @@
           <button v-if="players[playerId]" @click="auctionBoard()">
             {{labels.showAuction}} 
           </button>
+          <button  @click="moveCards()">
+           hola olle testa här :) 
+          </button>
         </div>
       </div>
       </section>
@@ -423,6 +426,14 @@ export default {
         this.players = d.players;
       }.bind(this)
     );
+     this.$store.state.socket.on('cardsMoved',
+      function(d) {
+        this.raiseValue=d.raiseValue;
+        this.raiseItems=d.raiseItems;
+        this.skillsOnSale=d.skillsOnSale;
+        this.players = d.players;
+      }.bind(this)
+    );
     this.$store.state.socket.on('playerPicked',
       function(d) {
         console.log( "spelare vald");
@@ -607,6 +618,15 @@ export default {
       this.$store.state.socket.emit('startTurn', {
         roomId:this.$route.params.id
         }
+      );
+    },
+    moveCards: function(){
+      this.$store.state.socket.emit('moveCards', {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        
+        }
+
       );
     },
     nextPlayer: function () {

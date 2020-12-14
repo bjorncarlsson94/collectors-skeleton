@@ -238,7 +238,9 @@ Data.prototype.buyCard = function (roomId, playerId, card, cost) {
 }
 Data.prototype.buySkill = function (roomId, playerId, card, cost) {
   console.log(playerId)
+  
   let room = this.rooms[roomId];
+
   if (typeof room !== 'undefined') {
     let c = null;
     /// check first if the card is among the items on sale
@@ -248,6 +250,10 @@ Data.prototype.buySkill = function (roomId, playerId, card, cost) {
       if (room.skillsOnSale[i].x === card.x &&
         room.skillsOnSale[i].y === card.y) {
         c = room.skillsOnSale.splice(i, 1, {});
+        console.log("kolla här"+c.market);
+        console.log(c.market);
+        console.log("olle,"+room.skillsOnSale[i].item);
+        console.log(room.skillsOnSale.length);
         break;
       }
     }
@@ -261,6 +267,7 @@ Data.prototype.buySkill = function (roomId, playerId, card, cost) {
         break;
       }
     }
+  
     room.players[playerId].skills.push(...c);
     room.players[playerId].money -= cost;
 
@@ -452,13 +459,36 @@ Data.prototype.getAuctionPrice = function (roomId) {
     return room.auctionPrice;
   } else return [];
 }
+Data.prototype.moveCards = function(roomId){
+  let c = null;
+  
+  let room =this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    
+    if(room.skillsOnSale[room.skillsOnSale.length-1].market){
+      
+      c = room.skillsOnSale.splice(-1, 1, {});
+      room.raiseItems.push(...c);
+      room.raiseValue=this.cardValue(roomId);
+     
+
+
+    }else{
+      
+
+    }
+
+  } else return [];
+
+
+}
 
 //getCardValue är den som körs när rummet initiseras. Därav if och else satsen. Detta som jag tror kan lösas snyggare. 
 //Följ till cardValue.
 Data.prototype.getCardValue = function (roomId) {
   
   let room = this.rooms[roomId];
-  console.log("jag kom hit"+room.raiseValue);
+
   if(room.raiseValue !==null){
    if (typeof room !== 'undefined') {
       return room.raiseValue;
@@ -532,7 +562,6 @@ Data.prototype.auctionBid = function (roomId, playerId, bid, auctionPrice){
 
 }
 
-
 //I cardvalue så sätts alla värden på korten. Om det ligger 1 kort med market=fastaval så kommer fastaval ökas med 1. 
 Data.prototype.cardValue = function (roomId) {
   var fastaval=0;
@@ -540,26 +569,27 @@ Data.prototype.cardValue = function (roomId) {
   var music=0;
   var movie=0;
   var technology=0;
- 
+
   let room = this.rooms[roomId];
+ 
   if (typeof room !== 'undefined') {
     
     for (let i = 0; i < room.raiseItems.length; i += 1) {
-    if (room.raiseItems[i].market === "fastaval") {
+    if (room.raiseItems[i].market == "fastaval") {
       fastaval+=1;
      
-    } else if (room.raiseItems[i].market === "figures") {
+    } else if (room.raiseItems[i].market == "figures") {
       figures+=1;
-    } else if (room.raiseItems[i].market === "music") {
+    } else if (room.raiseItems[i].market == "music") {
       music+=1;
-    } else if (room.raiseItems[i].market === "movie") {
+    } else if (room.raiseItems[i].market == "movie") {
       movie+=1;
-    }else if (room.raiseItems[i].market === "technology") {
+    }else if (room.raiseItems[i].market == "technology") {
       technology+=1;
     }
     
   }
-
+   
     return{
       fastaval:fastaval,
       figures:figures,
