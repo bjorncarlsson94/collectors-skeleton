@@ -105,6 +105,7 @@
               <div class= "boardCollection" >
               <div class="help"><p>?</p></div>
                 Collection:
+                <div class= "collectiongrid">
                   <CollectorsCard
                   v-for="(card, index) in players[playerId].items"
                     :card="card"
@@ -112,6 +113,7 @@
                     @doAction="buyCard(card)"
                     :key="index"
                   />
+                  </div>
                 <div>  
                   Hidden:
                 </div>
@@ -131,13 +133,15 @@
              </div>
              <div class = "boardHand">
               Hand:
-                <CollectorsCard class= "cardinhand"
+              <div class= "cardinhand">
+                <CollectorsCard
                   v-for="(card, index) in players[playerId].hand"
                  :card="card"
                  :availableAction="card.available"
                  @doAction="buyCard(card)"              
                  :key="index"
                />
+               </div>
              </div>
           </div>
         </div>
@@ -801,27 +805,37 @@ export default {
   .boardCollection{
     grid-row: 1/4;
     grid-column: 1 /4;
+    border-radius: 2vw 0 0 0;
     background-color: rgb(223, 26, 26);
     border-radius: 2vw 2vw 0 0;
     padding: 1vw;
+    overflow: hidden;
   }
+
+  .collectiongrid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 10px);
+
+  }
+
   .boardHand{
     grid-row: 4;
     grid-column: 1 /span 4;
     
-    max-height: 7vh;
-    background-color: rgb(255, 103, 103);
+    
     overflow: hidden;
+    background-color: rgb(255, 103, 103);
+    
     border-radius: 0 0 2vw 2vw;
     padding: 1vw;
   }
   .cardinhand{
     display: grid;
-    grid-template-columns: repeat(auto-fill, 0px);
+    grid-template-columns: repeat(auto-fill, 10px);
   }
 
 .boardSkills{
-    border-radius: 2vw;
+    border-radius: 0 2vw 0 0;
     background-color: #dfeccc;
     grid-column: 3/5;
     grid-row: 1/4;
@@ -1059,6 +1073,7 @@ export default {
     max-width: 8vw;
     font-size: 1vw;
     justify-self:center;
+    align-self: flex-end;
   }
   .menuSpace{
     grid-column: 4;
@@ -1070,6 +1085,7 @@ export default {
     max-width: 5vw;
     text-align: center;
     justify-self:right;
+    align-self: flex-end;
   }
   .buttons{
     display:inline-block;
@@ -1088,6 +1104,7 @@ export default {
   }
   .menuSpace > * {  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
     zoom: 0.8;
+    
   }
   .help{
     width:40px;
