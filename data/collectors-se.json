@@ -6,5 +6,11 @@
 	"buySkill": "Köp en skill",
 	"raiseValue":"Höj värdet",
 	"startAuction": "Starta en auktion",
-	"test1": "hej Olle"
+	"randomplayer": "Slumpa spelare",
+	"roundcounter": "Det är runda: ",
+	"showAuction": "Visa auktion",
+
+	"player2": "Spelare 2",
+	"player3": "Spelare 3",
+	"player4": "Spelare 4"
 }

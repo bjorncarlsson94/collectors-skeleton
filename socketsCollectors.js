@@ -78,14 +78,14 @@ function sockets(io, socket, data) {
 
   socket.on('auctionBid', function (d) {
     data.auctionBids(d.roomId, d.playerId, d.bid, d.auctionPrice);
-   // data.auctionBid(d.roomId, d.playerId, d.bid, d.auctionPrice);
     console.log("socket bid "+d.bid)
     io.to(d.roomId).emit('auctionRound', {
       players: data.getPlayers(d.roomId),
       auctionPrice: data.getAuctionPrice(d.roomId),
       auctionLeaderId: data.getAuctionLeaderId(d.roomId), 
-      //cardInAuction: data.getCardInAuction(d.roomId)
+      cardInAuction: data.getCardInAuction(d.roomId)
     });
+    console.log(data.getCardInAuction(d.roomId))
   });
 }
 

@@ -5,6 +5,12 @@
 	"buyCard": "Buy an item",
 	"buySkill": "Buy a skill",
 	"raiseValue":"Raise value",
-	"startAuction": "Start an auction"
+	"startAuction": "Start an auction",
+	"randomplayer": "Slumpa spelare",
+	"roundcounter": "It is round: ",
+	"showAuction": "Show Auction",
 
+	"player2": "Player 2",
+	"player3": "Player 3",
+	"player4": "Player 4"
 }

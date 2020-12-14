@@ -9,7 +9,7 @@
             @doAction="startAuction(card)"/>
           <!--{{ cardCost(card) }}-->
         </div>
-        <div v-for="(p, index) in placement" :key="index">
+        <div v-for="(p, index) in placement" :key="'A' + index">
           <button class="button"
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
@@ -117,7 +117,6 @@ export default {
   .auctiongrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
     padding: 1vw;
     justify-items: center;
   }

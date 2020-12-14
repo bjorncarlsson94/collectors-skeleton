@@ -11,9 +11,8 @@
           <div class="cardcost" v-for="(value,key) in currentValues" :key="key">
             <p v-if="card.item===key">{{value}}</p>
           </div>
-       
         </div>
-        <div v-for="(p, index) in placement" :key="index">
+        <div v-for="(p, index) in placement" :key="'A' + index">
           <button class="button"
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 

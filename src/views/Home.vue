@@ -1,20 +1,18 @@
 <template>
   <div class="center">
     <div>
+      <div class="outer">
       <h1>Collectors</h1>
-      <ul>
-        <li class="gameSetUp" v-for="i in 3" :key="i">
-          <a @click="setupCollectors(i+1, 'en')">Set up a game of Collectors for {{i+1}} players</a>.
-        </li>
-      </ul>
-
+        <div class="gameSetUp" v-for="i in 3" :key="i"> 
+          <button class="buttons" @click="setupCollectors(i+1, 'en')">Set up a game of Collectors for {{i+1}} players</button>
+        </div>
       <br>
-      
-      <ul>
-        <li class="gameSetUp" v-for="i in 3" :key="i">
-          <a @click="setupCollectors(i+1, 'se')">Spela Collectors med {{i+1}} spelare</a>.
-        </li>
-      </ul>
+        <div>
+          <div class="gameSetUp" v-for="i in 3" :key="i">
+            <button class="buttons" @click="setupCollectors(i+1, 'se')">Spela Collectors med {{i+1}} spelare</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -43,15 +41,40 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    padding: 1em;
+    background-image: url("/images/collectors-cards-new.png");
   }
-
+  .outer{
+    width: 25vw;
+    background-color: rgb(103, 151, 223);
+    border-radius: 1vw;
+    padding: 2vw;
+    z-index: 20;
+    border-style:solid;
+    border-width: 0.5vw;
+    border-color: rgb(66, 66, 66);
+  }
   .gameSetUp{
-    background-color:rgb(212, 129, 129);
-    width: 15vw;
+    width: 20vw;
     border-radius: 15vh;
     padding: 0.5vw;
-    margin: 1vw;
+  }
+  .buttons{
+    display:inline-block;
+    color: black;
+    background-color: rgb(206, 210, 255);
+    border-radius:1vw;
+    box-shadow: 0 0.3vw rgb(101, 105, 151);
+    cursor: pointer;
+    font-size: 1vw;
+    z-index: 20;
+  }
+  .buttons:active{
+    background-color: rgb(255, 178, 149);
+    box-shadow: 0 0.2vw rgb(101, 105, 151);
+    transform: translateY(0.1vw);
+  }
+  .buttons:hover{
+    background-color: rgb(255, 182, 155);
   }
   
 </style>
