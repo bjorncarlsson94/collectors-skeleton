@@ -4,7 +4,8 @@ let csv = require("csvtojson");
 
 let collectorsDeck = "collectors-cards";
 let languages = ["en", "se"];
-let auctonStarterId = null;
+
+
 /* https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array */
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
@@ -67,7 +68,7 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
   room.auctionCards = room.deck.splice(0, 4);
   room.raiseItems = room.deck.splice(0, 6);
   room.raiseValue=null;
- 
+  room.auctonStarterId =null;
   room.cardInAuction = [];
   room.market = [];
   room.round = 0;
@@ -251,10 +252,7 @@ Data.prototype.buySkill = function (roomId, playerId, card, cost) {
       if (room.skillsOnSale[i].x === card.x &&
         room.skillsOnSale[i].y === card.y) {
         c = room.skillsOnSale.splice(i, 1, {});
-        console.log("kolla här"+c.market);
-        console.log(c.market);
-        console.log("olle,"+room.skillsOnSale[i].item);
-        console.log(room.skillsOnSale.length);
+      
         break;
       }
     }
@@ -313,21 +311,33 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
 }
 
 
-Data.prototype.auctionWon = function (roomId, playerId, auctionPrice) {
+Data.prototype.auctionWon = function (roomId, playerId, placementType,auctionPrice) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     let c = null;
         let card = room.cardInAuction[0];
+        card.active =
         c = room.cardInAuction.splice(0, 1, {});
-        
+        if (placementType == 'raiseValue') {
+          room.raiseItems.push(...c);
+          room.raiseValue=this.cardValue(roomId);
+        }
+        else if(placementType == 'skills'){
+          room.players[playerId].skills.push(...c);
+        }
+        else if(placementType == 'items'){
+          room.players[playerId].items.push(...c);
+        }
+        else if(placementType == 'secret'){
+          room.players[playerId].secret.push(...c);
+        }
       console.log("kortet ges till vinnaren"+playerId)
       console.log(card)
       console.log("cardinauction"+room.cardInAuction);
-      room.players[playerId].hand.push(card);
       console.log("spelarens kort"+room.players[playerId].money)
-      
       room.players[playerId].money -= auctionPrice;
-      
+      room.cardInAuction = [];
+      room.auctionWinner =false;
       console.log("spelarens kort"+room.players[playerId].money)
 }
 }
@@ -444,7 +454,12 @@ Data.prototype.startTurn = function (roomId) {
 
 
 }
-
+Data.prototype.getAuctionWinner= function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.auctionWinner;
+  } else return [];
+}
 Data.prototype.getRound = function (roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
@@ -464,23 +479,88 @@ Data.prototype.getAuctionPrice = function (roomId) {
   } else return [];
 }
 Data.prototype.moveCards = function(roomId){
+ 
+
+ /* Take the lowest card in the skill pool and place it in the market pool.
+   Move the remaining cards in the skill pool to the lowest empty positions in the skill pool.
+    Maintain the internal order of all the cards in the pool. 
+
+Take the leftmost card in the item pool and place it in the lowest free position in the skill pool. 
+Repeat this process until the skill pool is full or the item pool is empty.
+ Move any remaining cards in the item pool to the leftmost empty positions in the item pool. 
+
+  Take the “lowest” card in the auction pool and place it in the market pool. 
+  Move the remaining cards in the auction pool to the lowest empty positions in the Auction pool, 
+  as indicated by the blue arrow labelled 3. 
+  Maintain the internal order of all the cards in the pool. 
+
+Now refill all pools (except the market pool) from the deck. 
+All pools (except the market pool) should have the same number of cards after this step as after setup. */
   let c = null;
+  let k=null;
   
   let room =this.rooms[roomId];
   if (typeof room !== 'undefined') {
-    
-    if(room.skillsOnSale[room.skillsOnSale.length-1].market){
+    //move skills
+    for (let i = room.skillsOnSale.length-1; i >= 0; i -= 1) { 
+      if(room.skillsOnSale[i].market){
       
-      c = room.skillsOnSale.splice(-1, 1, {});
-      room.raiseItems.push(...c);
-      room.raiseValue=this.cardValue(roomId);
-     
-
-
-    }else{
-      
-
+        c = room.skillsOnSale.splice(i, 1, {});
+        room.raiseItems.push(...c);
+        room.raiseValue=this.cardValue(roomId);
+        break;
+  
+        
+      }                             
     }
+    //Sort Skills
+    room.skillsOnSale=this.bubbleSort(room.skillsOnSale);
+    //move items
+    var counter =0; 
+    for (let i = room.skillsOnSale.length-1; i >= 0; i -= 1) { 
+      if(typeof(room.skillsOnSale[i].market) == 'undefined'){
+        counter ++;
+      }
+    }
+    console.log(counter);
+  for (let i = counter-1; i >= 0; i -= 1) { 
+   for (let j = room.itemsOnSale.length-1; j >= 0; j -= 1) { 
+      if(room.itemsOnSale[j].market){
+        console.log("j:"+j);
+        console.log("kom hit");
+        k = room.itemsOnSale.splice(j, 1, {});
+        console.log(room.itemsOnSale[j]);
+        room.skillsOnSale.splice(i,1,...k); 
+        break;
+
+                                    
+    }
+    
+  }
+}
+    //sort items
+room.itemsOnSale=this.bubbleSort(room.itemsOnSale);
+
+    //move auction
+      for (let i = room.auctionCards.length-1; i >= 0; i -= 1) { 
+      if(room.auctionCards[i].market){
+      
+        c = room.auctionCards.splice(i, 1, {});
+        room.raiseItems.push(...c);
+        room.raiseValue=this.cardValue(roomId);
+        break;
+  
+        
+      }                             
+    }
+    //sort auctionCards
+    room.auctionCards=this.bubbleSort(room.auctionCards);
+
+
+    //fill pools
+  //  room.skillsOnSale=fillPool(roomId,"skills",room.skillsOnSale);
+   // room.itemsOnSale=fillPool(roomId,"items",room.itemsOnSale);
+   // room.auctionCards=fillPool(roomId,"auction",room.auctionCards);
 
   } else return [];
 
@@ -531,7 +611,7 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
   console.log("bid::" + bid)
   if (typeof room !== 'undefined') {
     if (auctionPrice == 0){
-      auctonStarterId = playerId;
+      room.auctonStarterId = playerId;
     }
     if (bid > auctionPrice){
       auctionPrice = bid;
@@ -545,27 +625,29 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
         console.log(keys[0] +" 2 är lika med " + room.auctionLeaderId)
         if(keys[0] == room.auctionLeaderId){
           console.log("varför1")
-          this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
+          room.auctionWinner =true;
+          //this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
           room.players[playerId].turn = false;
-          room.players[auctonStarterId].turn = true;
-          room.auctionLeaderId = null;
-          auctonStarterId = null;
+          room.players[room.auctonStarterId].turn = true;
+          //room.auctionLeaderId = null;
+          room.auctonStarterId = null;
           
         }
       } 
       else if (keys[i+1] == room.auctionLeaderId){
         console.log("varför2 + 3")
         console.log("ge mig den")
-        this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
+        room.auctionWinner =true;
+        //this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
         room.players[playerId].turn = false;
-        room.players[auctonStarterId].turn = true;
-        room.auctionLeaderId = null;
-        auctonStarterId = null;
+        room.players[room.auctonStarterId].turn = true;
+        //room.auctionLeaderId = null;
+        room.auctonStarterId = null;
       }
    } 
     room.auctionPrice = auctionPrice;
     console.log("PirceA::"+auctionPrice)
-    if(auctonStarterId !== null){
+    if(room.auctonStarterId !== null){
       console.log("bytspelare")
       this.nextPlayer(roomId, playerId, true)
     }
@@ -616,6 +698,53 @@ Data.prototype.cardValue = function (roomId) {
   
   return [];
 }
+}
+Data.prototype.bubbleSort = function(cardArray=10)
+{   
+    
+
+    var swapp;
+    var n = cardArray.length-1;
+    var x=cardArray;
+    
+    do {
+        swapp = false;
+        for (var i=n; i > 0; i--)
+        {
+         
+            if (typeof(x[i].market) == 'undefined' && !(typeof(x[i-1].market) == 'undefined') )
+            {   
+             
+               var temp = x[i];
+               x[i] = x[i-1];
+               x[i-1] = temp;
+               swapp = true;
+            }else{
+
+              
+            }
+        }
+        
+    } while (swapp);
+ return x; 
+}
+Data.prototype.fillPool=function(roomId,name,cardArray){
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    if(name==="skills"){
+
+
+    }if(name==="items"){
+
+      
+    }if(name==="auction"){
+
+      
+    }
+
+  }
+
+
 }
 
 module.exports = Data;
