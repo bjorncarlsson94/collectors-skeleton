@@ -4,6 +4,7 @@ let csv = require("csvtojson");
 
 let collectorsDeck = "collectors-cards";
 let languages = ["en", "se"];
+let auctonStarterId = null;
 /* https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array */
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
@@ -320,8 +321,11 @@ Data.prototype.auctionWon = function (roomId, playerId, auctionPrice) {
       console.log(card)
       console.log("cardinauction"+room.cardInAuction);
       room.players[playerId].hand.push(card);
+      console.log("spelarens kort"+room.players[playerId].money)
+      
       room.players[playerId].money -= auctionPrice;
-      console.log("spelarens kort"+room.players[playerId].hand)
+      
+      console.log("spelarens kort"+room.players[playerId].money)
 }
 }
     // ...then check if it is in the hand. It cannot be in both so it's safe
@@ -588,6 +592,9 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
   let room = this.rooms[roomId];
   console.log("bid::" + bid)
   if (typeof room !== 'undefined') {
+    if (auctionPrice == 0){
+      auctonStarterId = playerId;
+    }
     if (bid > auctionPrice){
       auctionPrice = bid;
       room.auctionLeaderId = playerId;
@@ -600,29 +607,35 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
         console.log(keys[0] +" 2 är lika med " + room.auctionLeaderId)
         if(keys[0] == room.auctionLeaderId){
           console.log("varför1")
-          this.auctionWon(roomId, room.auctionLeaderId)
-          room.auctionLeaderId = null
+          this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
+          room.players[playerId].turn = false;
+          room.players[auctonStarterId].turn = true;
+          room.auctionLeaderId = null;
+          auctonStarterId = null;
+          
         }
       } 
       else if (keys[i+1] == room.auctionLeaderId){
         console.log("varför2 + 3")
         console.log("ge mig den")
-        this.auctionWon(roomId, room.auctionLeaderId)
-        room.auctionLeaderId = null
+        this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
+        room.players[playerId].turn = false;
+        room.players[auctonStarterId].turn = true;
+        room.auctionLeaderId = null;
+        auctonStarterId = null;
       }
    } 
     room.auctionPrice = auctionPrice;
     console.log("PirceA::"+auctionPrice)
-    this.nextPlayer(roomId, playerId, true)
+    if(auctonStarterId !== null){
+      console.log("bytspelare")
+      this.nextPlayer(roomId, playerId, true)
+    }
+    
     return room.player
   }
 }
 
-//vinnar budet 
-
-Data.prototype.auctionBid = function (roomId, playerId, bid, auctionPrice){
-
-}
 
 //I cardvalue så sätts alla värden på korten. Om det ligger 1 kort med market=fastaval så kommer fastaval ökas med 1. 
 Data.prototype.cardValue = function (roomId) {
@@ -632,6 +645,7 @@ Data.prototype.cardValue = function (roomId) {
   var movie=0;
   var technology=0;
 
+  
   let room = this.rooms[roomId];
  
   if (typeof room !== 'undefined') {
