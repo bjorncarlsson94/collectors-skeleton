@@ -443,6 +443,8 @@ export default {
         this.raiseValue=d.raiseValue;
         this.raiseItems=d.raiseItems;
         this.skillsOnSale=d.skillsOnSale;
+        this.itemsOnSale=d.itemsOnSale;
+        this.auctionCards=d.auctionCards;
         this.players = d.players;
       }.bind(this)
     );

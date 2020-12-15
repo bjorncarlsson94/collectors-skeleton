@@ -83,6 +83,8 @@ function sockets(io, socket, data) {
       raiseItems: data.getRaiseItems(d.roomId),
       raiseValue: data.getCardValue(d.roomId),
       skillsOnSale: data.getSkillsOnSale(d.roomId),
+      itemsOnSale:data.getItemsOnSale(d.roomId),
+      auctionCards:data.getAuctionCards(d.roomId),
     });
   });
 
