@@ -55,7 +55,8 @@ export default {
     itemsOnSale: Array,
     marketValues: Object,
     placement: Array,
-    raiseValue:Object  },
+    raiseValue:Object,
+    notYourTurn: Function  },
 
   methods: {
     log(value,key){
@@ -134,9 +135,9 @@ export default {
       }
      
     },
-    notYourTurn: function () {
-      return (this.player.turn== false)
-    }
+    // notYourTurn: function () {
+    //   return (this.player.turn== false)
+    // }
 }
   }
   

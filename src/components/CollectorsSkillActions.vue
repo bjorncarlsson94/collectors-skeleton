@@ -39,7 +39,8 @@ export default {
     player: Object,
     skillsOnSale: Array,
     marketValues:Object,
-    placement: Array
+    placement: Array,
+    notYourTurn: Function
   },
   methods: {
     cannotAfford: function (cost) {
@@ -85,9 +86,9 @@ export default {
         this.highlightAvailableCards()
       }
     },
-    notYourTurn: function () {
-      return (this.player.turn== false)
-    }
+    // notYourTurn: function () {
+    //   return (this.player.turn== false)
+    // }
 
   }
 }

@@ -39,6 +39,7 @@
                 :skillsOnSale="skillsOnSale"
                 :marketValues="marketValues"
                 :placement="skillPlacement"
+                :notYourTurn="notYourTurn"
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
               />
@@ -53,6 +54,7 @@
                 :auctionCards="auctionCards"
                 :marketValues="marketValues"
                 :placement="auctionPlacement"
+                :notYourTurn="notYourTurn"
                 @startAuction="startAuction($event)"
                 @placeBottle="placeBottle('auction', $event)"/>
           </div>
@@ -64,24 +66,25 @@
           </div>
           </div>
           <div class="winnerAuction"  v-show="winnerAvailable" >
-            <div class="winnerText">You won the auction!!! Where do you want to place your card?</div><button
-        class="auctionButtonWinner"
-        v-if="players[playerId]"
-        @click="auctionOver('skills')"
-      >skills</button>
+            <div class="winnerText">You won the auction!!! Where do you want to place your card?</div>
       <button
-        class="auctionButtonWinner"
+        class="auctionButtonWinner button1"
         v-if="players[playerId]"
         @click="auctionOver('items')"
-      >items</button>
+      >Items</button>
       <button
-        class="auctionButtonWinner"
+        class="auctionButtonWinner button2"
         v-if="players[playerId]"
-        :disabled="true"
-        @click="auctionOver('secret')"
-      >secret</button>
+        @click="auctionOver('skills')"
+      >Skills</button>
       <button
-        class="auctionButtonWinner"
+        class="auctionButtonWinner button3"
+        v-if="players[playerId]"
+        :disabled="!hiddenAuctionCard"
+        @click="auctionOver('secret')"
+      >Secret</button>
+      <button
+        class="auctionButtonWinner button4"
         v-if="players[playerId]"
         @click="auctionOver('raiseValue')"
       >Market share</button>
@@ -105,6 +108,7 @@
               :auctionLeaderId="auctionLeaderId"
               :auctionPrice="auctionPrice"
               :playerId="playerId"
+              :hiddenAuctionCard="hiddenAuctionCard"
               :auctionMiniActiveNow="auctionMiniActiveNow"
               :addBid="addBid"
               :subBid="subBid"/>
@@ -206,6 +210,7 @@
                 :marketValues="marketValues"
                 :placement="buyPlacement"
                 :raiseValue="raiseValue"
+                :notYourTurn="notYourTurn"
                 @buyCard="buyCard($event)"
                 @placeBottle="placeBottle('buy', $event)"
               />
@@ -251,6 +256,9 @@
           </button>
           <button  @click="moveCards()">
            hola olle testa här :) 
+          </button>
+          <button  @click="hiddenAuctionCard=true">
+           hidden auction card 
           </button>
         </div>
         </div>
@@ -358,6 +366,7 @@ export default {
       loserAvailable: false,
       winnerAvailable: false,
       auctonStarterId: null,
+      hiddenAuctionCard: false,
       scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
     }
@@ -678,7 +687,17 @@ export default {
         cost: this.chosenPlacementCost,
       });
     },
-
+    notYourTurn: function() {
+      if(this.players[this.playerId].turn== false){
+        return true
+      }
+      else if(this.auctionActive || this.auctionMiniActive){
+        return true
+      }
+      else{
+        return false
+      }
+    },
     startAuction: function (card) {
       this.auctionAvailable = false;
       this.$store.state.socket.emit('collectorsStartAuction', {
@@ -1033,7 +1052,7 @@ footer a:visited {
   .winnerAuction {
     display: grid;
     position: absolute;
-    grid-template-rows: 3fr 3fr 1fr;
+    grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     width: 40vw;
     height: 12vw;
@@ -1043,15 +1062,40 @@ footer a:visited {
     border-width: 0.4vw;
     border-color: black;
     z-index: 50;
-    top: 15%;
+    top: 22%;
     left: 50%;
     transform: translate(-50%, -50%);
+    padding: 1vw;
 }
 .winnerText {
     color: black;
     grid-column: 1/5;
     text-align: center;
     font-size: 2vw;
+}
+
+.auctionButtonWinner{
+  grid-row: 2;
+  background-color:rgb(180, 180, 180);
+  cursor:pointer;
+  box-shadow: 0 0.3vw #999;
+  border-radius: 2vw;
+  border: 0vw;
+  font-size: 1.6vw;
+  margin: 0.5vw;
+}
+.button1 {
+  background-color: #f06e6e;;
+}
+.button2 {
+  background-color: #aeda6e;
+}
+.button3 {
+  background-color: darkred;
+  color: white;
+}
+.button4 {
+  background-color: rgb(87, 188, 255);
 }
 .loserAuction {
     display: grid; 
@@ -1073,15 +1117,6 @@ footer a:visited {
     left: 50%;
     transform: translate(-50%, -50%);
     padding-top: 4vw;
-}
-.auctionButtonWinner{
-  grid-row: 2;
-  background-color:rgb(180, 180, 180);
-  cursor:pointer;
-  box-shadow: 0 0.3vw #999;
-  border-radius: 2vw;
-  border: 0vw;
-  font-size: 1.6vw;
 }
   /* Om man klickar på spelaren i topp */
   .player3.active{

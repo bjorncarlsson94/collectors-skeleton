@@ -316,7 +316,6 @@ Data.prototype.auctionWon = function (roomId, playerId, placementType,auctionPri
   if (typeof room !== 'undefined') {
     let c = null;
         let card = room.cardInAuction[0];
-        card.active =
         c = room.cardInAuction.splice(0, 1, {});
         if (placementType == 'raiseValue') {
           room.raiseItems.push(...c);
