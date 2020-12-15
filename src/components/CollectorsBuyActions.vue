@@ -24,7 +24,16 @@
           </div>
         </div>
       </div>
+          <div class="itemsAvailable" v-show="aboutToBuyItem" v-if="player">
+              <div v-for="(card, index) in itemsOnSale" :key="index">
+                <CollectorsCard 
+                :card="card" 
+                :availableAction="card.available" 
+                @doAction="buyCard(card)"/>
+              </div>
+          </div>
     </div>
+
 </template>
 
 <script>
@@ -55,7 +64,8 @@ export default {
     itemsOnSale: Array,
     marketValues: Object,
     placement: Array,
-    raiseValue:Object  },
+    raiseValue:Object,
+    aboutToBuyItem: Boolean, },
 
   methods: {
     log(value,key){
@@ -144,6 +154,23 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.itemsAvailable {
+  display: grid;
+  position: absolute;
+  grid-template-rows: 20% 15% 43% auto;
+  grid-template-columns: auto auto auto auto;
+  width: 40vw;
+  height: 40vw;
+  background-color: #f5efa0;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
   .buy-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);

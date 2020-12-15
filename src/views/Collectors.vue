@@ -173,6 +173,7 @@
                 :marketValues="marketValues"
                 :placement="buyPlacement"
                 :raiseValue="raiseValue"
+                :aboutToBuyItem="aboutToBuyItem"
                 @buyCard="buyCard($event)"
                 @placeBottle="placeBottle('buy', $event)"
               />
@@ -322,6 +323,7 @@ export default {
       bid: 0,
       auctionLeaderId: null,
       auctionWinnerId: null,
+      aboutToBuyItem: false,
       scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       //  Jag hoppas att jag kan lösa detta inom kort. /Björn
     };
@@ -562,8 +564,8 @@ export default {
     },
 
     placeBottle: function (action, cost) {
-      if (action === "auction") {
-        this.auctionAvailable = true;
+      if (action === "buy") {
+        this.aboutToBuyItem = true;
       }
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
@@ -581,6 +583,7 @@ export default {
     },
     buyCard: function (card) {
       console.log("buyCard", card);
+      this.aboutToBuyItem = false;
       this.$store.state.socket.emit("collectorsBuyCard", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
