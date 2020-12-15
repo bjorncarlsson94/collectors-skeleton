@@ -95,7 +95,22 @@ function sockets(io, socket, data) {
       players: data.getPlayers(d.roomId),
       auctionPrice: data.getAuctionPrice(d.roomId),
       auctionLeaderId: data.getAuctionLeaderId(d.roomId), 
-      cardInAuction: data.getCardInAuction(d.roomId)
+      cardInAuction: data.getCardInAuction(d.roomId),
+      auctionWinner: data.getAuctionWinner(d.roomId)
+    });
+    console.log(data.getCardInAuction(d.roomId))
+  });
+
+
+  socket.on('auctionOver', function (d) {
+    data.auctionWon(d.roomId, d.playerId, d.placementType, d.auctionPrice);
+    io.to(d.roomId).emit('auctionFin', {
+      players: data.getPlayers(d.roomId),
+      auctionPrice: data.getAuctionPrice(d.roomId),
+      cardInAuction: data.getCardInAuction(d.roomId),
+      raiseItems: data.getRaiseItems(d.roomId),
+      raiseValue: data.getCardValue(d.roomId),
+      
     });
     console.log(data.getCardInAuction(d.roomId))
   });
