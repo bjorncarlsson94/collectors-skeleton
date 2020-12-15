@@ -25,12 +25,18 @@
         </div>
       </div>
           <div class="itemsAvailable" v-show="aboutToBuyItem" v-if="player">
-              <div v-for="(card, index) in itemsOnSale" :key="index">
+              <h1 id = "buyItemFromBoard">
+                Välj ett kort från spelplanen:
+              </h1>
+              <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale" :key="index">
                 <CollectorsCard 
                 :card="card" 
                 :availableAction="card.available" 
                 @doAction="buyCard(card)"/>
               </div>
+              <h1 id="buyItemFromHand">
+                Välj ett kort från handen:
+              </h1>
           </div>
     </div>
 
@@ -154,23 +160,6 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.itemsAvailable {
-  display: grid;
-  position: absolute;
-  grid-template-rows: 20% 15% 43% auto;
-  grid-template-columns: auto auto auto auto;
-  width: 40vw;
-  height: 40vw;
-  background-color: #f5efa0;
-  border-radius: 2vw;
-  border-style: solid;
-  border-width: 0.4vw;
-  border-color: black;
-  z-index: 50;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
   .buy-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, 130px);
@@ -210,4 +199,47 @@ export default {
     border-color: grey;
     border-radius: 2vw;
   }
+
+  .itemsAvailable {
+  display: grid;
+  position: absolute;
+  grid-template-rows: 15% 35% 15% auto;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  width: 80vw;
+  height: 50vw;
+  background-color: #f8dcce;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  
+  }
+
+  #buyItemFromBoard{
+    text-align: center;
+    color: black;
+    grid-row: 1;
+    grid-column: 1/6;
+  }
+
+  .itemsFromBoard{
+    display: grid;
+    grid-row: 2;
+    grid-column: auto;
+    justify-items:center;
+    align-items: center;
+    zoom: 2;
+  }
+
+  #buyItemFromHand{
+    text-align:center;
+    color: black;
+    grid-row: 3;
+    grid-column: 1/6;
+  }
+
+
 </style>
