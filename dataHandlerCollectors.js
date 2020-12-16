@@ -63,8 +63,18 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
   room.lang = lang;
   room.deck = this.createDeck(lang);
   room.playerCount = playerCount;
-  room.itemsOnSale = room.deck.splice(0, 5);
-  room.skillsOnSale = room.deck.splice(0, 5);
+  room.itemsOnSale = room.deck.splice(0, room.playerCount+1);
+  for (let index = room.playerCount+1; index < 5; index++) {
+    room.itemsOnSale.push({});
+    
+  }
+  room.itemsOnSale=this.bubbleSort(room.itemsOnSale);
+  room.skillsOnSale = room.deck.splice(0, room.playerCount+1);
+  for (let index = room.playerCount+1; index < 5; index++) {
+    room.skillsOnSale.push({});
+    
+  }
+  room.skillsOnSale=this.bubbleSort(room.skillsOnSale);
   room.auctionCards = room.deck.splice(0, 4);
   room.raiseItems = room.deck.splice(0, 6);
   room.raiseValue=null;
@@ -480,25 +490,14 @@ Data.prototype.getAuctionPrice = function (roomId) {
 Data.prototype.moveCards = function(roomId){
  
 
- /* Take the lowest card in the skill pool and place it in the market pool.
-   Move the remaining cards in the skill pool to the lowest empty positions in the skill pool.
-    Maintain the internal order of all the cards in the pool. 
-
-Take the leftmost card in the item pool and place it in the lowest free position in the skill pool. 
-Repeat this process until the skill pool is full or the item pool is empty.
- Move any remaining cards in the item pool to the leftmost empty positions in the item pool. 
-
-  Take the “lowest” card in the auction pool and place it in the market pool. 
-  Move the remaining cards in the auction pool to the lowest empty positions in the Auction pool, 
-  as indicated by the blue arrow labelled 3. 
-  Maintain the internal order of all the cards in the pool. 
-
+ /*
 Now refill all pools (except the market pool) from the deck. 
 All pools (except the market pool) should have the same number of cards after this step as after setup. */
   let c = null;
   let k=null;
   
   let room =this.rooms[roomId];
+  
   if (typeof room !== 'undefined') {
     //move skills
     for (let i = room.skillsOnSale.length-1; i >= 0; i -= 1) { 
@@ -521,14 +520,13 @@ All pools (except the market pool) should have the same number of cards after th
         counter ++;
       }
     }
-    console.log(counter);
+    
   for (let i = counter-1; i >= 0; i -= 1) { 
    for (let j = room.itemsOnSale.length-1; j >= 0; j -= 1) { 
       if(room.itemsOnSale[j].market){
-        console.log("j:"+j);
-        console.log("kom hit");
+        
         k = room.itemsOnSale.splice(j, 1, {});
-        console.log(room.itemsOnSale[j]);
+        
         room.skillsOnSale.splice(i,1,...k); 
         break;
 
@@ -557,9 +555,15 @@ room.itemsOnSale=this.bubbleSort(room.itemsOnSale);
 
 
     //fill pools
-  //  room.skillsOnSale=fillPool(roomId,"skills",room.skillsOnSale);
-   // room.itemsOnSale=fillPool(roomId,"items",room.itemsOnSale);
-   // room.auctionCards=fillPool(roomId,"auction",room.auctionCards);
+  
+   room.skillsOnSale=this.fillPool(roomId,"skills",room.skillsOnSale);
+   room.itemsOnSale=this.fillPool(roomId,"items",room.itemsOnSale);
+   room.auctionCards=this.fillPool(roomId,"auction",room.auctionCards);
+
+   room.auctionCards=this.bubbleSort(room.auctionCards);
+   room.itemsOnSale=this.bubbleSort(room.itemsOnSale);
+   room.skillsOnSale=this.bubbleSort(room.skillsOnSale);
+   
 
   } else return [];
 
@@ -728,22 +732,53 @@ Data.prototype.bubbleSort = function(cardArray=10)
  return x; 
 }
 Data.prototype.fillPool=function(roomId,name,cardArray){
-  let room = this.rooms[roomId];
+  let room =this.rooms[roomId];
+  let c=null;
   if (typeof room !== 'undefined') {
-    if(name==="skills"){
+  var counter =0; 
+  for (let i = cardArray.length-1; i >= 0; i -= 1) { 
+    if(typeof(cardArray[i].market) != 'undefined'){
+      counter ++;
+    }
+  
+//ändra så loopen lägger till i andra irdnbingen tvärtom
 
 
-    }if(name==="items"){
+    if(name==="skills" && counter<room.playerCount+1){
+      for (let index = 0; index < room.playerCount+1-counter; index++) {
+        if(room.deck.length>0){
+          c= room.deck.pop();
+          cardArray.splice(index,1,c);
+        }
+      }
+     
+    }
 
+    }if(name==="items" && counter<room.playerCount+1){
+      for (let index = 0; index < room.playerCount+1-counter; index++) {
+        if(room.deck.length>0){
+          c= room.deck.pop();
+          cardArray.splice(index,1,c);
+        }
+      }
+     
       
-    }if(name==="auction"){
-
+    }
+   
+    if(name==="auction" && counter<4){
       
+      for (let index = 0; index < 4-counter; index++) {
+        if(room.deck.length>0){
+          
+          c= room.deck.pop();
+          cardArray.splice(index,1,c);
+        }
+      }
     }
 
   }
 
-
+  return cardArray;
 }
 
 module.exports = Data;
