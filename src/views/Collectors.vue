@@ -1,6 +1,5 @@
-
 <template>
-  <div>
+  <div class="bodytest">
     <main>
       <section id="wrapper">
         <div id="grid">
@@ -8,24 +7,21 @@
             <div
               class="player player2"
               v-on:click="expandLeftBoard"
-              v-bind:class="{ active: leftIsActive }"
-            >
+              v-bind:class="{ active: leftIsActive }">
               {{ labels.player2 }}
               <!--Here are the player specific things-->
             </div>
             <div
               class="player player3"
               v-on:click="expandTopBoard"
-              v-bind:class="{ active: topIsActive }"
-            >
+              v-bind:class="{ active: topIsActive }">
               {{ labels.player3 }}
               <!--Here are the player specific things-->
             </div>
             <div
               class="player player4"
               v-on:click="expandRightBoard"
-              v-bind:class="{ active: rightIsActive }"
-            >
+              v-bind:class="{ active: rightIsActive }">
               {{ labels.player4 }}
               <!--Here are the player specific things-->
             </div>
@@ -127,8 +123,8 @@
             class="playerboard"
             v-if="players[playerId]"
             @click="expandPlayerBoard()"
-            v-bind:class="{ active: isActive }"
-          >
+            v-bind:class="{ active: isActive }">
+            
             <!-- Visas när handen är stängd-->
             <div v-if="!isActive">
               <h1>Your board</h1>
@@ -241,9 +237,9 @@
           </div>
           <div class="drawCardSpace">
             <div class="buttons">
-              <button @click="drawCard">
-                {{ labels.draw }}
-              </button>
+              <div @click="drawCard">
+                <img src="/images/back-of-card.png">
+              </div>
             </div>
           </div>
           <div class="gridedge3">
@@ -819,10 +815,7 @@ footer a:visited {
 .cardslots {
   display: grid;
   grid-row: 1;
-  grid-template-columns: repeat(
-    auto-fill,
-    12vw
-  ); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
+  grid-template-columns: repeat(auto-fill, 12vw); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
   grid-template-rows: repeat(auto-fill, 12vw);
 }
 .card {
@@ -846,9 +839,15 @@ footer a:visited {
   display: table-cell;
   vertical-align: middle;
 }
-
+/*
+.bodytest{
+  height: 100vh;
+  width: 100vw;
+  contain:content;
+}
+*/
 #wrapper {
-  padding: 5vw;
+  padding: 2vw;
   justify-self: center;
   position: relative;
 }
@@ -856,10 +855,8 @@ footer a:visited {
 #grid {
   display: grid;
   grid-gap: 0.5vw;
-  justify-content: center; /* dessa 2 centrerar horisontellt respektive vertikalt */
-  align-items: center;
-  min-height: 0;
-  object-fit: contain;
+  grid-template-columns: 0.8fr 1fr 1fr 1fr 1fr 1fr 0.1fr 0.8fr;
+  grid-template-rows: 4vw 15vw 15vw 2vw 7vw;
 }
 /*
   Här kan vi testa att sätta en storlek på grid eller wrapper och göra om storlekarna nedan till t.ex. %avParent för att få till så det hamnar inne i skärmen.
@@ -892,11 +889,13 @@ footer a:visited {
   border-radius: 2vw;
 }
 .otherPlayers {
-  grid-column: 6;
-  grid-row: 2;
+  grid-column: 4 /span 3;
+  grid-row: 1;
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 .player2 {
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 1;
   background-color: #7e2174;
   text-align: center;
@@ -906,7 +905,7 @@ footer a:visited {
   margin-bottom: 0.5vw;
 }
 .player3 {
-  grid-column: 3;
+  grid-column: 2;
   grid-row: 1;
   background-color: #19b3a7;
   height: 2vw;
@@ -916,7 +915,7 @@ footer a:visited {
   margin-bottom: 0.5vw;
 }
 .player4 {
-  grid-column: 4;
+  grid-column: 3;
   grid-row: 1;
   background-color: #ca9e68;
   text-align: center;
@@ -926,20 +925,11 @@ footer a:visited {
 }
 .playerboard {
   border-radius: 2vw;
-  background-color: rgb(
-    70,
-    181,
-    214
-  ); /* Choose colour based on the 4 player colours */
-  grid-column: 1 / span 4;
-  grid-row: 3;
-  height: 5vw;
-  width: 20vw;
+  background-color: rgb(70, 181, 214); /* Choose colour based on the 4 player colours */
+  grid-column: 3/6;
+  grid-row: 5;
   padding: 2vw;
-  justify-self: center;
-  align-self: flex-end;
   font-size: 1vw;
-
   cursor: pointer;
 }
 
@@ -1003,7 +993,7 @@ footer a:visited {
   grid-row: 1;
   grid-column: 1;
   background-color: #d47871;
-  border-radius: 2vw;
+  border-radius: 2vw 2vw 0vw 0vw;
   overflow: hidden;
 }
 .collectioncards {
@@ -1019,7 +1009,6 @@ footer a:visited {
   grid-column: 1 / 3;
   overflow: hidden;
   background-color: #e9e78a;
-
   border-radius: 0 0 0 2vw;
   padding: 1vw;
   align-items: center;
@@ -1042,7 +1031,7 @@ footer a:visited {
 }
 #totalvalue {
   background-color: gray;
-  border-radius: 2vw;
+  border-radius: 0vw 0vw 2vw 2vw;
   text-align: center;
 }
 
@@ -1069,13 +1058,13 @@ footer a:visited {
   border-radius: 0 0 2vw 0;
 }
 
-  .boardclosebutton{
-    grid-row: 3;
-    grid-column: 3;
-    align-self: flex-end;
-    z-index: 1;
-    cursor: pointer;
-  }
+.boardclosebutton{
+  grid-row: 5;
+  grid-column: 4;
+  align-self: flex-end;
+  z-index: 1;
+  cursor: pointer;
+}
   .winnerAuction {
     display: grid;
     position: absolute;
@@ -1146,16 +1135,16 @@ footer a:visited {
     padding-top: 4vw;
 }
   /* Om man klickar på spelaren i topp */
-  .player3.active{
-    background-color: #20ccbe;
-    text-align: center;
-    height: 80%;
-    width: 250%;
-    justify-self: center;
-    margin-left: initial;
-    margin-top: 100px;
-    z-index: 1;
-  }
+.player3.active{
+  background-color: #20ccbe;
+  text-align: center;
+  height: 80%;
+  width: 250%;
+  justify-self: center;
+  margin-left: initial;
+  margin-top: 100px;
+  z-index: 1; 
+}
 
 /* Om man klickar på spelaren till vänster */
 .player2.active {
@@ -1178,31 +1167,27 @@ footer a:visited {
   z-index: 1;
 }
 
-/*
+  /*
   Här nedan är CSS specifika för kortrutorna
   */
 
   .items{
     border-radius: 2vw;
     background-color:#f8dcce;
-    grid-column: 1 /span 2;
-    grid-row: 1;
-    width:31vw;
+    grid-column: 4 /span 3;
+    grid-row: 2;
   }
   .skills{
     border-radius: 2vw;
     background-color: #dfeccc;
-    grid-column: 1 /span 2;
-    grid-row: 2;
-    width:31vw;
+    grid-column: 4 /span 3;
+    grid-row: 3;
   }
   .raiseValue{
     border-radius: 2vw;
     background-color: #cfdcf2;
-    grid-column: 4 /span 2;
-    grid-row: 2; 
-    justify-content:center;
-    width:31vw;
+    grid-column: 8;
+    grid-row: 3 /span 1; 
   }
   .raiseValuegrid div{
     font-size: 1vw;
@@ -1212,14 +1197,10 @@ footer a:visited {
   .auction{
     border-radius: 2vw;
     background-color: #f5f2cc;
-    grid-column: 4;
-    grid-row: 1 /span 1;
-    width: 32vw;
-    height: 12vw; /* items+skills+raise value+distanceBetween på ett ungefär*/
-    justify-content:center;
-    justify-self: center;
+    grid-column: 3;
+    grid-row: 2 /span 2;
   }
-    .auctionCardViewMini{
+  .auctionCardViewMini{
     zoom: 1.65;
     position: absolute;
     align-content: center;
@@ -1227,19 +1208,18 @@ footer a:visited {
     transform: translate(5%, 40%);
   }
   .auctionButtonMini{
-  background-image: url("https://www.pngrepo.com/download/120575/minimize.png");
-  background-position: center;
-  transform: rotate(270deg);
-  background-repeat: no-repeat;
-  background-size: 3vw;
-  margin: 1vw;
-  background-color:rgb(180, 180, 180);
-  cursor:pointer;
-  box-shadow: 0 0.3vw #999;
-  border-radius: 2vw;
-  border: 0vw;
-  
-}
+    background-image: url("https://www.pngrepo.com/download/120575/minimize.png");
+    background-position: center;
+    transform: rotate(270deg);
+    background-repeat: no-repeat;
+    background-size: 3vw;
+    margin: 1vw;
+    background-color:rgb(180, 180, 180);
+    cursor:pointer;
+    box-shadow: 0 0.3vw #999;
+    border-radius: 2vw;
+    border: 0vw;
+  }
 .auctionMini{
     display: grid;
     grid-column: 6;
@@ -1262,17 +1242,14 @@ footer a:visited {
     text-align:center;
     border-radius: 2vw;
     background-color: grey;
-    grid-column: 3;
-    grid-row: 1 /span 2;
-    height: 37vw;
-    width: 15vw;
-    justify-self: left;
+    grid-column: 2;
+    grid-row: 2 /span 2;
   }
   .workgrid{
     display:grid;
     grid-template-columns: 1fr;
     grid-template-rows: 5vw 5vw 5vw 5vw 5vw;
-    grid-gap: 2vw;
+    grid-gap: 0.5vw;
     padding: 2vw;
   }
   .workgrid div{
@@ -1315,50 +1292,39 @@ footer a:visited {
   }
   .roundCounter{
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
     background-color:rgb(194, 194, 194);
     border-radius: 2vw;
     padding:2vw;
-    height: 8vw;
-    width: 8vw;
-    justify-self: center;
-    text-align: center;
     font-size: 1vw;
   }
   .drawCardSpace{
-    grid-column: 2;
-    grid-row: 3;
-    background-color:rgb(194, 194, 194);
+    grid-column: 8;
+    grid-row: 2;
     border-radius: 2vw;
     padding:2vw;
-    height: 8vw;
-    width: 3vw;
-    text-align: center;
-    justify-self:left;
+    justify-self: center;
+    align-self: center;
+    zoom: 0.5;
+  }
+  .drawCardSpace .buttons:hover{
+    filter: brightness(110%);
   }
   .gridedge3{
-    grid-column: 4;
-    grid-row: 3;
+    grid-column: 1;
+    grid-row: 1;
     background-color:rgb(194, 194, 194);
     border-radius: 2vw;
     padding:2vw;
-    max-height: 8vw;
-    max-width: 8vw;
     font-size: 1vw;
-    justify-self:center;
-    align-self: flex-end;
+    overflow: hidden;
   }
   .menuSpace{
-    grid-column: 4;
+    grid-column: 1;
     grid-row: 3;
     background-color:rgb(194, 194, 194);
     border-radius: 2vw;
     padding: 2vw;
-    max-height: 10vw;
-    max-width: 5vw;
-    text-align: center;
-    justify-self:right;
-    align-self: flex-end;
   }
   .buttons{
     display:inline-block;
@@ -1389,7 +1355,6 @@ footer a:visited {
     display: flex;
     justify-content: center;
     align-items: center;
-    
     background-color: blue;
   }
   #playerHelp{
