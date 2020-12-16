@@ -139,7 +139,14 @@
             <div class="playerBoardGrid" v-if="isActive">
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                <div class="help"><p>?</p></div>
+                     <div
+                class="help" 
+                 @mouseover="helpPlayerHandHover"
+                 @mouseleave="helpPlayerHandHover"
+                ><p>?</p></div><div id="playerHelp" v-show="helpPlayerHandActive">{{labels.helpPlayerHand}}</div>
+                
+            
+                
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -314,6 +321,7 @@ export default {
       leftIsActive: false,
       rightIsActive: false,
       topIsActive: false,
+      
 
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
@@ -369,8 +377,11 @@ export default {
       auctonStarterId: null,
       aboutToBuyItem: false,
       hiddenAuctionCard: false,
-      scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
+      scalefactor: window.innerWidth/8000,   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
+
+     //help Active varaibles. 
+     helpPlayerHandActive:false,                                       
     }
   },
   computed: {
@@ -593,6 +604,7 @@ export default {
       this.rightIsActive = false;
       this.topIsActive = false;
       this.leftIsActive = false;
+      
 
       console.log("Status: " + this.isActive);
     },
@@ -607,7 +619,7 @@ export default {
 
       // Sätter till false för att stänga brädet
       this.isActive = false;
-
+      this.playerHandHelpIsActive =false;
       console.log("Status: " + this.isActive);
     },
     expandLeftBoard: function () {
@@ -652,6 +664,12 @@ export default {
         }
       );
     },
+    showHelp: function(label){
+      label; 
+      //do stuff
+
+    },
+    playerHandHelpIsActive:function(){},
 
     placeBottle: function (action, cost) {
       if (action === "buy") {
@@ -768,7 +786,13 @@ export default {
         auctionActive: this.auctionActive,
       });
     },
+     //playerHandShow
+  helpPlayerHandHover:function(){
+    this.helpPlayerHandActive=!this.helpPlayerHandActive;
+
   },
+  },
+ 
 };
 </script>
 
@@ -1360,13 +1384,30 @@ footer a:visited {
     height: 40px;
     border-radius: 25px;
     position: absolute;
-    right:0;
+    right:-2%;
+    top:-5%;
     display: flex;
     justify-content: center;
     align-items: center;
     
     background-color: blue;
   }
+  #playerHelp{
+    transition-duration: 0.2;
+    right:-280px;
+    background-color:red;
+    resize: both;
+    float:right;
+    max-width: 380px;
+    width:300px;
+    position: absolute;
+    word-wrap: break-word;
+    height: auto; 
+    display: table;
+  }
+
+
+  
  
 
 @media screen and (max-width: 800px) {
