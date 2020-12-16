@@ -832,7 +832,7 @@ footer a:visited {
   display: grid;
   grid-gap: 0.5vw;
   grid-template-columns: 0.8fr 1fr 1fr 1fr 1fr 1fr 0.1fr 0.8fr;
-  grid-template-rows: 4vw 15vw 15vw 2vw 10vw;
+  grid-template-rows: 4vw 15vw 15vw 2vw 7vw;
 }
 /*
   Här kan vi testa att sätta en storlek på grid eller wrapper och göra om storlekarna nedan till t.ex. %avParent för att få till så det hamnar inne i skärmen.
