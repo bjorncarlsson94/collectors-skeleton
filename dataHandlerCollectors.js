@@ -4,7 +4,8 @@ let csv = require("csvtojson");
 
 let collectorsDeck = "collectors-cards";
 let languages = ["en", "se"];
-let auctonStarterId = null;
+
+
 /* https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array */
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
@@ -77,7 +78,7 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
   room.auctionCards = room.deck.splice(0, 4);
   room.raiseItems = room.deck.splice(0, 6);
   room.raiseValue=null;
- 
+  room.auctonStarterId =null;
   room.cardInAuction = [];
   room.market = [];
   room.round = 0;
@@ -320,21 +321,32 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
 }
 
 
-Data.prototype.auctionWon = function (roomId, playerId, auctionPrice) {
+Data.prototype.auctionWon = function (roomId, playerId, placementType,auctionPrice) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     let c = null;
         let card = room.cardInAuction[0];
         c = room.cardInAuction.splice(0, 1, {});
-        
+        if (placementType == 'raiseValue') {
+          room.raiseItems.push(...c);
+          room.raiseValue=this.cardValue(roomId);
+        }
+        else if(placementType == 'skills'){
+          room.players[playerId].skills.push(...c);
+        }
+        else if(placementType == 'items'){
+          room.players[playerId].items.push(...c);
+        }
+        else if(placementType == 'secret'){
+          room.players[playerId].secret.push(...c);
+        }
       console.log("kortet ges till vinnaren"+playerId)
       console.log(card)
       console.log("cardinauction"+room.cardInAuction);
-      room.players[playerId].hand.push(card);
       console.log("spelarens kort"+room.players[playerId].money)
-      
       room.players[playerId].money -= auctionPrice;
-      
+      room.cardInAuction = [];
+      room.auctionWinner =false;
       console.log("spelarens kort"+room.players[playerId].money)
 }
 }
@@ -451,7 +463,12 @@ Data.prototype.startTurn = function (roomId) {
 
 
 }
-
+Data.prototype.getAuctionWinner= function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.auctionWinner;
+  } else return [];
+}
 Data.prototype.getRound = function (roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
@@ -597,7 +614,7 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
   console.log("bid::" + bid)
   if (typeof room !== 'undefined') {
     if (auctionPrice == 0){
-      auctonStarterId = playerId;
+      room.auctonStarterId = playerId;
     }
     if (bid > auctionPrice){
       auctionPrice = bid;
@@ -611,27 +628,29 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
         console.log(keys[0] +" 2 är lika med " + room.auctionLeaderId)
         if(keys[0] == room.auctionLeaderId){
           console.log("varför1")
-          this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
+          room.auctionWinner =true;
+          //this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
           room.players[playerId].turn = false;
-          room.players[auctonStarterId].turn = true;
-          room.auctionLeaderId = null;
-          auctonStarterId = null;
+          room.players[room.auctonStarterId].turn = true;
+          //room.auctionLeaderId = null;
+          room.auctonStarterId = null;
           
         }
       } 
       else if (keys[i+1] == room.auctionLeaderId){
         console.log("varför2 + 3")
         console.log("ge mig den")
-        this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
+        room.auctionWinner =true;
+        //this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
         room.players[playerId].turn = false;
-        room.players[auctonStarterId].turn = true;
-        room.auctionLeaderId = null;
-        auctonStarterId = null;
+        room.players[room.auctonStarterId].turn = true;
+        //room.auctionLeaderId = null;
+        room.auctonStarterId = null;
       }
    } 
     room.auctionPrice = auctionPrice;
     console.log("PirceA::"+auctionPrice)
-    if(auctonStarterId !== null){
+    if(room.auctonStarterId !== null){
       console.log("bytspelare")
       this.nextPlayer(roomId, playerId, true)
     }

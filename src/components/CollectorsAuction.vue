@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="upforAuction" v-show="auctionActive" v-if="players[playerId]">
+      <div class="hiddenAuctionCard" v-show="hiddenAuctionCard" v-if="players[playerId]"></div>
       <h2 class="auctionHeader">AUCTION</h2>
       <div class="auctionLeader">Leader: {{ auctionLeaderId }}</div>
       <div class="auctionBid">{{ bid - auctionPrice }}+</div>
@@ -15,6 +16,7 @@
       <button
         class="auctionButtonMini"
         v-if="players[playerId]"
+        v-show="!hiddenAuctionCard"
         @click="auctionMiniActiveNow()"
       ></button>
       <button
@@ -69,6 +71,7 @@ export default {
     auctionLeaderId: String,
     auctionPrice: Number,
     playerId: String,
+    hiddenAuctionCard: Boolean,
     auctionMiniActiveNow: Function,
     addBid: Function,
     subBid: Function,
@@ -92,7 +95,7 @@ export default {
   display: grid;
   position: absolute;
   grid-template-rows: 20% 15% 43% auto;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr;
   width: 40vw;
   height: 40vw;
   background-color: #f5efa0;
@@ -138,6 +141,20 @@ export default {
   box-shadow: 0 0.3vw #999;
   border-radius: 2vw;
   border: 0vw;
+}
+.hiddenAuctionCard{
+ z-index: 53;
+    width: 24.5vw;
+    height: 31.1vw;
+    background-image: url(/images/back-of-card.png);
+    border-radius: 1vw;
+    position: absolute;
+    zoom: 0.835;
+    align-content: center;
+    transition: auto;
+    transform: translate(48%, 23%);
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 .auctionButtons {
   margin: 1vw;

@@ -39,6 +39,7 @@
                 :skillsOnSale="skillsOnSale"
                 :marketValues="marketValues"
                 :placement="skillPlacement"
+                :notYourTurn="notYourTurn"
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
               />
@@ -53,6 +54,7 @@
                 :auctionCards="auctionCards"
                 :marketValues="marketValues"
                 :placement="auctionPlacement"
+                :notYourTurn="notYourTurn"
                 @startAuction="startAuction($event)"
                 @placeBottle="placeBottle('auction', $event)"/>
           </div>
@@ -63,6 +65,40 @@
             <CollectorsCard v-for="(card, index) in cardInAuction" :card="card" :key="index"/>
           </div>
           </div>
+          <div class="winnerAuction"  v-show="winnerAvailable" >
+            <div class="winnerText">You won the auction!!! Where do you want to place your card?</div>
+      <button
+        class="auctionButtonWinner button1"
+        v-if="players[playerId]"
+        @click="auctionOver('items')"
+      >Items</button>
+      <button
+        class="auctionButtonWinner button2"
+        v-if="players[playerId]"
+        @click="auctionOver('skills')"
+      >Skills</button>
+      <button
+        class="auctionButtonWinner button3"
+        v-if="players[playerId]"
+        :disabled="!hiddenAuctionCard"
+        @click="auctionOver('secret')"
+      >Secret</button>
+      <button
+        class="auctionButtonWinner button4"
+        v-if="players[playerId]"
+        @click="auctionOver('raiseValue')"
+      >Market share</button>
+            </div>
+           <div class="loserAuction" v-show="loserAvailable" >
+             You Lost.. {{auctionLeaderId}} won the auction!
+             <button
+        class="auctionButtonLoser"
+        v-if="players[playerId]"
+        @click="loserAvailable = false"
+      >OK</button>
+
+
+            </div> 
           <CollectorsAuction v-if="players[playerId]"
               :auctionActive="auctionActive"
               :labels="labels"
@@ -72,6 +108,7 @@
               :auctionLeaderId="auctionLeaderId"
               :auctionPrice="auctionPrice"
               :playerId="playerId"
+              :hiddenAuctionCard="hiddenAuctionCard"
               :auctionMiniActiveNow="auctionMiniActiveNow"
               :addBid="addBid"
               :subBid="subBid"/>
@@ -173,6 +210,8 @@
                 :marketValues="marketValues"
                 :placement="buyPlacement"
                 :raiseValue="raiseValue"
+                :aboutToBuyItem="aboutToBuyItem"
+                :notYourTurn="notYourTurn"
                 @buyCard="buyCard($event)"
                 @placeBottle="placeBottle('buy', $event)"
               />
@@ -218,6 +257,9 @@
           </button>
           <button  @click="moveCards()">
            hola olle testa här :) 
+          </button>
+          <button  @click="hiddenAuctionCard=true">
+           hidden auction card 
           </button>
         </div>
         </div>
@@ -321,10 +363,15 @@ export default {
       auctionPrice: 0,
       bid: 0,
       auctionLeaderId: null,
-      auctionWinnerId: null,
-      scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
-      //  Jag hoppas att jag kan lösa detta inom kort. /Björn
-    };
+      auctionWinner: false,
+      loserAvailable: false,
+      winnerAvailable: false,
+      auctonStarterId: null,
+      aboutToBuyItem: false,
+      hiddenAuctionCard: false,
+      scalefactor: window.innerWidth/8000   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
+                                            //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
+    }
   },
   computed: {
     playerId: function () {
@@ -434,16 +481,28 @@ export default {
       }.bind(this)
     );
 
-    this.$store.state.socket.on(
-      "auctionRound",
-      function (d) {
-        if (d.auctionLeaderId == null) {
-          this.auctionPrice = 0;
-          this.auctionLeaderId = null;
-          this.bid = 0;
-          this.cardInAuction = d.cardInAuction;
-          this.auctionActive = false;
-        } else {
+    this.$store.state.socket.on('auctionRound',
+      function(d) {
+        console.log("är det en vinnare?"+d.auctionWinner)
+        if (d.auctionWinner == true ){
+          if (this.playerId == d.auctionLeaderId){
+            this.winnerSelection(true);
+            this.bid = 0;
+            this.cardInAuction = d.cardInAuction;
+            this.auctionActive = false; 
+            this.auctionWinner = false;
+          }
+          else{
+            this.winnerSelection(false);
+            this.auctionPrice = 0;
+            this.bid = 0;
+            this.cardInAuction = d.cardInAuction;
+            this.auctionActive = false; 
+            this.auctionWinner = false;
+          }
+          
+        }
+        else {
           this.auctionPrice = d.auctionPrice;
           this.auctionLeaderId = d.auctionLeaderId;
           this.players = d.players;
@@ -451,6 +510,17 @@ export default {
           this.cardInAuction = d.cardInAuction;
         }
         this.players = d.players;
+      }.bind(this)
+    );
+     this.$store.state.socket.on('auctionFin',
+      function(d) {
+        this.raiseValue=d.raiseValue;
+        this.raiseItems=d.raiseItems;
+        this.players = d.players;
+        this.auctionPrice = 0;
+        this.cardInAuction = d.cardInAuction;
+        this.winnerAvailable = false;
+        this.auctionLeaderId = null;
       }.bind(this)
     );
      this.$store.state.socket.on('cardsMoved',
@@ -483,6 +553,16 @@ export default {
   subBid: function(){
        this.bid -=1;
    },
+  winnerSelection: function (ifWinner) {
+    if(ifWinner==true){
+      this.winnerAvailable = true;
+    } 
+    else{
+      this.loserAvailable = true;
+    }   
+    
+  },
+  
     currentPlayer: function (){
       var keys = Object.keys(this.players);
 
@@ -562,10 +642,20 @@ export default {
 
       console.log("status: " + this.topIsActive);
     },
+    auctionOver: function(placementType){
+      console.log(placementType)
+          this.$store.state.socket.emit('auctionOver', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          placementType: placementType,
+          auctionPrice: this.auctionPrice
+        }
+      );
+    },
 
     placeBottle: function (action, cost) {
-      if (action === "auction") {
-        this.auctionAvailable = true;
+      if (action === "buy") {
+        this.aboutToBuyItem = true;
       }
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
@@ -583,6 +673,7 @@ export default {
     },
     buyCard: function (card) {
       console.log("buyCard", card);
+      this.aboutToBuyItem = false;
       this.$store.state.socket.emit("collectorsBuyCard", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -599,16 +690,29 @@ export default {
         cost: this.chosenPlacementCost,
       });
     },
-
+    notYourTurn: function() {
+      if(this.players[this.playerId].turn== false){
+        return true
+      }
+      else if(this.auctionActive || this.auctionMiniActive){
+        return true
+      }
+      else{
+        return false
+      }
+    },
     startAuction: function (card) {
       this.auctionAvailable = false;
-      this.$store.state.socket.emit("collectorsStartAuction", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-        card: card,
-        cost: this.chosenPlacementCost,
-      });
-    },
+      this.$store.state.socket.emit('collectorsStartAuction', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          card: card,
+          cost: this.chosenPlacementCost
+        }
+        
+      );
+      },
+    
 
     auctionMiniActiveNow: function(){
       if(this.auctionMiniActive == true){
@@ -941,25 +1045,93 @@ footer a:visited {
   border-radius: 0 0 2vw 0;
 }
 
-.boardclosebutton {
-  grid-row: 3;
-  grid-column: 3;
-  align-self: flex-end;
-  z-index: 1;
-  cursor: pointer;
+  .boardclosebutton{
+    grid-row: 3;
+    grid-column: 3;
+    align-self: flex-end;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .winnerAuction {
+    display: grid;
+    position: absolute;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 40vw;
+    height: 12vw;
+    background-color: #f5efa0;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1vw;
+}
+.winnerText {
+    color: black;
+    grid-column: 1/5;
+    text-align: center;
+    font-size: 2vw;
 }
 
-/* Om man klickar på spelaren i topp */
-.player3.active {
-  background-color: #20ccbe;
-  text-align: center;
-  height: 80%;
-  width: 250%;
-  justify-self: center;
-  margin-left: initial;
-  margin-top: 100px;
-  z-index: 1;
+.auctionButtonWinner{
+  grid-row: 2;
+  background-color:rgb(180, 180, 180);
+  cursor:pointer;
+  box-shadow: 0 0.3vw #999;
+  border-radius: 2vw;
+  border: 0vw;
+  font-size: 1.6vw;
+  margin: 0.5vw;
 }
+.button1 {
+  background-color: #f06e6e;;
+}
+.button2 {
+  background-color: #aeda6e;
+}
+.button3 {
+  background-color: darkred;
+  color: white;
+}
+.button4 {
+  background-color: rgb(87, 188, 255);
+}
+.loserAuction {
+    display: grid; 
+    position: absolute;
+    /* grid-template-rows: 20% 15% 43% auto; */
+    /* grid-template-columns: auto auto auto auto; */
+    width: 40vw;
+    height: 10vw;
+    background-color: #f5efa0;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    color: black;
+    font-size: 2vw;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-top: 4vw;
+}
+  /* Om man klickar på spelaren i topp */
+  .player3.active{
+    background-color: #20ccbe;
+    text-align: center;
+    height: 80%;
+    width: 250%;
+    justify-self: center;
+    margin-left: initial;
+    margin-top: 100px;
+    z-index: 1;
+  }
 
 /* Om man klickar på spelaren till vänster */
 .player2.active {
