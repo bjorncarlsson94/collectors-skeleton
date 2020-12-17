@@ -3,7 +3,7 @@
     <main>
       <section id="wrapper">
         <div id="grid">
-          <div class="otherPlayers">
+          
             <div
               class="player player2"
               v-on:click="expandLeftBoard"
@@ -11,6 +11,75 @@
             >
               {{ labels.player2 }}
               <!--Here are the player specific things-->
+
+              <div class="playerBoardGrid" v-if="leftIsActive">
+              <div class="boardCollection">
+                <div id="collectiontitle">Collection:</div>
+                     <div
+                class="help" 
+                 @click="helpPlayerHandHover"
+                >?<div id="playerHelp" v-show="helpPlayerHandActive"><h3><strong>{{labels.helpPlayerHand.title}}</strong></h3>
+               <div> <h3><strong>{{labels.helpPlayerHand.itemArea}}</strong></h3>
+                <p>{{labels.helpPlayerHand.itemAreaText}}</p></div>
+               <div> <h3><strong>{{labels.helpPlayerHand.skillsArea}}</strong></h3>
+                <p> {{labels.helpPlayerHand.skillsAreaText}}</p></div>
+              <div> <h3> <strong>{{labels.helpPlayerHand.handArea}}</strong></h3>
+                <p> {{labels.helpPlayerHand.handAreaText}}</p></div>
+              <div>  <h3> <strong>{{labels.helpPlayerHand.nextTurn}}</strong></h3>
+                 <p>{{labels.helpPlayerHand.nextTurnText}}</p></div>
+                
+                
+                
+                
+                </div></div>
+                
+                <div class="boardcollectiongrid">
+                  <div class="playercollection">
+                    <div class="collectioncards">
+                      <CollectorsCard
+                        v-for="(card, index) in players[playerId].items"
+                        :card="card"
+                        :availableAction="card.available"
+                        @doAction="buyCard(card)"
+                        :key="index"
+                      />
+                    </div>
+                  </div>
+                  <div id="hidden">Hidden:</div>
+
+                  <div id="totalvalue">Total value:</div>
+                </div>
+              </div>
+              <div class="boardSkills">
+                Skills:
+                <div class="skillsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].skills"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardHand">
+                <div id="handTitle">Hand:</div>
+                <div class="cardsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].hand"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+
+              <div class="boardNextTurnInfo">Next turn info</div>
+            </div>
+        
+
+              
             </div>
             <div
               class="player player3"
@@ -28,7 +97,7 @@
               {{ labels.player4 }}
               <!--Here are the player specific things-->
             </div>
-          </div>
+          
           <div class="skills">
             <div class="skillsgrid">
               <CollectorsSkillActions
@@ -195,8 +264,6 @@
                 
                 </div></div>
                 
-            
-                
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -292,7 +359,7 @@
           <div class="drawCardSpace">
             <div class="buttons">
               <div @click="drawCard">
-                <img src="/images/back-of-card.png" />
+                <img src="/images/back-of-card.png" class="deck" />
               </div>
             </div>
           </div>
@@ -306,14 +373,15 @@
               v-if="players[playerId]"
               :disabled="this.gameStarted"
               @click="startTurn()"
+            class="menuButton"
             >
               {{ labels.randomplayer }}
             </button>
-            <button v-if="players[playerId]" @click="auctionBoard()">
+            <button v-if="players[playerId]" @click="auctionBoard()" class="menuButton">
               {{ labels.showAuction }}
             </button>
-            <button @click="moveCards()">hola olle testa här :)</button>
-            <button @click="hiddenAuctionCard = true">
+            <button @click="moveCards()" class="menuButton">hola olle testa här :)</button>
+            <button @click="hiddenAuctionCard = true" class="menuButton">
               hidden auction card
             </button>
           </div>
@@ -897,7 +965,7 @@ footer a:visited {
   display: grid;
   grid-gap: 0.5vw;
   grid-template-columns: 9vw 13vw 13vw 13vw 13vw 13vw 1vw 10vw;
-  grid-template-rows: 4vw 15vw 15vw 2vw 7vw;
+  grid-template-rows: 5vw 15vw 15vw 1vw 7vw;
 }
 /*
   Här kan vi testa att sätta en storlek på grid eller wrapper och göra om storlekarna nedan till t.ex. %avParent för att få till så det hamnar inne i skärmen.
@@ -928,41 +996,31 @@ footer a:visited {
 
 .player {
   border-radius: 2vw;
+  height: 2vw;
+  width: 15vw;
+  font-size: 1.5vw;
+  text-align: center;
+  align-self: flex-end;
 }
-.otherPlayers {
-  grid-column: 4 / span 3;
-  grid-row: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
+
+
 .player2 {
-  grid-column: 1;
-  grid-row: 1;
-  background-color: #7e2174;
-  text-align: center;
-  height: 2vw;
-  width: 7vw;
-  font-size: 1.5vw;
-  margin-bottom: 0.5vw;
-}
-.player3 {
-  grid-column: 2;
-  grid-row: 1;
-  background-color: #19b3a7;
-  height: 2vw;
-  width: 7vw;
-  text-align: center;
-  font-size: 1.5vw;
-  margin-bottom: 0.5vw;
-}
-.player4 {
   grid-column: 3;
   grid-row: 1;
+  background-color: #7e2174;
+  margin-left: -10vw;
+}
+.player3 {
+  grid-column: 4;
+  grid-row: 1;
+  background-color: #19b3a7;
+  justify-self: center;
+}
+.player4 {
+  grid-column: 5;
+  grid-row: 1;
   background-color: #ca9e68;
-  text-align: center;
-  height: 2vw;
-  width: 7vw;
-  font-size: 1.5vw;
+  margin-left: 5vw;
 }
 .playerboard {
   border-radius: 2vw;
@@ -1213,34 +1271,45 @@ footer a:visited {
 /* Om man klickar på spelaren i topp */
 .player3.active {
   background-color: #20ccbe;
-  text-align: center;
-  height: 80%;
-  width: 250%;
+  width: 40vw;
+  height: 15vw;
+  align-self: flex-start;
   justify-self: center;
-  margin-left: initial;
-  margin-top: 100px;
   z-index: 1;
+  font-size: 1vw;
+  cursor: default;
+  border: solid;
+  border-color: black;
 }
 
 /* Om man klickar på spelaren till vänster */
 .player2.active {
   background-color: #c236b4;
-  margin-right: -100%;
-  width: 250%;
-  height: 80%;
-  justify-self: self-start;
-  margin-top: 100px;
+  margin-right: -110%;
+  width: 50vw;
+  height: 20vw;
+  align-self: flex-start;
+  justify-self: center;
   z-index: 1;
+  font-size: 1vw;
+  cursor: default;
+  border: solid;
+  border-color: black;
 }
 
 /* Om man klickar på spelaren till höger */
 .player4.active {
   background-color: #e9b77a;
-  width: 250%;
-  height: 80%;
-  justify-self: end;
-  margin-top: 100px;
+  margin-left: -110%;
+  width: 40vw;
+  height: 15vw;
+  align-self: flex-start;
+  justify-self: center;
   z-index: 1;
+  font-size: 1vw;
+  cursor: default;
+  border: solid;
+  border-color: black;
 }
 
 /*
@@ -1389,6 +1458,12 @@ footer a:visited {
 .drawCardSpace .buttons:hover {
   filter: brightness(110%);
 }
+
+.deck{
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .gridedge3 {
   grid-column: 1;
   grid-row: 1;
@@ -1413,13 +1488,20 @@ footer a:visited {
   justify-content: center;
   align-items: center;
   background-color: blue;
+  cursor: pointer;
+}
+.help:hover {
+  background-color: rgb(61, 61, 255);
 }
   .menuSpace{
     grid-column: 1;
     grid-row: 3;
     background-color:rgb(194, 194, 194);
     border-radius: 2vw;
-    padding: 2vw;
+    padding: 1vw;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 3.5vh);
+    align-content: center;
   }
   .buttons{
     display:inline-block;
@@ -1439,6 +1521,15 @@ footer a:visited {
   .menuSpace > * {  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
     zoom: 0.8;
   }
+
+  .menuButton{
+    background-color: #bbb;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    font-size: auto;
+  }
+
   .help{
     width: 4.5vw;
     height: 4.5vw;
