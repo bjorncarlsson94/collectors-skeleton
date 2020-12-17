@@ -1329,7 +1329,7 @@ footer a:visited {
   .buttons{
     display:inline-block;
     color: grey;
-    background-color: lightcoral;
+    background-color: rgb(83, 83, 83);
     border-radius:1vw;
     box-shadow: 0 0.3vw #999;
   }
@@ -1343,11 +1343,10 @@ footer a:visited {
   }
   .menuSpace > * {  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
     zoom: 0.8;
-    
   }
   .help{
-    width:40px;
-    height: 40px;
+    width: 1.5vw;
+    height: 1.5vw;
     border-radius: 25px;
     position: absolute;
     right:-2%;
@@ -1356,6 +1355,7 @@ footer a:visited {
     justify-content: center;
     align-items: center;
     background-color: blue;
+    font-size: 1vw;
   }
   #playerHelp{
     transition-duration: 0.2;

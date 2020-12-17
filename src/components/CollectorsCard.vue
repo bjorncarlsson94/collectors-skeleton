@@ -3,20 +3,6 @@
     <div v-if="card.x>0" :class="['card', {'available-to-choose': availableAction}]" 
       :style="{'zoom':scalefactor,'background-position': (-(card.x-1)*250)+'px ' + (-(card.y-1)*317)+'px'}" @click="doAction"> 
 
-      <!-- LÅT DETTA STÅ, BJÖRN FORTSÄTTER MED DENNA GREJ
-
-      här ska vi lägga till en canvas och vilken bilddata den har -->
-      <!-- style ovan ska "bort" -->
-      <!-- 
-      <div>
-        <canvas id="cardCanvas" width="7500" height="952" src="/images/collectors-cards-new.png"></canvas>
-        <img
-          src="/images/collectors-cards-new.png"
-          alt="CanvasImage"
-          title="Canvas image title"
-        />
-      </div> -->
-
       {{card.item}} 
       {{card.skill}}
       {{card.market}}
