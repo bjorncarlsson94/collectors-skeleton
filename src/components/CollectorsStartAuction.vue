@@ -120,6 +120,5 @@ export default {
     display:grid;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     padding: 1vw;
-    justify-items: center;
   }
 </style>
