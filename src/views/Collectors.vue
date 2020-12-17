@@ -177,42 +177,44 @@
               Market share
             </button>
           </div>
-          <div class="loserAuction" v-show="loserAvailable">
-            You Lost.. {{ auctionLeaderId }} won the auction!
-            <button
-              class="auctionButtonLoser"
-              v-if="players[playerId]"
-              @click="loserAvailable = false"
-            >
-              OK
-            </button>
-          </div>
-          <CollectorsAuction
-            v-if="players[playerId]"
-            :auctionActive="auctionActive"
-            :labels="labels"
-            :cardInAuction="cardInAuction"
-            :players="players"
-            :bid="bid"
-            :auctionLeaderId="auctionLeaderId"
-            :auctionPrice="auctionPrice"
-            :playerId="playerId"
-            :hiddenAuctionCard="hiddenAuctionCard"
-            :auctionMiniActiveNow="auctionMiniActiveNow"
-            :addBid="addBid"
-            :subBid="subBid"
-          />
+           <div class="loserAuction" v-show="loserAvailable" >
+             You Lost.. {{auctionLeaderId}} won the auction!
+             <button
+        class="auctionButtonLoser"
+        v-if="players[playerId]"
+        @click="loserAvailable = false"
+      >OK</button>
 
-          <div class="raiseValue">
-            <div class="raiseValuegrid">
-              <CollectorsRaiseValue
-                v-if="players[playerId]"
-                :labels="labels"
-                :player="players[playerId]"
-                :raiseItems="raiseItems"
-                :raiseValue="raiseValue"
-              />
-            </div>
+
+            </div> 
+          <CollectorsAuction v-if="players[playerId]"
+              :auctionActive="auctionActive"
+              :labels="labels"
+              :cardInAuction="cardInAuction"
+              :players="players"
+              :bid="bid"
+              :auctionLeaderId="auctionLeaderId"
+              :auctionPrice="auctionPrice"
+              :playerId="playerId"
+              :hiddenAuctionCard="hiddenAuctionCard"
+              :auctionCardPaymentActive="auctionCardPaymentActive"
+              :auctionMiniActiveNow="auctionMiniActiveNow"
+              :openCloseBuyWithCard="openCloseBuyWithCard"
+              :addBid="addBid"
+              :subBid="subBid"
+              :addNumber="addNumber"
+              :biddingCards="biddingCards"
+              :cardBidRound="cardBidRound"
+              :cardBidTotal="cardBidTotal"/>
+
+        <div class="raiseValue">
+          <div class="raiseValuegrid">
+            <CollectorsRaiseValue v-if="players[playerId]"
+              :labels="labels"
+              :player="players[playerId]"
+              :raiseItems="raiseItems"
+              :raiseValue="raiseValue"/>
+          </div>
           </div>
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
           <div
@@ -492,6 +494,10 @@ export default {
       aboutToBuyItem: false,
       hiddenAuctionCard: false,
       scalefactor: window.innerWidth/8000,   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
+      auctionCardPaymentActive: false,
+      biddingCards: [],
+      cardBidRound: 0,
+      cardBidTotal: 0,
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
 
      //help Active varaibles. 
@@ -617,19 +623,29 @@ export default {
             this.cardInAuction = d.cardInAuction;
             this.auctionActive = false;
             this.auctionWinner = false;
-          } else {
+            this.biddingCards = [];
+          }
+          else{
             this.winnerSelection(false);
             this.auctionPrice = 0;
             this.bid = 0;
             this.cardInAuction = d.cardInAuction;
             this.auctionActive = false;
             this.auctionWinner = false;
+            this.cardBidTotal = 0;
+            console.log("22 längd"+this.biddingCards.length)
+            if (this.biddingCards.length > 0){
+            this.restoreHand();
+            }
           }
-        } else {
+          
+        }
+        else {
+          this.cardBidRound = 0;
           this.auctionPrice = d.auctionPrice;
           this.auctionLeaderId = d.auctionLeaderId;
           this.players = d.players;
-          this.bid = d.auctionPrice;
+          //this.bid = d.auctionPrice;
           this.cardInAuction = d.cardInAuction;
         }
         this.players = d.players;
@@ -767,14 +783,17 @@ export default {
 
       console.log("status: " + this.topIsActive);
     },
-    auctionOver: function (placementType) {
-      console.log(placementType);
-      this.$store.state.socket.emit("auctionOver", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-        placementType: placementType,
-        auctionPrice: this.auctionPrice,
-      });
+    auctionOver: function(placementType){
+      this.auctionPrice -=this.cardBidTotal;
+      this.cardBidTotal = 0;
+      console.log(placementType)
+          this.$store.state.socket.emit('auctionOver', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          placementType: placementType,
+          auctionPrice: this.auctionPrice
+        }
+      );
     },
     showHelp: function(label){
       label; 
@@ -783,6 +802,16 @@ export default {
     },
     playerHandHelpIsActive:function(){},
 
+    openCloseBuyWithCard: function(){
+      if (this.auctionCardPaymentActive == false){
+      this.auctionCardPaymentActive = true
+      this.auctionActive = false
+      }
+      else{
+        this.auctionCardPaymentActive = false
+        this.auctionActive = true
+      }
+    },
     placeBottle: function (action, cost) {
       if (action === "buy") {
         this.aboutToBuyItem = true;
@@ -857,17 +886,15 @@ export default {
         return this.buyCard(card);
       }
     },
-
-    placeBid: function () {
-      console.log("bid innan:" + this.bid);
-      this.$store.state.socket.emit("auctionBid", {
+    restoreHand: function(){
+      
+      this.$store.state.socket.emit("restoreHand", {
         roomId: this.$route.params.id,
-        playerId: this.playerId,
-        bid: this.bid,
-        auctionPrice: this.auctionPrice,
+        biddingCards: this.biddingCards,
+        players: this.players,
+        playerId: this.playerId
       });
     },
-
     startTurn: function () {
       console.log("hola");
 
@@ -1233,6 +1260,11 @@ footer a:visited {
   border: 0vw;
   font-size: 1.6vw;
   margin: 0.5vw;
+}
+.auctionButtonWinner:disabled{
+  color: rgb(78, 78, 78);
+  background-color: grey;
+  cursor:default;
 }
 .button1 {
   background-color: #f06e6e;

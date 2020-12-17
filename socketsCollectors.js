@@ -89,7 +89,7 @@ function sockets(io, socket, data) {
   });
 
   socket.on('auctionBid', function (d) {
-    data.auctionBids(d.roomId, d.playerId, d.bid, d.auctionPrice);
+    data.auctionBids(d.roomId, d.playerId, d.bid, d.auctionPrice, d.players);
     console.log("socket bid "+d.bid)
     io.to(d.roomId).emit('auctionRound', {
       players: data.getPlayers(d.roomId),
@@ -114,6 +114,15 @@ function sockets(io, socket, data) {
     });
     console.log(data.getCardInAuction(d.roomId))
   });
+
+
+socket.on('restoreHand', function (d) {
+  data.restoreHands(d.roomId, d.playerId, d.biddingCards);
+  io.to(d.roomId).emit('handRestord', {
+    players: data.getPlayers(d.roomId),
+  });
+});
+
 }
 
 module.exports = sockets;
