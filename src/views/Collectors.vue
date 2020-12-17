@@ -1420,7 +1420,7 @@ footer a:visited {
     background-color: #94b5ee;
     padding:5px;
     margin-bottom: 2px;
-     border:solid;
+    border:solid;
     border-width: 0.2px;
     border-color: black;
   }
