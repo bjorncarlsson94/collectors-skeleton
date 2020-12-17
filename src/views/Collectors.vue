@@ -177,7 +177,26 @@
             <div class="playerBoardGrid" v-if="isActive">
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                <div class="help"><p>?</p></div>
+                     <div
+                class="help" 
+                 @click="helpPlayerHandHover"
+                >?<div id="playerHelp" v-show="helpPlayerHandActive"><h3><strong>{{labels.helpPlayerHand.title}}</strong></h3>
+               <div> <h3><strong>{{labels.helpPlayerHand.itemArea}}</strong></h3>
+                <p>{{labels.helpPlayerHand.itemAreaText}}</p></div>
+               <div> <h3><strong>{{labels.helpPlayerHand.skillsArea}}</strong></h3>
+                <p> {{labels.helpPlayerHand.skillsAreaText}}</p></div>
+              <div> <h3> <strong>{{labels.helpPlayerHand.handArea}}</strong></h3>
+                <p> {{labels.helpPlayerHand.handAreaText}}</p></div>
+              <div>  <h3> <strong>{{labels.helpPlayerHand.nextTurn}}</strong></h3>
+                 <p>{{labels.helpPlayerHand.nextTurnText}}</p></div>
+                
+                
+                
+                
+                </div></div>
+                
+            
+                
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -348,6 +367,7 @@ export default {
       leftIsActive: false,
       rightIsActive: false,
       topIsActive: false,
+      
 
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
@@ -403,9 +423,12 @@ export default {
       auctonStarterId: null,
       aboutToBuyItem: false,
       hiddenAuctionCard: false,
-      scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
-      //  Jag hoppas att jag kan lösa detta inom kort. /Björn
-    };
+      scalefactor: window.innerWidth/8000,   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
+                                            //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
+
+     //help Active varaibles. 
+     helpPlayerHandActive:false,                                       
+    }
   },
   computed: {
     playerId: function () {
@@ -626,6 +649,7 @@ export default {
       this.rightIsActive = false;
       this.topIsActive = false;
       this.leftIsActive = false;
+      
 
       console.log("Status: " + this.isActive);
     },
@@ -640,7 +664,7 @@ export default {
 
       // Sätter till false för att stänga brädet
       this.isActive = false;
-
+      this.playerHandHelpIsActive =false;
       console.log("Status: " + this.isActive);
     },
     expandLeftBoard: function () {
@@ -684,6 +708,12 @@ export default {
         auctionPrice: this.auctionPrice,
       });
     },
+    showHelp: function(label){
+      label; 
+      //do stuff
+
+    },
+    playerHandHelpIsActive:function(){},
 
     placeBottle: function (action, cost) {
       if (action === "buy") {
@@ -790,7 +820,13 @@ export default {
         auctionActive: this.auctionActive,
       });
     },
+     //playerHandShow
+  helpPlayerHandHover:function(){
+    this.helpPlayerHandActive=!this.helpPlayerHandActive;
+
   },
+  },
+ 
 };
 </script>
 
@@ -1362,28 +1398,7 @@ footer a:visited {
   font-size: 1vw;
   overflow: hidden;
 }
-.menuSpace {
-  grid-column: 1;
-  grid-row: 3;
-  background-color: rgb(194, 194, 194);
-  border-radius: 2vw;
-  padding: 2vw;
-}
-.buttons {
-  display: inline-block;
-  color: grey;
-  background-color: lightcoral;
-  border-radius: 1vw;
-  box-shadow: 0 0.3vw #999;
-}
-.buttons:active {
-  background-color: coral;
-  box-shadow: 0 0.2vw #999;
-  transform: translateY(0.1vw);
-}
-.buttons:hover {
-  background-color: coral;
-}
+
 .menuSpace > * {
   /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
   zoom: 0.8;
@@ -1399,6 +1414,126 @@ footer a:visited {
   align-items: center;
   background-color: blue;
 }
+  .menuSpace{
+    grid-column: 1;
+    grid-row: 3;
+    background-color:rgb(194, 194, 194);
+    border-radius: 2vw;
+    padding: 2vw;
+  }
+  .buttons{
+    display:inline-block;
+    color: grey;
+    background-color: rgb(83, 83, 83);
+    border-radius:1vw;
+    box-shadow: 0 0.3vw #999;
+  }
+  .buttons:active{
+    background-color: coral;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
+  }
+  .buttons:hover{
+    background-color: coral;
+  }
+  .menuSpace > * {  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
+    zoom: 0.8;
+  }
+  .help{
+    width: 4.5vw;
+    height: 4.5vw;
+    border-radius: 50px;
+    position: absolute;
+    right:-2%;
+    top:-5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    background-color: #0066ff;
+    border: solid;
+    border-width: 1px;
+    border-color: black;
+    font-size: 2vw;
+  }
+  #playerHelp{
+    --scrollbarBG: #0066ff;
+    --thumbBG: #90A4AE;
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    right:-22.791666666666668vw;
+    top:-17.2604166666666667vw;
+    border-radius: 1vw;
+    -webkit-box-shadow: 0px 0px 3px 2px rgba(102,163,255,0.59); 
+    box-shadow: 0px 0px 3px 2px rgba(102,163,255,0.59);
+    background-color:inherit;
+    padding:1vw;
+    float:right;
+    max-width: 19.791666666666668vw;
+    min-width: 14vw;
+    max-height: 20.833333333333332vw;
+    min-height: 15.833333333333332vw;
+    overflow-y: auto;
+   
+    position: absolute;
+    word-wrap: break-word;
+    display: inline;
+    font-size:1vw ;
+  }
+  #playerHelp h3{
+    background-color:rgb(3, 69, 155) ;
+    border-radius: 0.5vw;
+    padding:.55vw;
+
+    border:solid;
+    border-width: 0.2px;
+    border-color: black;
+  }
+  #playerHelp p{
+    background-color:#2179fd;
+    border-radius: 0.5vw;
+    margin-top: -0.52vw;
+    padding:0.55vw;
+    border:solid;
+    border-width: 0.2px;
+    border-color: black;
+  }
+  #playerHelp div{
+    border-radius: 0.5vw;
+    background-color: #94b5ee;
+    padding:5px;
+    margin-bottom: 2px;
+    border:solid;
+    border-width: 0.2px;
+    border-color: black;
+  }
+
+
+/*
+alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lol...
+*/
+
+
+#playerHelp::-webkit-scrollbar {
+  width: 11px;
+  height: 10px;
+}
+
+#playerHelp::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+  margin:10px;
+}
+#playerHelp::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG) ;
+  border-radius: 6px;
+  border: 3px solid var(--scrollbarBG);
+}
+
+
+
+
+  
+ 
 
 @media screen and (max-width: 800px) {
   main {

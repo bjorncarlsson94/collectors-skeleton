@@ -2,7 +2,7 @@
     <div>
       <!--<h1>{{ labels.startAuction }}</h1>-->
       <div class="start-auction auctiongrid">
-        <div v-for="(card, index) in auctionCards" :key="index">
+        <div class="cards" v-for="(card, index) in auctionCards" :key="index">
           <CollectorsCard 
             :card="card" 
             :availableAction="card.available" 
@@ -10,7 +10,7 @@
           <!--{{ cardCost(card) }}-->
           
         </div>
-        <div v-for="(p, index) in placement" :key="'A' + index">
+        <div class="buttons" v-for="(p, index) in placement" :key="'A' + index">
           <button class="button"
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
@@ -119,6 +119,14 @@ export default {
   .auctiongrid{
     display:grid;
     grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     padding: 1vw;
+  }
+  .cards{
+    grid-column: 1;
+    grid-row: repeat(auto-fill, 1);
+  }
+  .buttons{
+    grid-column: 2;
   }
 </style>

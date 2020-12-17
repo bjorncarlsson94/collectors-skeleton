@@ -25,18 +25,28 @@
         </div>
       </div>
           <div class="itemsAvailable" v-show="aboutToBuyItem" v-if="player">
-              <h1 id = "buyItemFromBoard">
+              <h1 class = "buyItemHeadings">
                 Välj ett kort från spelplanen:
               </h1>
-              <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale" :key="index">
-                <CollectorsCard 
-                :card="card" 
-                :availableAction="card.available" 
-                @doAction="buyCard(card)"/>
+              <div class="buyItemCardGrid">
+                <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale" :key="index">
+                  <CollectorsCard 
+                  :card="card" 
+                  :availableAction="card.available" 
+                  @doAction="buyCard(card)"/>
+                </div>
               </div>
-              <h1 id="buyItemFromHand">
-                Välj ett kort från handen:
-              </h1>
+                <h1 class="buyItemHeadings">
+                  Välj ett kort från handen:
+                </h1>
+              <div class= "buyItemCardGrid">
+                <div class="itemsFromHand" v-for="(card,index) in player.hand" :key="'A'+index">
+                  <CollectorsCard 
+                  :card="card" 
+                  :availableAction="card.available" 
+                  @doAction="buyCard(card)"/>
+                </div>
+              </div>    
           </div>
     </div>
 
@@ -200,11 +210,11 @@ export default {
     border-radius: 2vw;
   }
 
+/*Nedan är all css för rutan man får upp vid kortköp*/
   .itemsAvailable {
   display: grid;
   position: absolute;
   grid-template-rows: 15% 35% 15% auto;
-  grid-template-columns: 20% 20% 20% 20% 20%;
   width: 80vw;
   height: 50vw;
   background-color: #f8dcce;
@@ -218,27 +228,42 @@ export default {
   transform: translate(-50%, -50%);  
   }
 
-  #buyItemFromBoard{
+  .buyItemCardGrid{
+    display: grid;
+    align-content: center;
+    grid-auto-flow: column;
+    grid-column: 1/6;
+  }
+
+  .buyItemHeadings{
+    justify-content: center;
     text-align: center;
     color: black;
-    grid-row: 1;
     grid-column: 1/6;
   }
 
   .itemsFromBoard{
     display: grid;
-    grid-row: 2;
-    grid-column: auto;
     justify-items:center;
     align-items: center;
     zoom: 2;
+    overflow: hidden;
   }
 
-  #buyItemFromHand{
-    text-align:center;
-    color: black;
-    grid-row: 3;
+  /*.itemsFromHandGrid{
+    display: grid;
+    align-content: center;
+    grid-auto-flow: column;
     grid-column: 1/6;
+  }*/
+
+  .itemsFromHand{
+    display: grid;
+    justify-items:center;
+    align-items: center;
+    zoom: 2;
+    overflow: hidden;
+
   }
 
 
