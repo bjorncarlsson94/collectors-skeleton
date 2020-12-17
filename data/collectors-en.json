@@ -13,5 +13,21 @@
 	"player2": "Player 2",
 	"player3": "Player 3",
 	"player4": "Player 4",
-	"helpPlayerHand":"dolor sed viverra ipsum nunc aliquet bibendum enim facilisis gravida neque convallis a cras semper auctor neque vitae tempus quam pellentesque nec nam aliquam sem et tortor consequat id porta nibh venenatis cras sed felis eget velit aliquet sagittis id consectetur purus ut faucibus pulvinar elementum integer enim neque volutpat ac tincidunt vitae semper quis lectus nulla at volutpat diam ut venenatis tellus in metus vulputate eu scelerisque felis imperdiet proin fermentum leo vel orci porta non pulvinar neque laoreet suspendisse interdum consectetur libero id faucibus nisl tincidunt eget nullam non nisi est sit amet facilisis magna etiam tempor orci"
+	"_comment": "För att komma åt den här infon kör lables.helpPlayerHand.title exempelvis",
+	"helpPlayerHand":{
+		"title":"Player Hand:",
+		"itemArea":"Item Area (red):",
+		"skillsArea":"Skills Area (green):",
+		"handArea":"Hand Area Yellow:",
+		"nextTurn":"Next Turn info:",
+		"itemAreaText":"Items is how you earn points in this game. The Red symbol corresponds to the same symbol in the market area.",
+		"skillsAreaText":"In the green area your skills are shown. they give you bonuses and are important. Click on the ? next to skills on the playerBoard for more information. ",
+		"handAreaText":" These cards are in your hand. You can spend bottles to place these cards on the playerBoard or buy them as a skill or item. They are also used as currencies in the auction",
+		"nextTurnText":"In the grey area you are shown what will happen next turn. Your income next turn, how many cards you will get andhow many bottles."
+
+
+
+	}
+	
 }
+
