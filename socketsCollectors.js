@@ -68,18 +68,11 @@ function sockets(io, socket, data) {
   });
 
     //------------------WORK metoder----------------------
-    socket.on("collectorsWorkDrawCard", function(d) {
-      //funktion för att dra kort genom WORK
-      io.to(d.roomId).emit(
-        "collectorsWorkCardDrawn",
-        data.workDrawCard(d.roomId, d.playerId, 1)
-      );
-    });
     socket.on("collectorsWorkDrawTwoCards", function(d) {
       //funktion för att dra 2 kort genom WORK
       io.to(d.roomId).emit(
         "collectorsWorkCardDrawn",
-        data.workDrawCard(d.roomId, d.playerId, 2)
+        data.workDrawCardTwoCards(d.roomId, d.playerId)
       );
     });
     socket.on("collectorsBottleRecycle", function(d) {
@@ -89,12 +82,28 @@ function sockets(io, socket, data) {
         data.bottleRecycled(d.roomId, d.playerId)
       );
     });
-    socket.on("collectorsBottleRecycled4thRound", function(d) {
+    socket.on("collectorsBottleRecycle4thRound", function(d) {
       console.log("socket körs");
       io.to(d.roomId).emit(
         "collectorsBottleRecycled4thRound",
         data.bottleRecycled4thRound(d.roomId, d.playerId)
       );
+    });
+    socket.on("collectorsDrawACardAndToken", function(d) {
+      console.log("Draw card and a token socket körs");
+      io.to(d.roomId).emit(
+        "collectorsCardAndTokenDrawn",
+        data.drawCard(d.roomId, d.playerId),
+        data.takeFirstPlayerToken(d.roomId, d.playerId)
+      );
+    });
+    socket.on("collectorsDrawACardAndPassiveIncome", function(d) {
+      console.log("Draw card and draw a passive income");
+      io.to(d.roomId).emit(
+        "collectorsCardAndPassiveIncomeDrawn",
+        data.drawCard(d.roomId, d.playerId),
+        data.drawPassiveIncome(d.roomId, d.playerId)
+      )
     });
     //---------------------------------------------------
 

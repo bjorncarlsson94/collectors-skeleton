@@ -6,7 +6,10 @@
       <button class="workslot5" v-on:click="recycleBottle4thRound"></button>
       <button class="workslot4" v-on:click="recycleBottle"></button>
       <button class="workslot3" v-on:click="drawTwoCards"></button>
-      <button class="workslot2" v-on:click="drawACard"></button>
+      <button
+        class="workslot2"
+        v-on:click="drawACardAndFirstPlayerToken"
+      ></button>
       <button class="workslot1" v-on:click="drawCardAndPassiveIncome"></button>
     </div>
   </div>
@@ -20,30 +23,39 @@ export default {
     labels: Object,
     player: Object,
     round: Number,
+    workPlacement: Array, //Finns en flaska här? true/false
   },
   methods: {
     helpButtonPressed: function () {},
+    //Lägg en flaska här och dra 2st kort
     drawTwoCards: function () {
-      this.$emit("collectorsWorkDrawTwoCards", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-      });
-    },
-    drawACard: function () {
-      if (this.player.bottles > 0) {
-        this.$emit("drawCard");
+      if (!this.workPlacement[0] && this.player.bottles > 0) {
+        this.$emit("workDrawTwoCards");
+      } else {
+        alert("ööööööh");
       }
     },
+    //Lägg en flaska här och dra ett kort samt ta First Player Token
+    drawACardAndFirstPlayerToken: function () {
+      if (!this.workPlacement[1] && this.player.bottles > 0) {
+        this.$emit("drawACardAndFirstPlayerToken");
+      }
+    },
+    //Lägg en flaska här och dra ett kort samt ett kort som passiv inkomst
     drawCardAndPassiveIncome: function () {
-      console.log("Not implemented :'^(");
-      if (this.player.bottles > 0) {
-        //this.$emit("drawCardAndPassiveIncome");
+      if (!this.workPlacement[2] && this.player.bottles > 0) {
+        this.$emit("drawCardAndPassiveIncome");
       }
     },
+    //Panta en flaska så får du en peng, går att gö hur många gånger som helst
     recycleBottle: function () {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks");
+      if (this.round === 4) {
+        alert("Round 4 use special action!");
+        return;
+      }
       if (this.player.bottles > 0) {
         console.log("player bottles > 0");
         this.$emit("recycleBottle");
@@ -51,6 +63,7 @@ export default {
         alert("Too few bottles :^(");
       }
     },
+    //På fjärde omgången kan du panta en flaska och få 3 pengar ist
     recycleBottle4thRound: function () {
       console.log("Panta 4 trycks");
       if (this.round === 4 && this.player.bottles > 0) {

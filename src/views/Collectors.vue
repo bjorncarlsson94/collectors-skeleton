@@ -213,8 +213,12 @@
             :labels="labels"
             :player="players[playerId]"
             :round="round"
-            @recycleBottle="recycleBottle"
-            @recycleBottle4thRound="recycleBottle4thRound"
+            :workPlacement="workPlacement"
+            @recycleBottle="recycleBottle($event)"
+            @recycleBottle4thRound="recycleBottle4thRound($event)"
+            @workDrawTwoCards="workDrawTwoCards($event)"
+            @drawACardAndFirstPlayerToken="drawACardAndFirstPlayerToken($event)"
+            @drawCardAndPassiveIncome="drawCardAndPassiveIncome($event)"
           />
 
           <div class="roundCounter">
@@ -327,6 +331,7 @@ export default {
       skillPlacement: [],
       auctionPlacement: [],
       marketPlacement: [],
+      workPlacement: [false, false, false],
       chosenPlacementCost: null,
       marketValues: {
         fastaval: 0,
@@ -503,8 +508,7 @@ export default {
       "collectorsBottleRecycled",
       function (d) {
         console.log("Flaska pantad");
-        this.players = d.playerId;
-        this.roomId;
+        this.players = d;
         console.log("Det krashar inte i flaska pantad");
       }.bind(this)
     );
@@ -512,12 +516,34 @@ export default {
       "collectorsBottleRecycled4thRound",
       function (d) {
         console.log("Flaska pantad på fjärde omgången");
-        this.players = d.playerId;
-        this.roomId;
+        this.players = d;
         console.log("Det krashar inte i flaska pantad");
       }.bind(this)
     );
-    //----------WORK----------------
+    this.$store.state.socket.on(
+      "collectorsWorkCardDrawn",
+      function (d) {
+        console.log("2 kort dragna");
+        this.players = d;
+        this.workPlacement = d;
+      }.bind(this)
+    );
+    this.$store.state.socket.on(
+      "collectorsCardAndTokenDrawn",
+      function (d) {
+        console.log("Kort samt spela först token (work)");
+        this.players = d;
+        this.workPlacement = d;
+      }.bind(this)
+    );
+    this.$store.state.socket.on(
+      "collectorsCardAndPassiveIncomeDrawn",
+      function (d) {
+        this.players = d;
+        this.workPlacement = d;
+      }.bind(this)
+    );
+    //------------------------------
   },
   methods: {
     selectAll: function (n) {
@@ -684,15 +710,6 @@ export default {
       });
     },
     //---------------------------WORK metoder-------------------
-    destroyBottle: function () {
-      //.......
-      this.$store.state.socket.emit("collectorsBuySkill", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-        card: this.card,
-        cost: this.chosenPlacementCost,
-      });
-    },
     recycleBottle: function () {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
@@ -708,14 +725,30 @@ export default {
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
       console.log("player bottles > 0 (Collectors.vue)");
-      this.$store.state.socket.emit("collectorsBottleRecycled4thRound", {
+      this.$store.state.socket.emit("collectorsBottleRecycle4thRound", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+      });
+    },
+    workDrawTwoCards: function () {
+      this.$store.state.socket.emit("collectorsWorkDrawTwoCards", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+      });
+    },
+    drawACardAndFirstPlayerToken: function () {
+      console.log("draw card and first player token");
+      this.$store.state.socket.emit("collectorsDrawACardAndToken", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
     drawCardAndPassiveIncome: function () {
-      console.log("Draw passice income i Collectors.vue");
-      //this.$store.state.socket.emit("drawCardAndPassiveIncome")
+      console.log("Draw passive income i Collectors.vue");
+      this.$store.state.socket.emit("collectorsDrawACardAndPassiveIncome", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+      })
     },
     //----------------------------------------------------------
   },
