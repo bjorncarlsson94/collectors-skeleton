@@ -17,8 +17,8 @@
             @click="placeBottle(p)" >
             ${{p.cost}}
           </button>
-          <div v-if="p.playerId !== null">
-            {{p.playerId}}
+          <div class="bottlePlace" v-if="p.playerId !== null">
+            <!-- {{p.playerId}} -->
           </div>
         </div>
       </div>
@@ -121,7 +121,6 @@ export default {
     grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr;
     padding: 1vw;
-    justify-items: center;
   }
   .cards{
     grid-column: 1;
@@ -129,5 +128,17 @@ export default {
   }
   .buttons{
     grid-column: 2;
+  }
+  .bottlePlace {
+    background-image: url(/images/player-bottle.png);
+    margin-top: 0.5vw;
+    height: 3vw;
+    width: 3vw;
+    background-color: rgb(95, 216, 253);
+    border-radius: 1.5vw;
+    z-index: 60;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
   }
 </style>

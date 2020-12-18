@@ -19,8 +19,7 @@
             @click="placeBottle(p)" >
             ${{p.cost}}p
           </button>
-          <div v-if="p.playerId !== null">
-            {{p.playerId}}
+          <div class="bottlePlace" v-if="p.playerId !== null">
           </div>
         </div>
       </div>
@@ -265,6 +264,17 @@ export default {
     overflow: hidden;
 
   }
-
+.bottlePlace {
+    background-image: url(/images/player-bottle.png);
+    margin-top: 0.5vw;
+    height: 3vw;
+    width: 3vw;
+    background-color: rgb(95, 216, 253);
+    border-radius: 1.5vw;
+    z-index: 60;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
 
 </style>

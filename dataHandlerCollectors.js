@@ -216,6 +216,20 @@ Data.prototype.drawCard = function (roomId, playerId) {
   } else return [];
   
 }
+Data.prototype.restoreHands= function (roomId, playerId, biddingCards) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    for (let i = 0; i < biddingCards.length; i += 1) {
+      let card = biddingCards[i]
+      console.log("this card"+ card)
+      room.players[playerId].hand.push(card);
+    } 
+  }
+  return room.players;
+}
+  
+
+
 
 /* moves card from itemsOnSale to a player's hand */
 Data.prototype.buyCard = function (roomId, playerId, card, cost) {
@@ -609,8 +623,9 @@ Data.prototype.nextPlayer = function (roomId, playerId, auctionActive) {
 
 }
 //budgivning vid auction
-Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
+Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice, players) {
   let room = this.rooms[roomId];
+  room.players = players;
   console.log("bid::" + bid)
   if (typeof room !== 'undefined') {
     if (auctionPrice == 0){
@@ -655,7 +670,7 @@ Data.prototype.auctionBids = function (roomId, playerId, bid, auctionPrice) {
       this.nextPlayer(roomId, playerId, true)
     }
     
-    return room.player
+    return room.players
   }
 }
 
