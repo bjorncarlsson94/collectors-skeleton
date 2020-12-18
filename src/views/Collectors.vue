@@ -24,8 +24,10 @@
               v-bind:class="{ active: rightIsActive }">
               {{ labels.player4 }}
               <!--Here are the player specific things-->
+              
             </div>
           </div>
+          
           <div class="skills">
             <div class="skillsgrid">
               <CollectorsSkillActions
@@ -39,9 +41,19 @@
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
               />
+              <div
+                class="help" 
+                 @click="helpPlayerHandHover"
+                >?</div>
+              
             </div>
+            
           </div>
           <div class="auction">
+            <div
+                class="help" 
+                 @click="helpPlayerHandHover"
+                >?</div>
             <div class="auctiongrid">
               <CollectorsStartAuction
                 v-if="players[playerId]"
@@ -110,6 +122,10 @@
               :subBid="subBid"/>
 
         <div class="raiseValue">
+          <div
+                class="help" 
+                 @click="helpPlayerHandHover"
+                >?</div>
           <div class="raiseValuegrid">
             <CollectorsRaiseValue v-if="players[playerId]"
               :labels="labels"
@@ -133,9 +149,7 @@
 
             <!-- Visas när handen är öppen-->
             <div class="playerBoardGrid" v-if="isActive">
-              <div class="boardCollection">
-                <div id="collectiontitle">Collection:</div>
-                     <div
+              <div
                 class="help" 
                  @click="helpPlayerHandHover"
                 >?<div id="playerHelp" v-show="helpPlayerHandActive"><h3><strong>{{labels.helpPlayerHand.title}}</strong></h3>
@@ -147,11 +161,14 @@
                 <p> {{labels.helpPlayerHand.handAreaText}}</p></div>
               <div>  <h3> <strong>{{labels.helpPlayerHand.nextTurn}}</strong></h3>
                  <p>{{labels.helpPlayerHand.nextTurnText}}</p></div>
-                
-                
-                
+                <div id="collectiontitle">Collection:</div>
+                     
+               
                 
                 </div></div>
+              <div class="boardCollection">
+                <div id="collectiontitle">Collection:</div>
+                     
                 
             
                 
@@ -216,6 +233,10 @@
         -->
 
           <div class="items">
+            <div
+                class="help" 
+                 @click="helpPlayerHandHover"
+                >?</div>
             <div class="itemgrid">
               <CollectorsBuyActions
                 v-if="players[playerId]"
@@ -244,10 +265,18 @@
           </div>
 
           <div class="roundCounter">
+            <div
+                class="help" 
+                 @click="helpPlayerHandHover"
+                >?</div>
             <p>{{ labels.roundcounter }} {{ round }}</p>
             <p>Det är {{ currentPlayer() }} tur att spela!</p>
           </div>
-          <div class="drawCardSpace">
+          <div class="drawCardSpace" >
+            <div
+                class="help" id="helpDrawCardSpace"
+                 @click="helpPlayerHandHover"
+                >?</div>
             <div class="buttons">
               <div @click="drawCard">
                 <img src="/images/back-of-card.png">
@@ -260,6 +289,10 @@
             Här kan man t.ex. ha vissa viktiga knappar
           </div>
           <div class="menuSpace">
+            <div
+                class="help" 
+                 @click="helpPlayerHandHover"
+                >?</div>
             <button
               v-if="players[playerId]"
               :disabled="this.gameStarted"
@@ -1188,18 +1221,21 @@ footer a:visited {
     background-color:#f8dcce;
     grid-column: 4 /span 3;
     grid-row: 2;
+    position: relative;
   }
   .skills{
     border-radius: 2vw;
     background-color: #dfeccc;
     grid-column: 4 /span 3;
     grid-row: 3;
+    position: relative;
   }
   .raiseValue{
     border-radius: 2vw;
     background-color: #cfdcf2;
     grid-column: 8;
     grid-row: 3 /span 1; 
+    position: relative;
   }
   .raiseValuegrid div{
     font-size: 1vw;
@@ -1211,6 +1247,7 @@ footer a:visited {
     background-color: #f5f2cc;
     grid-column: 3;
     grid-row: 2 /span 2;
+    position: relative;
   }
   .auctionCardViewMini{
     zoom: 1.65;
@@ -1309,18 +1346,25 @@ footer a:visited {
     border-radius: 2vw;
     padding:2vw;
     font-size: 1vw;
+    position: relative;
   }
   .drawCardSpace{
     grid-column: 8;
     grid-row: 2;
     border-radius: 2vw;
     padding:2vw;
+    position: relative;
+    
     justify-self: center;
     align-self: center;
     zoom: 0.5;
   }
   .drawCardSpace .buttons:hover{
     filter: brightness(110%);
+  }
+  #helpDrawCardSpace{
+    zoom: 150%;
+
   }
   .gridedge3{
     grid-column: 1;
@@ -1337,6 +1381,7 @@ footer a:visited {
     background-color:rgb(194, 194, 194);
     border-radius: 2vw;
     padding: 2vw;
+    position: relative;
   }
   .buttons{
     display:inline-block;
@@ -1357,21 +1402,21 @@ footer a:visited {
     zoom: 0.8;
   }
   .help{
-    width: 4.5vw;
-    height: 4.5vw;
+    width: 2.5vw;
+    height: 2.5vw;
     border-radius: 50px;
-    position: absolute;
+    position:absolute;
     right:-2%;
-    top:-5%;
+    top:0;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+  
     background-color: #0066ff;
     border: solid;
     border-width: 1px;
     border-color: black;
-    font-size: 2vw;
+    font-size: 1.5vw;
   }
   #playerHelp{
     --scrollbarBG: #0066ff;
@@ -1388,11 +1433,10 @@ footer a:visited {
     float:right;
     max-width: 19.791666666666668vw;
     min-width: 14vw;
-    max-height: 20.833333333333332vw;
-    min-height: 15.833333333333332vw;
+    max-height: 43.833333333333332vw;
     overflow-y: auto;
-   
     position: absolute;
+    z-index: 6;
     word-wrap: break-word;
     display: inline;
     font-size:1vw ;
