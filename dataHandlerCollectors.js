@@ -143,6 +143,11 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
       playerId: null
     }
   ];
+  room.workPlacement = [
+    false,
+    false,
+    false
+  ];
   this.rooms[roomId] = room;
 }
 
@@ -315,7 +320,8 @@ Data.prototype.workDrawCardTwoCards = function (roomId, playerId) {     //Dra ko
       room.players[playerId].hand.push(card);
     }
 
-    //room.workPlacement[0] = true;
+    room.workPlacement[0] = true;
+    console.log(room.workPlacement[0])
     room.players[playerId].bottles--;
     return room.players;
   } else return [];
@@ -472,6 +478,13 @@ Data.prototype.getAuctionCards = function (roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     return room.auctionCards;
+  } else return [];
+}
+
+Data.prototype.getWorkPlacement = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.workPlacement;
   } else return [];
 }
 

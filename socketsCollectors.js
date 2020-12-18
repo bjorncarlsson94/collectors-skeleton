@@ -17,8 +17,9 @@ function sockets(io, socket, data) {
         raiseValue:data.getCardValue(d.roomId),
         skillsOnSale: data.getSkillsOnSale(d.roomId),
         auctionCards: data.getAuctionCards(d.roomId),
-        cardInAuction: data.getCardInAuction(d.roomID),
-        placements: data.getPlacements(d.roomId)
+        cardInAuction: data.getCardInAuction(d.roomId),
+        placements: data.getPlacements(d.roomId),
+        workPlacement: data.getWorkPlacement(d.roomId)
       });
     }
   });

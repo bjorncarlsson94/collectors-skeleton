@@ -24,26 +24,33 @@ export default {
     player: Object,
     round: Number,
     workPlacement: Array, //Finns en flaska här? true/false
+    //drawTwoCards = 0
+    //drawACardAndFirstPlayerToken = 0
+    //drawCardAndPassiveIncome = 0
   },
   methods: {
+    //  (this.workPlacement[0] === false) detta är en fuling quick fix tänk silvertejp. Det funkar det är det viktigaste än så länge.
     helpButtonPressed: function () {},
     //Lägg en flaska här och dra 2st kort
     drawTwoCards: function () {
-      if (!this.workPlacement[0] && this.player.bottles > 0) {
+      if ((this.workPlacement[0] === false) && this.player.bottles > 0) {
+        console.log("Kraschar innan this.workPlacement");
         this.$emit("workDrawTwoCards");
+        return [];
       } else {
         alert("ööööööh");
+        return [];
       }
     },
     //Lägg en flaska här och dra ett kort samt ta First Player Token
     drawACardAndFirstPlayerToken: function () {
-      if (!this.workPlacement[1] && this.player.bottles > 0) {
+      if ((this.workPlacement[1] === false) && this.player.bottles > 0) {
         this.$emit("drawACardAndFirstPlayerToken");
       }
     },
     //Lägg en flaska här och dra ett kort samt ett kort som passiv inkomst
     drawCardAndPassiveIncome: function () {
-      if (!this.workPlacement[2] && this.player.bottles > 0) {
+      if ((this.workPlacement[2] === false) && this.player.bottles > 0) {
         this.$emit("drawCardAndPassiveIncome");
       }
     },
