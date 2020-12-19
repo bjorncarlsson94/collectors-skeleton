@@ -1611,6 +1611,7 @@ footer a:visited {
 }
 .drawCardSpace .buttons:hover {
   filter: brightness(110%);
+  background-color:rgb(194, 194, 194);
 }
 
 .deck {

@@ -111,11 +111,8 @@ export default {
   text-align: center;
   border-radius: 2vw;
   background-color: grey;
-  grid-column: 3;
-  grid-row: 1 / span 2;
-  height: 37vw;
-  width: 15vw;
-  justify-self: left;
+  grid-column: 2;
+  grid-row: 2 / span 2;
 }
 
 .workgrid {
