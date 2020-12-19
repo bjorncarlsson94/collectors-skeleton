@@ -3,36 +3,50 @@
     <main>
       <section id="wrapper">
         <div id="grid">
-          
-            <div
-              class="player player2"
-              v-on:click="expandLeftBoard"
-              v-bind:class="{ active: leftIsActive }"
-            >
-              {{ labels.player2 }}
-              <!--Here are the player specific things-->
+          <div
+            class="player player2"
+            v-on:click="expandLeftBoard"
+            v-bind:class="{ active: leftIsActive }"
+          >
+            {{ labels.player2 }}
+            <!--Here are the player specific things-->
 
-              <div class="playerBoardGrid" v-if="leftIsActive">
+            <div class="playerBoardGrid" v-if="leftIsActive">
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                     <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?<div id="playerHelp" v-show="helpPlayerHandActive"><h3><strong>{{labels.helpPlayerHand.title}}</strong></h3>
-               <div> <h3><strong>{{labels.helpPlayerHand.itemArea}}</strong></h3>
-                <p>{{labels.helpPlayerHand.itemAreaText}}</p></div>
-               <div> <h3><strong>{{labels.helpPlayerHand.skillsArea}}</strong></h3>
-                <p> {{labels.helpPlayerHand.skillsAreaText}}</p></div>
-              <div> <h3> <strong>{{labels.helpPlayerHand.handArea}}</strong></h3>
-                <p> {{labels.helpPlayerHand.handAreaText}}</p></div>
-              <div>  <h3> <strong>{{labels.helpPlayerHand.nextTurn}}</strong></h3>
-                 <p>{{labels.helpPlayerHand.nextTurnText}}</p></div>
-                
-                
-                
-                
-                </div></div>
-                
+                <div class="help" @click="helpPlayerHandHover">
+                  ?
+                  <div id="playerHelp" v-show="helpPlayerHandActive">
+                    <h3>
+                      <strong>{{ labels.helpPlayerHand.title }}</strong>
+                    </h3>
+                    <div>
+                      <h3>
+                        <strong>{{ labels.helpPlayerHand.itemArea }}</strong>
+                      </h3>
+                      <p>{{ labels.helpPlayerHand.itemAreaText }}</p>
+                    </div>
+                    <div>
+                      <h3>
+                        <strong>{{ labels.helpPlayerHand.skillsArea }}</strong>
+                      </h3>
+                      <p>{{ labels.helpPlayerHand.skillsAreaText }}</p>
+                    </div>
+                    <div>
+                      <h3>
+                        <strong>{{ labels.helpPlayerHand.handArea }}</strong>
+                      </h3>
+                      <p>{{ labels.helpPlayerHand.handAreaText }}</p>
+                    </div>
+                    <div>
+                      <h3>
+                        <strong>{{ labels.helpPlayerHand.nextTurn }}</strong>
+                      </h3>
+                      <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -77,28 +91,24 @@
 
               <div class="boardNextTurnInfo">Next turn info</div>
             </div>
-        
+          </div>
+          <div
+            class="player player3"
+            v-on:click="expandTopBoard"
+            v-bind:class="{ active: topIsActive }"
+          >
+            {{ labels.player3 }}
+            <!--Here are the player specific things-->
+          </div>
+          <div
+            class="player player4"
+            v-on:click="expandRightBoard"
+            v-bind:class="{ active: rightIsActive }"
+          >
+            {{ labels.player4 }}
+            <!--Here are the player specific things-->
+          </div>
 
-              
-            </div>
-            <div
-              class="player player3"
-              v-on:click="expandTopBoard"
-              v-bind:class="{ active: topIsActive }"
-            >
-              {{ labels.player3 }}
-              <!--Here are the player specific things-->
-            </div>
-            <div
-              class="player player4"
-              v-on:click="expandRightBoard"
-              v-bind:class="{ active: rightIsActive }"
-            >
-              {{ labels.player4 }}
-              <!--Here are the player specific things-->
-              
-            </div>
-          
           <div class="skills">
             <div class="skillsgrid">
               <CollectorsSkillActions
@@ -112,19 +122,11 @@
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
               />
-              <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?</div>
-              
+              <div class="help" @click="helpPlayerHandHover">?</div>
             </div>
-            
           </div>
           <div class="auction">
-            <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?</div>
+            <div class="help" @click="helpPlayerHandHover">?</div>
             <div class="auctiongrid">
               <CollectorsStartAuction
                 v-if="players[playerId]"
@@ -188,48 +190,49 @@
               Market share
             </button>
           </div>
-           <div class="loserAuction" v-show="loserAvailable" >
-             You Lost.. {{auctionLeaderId}} won the auction!
-             <button
-        class="auctionButtonLoser"
-        v-if="players[playerId]"
-        @click="loserAvailable = false"
-      >OK</button>
-
-
-            </div> 
-          <CollectorsAuction v-if="players[playerId]"
-              :auctionActive="auctionActive"
-              :labels="labels"
-              :cardInAuction="cardInAuction"
-              :players="players"
-              :bid="bid"
-              :auctionLeaderId="auctionLeaderId"
-              :auctionPrice="auctionPrice"
-              :playerId="playerId"
-              :hiddenAuctionCard="hiddenAuctionCard"
-              :auctionCardPaymentActive="auctionCardPaymentActive"
-              :auctionMiniActiveNow="auctionMiniActiveNow"
-              :openCloseBuyWithCard="openCloseBuyWithCard"
-              :addBid="addBid"
-              :subBid="subBid"
-              :addNumber="addNumber"
-              :biddingCards="biddingCards"
-              :cardBidRound="cardBidRound"
-              :cardBidTotal="cardBidTotal"/>
-
-        <div class="raiseValue">
-          <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?</div>
-          <div class="raiseValuegrid">
-            <CollectorsRaiseValue v-if="players[playerId]"
-              :labels="labels"
-              :player="players[playerId]"
-              :raiseItems="raiseItems"
-              :raiseValue="raiseValue"/>
+          <div class="loserAuction" v-show="loserAvailable">
+            You Lost.. {{ auctionLeaderId }} won the auction!
+            <button
+              class="auctionButtonLoser"
+              v-if="players[playerId]"
+              @click="loserAvailable = false"
+            >
+              OK
+            </button>
           </div>
+          <CollectorsAuction
+            v-if="players[playerId]"
+            :auctionActive="auctionActive"
+            :labels="labels"
+            :cardInAuction="cardInAuction"
+            :players="players"
+            :bid="bid"
+            :auctionLeaderId="auctionLeaderId"
+            :auctionPrice="auctionPrice"
+            :playerId="playerId"
+            :hiddenAuctionCard="hiddenAuctionCard"
+            :auctionCardPaymentActive="auctionCardPaymentActive"
+            :auctionMiniActiveNow="auctionMiniActiveNow"
+            :openCloseBuyWithCard="openCloseBuyWithCard"
+            :addBid="addBid"
+            :subBid="subBid"
+            :addNumber="addNumber"
+            :biddingCards="biddingCards"
+            :cardBidRound="cardBidRound"
+            :cardBidTotal="cardBidTotal"
+          />
+
+          <div class="raiseValue">
+            <div class="help" @click="helpPlayerHandHover">?</div>
+            <div class="raiseValuegrid">
+              <CollectorsRaiseValue
+                v-if="players[playerId]"
+                :labels="labels"
+                :player="players[playerId]"
+                :raiseItems="raiseItems"
+                :raiseValue="raiseValue"
+              />
+            </div>
           </div>
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
           <div
@@ -261,27 +264,42 @@
 
             <!-- Visas när handen är öppen-->
             <div class="playerBoardGrid" v-if="isActive">
-              <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?<div id="playerHelp" v-show="helpPlayerHandActive"><h3><strong>{{labels.helpPlayerHand.title}}</strong></h3>
-               <div> <h3><strong>{{labels.helpPlayerHand.itemArea}}</strong></h3>
-                <p>{{labels.helpPlayerHand.itemAreaText}}</p></div>
-               <div> <h3><strong>{{labels.helpPlayerHand.skillsArea}}</strong></h3>
-                <p> {{labels.helpPlayerHand.skillsAreaText}}</p></div>
-              <div> <h3> <strong>{{labels.helpPlayerHand.handArea}}</strong></h3>
-                <p> {{labels.helpPlayerHand.handAreaText}}</p></div>
-              <div>  <h3> <strong>{{labels.helpPlayerHand.nextTurn}}</strong></h3>
-                 <p>{{labels.helpPlayerHand.nextTurnText}}</p></div>
-                <div id="collectiontitle">Collection:</div>
-                     
-               
-                
-                </div></div>
+              <div class="help" @click="helpPlayerHandHover">
+                ?
+                <div id="playerHelp" v-show="helpPlayerHandActive">
+                  <h3>
+                    <strong>{{ labels.helpPlayerHand.title }}</strong>
+                  </h3>
+                  <div>
+                    <h3>
+                      <strong>{{ labels.helpPlayerHand.itemArea }}</strong>
+                    </h3>
+                    <p>{{ labels.helpPlayerHand.itemAreaText }}</p>
+                  </div>
+                  <div>
+                    <h3>
+                      <strong>{{ labels.helpPlayerHand.skillsArea }}</strong>
+                    </h3>
+                    <p>{{ labels.helpPlayerHand.skillsAreaText }}</p>
+                  </div>
+                  <div>
+                    <h3>
+                      <strong>{{ labels.helpPlayerHand.handArea }}</strong>
+                    </h3>
+                    <p>{{ labels.helpPlayerHand.handAreaText }}</p>
+                  </div>
+                  <div>
+                    <h3>
+                      <strong>{{ labels.helpPlayerHand.nextTurn }}</strong>
+                    </h3>
+                    <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
+                  </div>
+                  <div id="collectiontitle">Collection:</div>
+                </div>
+              </div>
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                     
-                
+
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -343,10 +361,7 @@
         -->
 
           <div class="items">
-            <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?</div>
+            <div class="help" @click="helpPlayerHandHover">?</div>
             <div class="itemgrid">
               <CollectorsBuyActions
                 v-if="players[playerId]"
@@ -365,28 +380,35 @@
             </div>
           </div>
           <div class="work">
-            <div class="workgrid">
-              <div class="workslot5"></div>
-              <div class="workslot4"></div>
-              <div class="workslot3"></div>
-              <div class="workslot2"></div>
-              <div class="workslot1"></div>
-            </div>
+            <CollectorsWork
+              v-if="players[playerId]"
+              :labels="labels"
+              :player="players[playerId]"
+              :round="round"
+              :workPlacement="workPlacement"
+              @recycleBottle="recycleBottle($event)"
+              @recycleBottle4thRound="recycleBottle4thRound($event)"
+              @workDrawTwoCards="workDrawTwoCards($event)"
+              @drawACardAndFirstPlayerToken="
+                drawACardAndFirstPlayerToken($event)
+              "
+              @drawCardAndPassiveIncome="drawCardAndPassiveIncome($event)"
+            />
           </div>
 
           <div class="roundCounter">
-            <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?</div>
+            <div class="help" @click="helpPlayerHandHover">?</div>
             <p>{{ labels.roundcounter }} {{ round }}</p>
             <p>Det är {{ currentPlayer() }} tur att spela!</p>
           </div>
-          <div class="drawCardSpace" >
+          <div class="drawCardSpace">
             <div
-                class="help" id="helpDrawCardSpace"
-                 @click="helpPlayerHandHover"
-                >?</div>
+              class="help"
+              id="helpDrawCardSpace"
+              @click="helpPlayerHandHover"
+            >
+              ?
+            </div>
             <div class="buttons">
               <div @click="drawCard">
                 <img src="/images/back-of-card.png" class="deck" />
@@ -399,22 +421,25 @@
             Här kan man t.ex. ha vissa viktiga knappar
           </div>
           <div class="menuSpace">
-            <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?</div>
+            <div class="help" @click="helpPlayerHandHover">?</div>
             <button
               v-if="players[playerId]"
               :disabled="this.gameStarted"
               @click="startTurn()"
-            class="menuButton"
+              class="menuButton"
             >
               {{ labels.randomplayer }}
             </button>
-            <button v-if="players[playerId]" @click="auctionBoard()" class="menuButton">
+            <button
+              v-if="players[playerId]"
+              @click="auctionBoard()"
+              class="menuButton"
+            >
               {{ labels.showAuction }}
             </button>
-            <button @click="moveCards()" class="menuButton">hola olle testa här :)</button>
+            <button @click="moveCards()" class="menuButton">
+              hola olle testa här :)
+            </button>
             <button @click="hiddenAuctionCard = true" class="menuButton">
               hidden auction card
             </button>
@@ -427,6 +452,12 @@
     {{ raiseValue }}
     <button v-if="players[playerId]" @click="players[playerId].money += 1">
       fake more money
+    </button>
+    <button v-if="players[playerId]" @click="players[playerId].bottles += 1">
+      fake more bottles
+    </button>
+    <button v-if="players[playerId]" @click="round += 1">
+      fake more rounds
     </button>
     <footer>
       <p>
@@ -451,6 +482,7 @@ import CollectorsSkillActions from "@/components/CollectorsSkillActions.vue";
 import CollectorsRaiseValue from "@/components/CollectorsRaiseValue.vue";
 import CollectorsStartAuction from "@/components/CollectorsStartAuction.vue";
 import CollectorsAuction from "@/components/CollectorsAuction.vue";
+import CollectorsWork from "@/components/CollectorsWork.vue";
 
 export default {
   name: "Collectors",
@@ -461,6 +493,7 @@ export default {
     CollectorsRaiseValue,
     CollectorsStartAuction,
     CollectorsAuction,
+    CollectorsWork,
   },
   data: function () {
     return {
@@ -469,7 +502,6 @@ export default {
       leftIsActive: false,
       rightIsActive: false,
       topIsActive: false,
-      
 
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
@@ -489,6 +521,7 @@ export default {
       skillPlacement: [],
       auctionPlacement: [],
       marketPlacement: [],
+      workPlacement: [false, false, false],
       chosenPlacementCost: null,
       marketValues: {
         fastaval: 0,
@@ -525,16 +558,16 @@ export default {
       auctonStarterId: null,
       aboutToBuyItem: false,
       hiddenAuctionCard: false,
-      scalefactor: window.innerWidth/8000,   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
+      scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       auctionCardPaymentActive: false,
       biddingCards: [],
       cardBidRound: 0,
       cardBidTotal: 0,
-                                            //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
+      //  Jag hoppas att jag kan lösa detta inom kort. /Björn
 
-     //help Active varaibles. 
-     helpPlayerHandActive:false,                                       
-    }
+      //help Active varaibles.
+      helpPlayerHandActive: false,
+    };
   },
   computed: {
     playerId: function () {
@@ -588,6 +621,7 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
+        //OBSOBSOBSOBSOBS LUDVIG
       }.bind(this)
     );
 
@@ -656,8 +690,7 @@ export default {
             this.auctionActive = false;
             this.auctionWinner = false;
             this.biddingCards = [];
-          }
-          else{
+          } else {
             this.winnerSelection(false);
             this.auctionPrice = 0;
             this.bid = 0;
@@ -665,14 +698,12 @@ export default {
             this.auctionActive = false;
             this.auctionWinner = false;
             this.cardBidTotal = 0;
-            console.log("22 längd"+this.biddingCards.length)
-            if (this.biddingCards.length > 0){
-            this.restoreHand();
+            console.log("22 längd" + this.biddingCards.length);
+            if (this.biddingCards.length > 0) {
+              this.restoreHand();
             }
           }
-          
-        }
-        else {
+        } else {
           this.cardBidRound = 0;
           this.auctionPrice = d.auctionPrice;
           this.auctionLeaderId = d.auctionLeaderId;
@@ -716,6 +747,47 @@ export default {
         console.log("Det är runda: " + this.round);
       }.bind(this)
     );
+    //--------WORK--------------
+    this.$store.state.socket.on(
+      "collectorsBottleRecycled",
+      function (d) {
+        console.log("Flaska pantad");
+        this.players = d;
+        console.log("Det krashar inte i flaska pantad");
+      }.bind(this)
+    );
+    this.$store.state.socket.on(
+      "collectorsBottleRecycled4thRound",
+      function (d) {
+        console.log("Flaska pantad på fjärde omgången");
+        this.players = d;
+        console.log("Det krashar inte i flaska pantad");
+      }.bind(this)
+    );
+    this.$store.state.socket.on(
+      "collectorsWorkCardDrawn",
+      function (d) {
+        console.log("2 kort dragna");
+        this.players = d;
+        this.workPlacement = d;
+      }.bind(this)
+    );
+    this.$store.state.socket.on(
+      "collectorsCardAndTokenDrawn",
+      function (d) {
+        console.log("Kort samt spela först token (work)");
+        this.players = d;
+        this.workPlacement = d;
+      }.bind(this)
+    );
+    this.$store.state.socket.on(
+      "collectorsCardAndPassiveIncomeDrawn",
+      function (d) {
+        this.players = d;
+        this.workPlacement = d;
+      }.bind(this)
+    );
+    //------------------------------
   },
   methods: {
     selectAll: function (n) {
@@ -765,7 +837,6 @@ export default {
       this.rightIsActive = false;
       this.topIsActive = false;
       this.leftIsActive = false;
-      
 
       console.log("Status: " + this.isActive);
     },
@@ -780,7 +851,7 @@ export default {
 
       // Sätter till false för att stänga brädet
       this.isActive = false;
-      this.playerHandHelpIsActive =false;
+      this.playerHandHelpIsActive = false;
       console.log("Status: " + this.isActive);
     },
     expandLeftBoard: function () {
@@ -815,33 +886,30 @@ export default {
 
       console.log("status: " + this.topIsActive);
     },
-    auctionOver: function(placementType){
-      this.auctionPrice -=this.cardBidTotal;
+    auctionOver: function (placementType) {
+      this.auctionPrice -= this.cardBidTotal;
       this.cardBidTotal = 0;
-      console.log(placementType)
-          this.$store.state.socket.emit('auctionOver', {
-          roomId: this.$route.params.id,
-          playerId: this.playerId,
-          placementType: placementType,
-          auctionPrice: this.auctionPrice
-        }
-      );
+      console.log(placementType);
+      this.$store.state.socket.emit("auctionOver", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        placementType: placementType,
+        auctionPrice: this.auctionPrice,
+      });
     },
-    showHelp: function(label){
-      label; 
+    showHelp: function (label) {
+      label;
       //do stuff
-
     },
-    playerHandHelpIsActive:function(){},
+    playerHandHelpIsActive: function () {},
 
-    openCloseBuyWithCard: function(){
-      if (this.auctionCardPaymentActive == false){
-      this.auctionCardPaymentActive = true
-      this.auctionActive = false
-      }
-      else{
-        this.auctionCardPaymentActive = false
-        this.auctionActive = true
+    openCloseBuyWithCard: function () {
+      if (this.auctionCardPaymentActive == false) {
+        this.auctionCardPaymentActive = true;
+        this.auctionActive = false;
+      } else {
+        this.auctionCardPaymentActive = false;
+        this.auctionActive = true;
       }
     },
     placeBottle: function (action, cost) {
@@ -918,13 +986,12 @@ export default {
         return this.buyCard(card);
       }
     },
-    restoreHand: function(){
-      
+    restoreHand: function () {
       this.$store.state.socket.emit("restoreHand", {
         roomId: this.$route.params.id,
         biddingCards: this.biddingCards,
         players: this.players,
-        playerId: this.playerId
+        playerId: this.playerId,
       });
     },
     startTurn: function () {
@@ -947,13 +1014,53 @@ export default {
         auctionActive: this.auctionActive,
       });
     },
-     //playerHandShow
-  helpPlayerHandHover:function(){
-    this.helpPlayerHandActive=!this.helpPlayerHandActive;
-
+    //playerHandShow
+    helpPlayerHandHover: function () {
+      this.helpPlayerHandActive = !this.helpPlayerHandActive;
+    },
+    //---------------------------WORK metoder-------------------
+    recycleBottle: function () {
+      //Här ska en flaska växlas för pengar
+      //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
+      console.log("pant knappen trycks (Collectors.vue)");
+      console.log("player bottles > 0 (Collectors.vue)");
+      this.$store.state.socket.emit("collectorsBottleRecycle", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+      });
+    },
+    recycleBottle4thRound: function () {
+      //Här ska en flaska växlas för pengar
+      //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
+      console.log("pant knappen trycks (Collectors.vue)");
+      console.log("player bottles > 0 (Collectors.vue)");
+      this.$store.state.socket.emit("collectorsBottleRecycle4thRound", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+      });
+    },
+    workDrawTwoCards: function () {
+      this.$store.state.socket.emit("collectorsWorkDrawTwoCards", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+      });
+    },
+    drawACardAndFirstPlayerToken: function () {
+      console.log("draw card and first player token");
+      this.$store.state.socket.emit("collectorsDrawACardAndToken", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+      });
+    },
+    drawCardAndPassiveIncome: function () {
+      console.log("Draw passive income i Collectors.vue");
+      this.$store.state.socket.emit("collectorsDrawACardAndPassiveIncome", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+      });
+    },
+    //----------------------------------------------------------
   },
-  },
- 
 };
 </script>
 
@@ -1061,7 +1168,6 @@ footer a:visited {
   text-align: center;
   align-self: flex-end;
 }
-
 
 .player2 {
   grid-column: 3;
@@ -1293,10 +1399,10 @@ footer a:visited {
   font-size: 1.6vw;
   margin: 0.5vw;
 }
-.auctionButtonWinner:disabled{
+.auctionButtonWinner:disabled {
   color: rgb(78, 78, 78);
   background-color: grey;
-  cursor:default;
+  cursor: default;
 }
 .button1 {
   background-color: #f06e6e;
@@ -1380,165 +1486,119 @@ footer a:visited {
   Här nedan är CSS specifika för kortrutorna
   */
 
-  .items{
-    border-radius: 2vw;
-    background-color:#f8dcce;
-    grid-column: 4 /span 3;
-    grid-row: 2;
-    position: relative;
-  }
-  .skills{
-    border-radius: 2vw;
-    background-color: #dfeccc;
-    grid-column: 4 /span 3;
-    grid-row: 3;
-    position: relative;
-  }
-  .raiseValue{
-    border-radius: 2vw;
-    background-color: #cfdcf2;
-    grid-column: 8;
-    grid-row: 3 /span 1; 
-    position: relative;
-  }
-  .raiseValuegrid div{
-    font-size: 1vw;
-    font-weight:bold;
-    color: black;
-  }
-  .auction{
-    border-radius: 2vw;
-    background-color: #f5f2cc;
-    grid-column: 3;
-    grid-row: 2 /span 2;
-    position: relative;
-  }
-  .auctionCardViewMini{
-    zoom: 1.65;
-    position: absolute;
-    align-content: center;
-    transition: auto;
-    transform: translate(5%, 40%);
-  }
-  .auctionButtonMini{
-    background-image: url("https://www.pngrepo.com/download/120575/minimize.png");
-    background-position: center;
-    transform: rotate(270deg);
-    background-repeat: no-repeat;
-    background-size: 3vw;
-    margin: 1vw;
-    background-color:rgb(180, 180, 180);
-    cursor:pointer;
-    box-shadow: 0 0.3vw #999;
-    border-radius: 2vw;
-    border: 0vw;
-  }
-.auctionMini{
-    display: grid;
-    grid-column: 6;
-    grid-template-rows: 20% 60% auto;
-    grid-template-columns: auto;
-    width: 9vw;
-    height: 16vw;
-    background-color: #f5efa0;
-    border-radius: 2vw;
-    border-style: solid;
-    border-width: 0.4vw;
-    border-color: black;
-    z-index: 50;
-    color: darkgreen;
-    font-size: 3vw;
-    text-align: center;
-    cursor:pointer;
-  }
-  .work{
+.items {
+  border-radius: 2vw;
+  background-color: #f8dcce;
+  grid-column: 4 / span 3;
+  grid-row: 2;
+  position: relative;
+}
+.skills {
+  border-radius: 2vw;
+  background-color: #dfeccc;
+  grid-column: 4 / span 3;
+  grid-row: 3;
+  position: relative;
+}
+.work{
     text-align:center;
     border-radius: 2vw;
     background-color: grey;
     grid-column: 2;
     grid-row: 2 /span 2;
   }
-  .workgrid{
-    display:grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 5vw 5vw 5vw 5vw 5vw;
-    grid-gap: 0.5vw;
-    padding: 2vw;
-  }
-  .workgrid div{
-    background-color: rgb(207, 207, 207);
-    border-radius: 1vw;
-    border-style: dotted;
-    border-color: black;
-    height: 5vw;
-    width: auto;
-  }
-  .workslot1{
-    background-image: url("/images/Work1_png.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  .workslot2{
-    background-image: url("/images/Work2_png.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  .workslot3{
-    background-image: url("/images/Work3_png.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  .workslot4{
-    background-image: url("/images/Work4_png.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  .workslot5{
-    background-image: url("/images/Work5_png.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  .roundCounter{
-    grid-column: 1;
-    grid-row: 2;
-    background-color:rgb(194, 194, 194);
-    border-radius: 2vw;
-    padding:2vw;
-    font-size: 1vw;
-    position: relative;
-  }
-  .drawCardSpace{
-    grid-column: 8;
-    grid-row: 2;
-    border-radius: 2vw;
-    padding:2vw;
-    position: relative;
-    
-    justify-self: center;
-    align-self: center;
-    zoom: 0.5;
-  }
-  .drawCardSpace .buttons:hover{
-    filter: brightness(110%);
-  }
-  #helpDrawCardSpace{
-    zoom: 150%;
+.raiseValue {
+  border-radius: 2vw;
+  background-color: #cfdcf2;
+  grid-column: 8;
+  grid-row: 3 / span 1;
+  position: relative;
+}
+.raiseValuegrid div {
+  font-size: 1vw;
+  font-weight: bold;
+  color: black;
+}
+.auction {
+  border-radius: 2vw;
+  background-color: #f5f2cc;
+  grid-column: 3;
+  grid-row: 2 / span 2;
+  position: relative;
+}
+.auctionCardViewMini {
+  zoom: 1.65;
+  position: absolute;
+  align-content: center;
+  transition: auto;
+  transform: translate(5%, 40%);
+}
+.auctionButtonMini {
+  background-image: url("https://www.pngrepo.com/download/120575/minimize.png");
+  background-position: center;
+  transform: rotate(270deg);
+  background-repeat: no-repeat;
+  background-size: 3vw;
+  margin: 1vw;
+  background-color: rgb(180, 180, 180);
+  cursor: pointer;
+  box-shadow: 0 0.3vw #999;
+  border-radius: 2vw;
+  border: 0vw;
+}
+.auctionMini {
+  display: grid;
+  grid-column: 6;
+  grid-template-rows: 20% 60% auto;
+  grid-template-columns: auto;
+  width: 9vw;
+  height: 16vw;
+  background-color: #f5efa0;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  color: darkgreen;
+  font-size: 3vw;
+  text-align: center;
+  cursor: pointer;
+}
+.roundCounter {
+  grid-column: 1;
+  grid-row: 2;
+  background-color: rgb(194, 194, 194);
+  border-radius: 2vw;
+  padding: 2vw;
+  font-size: 1vw;
+  position: relative;
+}
+.drawCardSpace {
+  grid-column: 8;
+  grid-row: 2;
+  border-radius: 2vw;
+  padding: 2vw;
+  position: relative;
 
-  }
-  .gridedge3{
-    grid-column: 1;
-    grid-row: 1;
-    background-color:rgb(194, 194, 194);
-    border-radius: 2vw;
-    padding: 1vw;
-    font-size: 1vw;
-    text-align: center;
-    align-self: self-start;
+  justify-self: center;
+  align-self: center;
+  zoom: 0.5;
+}
+.drawCardSpace .buttons:hover {
+  filter: brightness(110%);
+}
+#helpDrawCardSpace {
+  zoom: 150%;
+}
+.gridedge3 {
+  grid-column: 1;
+  grid-row: 1;
+  background-color: rgb(194, 194, 194);
+  border-radius: 2vw;
+  padding: 1vw;
+  font-size: 1vw;
+  text-align: center;
+  align-self: self-start;
 }
 .drawCardSpace {
   grid-column: 8;
@@ -1553,7 +1613,7 @@ footer a:visited {
   filter: brightness(110%);
 }
 
-.deck{
+.deck {
   max-width: 100%;
   max-height: 100%;
 }
@@ -1587,118 +1647,117 @@ footer a:visited {
 .help:hover {
   background-color: rgb(61, 61, 255);
 }
-  .menuSpace{
-    grid-column: 1;
-    grid-row: 3;
-    background-color:rgb(194, 194, 194);
-    border-radius: 2vw;
-    padding: 2vw;
-    position: relative;
-    padding: 1vw;
-    display: grid;
-    grid-template-rows: repeat(auto-fill, 3.5vh);
-    align-content: center;
-  }
-  .buttons{
-    display:inline-block;
-    color: grey;
-    background-color: rgb(83, 83, 83);
-    border-radius:1vw;
-    box-shadow: 0 0.3vw #999;
-  }
-  .buttons:active{
-    background-color: coral;
-    box-shadow: 0 0.2vw #999;
-    transform: translateY(0.1vw);
-  }
-  .buttons:hover{
-    background-color: coral;
-  }
-  .menuSpace > * {  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
-    zoom: 0.8;
-  }
+.menuSpace {
+  grid-column: 1;
+  grid-row: 3;
+  background-color: rgb(194, 194, 194);
+  border-radius: 2vw;
+  padding: 2vw;
+  position: relative;
+  padding: 1vw;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 3.5vh);
+  align-content: center;
+}
+.buttons {
+  display: inline-block;
+  color: grey;
+  background-color: rgb(83, 83, 83);
+  border-radius: 1vw;
+  box-shadow: 0 0.3vw #999;
+}
+.buttons:active {
+  background-color: coral;
+  box-shadow: 0 0.2vw #999;
+  transform: translateY(0.1vw);
+}
+.buttons:hover {
+  background-color: coral;
+}
+.menuSpace > * {
+  /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
+  zoom: 0.8;
+}
 
-  .menuButton{
-    background-color: #bbb;
-    display: block;
-    width: 100%;
-    overflow: hidden;
-    font-size: auto;
-  }
+.menuButton {
+  background-color: #bbb;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  font-size: auto;
+}
 
-  .help{
-    width: 2.5vw;
-    height: 2.5vw;
-    border-radius: 50px;
-    position:absolute;
-    right:-2%;
-    top:0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  
-    background-color: #0066ff;
-    border: solid;
-    border-width: 1px;
-    border-color: black;
-    font-size: 1.5vw;
-  }
-  #playerHelp{
-    --scrollbarBG: #0066ff;
-    --thumbBG: #90A4AE;
-    scrollbar-width: thin;
-    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
-    right:-22.791666666666668vw;
-    top:-17.2604166666666667vw;
-    border-radius: 1vw;
-    -webkit-box-shadow: 0px 0px 3px 2px rgba(102,163,255,0.59); 
-    box-shadow: 0px 0px 3px 2px rgba(102,163,255,0.59);
-    background-color:inherit;
-    padding:1vw;
-    float:right;
-    max-width: 19.791666666666668vw;
-    min-width: 14vw;
-    max-height: 43.833333333333332vw;
-    overflow-y: auto;
-    position: absolute;
-    z-index: 6;
-    word-wrap: break-word;
-    display: inline;
-    font-size:1vw ;
-  }
-  #playerHelp h3{
-    background-color:rgb(3, 69, 155) ;
-    border-radius: 0.5vw;
-    padding:.55vw;
+.help {
+  width: 2.5vw;
+  height: 2.5vw;
+  border-radius: 50px;
+  position: absolute;
+  right: -2%;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    border:solid;
-    border-width: 0.2px;
-    border-color: black;
-  }
-  #playerHelp p{
-    background-color:#2179fd;
-    border-radius: 0.5vw;
-    margin-top: -0.52vw;
-    padding:0.55vw;
-    border:solid;
-    border-width: 0.2px;
-    border-color: black;
-  }
-  #playerHelp div{
-    border-radius: 0.5vw;
-    background-color: #94b5ee;
-    padding:5px;
-    margin-bottom: 2px;
-    border:solid;
-    border-width: 0.2px;
-    border-color: black;
-  }
+  background-color: #0066ff;
+  border: solid;
+  border-width: 1px;
+  border-color: black;
+  font-size: 1.5vw;
+}
+#playerHelp {
+  --scrollbarBG: #0066ff;
+  --thumbBG: #90a4ae;
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+  right: -22.791666666666668vw;
+  top: -17.2604166666666667vw;
+  border-radius: 1vw;
+  -webkit-box-shadow: 0px 0px 3px 2px rgba(102, 163, 255, 0.59);
+  box-shadow: 0px 0px 3px 2px rgba(102, 163, 255, 0.59);
+  background-color: inherit;
+  padding: 1vw;
+  float: right;
+  max-width: 19.791666666666668vw;
+  min-width: 14vw;
+  max-height: 43.833333333333332vw;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 6;
+  word-wrap: break-word;
+  display: inline;
+  font-size: 1vw;
+}
+#playerHelp h3 {
+  background-color: rgb(3, 69, 155);
+  border-radius: 0.5vw;
+  padding: 0.55vw;
 
+  border: solid;
+  border-width: 0.2px;
+  border-color: black;
+}
+#playerHelp p {
+  background-color: #2179fd;
+  border-radius: 0.5vw;
+  margin-top: -0.52vw;
+  padding: 0.55vw;
+  border: solid;
+  border-width: 0.2px;
+  border-color: black;
+}
+#playerHelp div {
+  border-radius: 0.5vw;
+  background-color: #94b5ee;
+  padding: 5px;
+  margin-bottom: 2px;
+  border: solid;
+  border-width: 0.2px;
+  border-color: black;
+}
 
 /*
 alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lol...
 */
-
 
 #playerHelp::-webkit-scrollbar {
   width: 11px;
@@ -1707,19 +1766,13 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 
 #playerHelp::-webkit-scrollbar-track {
   background: var(--scrollbarBG);
-  margin:10px;
+  margin: 10px;
 }
 #playerHelp::-webkit-scrollbar-thumb {
-  background-color: var(--thumbBG) ;
+  background-color: var(--thumbBG);
   border-radius: 6px;
   border: 3px solid var(--scrollbarBG);
 }
-
-
-
-
-  
- 
 
 @media screen and (max-width: 800px) {
   main {
@@ -1728,13 +1781,8 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 }
 </style>
 
-/*                      NOTES: 
-    Here are notes from the supervision sessions
-
-    https://stackoverflow.com/questions/47219272/how-can-i-use-window-size-in-vue-how-do-i-detect-the-soft-keyboard
-    split image into tiles: https://codepen.io/Escu/pen/KVLBYP
-
-    https://stackoverflow.com/questions/2430206/how-can-i-scale-an-image-in-a-css-sprite
-    
-
+/* NOTES: Here are notes from the supervision sessions
+https://stackoverflow.com/questions/47219272/how-can-i-use-window-size-in-vue-how-do-i-detect-the-soft-keyboard
+split image into tiles: https://codepen.io/Escu/pen/KVLBYP
+https://stackoverflow.com/questions/2430206/how-can-i-scale-an-image-in-a-css-sprite
 */
