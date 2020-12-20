@@ -119,6 +119,7 @@
                 :marketValues="marketValues"
                 :placement="skillPlacement"
                 :notYourTurn="notYourTurn"
+                :aboutToBuySkill="aboutToBuySkill"
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
               />
@@ -136,6 +137,7 @@
                 :marketValues="marketValues"
                 :placement="auctionPlacement"
                 :notYourTurn="notYourTurn"
+                :aboutToStartAuction="aboutToStartAuction"
                 @startAuction="startAuction($event)"
                 @placeBottle="placeBottle('auction', $event)"
               />
@@ -557,6 +559,8 @@ export default {
       winnerAvailable: false,
       auctonStarterId: null,
       aboutToBuyItem: false,
+      aboutToStartAuction: false,
+      aboutToBuySkill: false,
       hiddenAuctionCard: false,
       scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       auctionCardPaymentActive: false,
@@ -916,6 +920,12 @@ export default {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
+      if (action === "auction"){
+        this.aboutToStartAuction = true;
+      }
+      if(action === "skill"){
+        this.aboutToBuySkill = true;
+      }
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         roomId: this.$route.params.id,
@@ -942,6 +952,7 @@ export default {
     },
     buySkill: function (card) {
       console.log("buySkill", card);
+      this.aboutToBuySkill = false;
       this.$store.state.socket.emit("collectorsBuySkill", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -960,6 +971,7 @@ export default {
     },
     startAuction: function (card) {
       this.auctionAvailable = false;
+      this.aboutToStartAuction = false;
       this.$store.state.socket.emit("collectorsStartAuction", {
         roomId: this.$route.params.id,
         playerId: this.playerId,

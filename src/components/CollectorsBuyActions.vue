@@ -104,9 +104,7 @@ export default {
 
         }
       }  return 0;
-     
-
-
+    
       },
       cardCostUppdate: function (cost) {
      
@@ -119,6 +117,7 @@ export default {
 
       
   },
+
      
     placeBottle: function (p) {
       this.cardCostUppdate(p.cost);
@@ -214,8 +213,8 @@ export default {
   display: grid;
   position: absolute;
   grid-template-rows: 15% 35% 15% auto;
-  width: 80vw;
-  height: 50vw;
+  width: 60vw;
+  height: 40vw;
   background-color: #f8dcce;
   border-radius: 2vw;
   border-style: solid;
@@ -224,7 +223,7 @@ export default {
   z-index: 50;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);  
+  transform: translate(-65%, -30%);  
   }
 
   .buyItemCardGrid{
@@ -248,13 +247,6 @@ export default {
     zoom: 2;
     overflow: hidden;
   }
-
-  /*.itemsFromHandGrid{
-    display: grid;
-    align-content: center;
-    grid-auto-flow: column;
-    grid-column: 1/6;
-  }*/
 
   .itemsFromHand{
     display: grid;

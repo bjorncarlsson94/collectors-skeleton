@@ -22,6 +22,30 @@
           </div>
         </div>
       </div>
+                <div class="skillsAvailable" v-show="aboutToBuySkill" v-if="player">
+              <h1 class = "buySkillHeadings">
+                Välj ett kort från spelplanen:
+              </h1>
+              <div class="buySkillCardGrid">
+                <div class="skillsFromBoard" v-for="(card, index) in skillsOnSale" :key="index">
+                  <CollectorsCard 
+                  :card="card" 
+                  :availableAction="card.available" 
+                  @doAction="buySkill(card)"/>
+                </div>
+              </div>
+                <h1 class="buySkillHeadings">
+                  Välj ett kort från handen:
+                </h1>
+              <div class= "buySkillCardGrid">
+                <div class="skillsFromHand" v-for="(card,index) in player.hand" :key="'A'+index">
+                  <CollectorsCard 
+                  :card="card" 
+                  :availableAction="card.available" 
+                  @doAction="buySkill(card)"/>
+                </div>
+              </div>    
+          </div>
     </div>
 </template>
 
@@ -39,7 +63,8 @@ export default {
     skillsOnSale: Array,
     marketValues:Object,
     placement: Array,
-    notYourTurn: Function
+    notYourTurn: Function,
+    aboutToBuySkill: Boolean
   },
   methods: {
     cannotAfford: function (cost) {
@@ -126,6 +151,56 @@ export default {
     border-color: grey;
     border-radius: 2vw;
   }
+/*Nedan är all css för rutan man får upp vid kortköp*/
+  .skillsAvailable {
+  display: grid;
+  position: absolute;
+  grid-template-rows: 15% 35% 15% auto;
+  width: 60vw;
+  height: 40vw;
+  background-color: #dfeccc;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  transform: translate(-65%, -70%);  
+  }
+
+  .buySkillCardGrid{
+    display: grid;
+    align-content: center;
+    grid-auto-flow: column;
+    grid-column: 1/6;
+  }
+
+  .buySkillHeadings{
+    justify-content: center;
+    text-align: center;
+    color: black;
+    grid-column: 1/6;
+  }
+
+  .skillsFromBoard{
+    display: grid;
+    justify-items:center;
+    align-items: center;
+    zoom: 2;
+    overflow: hidden;
+  }
+
+  .skillsFromHand{
+    display: grid;
+    justify-items:center;
+    align-items: center;
+    zoom: 2;
+    overflow: hidden;
+
+  }
+
+
   .bottlePlace {
     background-image: url(/images/player-bottle.png);
     margin-top: 0.5vw;
