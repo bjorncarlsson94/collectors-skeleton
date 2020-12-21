@@ -42,7 +42,7 @@ export default {
     },
     //Lägg en flaska här och dra ett kort samt ta First Player Token
     drawACardAndFirstPlayerToken: function () {
-      if ((this.workPlacement[1] === false) && this.player.bottles > 0) {
+      if ((this.workPlacement[1] === false) && this.player.bottles > 0 && !this.player.firstPlayerToken) {
         this.$emit("drawACardAndFirstPlayerToken");
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");

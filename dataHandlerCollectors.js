@@ -184,6 +184,7 @@ Data.prototype.joinGame = function (roomId, playerId) {
         money: 3,
         bottles: 2,
         points: 0,
+        firstPlayerToken: false,
         skills: [],
         items: [],
         income: [],
@@ -840,12 +841,9 @@ Data.prototype.takeFirstPlayerToken = function (roomId, playerId) {
   room.workPlacement[1] = true;
   room.players[playerId].bottles--;
 
+  room.players[playerId].firstPlayerToken = true;
+
   return room.players;
-  
-  //Gör vad funktionsnamnet säger (kortet dras mha Data.prototype.drawCard)
-  //!!!!!!!!!!!!!!!!!!
-  //!!!!!!!!!!!!!!!!!!
-  //!!!!!!!!!!!!!!!!!!
 }
 Data.prototype.drawPassiveIncome = function (roomId, playerId) {
   //drawCard kallas genom Socket detta är bara för inkomstdelen

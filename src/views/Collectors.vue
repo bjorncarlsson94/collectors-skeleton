@@ -625,7 +625,6 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
-        //OBSOBSOBSOBSOBS LUDVIG
       }.bind(this)
     );
 
@@ -920,10 +919,10 @@ export default {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
-      if (action === "auction"){
+      if (action === "auction") {
         this.aboutToStartAuction = true;
       }
-      if(action === "skill"){
+      if (action === "skill") {
         this.aboutToBuySkill = true;
       }
       this.chosenPlacementCost = cost;
@@ -1512,13 +1511,13 @@ footer a:visited {
   grid-row: 3;
   position: relative;
 }
-.work{
-    text-align:center;
-    border-radius: 2vw;
-    background-color: grey;
-    grid-column: 2;
-    grid-row: 2 /span 2;
-  }
+.work {
+  text-align: center;
+  border-radius: 2vw;
+  background-color: grey;
+  grid-column: 2;
+  grid-row: 2 / span 2;
+}
 .raiseValue {
   border-radius: 2vw;
   background-color: #cfdcf2;
@@ -1623,7 +1622,7 @@ footer a:visited {
 }
 .drawCardSpace .buttons:hover {
   filter: brightness(110%);
-  background-color:rgb(194, 194, 194);
+  background-color: rgb(194, 194, 194);
 }
 
 .deck {
