@@ -33,9 +33,11 @@ export default {
     helpButtonPressed: function () {},
     //Lägg en flaska här och dra 2st kort
     drawTwoCards: function () {
+      console.log(this.workPlacement);
       if ((this.workPlacement[0] === false) && this.player.bottles > 0) {
         console.log("Kraschar innan this.workPlacement");
         this.$emit("workDrawTwoCards");
+        this.placeWorker(0);
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
@@ -44,6 +46,7 @@ export default {
     drawACardAndFirstPlayerToken: function () {
       if ((this.workPlacement[1] === false) && this.player.bottles > 0 && !this.player.firstPlayerToken) {
         this.$emit("drawACardAndFirstPlayerToken");
+        this.placeWorker(1);
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
@@ -53,6 +56,7 @@ export default {
       console.log(this.workPlacement[2]);
       if ((this.workPlacement[2] === false) && this.player.bottles > 0) {
         this.$emit("drawCardAndPassiveIncome");
+        this.placeWorker(2);
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
@@ -84,6 +88,10 @@ export default {
       } else if (!(this.player.bottles > 0)) {
         alert("Too few bottles :^(");
       }
+    },
+    placeWorker: function (where) {
+      console.log("setWorkPlacement");
+      this.$emit("placeWorker", where);
     },
   },
 };

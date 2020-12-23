@@ -126,7 +126,7 @@ function sockets(io, socket, data) {
   socket.on("collectorsWorkDrawTwoCards", function (d) {
     //funktion för att dra 2 kort genom WORK
     io.to(d.roomId).emit(
-      "collectorsWorkCardDrawn",
+      "collectorsWorkCardDrawn", 
       data.workDrawCardTwoCards(d.roomId, d.playerId)
     );
   });
@@ -158,6 +158,12 @@ function sockets(io, socket, data) {
       "collectorsCardAndPassiveIncomeDrawn",
       data.drawCard(d.roomId, d.playerId),
       data.drawPassiveIncome(d.roomId, d.playerId)
+    );
+  });
+  socket.on("placeWorker", function (d) {
+    io.to(d.roomId).emit(
+      "workerPlaced",
+      data.setWorkPlacementTrue(d.roomId, d.where)
     );
   });
   //---------------------------------------------------

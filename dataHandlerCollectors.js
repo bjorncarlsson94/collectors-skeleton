@@ -813,8 +813,8 @@ Data.prototype.workDrawCardTwoCards = function (roomId, playerId) {     //Dra ko
       room.players[playerId].hand.push(card);
     }
 
-    room.workPlacement[0] = true;
-    console.log(room.workPlacement[0])
+    //room.workPlacement[0] = true;
+    //console.log(room.workPlacement[0])
     room.players[playerId].bottles--;
     return room.players;
   } else return [];
@@ -838,7 +838,6 @@ Data.prototype.bottleRecycled4thRound = function (roomId, playerId) {
 Data.prototype.takeFirstPlayerToken = function (roomId, playerId) {
   let room = this.rooms[roomId];
   console.log(playerId, "got scammed :^(");
-  room.workPlacement[1] = true;
   room.players[playerId].bottles--;
 
   room.players[playerId].firstPlayerToken = true;
@@ -852,7 +851,6 @@ Data.prototype.drawPassiveIncome = function (roomId, playerId) {
     let card = room.deck.pop();
     room.players[playerId].income.push(card);
 
-    room.workPlacement[2] = true;
     room.players[playerId].bottles--;
     return room.players;
   } else return [];
@@ -860,6 +858,17 @@ Data.prototype.drawPassiveIncome = function (roomId, playerId) {
 Data.prototype.getWorkPlacement = function (roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
+    return room.workPlacement;
+  } else return [];
+}
+Data.prototype.setWorkPlacementTrue = function (roomId, place) {
+  console.log("Set workplacement körs!")
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.workPlacement[place] = true;
+    console.log("workPlacement:")
+    console.log(room.workPlacement);
+    console.log("---------------")
     return room.workPlacement;
   } else return [];
 }

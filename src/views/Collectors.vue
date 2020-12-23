@@ -395,6 +395,7 @@
                 drawACardAndFirstPlayerToken($event)
               "
               @drawCardAndPassiveIncome="drawCardAndPassiveIncome($event)"
+              @placeWorker="placeWorker($event)"
             />
           </div>
 
@@ -772,7 +773,6 @@ export default {
       function (d) {
         console.log("2 kort dragna");
         this.players = d;
-        this.workPlacement = d;
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -780,13 +780,18 @@ export default {
       function (d) {
         console.log("Kort samt spela först token (work)");
         this.players = d;
-        this.workPlacement = d;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsCardAndPassiveIncomeDrawn",
       function (d) {
         this.players = d;
+      }.bind(this)
+    );
+    this.$store.state.socket.on(
+      "workerPlaced",
+      function (d) {
+        console.log("workPlacement uppdaterad!");
         this.workPlacement = d;
       }.bind(this)
     );
@@ -1068,6 +1073,13 @@ export default {
       this.$store.state.socket.emit("collectorsDrawACardAndPassiveIncome", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
+      });
+    },
+    placeWorker: function (where) {
+      console.log("placeWorker!");
+      this.$store.state.socket.emit("placeWorker", {
+        roomId: this.$route.params.id,
+        where: where
       });
     },
     //----------------------------------------------------------
