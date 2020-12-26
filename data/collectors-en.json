@@ -11,6 +11,7 @@
 	"randomplayer": "Random start",
 	"roundcounter": "It is round: ",
 	"showAuction": "Show Auction",
+	"recycleBottle": "Recycle a bottle",
 
 	"player2": "Player 2",
 	"player3": "Player 3",
@@ -26,10 +27,5 @@
 		"skillsAreaText":"In the green area your skills are shown. they give you bonuses and are important. Click on the ? next to skills on the playerBoard for more information. ",
 		"handAreaText":" These cards are in your hand. You can spend bottles to place these cards on the playerBoard or buy them as a skill or item. They are also used as currencies in the auction",
 		"nextTurnText":"In the grey area you are shown what will happen next turn. Your income next turn, how many cards you will get andhow many bottles."
-
-
-
 	}
-	
 }
-

@@ -156,6 +156,11 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
       playerId: null
     }
   ];
+  room.workPlacement = [
+    false,
+    false,
+    false
+  ];
   this.rooms[roomId] = room;
 }
 
@@ -178,7 +183,9 @@ Data.prototype.joinGame = function (roomId, playerId) {
       room.players[playerId] = {
         hand: [],
         money: 3,
+        bottles: 2,
         points: 0,
+        firstPlayerToken: false,
         skills: [],
         items: [],
         income: [],
@@ -815,5 +822,76 @@ Data.prototype.fillPool=function(roomId,name,cardArray){
 
   return cardArray;
 }
+
+//-------------------WORK metoder-----------------------
+Data.prototype.workDrawCardTwoCards = function (roomId, playerId) {     //Dra kort genom WORK
+  let room = this.rooms[roomId];
+
+  if (typeof room !== 'undefined') {
+    for (var i = 0; i < 2; i++) {
+      let card = room.deck.pop();
+      room.players[playerId].hand.push(card);
+    }
+
+    //room.workPlacement[0] = true;
+    //console.log(room.workPlacement[0])
+    room.players[playerId].bottles--;
+    return room.players;
+  } else return [];
+}
+Data.prototype.bottleRecycled = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.players[playerId].bottles--;
+    room.players[playerId].money++;
+    return room.players;
+  } else return [];
+}
+Data.prototype.bottleRecycled4thRound = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.players[playerId].bottles--;
+    room.players[playerId].money += 3;
+    return room.players;
+  } else return [];
+}
+Data.prototype.takeFirstPlayerToken = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  console.log(playerId, "got scammed :^(");
+  room.players[playerId].bottles--;
+
+  room.players[playerId].firstPlayerToken = true;
+
+  return room.players;
+}
+Data.prototype.drawPassiveIncome = function (roomId, playerId) {
+  //drawCard kallas genom Socket detta är bara för inkomstdelen
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    let card = room.deck.pop();
+    room.players[playerId].income.push(card);
+
+    room.players[playerId].bottles--;
+    return room.players;
+  } else return [];
+}
+Data.prototype.getWorkPlacement = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.workPlacement;
+  } else return [];
+}
+Data.prototype.setWorkPlacementTrue = function (roomId, place) {
+  console.log("Set workplacement körs!")
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.workPlacement[place] = true;
+    console.log("workPlacement:")
+    console.log(room.workPlacement);
+    console.log("---------------")
+    return room.workPlacement;
+  } else return [];
+}
+//------------------------------------------------------
 
 module.exports = Data;
