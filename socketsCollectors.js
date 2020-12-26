@@ -13,6 +13,7 @@ function sockets(io, socket, data) {
         itemsOnSale: data.getItemsOnSale(d.roomId),
         marketValues: data.getMarketValues(d.roomId),
         raiseItems:data.getRaiseItems(d.roomId),
+        playerColor:data.getPlayerColor(d.roomId),
         //här kallar vi på getCardValue
         raiseValue:data.getCardValue(d.roomId),
         skillsOnSale: data.getSkillsOnSale(d.roomId),
@@ -123,6 +124,13 @@ socket.on('restoreHand', function (d) {
   });
 });
 
+socket.on('nameAndColor', function (d) {
+  data.nameAndColor(d.roomId, d.playerId, d.name, d.color);
+  io.to(d.roomId).emit('nameAndColorSeleced', {
+    players: data.getPlayers(d.roomId),
+    playerColor:data.getPlayerColor(d.roomId),
+  });
+});
 }
 
 module.exports = sockets;

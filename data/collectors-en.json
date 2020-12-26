@@ -1,4 +1,6 @@
 {
+	"playerIntro1": "Welcome to Collectors! Please choose your name:",
+	"playerIntro2": "Now pic a color you like:",
 	"draw": "Draw card",
 	"invite": "Invite other players with this link:",
 	"endTurn": "End turn",

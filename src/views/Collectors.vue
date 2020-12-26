@@ -3,7 +3,18 @@
     <main>
       <section id="wrapper">
         <div id="grid">
-          
+          <div class="playerJoinedBox" v-show="playerJoined">
+            <div class="playerText1">{{labels.playerIntro1}}</div>
+             <input class="playerText" type="text" v-model="pname">
+              
+              <div class="playerText2">{{labels.playerIntro2}}</div>
+              <div class="colorChoice" v-for="index in playerColor.length" :key="index">
+               <div class="theColor" :style="{background: playerColor[index-1]}" @click="players[playerId].color = playerColor[index-1]"></div>
+               </div>
+               <!-- :disabled="pname == '' || players[playerId].color == null" -->
+               <button class="enterPlayerInfo"   @click="playerInfo()">Enter</button>
+          </div>
+  
             <div
               class="player player2"
               v-on:click="expandLeftBoard"
@@ -104,6 +115,7 @@
               <CollectorsSkillActions
                 v-if="players[playerId]"
                 :labels="labels"
+                :players ="players"
                 :player="players[playerId]"
                 :skillsOnSale="skillsOnSale"
                 :marketValues="marketValues"
@@ -130,6 +142,7 @@
                 v-if="players[playerId]"
                 :labels="labels"
                 :player="players[playerId]"
+                :players="players"
                 :auctionCards="auctionCards"
                 :marketValues="marketValues"
                 :placement="auctionPlacement"
@@ -189,7 +202,7 @@
             </button>
           </div>
            <div class="loserAuction" v-show="loserAvailable" >
-             You Lost.. {{auctionLeaderId}} won the auction!
+             You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
              <button
         class="auctionButtonLoser"
         v-if="players[playerId]"
@@ -215,7 +228,6 @@
               :subBid="subBid"
               :addNumber="addNumber"
               :biddingCards="biddingCards"
-              :cardBidRound="cardBidRound"
               :cardBidTotal="cardBidTotal"/>
 
         <div class="raiseValue">
@@ -234,6 +246,7 @@
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
           <div
             class="playerboard"
+            :style="{background: players[playerId].color}"
             v-if="players[playerId]"
             @click="expandPlayerBoard()"
             v-bind:class="{ active: isActive }"
@@ -352,6 +365,7 @@
                 v-if="players[playerId]"
                 :labels="labels"
                 :player="players[playerId]"
+                :players="players"
                 :itemsOnSale="itemsOnSale"
                 :marketValues="marketValues"
                 :placement="buyPlacement"
@@ -528,7 +542,9 @@ export default {
       scalefactor: window.innerWidth/8000,   //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       auctionCardPaymentActive: false,
       biddingCards: [],
-      cardBidRound: 0,
+      pname: '',
+      playerJoined: false,
+      playerColor: [],
       cardBidTotal: 0,
                                             //  Jag hoppas att jag kan lösa detta inom kort. /Björn 
 
@@ -581,6 +597,7 @@ export default {
         this.auctionCards = d.auctionCards;
         this.cardInAuction = d.cardInAuction;
         this.auctionPrice = d.auctionPrice;
+        this.playerColor = d.playerColor;
         //här skapas både raise Item och Raise value. innan denna körs så finns inget rum. Följ raise Value till datahandler.
         this.raiseItems = d.raiseItems;
         this.raiseValue = d.raiseValue;
@@ -588,6 +605,9 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
+        if(this.players[this.playerId].name == null){
+          this.playerJoinedFn();
+        }  
       }.bind(this)
     );
 
@@ -673,7 +693,6 @@ export default {
           
         }
         else {
-          this.cardBidRound = 0;
           this.auctionPrice = d.auctionPrice;
           this.auctionLeaderId = d.auctionLeaderId;
           this.players = d.players;
@@ -706,6 +725,7 @@ export default {
         this.players = d.players;
       }.bind(this)
     );
+
     this.$store.state.socket.on(
       "playerPicked",
       function (d) {
@@ -716,8 +736,31 @@ export default {
         console.log("Det är runda: " + this.round);
       }.bind(this)
     );
+
+    this.$store.state.socket.on(
+      "nameAndColorSeleced",
+      function (d) {
+        this.players = d.players;
+        this.playerColor = d.playerColor
+      }.bind(this)
+    );
+
   },
+
   methods: {
+    playerJoinedFn: function(){
+      this.playerJoined = true;
+    },
+    playerInfo: function(){
+      this.playerJoined = false;
+      this.$store.state.socket.emit('nameAndColor', {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          color: this.players[this.playerId].color,
+          name: this.pname
+        }
+      );
+    },
     selectAll: function (n) {
       n.target.select();
     },
@@ -726,6 +769,18 @@ export default {
     },
     subBid: function () {
       this.bid -= 1;
+    },
+
+    playerName: function (pId) {
+      if( pId !== null){
+        return this.players[pId].name;
+      }
+      else {
+        return ""
+      }
+    },
+    addNumber: function (add){
+      this.cardBidTotal += add;
     },
     winnerSelection: function (ifWinner) {
       if (ifWinner == true) {
@@ -741,9 +796,10 @@ export default {
       for (var i = 0; i < keys.length; i++) {
         if (this.players[keys[i]].turn == true) {
           this.currentPlayerId = keys[i];
+          return this.players[this.currentPlayerId].name;
         }
       }
-      return this.currentPlayerId;
+      
     },
     auctionBoard: function () {
       console.log("auction rutaa");
@@ -976,6 +1032,77 @@ footer a {
 }
 footer a:visited {
   color: ivory;
+}
+.playerJoinedBox {
+    display: grid;
+    position: absolute;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 25vw;
+    height: 30vw;
+    background-color: darkslategray;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    padding: 2vw;
+    border-color: black;
+    z-index: 50;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.enterPlayerInfo {
+  background-color: white;
+    grid-row: 5;
+    grid-column: 2/4;
+    border-width: 0;
+    font-size: 1.5vw;
+    margin: 1.4vw;
+}
+
+.colorChoice{
+grid-row: 4; 
+}
+.theColor{
+  cursor:pointer;
+    border-style: solid;
+    border-width: 0.4vw;
+    /* border: 0.2vw; */
+    border-color: black;
+    height: 3vw;
+    width: 4.3vw;
+    border-radius: 2vw;
+    align-self: center;
+    background-color: red;
+    margin: 0.5vw;
+}
+theColor:onclick{
+  cursor:pointer;
+    border-color: white;
+}
+.playerText{
+  grid-row: 2;
+    grid-column: 1/5;
+    height: 2vw;
+    margin: 2vw;
+    font-size: 2vw;
+    text-align: center;
+}
+.playerText1{
+  color: white;
+    grid-row: 1;
+    margin: auto;
+    font-size: 2vw;
+    text-align: center;
+    grid-column: 1/5;
+}
+.playerText2{
+    color: white;
+    grid-row: 3;
+    font-size: 2vw;
+    margin: auto;
+    text-align: center;
+    grid-column: 1/5;
 }
 .cardslots {
   display: grid;

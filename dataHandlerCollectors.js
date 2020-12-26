@@ -78,6 +78,7 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
   room.auctionCards = room.deck.splice(0, 4);
   room.raiseItems = room.deck.splice(0, 6);
   room.raiseValue=null;
+  room.playerColor =  ['#5fd8fd','#7e2174','#19b3a7','#ca9e68'],
   room.auctonStarterId =null;
   room.cardInAuction = [];
   room.market = [];
@@ -182,6 +183,8 @@ Data.prototype.joinGame = function (roomId, playerId) {
         items: [],
         income: [],
         secret: [],
+        name: null,
+        color: null,
         turn: false
       };
       return true;
@@ -477,6 +480,12 @@ Data.prototype.startTurn = function (roomId) {
 
 
 }
+Data.prototype.getPlayerColor = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.playerColor;
+  } else return [];
+}
 Data.prototype.getAuctionWinner= function (roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
@@ -599,7 +608,18 @@ Data.prototype.getCardValue = function (roomId) {
   return room.raiseValue;
 }
 }
-
+Data.prototype.nameAndColor = function (roomId, playerId, name, color) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.players[playerId].color = color;
+    room.players[playerId].name = name;
+    for (let i = 0; i < room.playerColor.length; i += 1) {
+      if (room.playerColor[i] == color) {
+        room.playerColor.splice(i, 1);
+      }
+    }
+  }
+}
 //Byter spelare till nästa i arrayen 
 Data.prototype.nextPlayer = function (roomId, playerId, auctionActive) {
   let room = this.rooms[roomId];

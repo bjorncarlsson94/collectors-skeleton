@@ -2,6 +2,11 @@
   <div>
     <div class="auctionCardPayment" v-show="auctionCardPaymentActive">
       Cards to pay with:
+      <button
+        class="handPaymentButton"
+        v-if="players[playerId]"
+        @click="payWithHand()"
+      >x</button>
       <div class="handPayment">
         <CollectorsCard
           v-for="(card, index) in players[playerId].hand"
@@ -20,7 +25,7 @@
         v-if="players[playerId]"
       ></div>
       <h2 class="auctionHeader">AUCTION</h2>
-      <div class="auctionLeader">Leader: {{ auctionLeaderId }}</div>
+      <div class="auctionLeader">Leader: {{auctionLeaderName(auctionLeaderId)}}</div>
       <div class="auctionBid" v-show="bid > auctionPrice">{{bid}}$</div>
       <div class="auctionBidLess" v-show="bid <= auctionPrice">{{(bid)}}$</div>
       <div class="auctionMoney">{{ auctionPrice }}$</div>
@@ -103,7 +108,6 @@ export default {
     auctionCardPaymentActive: Boolean,
     openCloseBuyWithCard: Function,
     biddingCards: Array,
-    cardBidRound: Number,
     cardBidTotal: Number,
     addNumber: Function
   },
@@ -114,6 +118,11 @@ export default {
   // },
 
   methods: {
+    auctionLeaderName: function(playerId){
+      if(playerId !== null){
+        return this.players[playerId].name 
+      }
+    },
     payWithHand: function () {
       for (let i = 0; i < this.players[this.playerId].hand.length; i += 1) {
         this.$set(this.players[this.playerId].hand[i], "available", true);
@@ -331,5 +340,20 @@ export default {
   margin-top: 1.6vw;
   color: black;
   font-size: 3vw;
+}
+.handPaymentButton{
+  background-color: red;
+    grid-row: 1;
+    width: 4vw;
+    text-align: center;
+    border: 0;
+    top: -1vw;
+    right: -1vw;
+    border-radius: inherit;
+    height: 4vw;
+    font-size: 2vw;
+    align-self: right;
+    position: absolute;
+    cursor: pointer;
 }
 </style>

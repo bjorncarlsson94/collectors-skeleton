@@ -17,7 +17,7 @@
             @click="placeBottle(p)" >
             ${{p.cost}}
           </button>
-          <div class="bottlePlace" v-if="p.playerId !== null">
+          <div class="bottlePlace" :style="{backgroundColor: players[p.playerId].color}" v-if="p.playerId !== null">
             <!-- {{p.playerId}} -->
           </div>
         </div>
@@ -36,6 +36,7 @@ export default {
   props: {
     labels: Object,
     player: Object,
+    players: Object,
     auctionCards: Array,
     marketValues: Object,
     placement: Array,
