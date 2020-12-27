@@ -3,36 +3,21 @@
     <main>
       <section id="wrapper">
         <div id="grid">
-          
+
+            <div class = "expandedHand" v-bind:class="{ openHand: handOpen }"></div>
+
+
             <div
               class="player player2"
               v-on:click="expandLeftBoard"
               v-bind:class="{ active: leftIsActive }"
             >
-              {{ labels.player2 }}
+              <div v-if="!leftIsActive">{{ labels.player2 }}</div>
               <!--Here are the player specific things-->
 
               <div class="playerBoardGrid" v-if="leftIsActive">
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                     <div
-                class="help" 
-                 @click="helpPlayerHandHover"
-                >?<div id="playerHelp" v-show="helpPlayerHandActive"><h3><strong>{{labels.helpPlayerHand.title}}</strong></h3>
-               <div> <h3><strong>{{labels.helpPlayerHand.itemArea}}</strong></h3>
-                <p>{{labels.helpPlayerHand.itemAreaText}}</p></div>
-               <div> <h3><strong>{{labels.helpPlayerHand.skillsArea}}</strong></h3>
-                <p> {{labels.helpPlayerHand.skillsAreaText}}</p></div>
-              <div> <h3> <strong>{{labels.helpPlayerHand.handArea}}</strong></h3>
-                <p> {{labels.helpPlayerHand.handAreaText}}</p></div>
-              <div>  <h3> <strong>{{labels.helpPlayerHand.nextTurn}}</strong></h3>
-                 <p>{{labels.helpPlayerHand.nextTurnText}}</p></div>
-                
-                
-                
-                
-                </div></div>
-                
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -86,17 +71,116 @@
               v-on:click="expandTopBoard"
               v-bind:class="{ active: topIsActive }"
             >
-              {{ labels.player3 }}
+            <div v-if="!topIsActive">{{ labels.player3 }}</div>
               <!--Here are the player specific things-->
+
+            <div class="playerBoardGrid" v-if="topIsActive">
+              <div class="boardCollection">
+                <div id="collectiontitle">Collection:</div>
+                <div class="boardcollectiongrid">
+                  <div class="playercollection">
+                    <div class="collectioncards">
+                      <CollectorsCard
+                        v-for="(card, index) in players[playerId].items"
+                        :card="card"
+                        :availableAction="card.available"
+                        @doAction="buyCard(card)"
+                        :key="index"
+                      />
+                    </div>
+                  </div>
+                  <div id="hidden">Hidden:</div>
+
+                  <div id="totalvalue">Total value:</div>
+                </div>
+              </div>
+              <div class="boardSkills">
+                Skills:
+                <div class="skillsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].skills"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardHand">
+                <div id="handTitle">Hand:</div>
+                <div class="cardsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].hand"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+
+              <div class="boardNextTurnInfo">Next turn info</div>
+            </div>
+
+
             </div>
             <div
               class="player player4"
               v-on:click="expandRightBoard"
               v-bind:class="{ active: rightIsActive }"
             >
-              {{ labels.player4 }}
+              <div v-if="!rightIsActive">{{ labels.player4 }}</div>
               <!--Here are the player specific things-->
               
+              <div class="playerBoardGrid" v-if="rightIsActive">
+              <div class="boardCollection">
+                <div id="collectiontitle">Collection:</div>
+                <div class="boardcollectiongrid">
+                  <div class="playercollection">
+                    <div class="collectioncards">
+                      <CollectorsCard
+                        v-for="(card, index) in players[playerId].items"
+                        :card="card"
+                        :availableAction="card.available"
+                        @doAction="buyCard(card)"
+                        :key="index"
+                      />
+                    </div>
+                  </div>
+                  <div id="hidden">Hidden:</div>
+
+                  <div id="totalvalue">Total value:</div>
+                </div>
+              </div>
+              <div class="boardSkills">
+                Skills:
+                <div class="skillsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].skills"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardHand">
+                <div id="handTitle">Hand:</div>
+                <div class="cardsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].hand"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+
+              <div class="boardNextTurnInfo">Next turn info</div>
+            </div>
+
+
             </div>
           
           <div class="skills">
@@ -195,8 +279,6 @@
         v-if="players[playerId]"
         @click="loserAvailable = false"
       >OK</button>
-
-
             </div> 
           <CollectorsAuction v-if="players[playerId]"
               :auctionActive="auctionActive"
@@ -227,8 +309,9 @@
             <CollectorsRaiseValue v-if="players[playerId]"
               :labels="labels"
               :player="players[playerId]"
-              :raiseItems="raiseItems"
+              
               :raiseValue="raiseValue"/>
+              <!-- :raiseItems="raiseItems" -->
           </div>
           </div>
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
@@ -242,7 +325,7 @@
             <div v-if="!isActive">
               <div class="closedBoardGrid">
                 <div class="closedBoardHand">
-                  <div class="closedCardsInHand">
+                  <div class="closedCardsInHand" @click="expandHand" v-bind:class="{ openHand:handOpen }">
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].hand"
                       :card="card"
@@ -393,11 +476,7 @@
               </div>
             </div>
           </div>
-          <div class="gridedge3">
-            Ruta för att visa grid lättare: 3
-            <br />
-            Här kan man t.ex. ha vissa viktiga knappar
-          </div>
+
           <div class="menuSpace">
             <div
                 class="help" 
@@ -469,6 +548,7 @@ export default {
       leftIsActive: false,
       rightIsActive: false,
       topIsActive: false,
+      handOpen: false,
       
 
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
@@ -718,6 +798,8 @@ export default {
     );
   },
   methods: {
+    
+    
     selectAll: function (n) {
       n.target.select();
     },
@@ -768,6 +850,10 @@ export default {
       
 
       console.log("Status: " + this.isActive);
+    },
+    expandHand: function () {
+      this.handOpen = !this.handOpen;
+      console.log("Öppnahandjäveln");
     },
     openBoard: function () {
       console.log("Open board");
@@ -1060,6 +1146,7 @@ footer a:visited {
   font-size: 1.5vw;
   text-align: center;
   align-self: flex-end;
+  cursor: pointer;
 }
 
 
@@ -1193,11 +1280,13 @@ footer a:visited {
 }
 .closedCardsInHand {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 2vw);
+  grid-template-columns: repeat(8, 2vw);
+  grid-template-rows: repeat(auto-fill, 0);
   height: 80%;
-
   margin-top: -1.5vw;
 }
+
+
 .closedBoardHandBackground {
   border-radius: 2vw;
   background-color: #eeedb8;
@@ -1208,12 +1297,26 @@ footer a:visited {
 
 .cardsinhand {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 2vw);
+  grid-template-columns: repeat(10, 2vw);
+  grid-template-rows: repeat(10, 0);
   padding: 0.5vw;
   height: 80%;
   background-color: #eeedb8;
   border-radius: 2vw;
 }
+
+.expandedHand{
+ 
+  grid-row: 4/ span 3;
+  grid-column: 4/ span 3;
+  z-index: -1;
+}
+.expandedHand.openHand{
+  background-color: hotpink;
+  z-index: 1;
+}
+
+
 #handTitle {
   margin-left: 10vw;
   position: absolute;
@@ -1332,11 +1435,14 @@ footer a:visited {
   transform: translate(-50%, -50%);
   padding-top: 4vw;
 }
-/* Om man klickar på spelaren i topp */
-.player3.active {
-  background-color: #20ccbe;
-  width: 40vw;
-  height: 15vw;
+
+
+/* Om man klickar på spelaren till vänster */
+.player2.active {
+  background-color: #c236b4;
+  margin-right: -110%;
+  width: 50vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;
@@ -1346,12 +1452,11 @@ footer a:visited {
   border-color: black;
 }
 
-/* Om man klickar på spelaren till vänster */
-.player2.active {
-  background-color: #c236b4;
-  margin-right: -110%;
+/* Om man klickar på spelaren i topp */
+.player3.active {
+  background-color: #20ccbe;
   width: 50vw;
-  height: 20vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;
@@ -1365,8 +1470,8 @@ footer a:visited {
 .player4.active {
   background-color: #e9b77a;
   margin-left: -110%;
-  width: 40vw;
-  height: 15vw;
+  width: 50vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;
@@ -1400,6 +1505,7 @@ footer a:visited {
     grid-column: 8;
     grid-row: 3 /span 1; 
     position: relative;
+    height: 20vw;
   }
   .raiseValuegrid div{
     font-size: 1vw;
@@ -1530,16 +1636,7 @@ footer a:visited {
     zoom: 150%;
 
   }
-  .gridedge3{
-    grid-column: 1;
-    grid-row: 1;
-    background-color:rgb(194, 194, 194);
-    border-radius: 2vw;
-    padding: 1vw;
-    font-size: 1vw;
-    text-align: center;
-    align-self: self-start;
-}
+
 .drawCardSpace {
   grid-column: 8;
   grid-row: 2;
