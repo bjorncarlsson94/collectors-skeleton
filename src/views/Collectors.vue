@@ -1088,6 +1088,18 @@ export default {
         auctionActive: this.auctionActive,
       });
     },
+
+    changeBoolean: function(available){
+      if(available===true){
+        available = false;
+        console.log("change");
+      }
+      if(available===false){
+        available = true;
+        console.log("change");
+      }
+    },
+
     //playerHandShow
     helpPlayerHandHover: function () {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;

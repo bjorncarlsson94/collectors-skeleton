@@ -45,7 +45,10 @@
                   :availableAction="card.available" 
                   @doAction="buyCard(card)"/>
                 </div>
-              </div>    
+              </div>  
+              <div class="buttonGrid">
+               <button class="cancelBuy">Avbryt köp</button>
+              </div>
           </div>
     </div>
 
@@ -118,8 +121,7 @@ export default {
 
       
   },
-
-     
+    
     placeBottle: function (p) {
       this.cardCostUppdate(p.cost);
       this.$emit('placeBottle', p.cost);
@@ -160,6 +162,8 @@ export default {
       }
      
     },
+
+
     // notYourTurn: function () {
     //   return (this.player.turn== false)
     // }
@@ -213,9 +217,9 @@ export default {
   .itemsAvailable {
   display: grid;
   position: absolute;
-  grid-template-rows: 15% 35% 15% auto;
+  grid-template-rows: 15% 30% 15% 30% auto;
   width: 60vw;
-  height: 40vw;
+  height: 45vw;
   background-color: #f8dcce;
   border-radius: 2vw;
   border-style: solid;
@@ -257,6 +261,18 @@ export default {
     overflow: hidden;
 
   }
+  .buttonGrid{
+    justify-content: center;
+    display: grid;
+    grid-column: 1/6;
+  }
+
+  .cancelBuy{
+    width: 20vw;
+    font-weight: bold;
+  }
+
+
 .bottlePlace {
     background-image: url(/images/player-bottle.png);
     margin-top: 0.5vw;
