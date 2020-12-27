@@ -391,6 +391,7 @@
                 :notYourTurn="notYourTurn"
                 @buyCard="buyCard($event)"
                 @placeBottle="placeBottle('buy', $event)"
+                @cancelBuy="changeBoolean()"
               />
               <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
             </div>
@@ -1089,15 +1090,8 @@ export default {
       });
     },
 
-    changeBoolean: function(available){
-      if(available===true){
-        available = false;
-        console.log("change");
-      }
-      if(available===false){
-        available = true;
-        console.log("change");
-      }
+    changeBoolean: function(){
+      this.aboutToBuyItem = false;
     },
 
     //playerHandShow

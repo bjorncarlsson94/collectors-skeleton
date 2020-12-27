@@ -47,7 +47,7 @@
                 </div>
               </div>  
               <div class="buttonGrid">
-               <button class="cancelBuy">Avbryt köp</button>
+               <button class="cancelBuy" @click="hideWindow(player.aboutToBuyItem)">Avbryt köp</button>
               </div>
           </div>
     </div>
@@ -162,6 +162,10 @@ export default {
       }
      
     },
+
+    hideWindow: function(available){
+      this.$emit('cancelBuy', available);
+    }
 
 
     // notYourTurn: function () {
