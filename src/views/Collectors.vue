@@ -1,7 +1,16 @@
 <template>
   <div class="bodytest">
     <main>
+      
+       <let-it-snow
+      v-bind="snowConf"
+      :show="show1"    
+      ></let-it-snow>
       <section id="wrapper">
+        <div
+                class="helpBoard" 
+                @click="showHelpOptions"
+                >?</div>
         <div id="grid">
           <div class="playerJoinedBox" v-show="playerJoined">
             <div class="playerText1">{{labels.playerIntro1}}</div>
@@ -501,6 +510,8 @@ import CollectorsStartAuction from "@/components/CollectorsStartAuction.vue";
 import CollectorsAuction from "@/components/CollectorsAuction.vue";
 import CollectorsWork from "@/components/CollectorsWork.vue";
 
+
+
 export default {
   name: "Collectors",
   components: {
@@ -584,10 +595,22 @@ export default {
       playerJoined: false,
       playerColor: [],
       cardBidTotal: 0,
+      //snow
+      snowConf: {
+            windPower : 1,  
+            speed : 3,
+            count : 12,
+            size : 10,
+            opacity : 1,
+            images: ['https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/snow.png',
+                    'https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/sock.png',
+                    'https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/tree.png']
+      },
       //  Jag hoppas att jag kan lösa detta inom kort. /Björn
 
       //help Active varaibles.
       helpPlayerHandActive: false,
+      show1: false,
     };
   },
   computed: {
@@ -596,6 +619,7 @@ export default {
     },
   },
   mounted() {
+    this.show1 = true
     window.addEventListener("resize", () => {
       this.scalefactor = window.innerWidth / 8000; // Här är funktionen för skalningen. Denna gör specifikt så att det ändras baserat på skärmskalan.
     });
@@ -1092,6 +1116,28 @@ export default {
     helpPlayerHandHover: function () {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
+    showHelpOptions:function(){
+     
+      var tempElement =document.getElementsByClassName("raiseValue");
+      tempElement.setAttribute("id", "animate");
+      console.log(this.helpAuctionActive);
+      console.log(tempElement.id);
+      if(this.helpAuctionActive){
+        console.log("hejhej");
+        tempElement.setAttribute("id", "");
+        this.helpAuctionActive=false;
+      }
+      this.helpAuctionActive=true;
+      
+    /*
+    helpAuctionHover();
+    helpButtonsHover();
+    helpInfoBoxHover();
+    helpDeckHover();
+    helpItemsAreaHover();
+    helpSkillsAreaHover();
+    */
+  },
     //---------------------------WORK metoder-------------------
     recycleBottle: function () {
       //Här ska en flaska växlas för pengar
@@ -1926,6 +1972,22 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: var(--thumbBG);
   border-radius: 6px;
   border: 3px solid var(--scrollbarBG);
+}
+.helpBoard{
+  top:1vw;
+  right:1vw;
+  width:5vw;
+  height:5vw;
+  border-radius: 50%;
+  position: absolute;
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: blue;
+  cursor: pointer;
+}
+.helpBoard:hover {
+  background-color: rgb(61, 61, 255);
 }
 
 @media screen and (max-width: 800px) {
