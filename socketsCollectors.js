@@ -47,9 +47,10 @@ function sockets(io, socket, data) {
   });
 
   socket.on("collectorsStartAuction", function (d) {
-    data.startAuction(d.roomId, d.playerId, d.card, d.cost);
+    data.startAuction(d.roomId, d.playerId, d.card, d.cost, d.hiddenAuctionCard);
     io.to(d.roomId).emit("collectorsAuctionStarted", {
       playerId: d.playerId,
+      hiddenAuctionCard: data.gethiddenAuctionCard(d.roomId),
       players: data.getPlayers(d.roomId),
       auctionCards: data.getAuctionCards(d.roomId),
       cardInAuction: data.getCardInAuction(d.roomId),

@@ -48,10 +48,15 @@
           <CollectorsCard
             :card="card"
             :availableAction="card.available"
-            @doAction="startAuction(card)"
+            @doAction="secretOption(card)"
           />
         </div>
       </div>
+    </div>
+    <div class="secretOptionBox" v-show="secretOptionBoxAvailable">
+      <div class="secretOptionText">How do you wanna auction this card?</div>
+      <button class="secretOptionBoxButton A" @click="secretChoice(false)" >Face up</button>
+      <button class="secretOptionBoxButton B" @click="secretChoice(true)" >Face down</button>
     </div>
   </div>
 </template>
@@ -71,8 +76,16 @@ export default {
     auctionCards: Array,
     marketValues: Object,
     placement: Array,
+    hiddenAuctionCard: Boolean,
     notYourTurn: Function,
+    hiddenAuctionCardFN: Function,
     aboutToStartAuction: Boolean
+  },
+   data: function () {
+      return {
+        secretOptionBoxAvailable: false,
+        secretOptionCard: Object,
+     };
   },
   methods: {
     cannotAfford: function (cost) {
@@ -114,6 +127,20 @@ export default {
           this.chosenPlacementCost = cost;
         }
       }
+    },
+
+    secretOption: function (card){
+      //this.aboutToStartAuction = false;
+      this.secretOptionCard = card;
+      this.secretOptionBoxAvailable = true; 
+      this.highlightAvailableCards(); 
+    },
+    secretChoice: function (ifSecret){
+      if(ifSecret){
+        this.hiddenAuctionCardFN();
+      }
+      this.$emit("startAuction", this.secretOptionCard);
+      this.secretOptionBoxAvailable = false;  
     },
     startAuction: function (card) {
       if (card.available) {
@@ -164,9 +191,45 @@ export default {
   grid-row: repeat(auto-fill, 1);
 }
 .buttons {
+  color: black;
+    grid-row: 2;
+}
+.secretOptionText {   
+    color: black;
+    grid-column: 1/5;
+    text-align: center;
+    margin: auto;
+    font-size: 2vw;
+}
+.secretOptionBox {
+      display: grid;
+    position: absolute;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 3fr 3fr 1fr;
+    width: 30vw;
+    height: 12vw;
+    background-color: #fff782;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    top: 22%;
+    left: 50%;
+    padding: 1vw;
+}
+.secretOptionBoxButton {
+  color: black;
+  cursor: pointer;
+  margin: 0.5vw;
+  font-size: 1.5vw;
+}
+.A {
   grid-column: 2;
 }
-
+.B {
+  grid-column: 3;
+}
 /*Nedan är all css för rutan man får upp vid kortköp*/
   .auctionCardsAvailable {
   display: grid;
