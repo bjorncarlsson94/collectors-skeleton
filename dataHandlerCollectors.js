@@ -307,10 +307,12 @@ Data.prototype.buySkill = function (roomId, playerId, card, cost) {
   }
 }
 
-Data.prototype.startAuction = function (roomId, playerId, card, cost) {
+Data.prototype.startAuction = function (roomId, playerId, card, cost, hiddenAuctionCard) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     let c = null;
+    this.auctionSkill(room);
+    room.hiddenAuctionCard = hiddenAuctionCard;
     /// check first if the card is among the items on sale
     for (let i = 0; i < room.auctionCards.length; i += 1) {
       // since card comes from the client, it is NOT the same object (reference)
@@ -331,19 +333,25 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
         break;
       }
     }
-    console.log("Det här är kortet :")
-    console.log(card)
-    console.log(room.players[playerId].hand)
-    console.log(room.auctionCards)
+
     room.cardInAuction.push(card);
     room.players[playerId].money -= cost;
-    console.log(room.auctionCards)
-    console.log("Det här är kortet :")
-    console.log(room.cardInAuction)
 
   }
 }
 
+Data.prototype.auctionSkill = function (room) {
+  var keys = Object.keys(room.players);
+  console.log("skille")
+  for (let i = 0; i < keys.length; i += 1) {
+    console.log("denna skill pil" + room.players[keys[i]].skills.length)
+    for (let j = 0; j < room.players[keys[i]].skills.length; j += 1) {
+      if(room.players[keys[i]].skills[j].skill == "auctionIncome"){
+        room.players[keys[i]].money +=1;
+      }
+    }
+  }
+}
 
 Data.prototype.auctionWon = function (roomId, playerId, placementType,auctionPrice) {
   let room = this.rooms[roomId];
@@ -517,6 +525,13 @@ Data.prototype.getAuctionPrice = function (roomId) {
     return room.auctionPrice;
   } else return [];
 }
+Data.prototype.gethiddenAuctionCard = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.hiddenAuctionCard;
+  } else return [];
+}
+
 Data.prototype.moveCards = function(roomId){
  
 
@@ -822,6 +837,8 @@ Data.prototype.fillPool=function(roomId,name,cardArray){
 
   return cardArray;
 }
+
+
 
 //-------------------WORK metoder-----------------------
 Data.prototype.workDrawCardTwoCards = function (roomId, playerId) {     //Dra kort genom WORK

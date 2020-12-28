@@ -46,7 +46,6 @@
         class="auctionCardPaymentButton"
         v-if="players[playerId]"
         :disabled="!players[playerId].turn" 
-        v-show="!hiddenAuctionCard"
         @click="payWithHand()"
       ></button>
       <button

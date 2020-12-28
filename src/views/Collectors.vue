@@ -2,12 +2,12 @@
   <div class="bodytest">
     <main>
       
-       <let-it-snow
+           <let-it-snow
       v-bind="snowConf"
       :show="show1"    
       ></let-it-snow>
       <section id="wrapper">
-        <div
+              <div
                 class="helpBoard" 
                 @click="showHelpOptions"
                 >?</div>
@@ -159,7 +159,9 @@
                 :auctionCards="auctionCards"
                 :marketValues="marketValues"
                 :placement="auctionPlacement"
+                :hiddenAuctionCardFN="hiddenAuctionCardFN"
                 :notYourTurn="notYourTurn"
+                :hiddenAuctionCard="hiddenAuctionCard"
                 :aboutToStartAuction="aboutToStartAuction"
                 @startAuction="startAuction($event)"
                 @placeBottle="placeBottle('auction', $event)"
@@ -185,6 +187,13 @@
             <div class="winnerText">
               You won the auction!!! Where do you want to place your card?
             </div>
+            <div class="auctionCardViewFin">
+              <CollectorsCard
+                v-for="(card, index) in cardInAuction"
+                :card="card"
+                :key="index"
+              />
+              </div>
             <button
               class="auctionButtonWinner button1"
               v-if="players[playerId]"
@@ -611,7 +620,7 @@ export default {
 
       //help Active varaibles.
       helpPlayerHandActive: false,
-      show1: false,
+            show1: false,
     };
   },
   computed: {
@@ -620,7 +629,7 @@ export default {
     },
   },
   mounted() {
-    this.show1 = true
+        this.show1 = true
     window.addEventListener("resize", () => {
       this.scalefactor = window.innerWidth / 8000; // Här är funktionen för skalningen. Denna gör specifikt så att det ändras baserat på skärmskalan.
     });
@@ -721,6 +730,7 @@ export default {
         console.log(d.playerId, "started auction " + this.cardInAuction);
         this.players = d.players;
         this.auctionCards = d.auctionCards;
+        this.hiddenAuctionCard = d.hiddenAuctionCard;
         this.cardInAuction = d.cardInAuction;
         this.auctionActive = true;
         this.auctionPrice = 0;
@@ -744,6 +754,7 @@ export default {
             this.auctionPrice = 0;
             this.bid = 0;
             this.cardInAuction = d.cardInAuction;
+            this.hiddenAuctionCard = false;
             this.auctionActive = false;
             this.auctionWinner = false;
             this.cardBidTotal = 0;
@@ -767,6 +778,7 @@ export default {
     this.$store.state.socket.on(
       "auctionFin",
       function (d) {
+        this.hiddenAuctionCard = false;
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
         this.players = d.players;
@@ -907,6 +919,14 @@ export default {
         }
       }
       
+    },
+    hiddenAuctionCardFN: function () {
+      if(!this.hiddenAuctionCard){
+        this.hiddenAuctionCard = true;
+      }
+      else {
+        this.hiddenAuctionCard = false;
+      }
     },
     auctionBoard: function () {
       console.log("auction rutaa");
@@ -1062,6 +1082,7 @@ export default {
       this.$store.state.socket.emit("collectorsStartAuction", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
+        hiddenAuctionCard: this.hiddenAuctionCard, 
         card: card,
         cost: this.chosenPlacementCost,
       });
@@ -1122,7 +1143,7 @@ export default {
     helpPlayerHandHover: function () {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
-    showHelpOptions:function(){
+        showHelpOptions:function(){
      
       var tempElement =document.getElementsByClassName("raiseValue");
       tempElement.setAttribute("id", "animate");
@@ -1569,28 +1590,29 @@ theColor:onclick{
   cursor: pointer;
 }
 .winnerAuction {
-  display: grid;
-  position: absolute;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  width: 40vw;
-  height: 12vw;
-  background-color: #f5efa0;
-  border-radius: 2vw;
-  border-style: solid;
-  border-width: 0.4vw;
-  border-color: black;
-  z-index: 50;
-  top: 22%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 1vw;
+    display: grid;
+    position: absolute;
+    grid-template-rows: 2fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 40vw;
+    height: 18vw;
+    background-color: #f5efa0;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    top: 26%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1vw;
 }
 .winnerText {
-  color: black;
-  grid-column: 1/5;
-  text-align: center;
-  font-size: 2vw;
+ color: black;
+    grid-column: 1/4;
+    text-align: center;
+    font-size: 2vw;
+    margin: auto;
 }
 
 .auctionButtonWinner {
@@ -1736,6 +1758,12 @@ theColor:onclick{
   align-content: center;
   transition: auto;
   transform: translate(5%, 40%);
+}
+.auctionCardViewFin {
+  zoom: 1.65;
+    align-content: center;
+    grid-column: 4;
+    transition: auto;
 }
 .auctionButtonMini {
   background-image: url("https://www.pngrepo.com/download/120575/minimize.png");
