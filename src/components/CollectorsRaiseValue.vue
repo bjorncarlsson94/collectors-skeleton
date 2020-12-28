@@ -10,6 +10,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
     <div class="wrapper1 raiseValuegrid">
       <div v-for="values in marketOrder" :key="values">
         <div class="valueSlot">
+          <!-- Använd funktionen getIcon för att hämta src för bilden i fråga -->
           <img class="valueIcon" src="/images/player-bottle.png" />
           <p class="valueValue">
             {{ values }}
@@ -67,7 +68,25 @@ export default {
           return null;
       }
     },
-  },
+    //Tänkt att i loopen som lägger till ikonen för varje valueSlot ska path
+    //till bilden i fråga hämtas här
+    getIcon: function(category) {
+      switch (category) {
+        case "fastaval":
+          return "/images/player-bottle.png";
+        case "figures":
+          return "/images/player-bottle.png";
+        case "music":
+          return "/images/player-bottle.png";
+        case "movie":
+          return "/images/player-bottle.png";
+        case "tech":
+          return "/images/player-bottle.png";
+        default:
+          return null;
+      }
+      },
+    }
 };
 //
 //highlight last card from items and last card from auction pool and skill pool
