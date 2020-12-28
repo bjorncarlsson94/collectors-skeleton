@@ -29,45 +29,13 @@
               v-on:click="expandLeftBoard"
               v-bind:class="{ active: leftIsActive }"
             >
-              {{ labels.player2 }}
+            <div v-if="!leftIsActive">
+              {{ labels.player2 }}</div>
               <!--Here are the player specific things-->
 
             <div class="playerBoardGrid" v-if="leftIsActive">
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                <div class="help" @click="helpPlayerHandHover">
-                  ?
-                  <div id="playerHelp" v-show="helpPlayerHandActive">
-                    <h3>
-                      <strong>{{ labels.helpPlayerHand.title }}</strong>
-                    </h3>
-                    <div>
-                      <h3>
-                        <strong>{{ labels.helpPlayerHand.itemArea }}</strong>
-                      </h3>
-                      <p>{{ labels.helpPlayerHand.itemAreaText }}</p>
-                    </div>
-                    <div>
-                      <h3>
-                        <strong>{{ labels.helpPlayerHand.skillsArea }}</strong>
-                      </h3>
-                      <p>{{ labels.helpPlayerHand.skillsAreaText }}</p>
-                    </div>
-                    <div>
-                      <h3>
-                        <strong>{{ labels.helpPlayerHand.handArea }}</strong>
-                      </h3>
-                      <p>{{ labels.helpPlayerHand.handAreaText }}</p>
-                    </div>
-                    <div>
-                      <h3>
-                        <strong>{{ labels.helpPlayerHand.nextTurn }}</strong>
-                      </h3>
-                      <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
-                    </div>
-                  </div>
-                </div>
-
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -113,21 +81,124 @@
               <div class="boardNextTurnInfo">Next turn info</div>
             </div>
           </div>
+
           <div
             class="player player3"
             v-on:click="expandTopBoard"
             v-bind:class="{ active: topIsActive }"
           >
-            {{ labels.player3 }}
+            
+            <div v-if="!topIsActive">
+            {{ labels.player3 }}</div>
             <!--Here are the player specific things-->
+
+          <div class="playerBoardGrid" v-if="topIsActive">
+              <div class="boardCollection">
+                <div id="collectiontitle">Collection:</div>
+                <div class="boardcollectiongrid">
+                  <div class="playercollection">
+                    <div class="collectioncards">
+                      <CollectorsCard
+                        v-for="(card, index) in players[playerId].items"
+                        :card="card"
+                        :availableAction="card.available"
+                        @doAction="buyCard(card)"
+                        :key="index"
+                      />
+                    </div>
+                  </div>
+                  <div id="hidden">Hidden:</div>
+
+                  <div id="totalvalue">Total value:</div>
+                </div>
+              </div>
+              <div class="boardSkills">
+                Skills:
+                <div class="skillsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].skills"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardHand">
+                <div id="handTitle">Hand:</div>
+                <div class="cardsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].hand"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardNextTurnInfo">Next turn info</div>
+            </div>
           </div>
+
+              
+
           <div
             class="player player4"
             v-on:click="expandRightBoard"
             v-bind:class="{ active: rightIsActive }"
           >
-            {{ labels.player4 }}
+            <div v-if="!rightIsActive">
+            {{ labels.player4 }}</div>
             <!--Here are the player specific things-->
+          
+          <div class="playerBoardGrid" v-if="rightIsActive">
+              <div class="boardCollection">
+                <div id="collectiontitle">Collection:</div>
+                <div class="boardcollectiongrid">
+                  <div class="playercollection">
+                    <div class="collectioncards">
+                      <CollectorsCard
+                        v-for="(card, index) in players[playerId].items"
+                        :card="card"
+                        :availableAction="card.available"
+                        @doAction="buyCard(card)"
+                        :key="index"
+                      />
+                    </div>
+                  </div>
+                  <div id="hidden">Hidden:</div>
+
+                  <div id="totalvalue">Total value:</div>
+                </div>
+              </div>
+              <div class="boardSkills">
+                Skills:
+                <div class="skillsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].skills"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardHand">
+                <div id="handTitle">Hand:</div>
+                <div class="cardsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].hand"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardNextTurnInfo">Next turn info</div>
+            </div>
+          
+          
           </div>
 
           <div class="skills">
@@ -261,7 +332,6 @@
                 v-if="players[playerId]"
                 :labels="labels"
                 :player="players[playerId]"
-                :raiseItems="raiseItems"
                 :raiseValue="raiseValue"
               />
             </div>
@@ -1667,8 +1737,8 @@ theColor:onclick{
 /* Om man klickar på spelaren i topp */
 .player3.active {
   background-color: #20ccbe;
-  width: 40vw;
-  height: 15vw;
+  width: 50vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;
@@ -1683,7 +1753,7 @@ theColor:onclick{
   background-color: #c236b4;
   margin-right: -110%;
   width: 50vw;
-  height: 20vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;
@@ -1697,8 +1767,8 @@ theColor:onclick{
 .player4.active {
   background-color: #e9b77a;
   margin-left: -110%;
-  width: 40vw;
-  height: 15vw;
+  width: 50vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;

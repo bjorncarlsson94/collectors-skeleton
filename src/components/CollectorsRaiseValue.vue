@@ -105,11 +105,10 @@ export default {
 }
 .raiseValuegrid{
   display:grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 2.5vw 2.5vw 2.5vw 2.5vw 2.5vw;
   padding:2vw;
   justify-self:space-evenly;
   text-align:center;
-  grid-template-rows: 1fr 1fr;
   margin-bottom: 2vw;
 }
 .cardslots{
