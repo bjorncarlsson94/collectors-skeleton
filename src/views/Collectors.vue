@@ -1553,12 +1553,17 @@ theColor:onclick{
   grid-column: 1;
   background-color: #d47871;
   border-radius: 2vw 2vw 0vw 0vw;
-  overflow: hidden;
+  overflow: scroll;
 }
+
+.playercollection::-webkit-scrollbar {
+display: none;
+}
+
 .collectioncards {
   display: grid;
   grid-template-columns: repeat(auto-fill, 1.5vw);
-  grid-template-rows: repeat(2, 4vh);
+  grid-template-rows: repeat(7, 5vh);
   margin-right: 3.5vw;
   margin-left: 0.5vw;
 }
@@ -1606,11 +1611,13 @@ theColor:onclick{
 
 .cardsinhand {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 2vw);
+  grid-template-columns: repeat(9, 2vw);
+  grid-template-rows: repeat(auto-fill, 0.5vw);
   padding: 0.5vw;
   height: 80%;
   background-color: #eeedb8;
   border-radius: 2vw;
+  overflow: hidden;
 }
 #handTitle {
   margin-left: 10vw;
