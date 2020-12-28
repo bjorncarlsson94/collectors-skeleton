@@ -130,7 +130,7 @@
             <!--Here are the player specific things-->
           </div>
 
-          <div id="test1" :class="['skills', {'animate': helpAction}]">
+          <div class="skills">
             <div class="skillsgrid">
               <CollectorsSkillActions
                 v-if="players[playerId]"
@@ -621,12 +621,7 @@ export default {
       //help Active varaibles.
       helpPlayerHandActive: false,
             show1: false,
-      helpAction: true,
     };
-  },
-  props:{
-    
-
   },
   computed: {
     playerId: function () {
@@ -1149,17 +1144,18 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
         showHelpOptions:function(){
-        this.helpAction=!this.helpAction;
-        console.log(this.helpAction);
-        console.log(document.getElementById("test1").className);
-
-     /* if(this.helpAuctionActive){
+     
+      var tempElement =document.getElementsByClassName("raiseValue");
+      tempElement.setAttribute("id", "animate");
+      console.log(this.helpAuctionActive);
+      console.log(tempElement.id);
+      if(this.helpAuctionActive){
         console.log("hejhej");
         tempElement.setAttribute("id", "");
         this.helpAuctionActive=false;
       }
       this.helpAuctionActive=true;
-      */
+      
     /*
     helpAuctionHover();
     helpButtonsHover();
@@ -2027,17 +2023,6 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
 }
-#animate{
-    animation: jiggles 1s ease-in-out;
-    animation-iteration-count:infinite;
-    box-shadow: 0 0 10px yellow;
-  }
-
-  @keyframes jiggles {
-    0% {transform:rotate(0.5deg);}
-    50% {transform:rotate(-0.5deg);}
-    100% {transform:rotate(0.5deg);}
-  }
 
 @media screen and (max-width: 800px) {
   main {

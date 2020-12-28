@@ -78,6 +78,7 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
   room.auctionCards = room.deck.splice(0, 4);
   room.raiseItems = room.deck.splice(0, 6);
   room.raiseValue=null;
+  room.playerColor =  ['#5fd8fd','#7e2174','#19b3a7','#ca9e68'],
   room.auctonStarterId =null;
   room.cardInAuction = [];
   room.market = [];
@@ -155,6 +156,11 @@ Data.prototype.createRoom = function (roomId, playerCount, lang = "en") {
       playerId: null
     }
   ];
+  room.workPlacement = [
+    false,
+    false,
+    false
+  ];
   this.rooms[roomId] = room;
 }
 
@@ -177,11 +183,15 @@ Data.prototype.joinGame = function (roomId, playerId) {
       room.players[playerId] = {
         hand: [],
         money: 3,
+        bottles: 2,
         points: 0,
+        firstPlayerToken: false,
         skills: [],
         items: [],
         income: [],
         secret: [],
+        name: null,
+        color: null,
         turn: false
       };
       return true;
@@ -297,10 +307,12 @@ Data.prototype.buySkill = function (roomId, playerId, card, cost) {
   }
 }
 
-Data.prototype.startAuction = function (roomId, playerId, card, cost) {
+Data.prototype.startAuction = function (roomId, playerId, card, cost, hiddenAuctionCard) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
     let c = null;
+    this.auctionSkill(room);
+    room.hiddenAuctionCard = hiddenAuctionCard;
     /// check first if the card is among the items on sale
     for (let i = 0; i < room.auctionCards.length; i += 1) {
       // since card comes from the client, it is NOT the same object (reference)
@@ -321,19 +333,25 @@ Data.prototype.startAuction = function (roomId, playerId, card, cost) {
         break;
       }
     }
-    console.log("Det här är kortet :")
-    console.log(card)
-    console.log(room.players[playerId].hand)
-    console.log(room.auctionCards)
+
     room.cardInAuction.push(card);
     room.players[playerId].money -= cost;
-    console.log(room.auctionCards)
-    console.log("Det här är kortet :")
-    console.log(room.cardInAuction)
 
   }
 }
 
+Data.prototype.auctionSkill = function (room) {
+  var keys = Object.keys(room.players);
+  console.log("skille")
+  for (let i = 0; i < keys.length; i += 1) {
+    console.log("denna skill pil" + room.players[keys[i]].skills.length)
+    for (let j = 0; j < room.players[keys[i]].skills.length; j += 1) {
+      if(room.players[keys[i]].skills[j].skill == "auctionIncome"){
+        room.players[keys[i]].money +=1;
+      }
+    }
+  }
+}
 
 Data.prototype.auctionWon = function (roomId, playerId, placementType,auctionPrice) {
   let room = this.rooms[roomId];
@@ -477,6 +495,12 @@ Data.prototype.startTurn = function (roomId) {
 
 
 }
+Data.prototype.getPlayerColor = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.playerColor;
+  } else return [];
+}
 Data.prototype.getAuctionWinner= function (roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
@@ -501,6 +525,13 @@ Data.prototype.getAuctionPrice = function (roomId) {
     return room.auctionPrice;
   } else return [];
 }
+Data.prototype.gethiddenAuctionCard = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.hiddenAuctionCard;
+  } else return [];
+}
+
 Data.prototype.moveCards = function(roomId){
  
 
@@ -599,7 +630,18 @@ Data.prototype.getCardValue = function (roomId) {
   return room.raiseValue;
 }
 }
-
+Data.prototype.nameAndColor = function (roomId, playerId, name, color) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.players[playerId].color = color;
+    room.players[playerId].name = name;
+    for (let i = 0; i < room.playerColor.length; i += 1) {
+      if (room.playerColor[i] == color) {
+        room.playerColor.splice(i, 1);
+      }
+    }
+  }
+}
 //Byter spelare till nästa i arrayen 
 Data.prototype.nextPlayer = function (roomId, playerId, auctionActive) {
   let room = this.rooms[roomId];
@@ -795,5 +837,78 @@ Data.prototype.fillPool=function(roomId,name,cardArray){
 
   return cardArray;
 }
+
+
+
+//-------------------WORK metoder-----------------------
+Data.prototype.workDrawCardTwoCards = function (roomId, playerId) {     //Dra kort genom WORK
+  let room = this.rooms[roomId];
+
+  if (typeof room !== 'undefined') {
+    for (var i = 0; i < 2; i++) {
+      let card = room.deck.pop();
+      room.players[playerId].hand.push(card);
+    }
+
+    //room.workPlacement[0] = true;
+    //console.log(room.workPlacement[0])
+    room.players[playerId].bottles--;
+    return room.players;
+  } else return [];
+}
+Data.prototype.bottleRecycled = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.players[playerId].bottles--;
+    room.players[playerId].money++;
+    return room.players;
+  } else return [];
+}
+Data.prototype.bottleRecycled4thRound = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.players[playerId].bottles--;
+    room.players[playerId].money += 3;
+    return room.players;
+  } else return [];
+}
+Data.prototype.takeFirstPlayerToken = function (roomId, playerId) {
+  let room = this.rooms[roomId];
+  console.log(playerId, "got scammed :^(");
+  room.players[playerId].bottles--;
+
+  room.players[playerId].firstPlayerToken = true;
+
+  return room.players;
+}
+Data.prototype.drawPassiveIncome = function (roomId, playerId) {
+  //drawCard kallas genom Socket detta är bara för inkomstdelen
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    let card = room.deck.pop();
+    room.players[playerId].income.push(card);
+
+    room.players[playerId].bottles--;
+    return room.players;
+  } else return [];
+}
+Data.prototype.getWorkPlacement = function (roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    return room.workPlacement;
+  } else return [];
+}
+Data.prototype.setWorkPlacementTrue = function (roomId, place) {
+  console.log("Set workplacement körs!")
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    room.workPlacement[place] = true;
+    console.log("workPlacement:")
+    console.log(room.workPlacement);
+    console.log("---------------")
+    return room.workPlacement;
+  } else return [];
+}
+//------------------------------------------------------
 
 module.exports = Data;

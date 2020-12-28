@@ -19,7 +19,7 @@
             @click="placeBottle(p)" >
             ${{p.cost}}p
           </button>
-          <div class="bottlePlace" v-if="p.playerId !== null">
+          <div class="bottlePlace" :style="{backgroundColor: players[p.playerId].color}" v-if="p.playerId !== null">
           </div>
         </div>
       </div>
@@ -45,7 +45,10 @@
                   :availableAction="card.available" 
                   @doAction="buyCard(card)"/>
                 </div>
-              </div>    
+              </div>  
+              <div class="buttonGrid">
+               <button class="cancelBuy" @click="hideWindow(player.aboutToBuyItem)">Avbryt köp</button>
+              </div>
           </div>
     </div>
 
@@ -76,6 +79,7 @@ export default {
   props: {
     labels: Object,
     player: Object,
+    players: Object,
     itemsOnSale: Array,
     marketValues: Object,
     placement: Array,
@@ -104,9 +108,7 @@ export default {
 
         }
       }  return 0;
-     
-
-
+    
       },
       cardCostUppdate: function (cost) {
      
@@ -119,7 +121,7 @@ export default {
 
       
   },
-     
+    
     placeBottle: function (p) {
       this.cardCostUppdate(p.cost);
       this.$emit('placeBottle', p.cost);
@@ -160,6 +162,12 @@ export default {
       }
      
     },
+
+    hideWindow: function(available){
+      this.$emit('cancelBuy', available);
+    }
+
+
     // notYourTurn: function () {
     //   return (this.player.turn== false)
     // }
@@ -213,9 +221,9 @@ export default {
   .itemsAvailable {
   display: grid;
   position: absolute;
-  grid-template-rows: 15% 35% 15% auto;
-  width: 80vw;
-  height: 50vw;
+  grid-template-rows: 15% 30% 15% 30% auto;
+  width: 60vw;
+  height: 45vw;
   background-color: #f8dcce;
   border-radius: 2vw;
   border-style: solid;
@@ -224,7 +232,7 @@ export default {
   z-index: 50;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);  
+  transform: translate(-65%, -30%);  
   }
 
   .buyItemCardGrid{
@@ -249,13 +257,6 @@ export default {
     overflow: hidden;
   }
 
-  /*.itemsFromHandGrid{
-    display: grid;
-    align-content: center;
-    grid-auto-flow: column;
-    grid-column: 1/6;
-  }*/
-
   .itemsFromHand{
     display: grid;
     justify-items:center;
@@ -264,6 +265,18 @@ export default {
     overflow: hidden;
 
   }
+  .buttonGrid{
+    justify-content: center;
+    display: grid;
+    grid-column: 1/6;
+  }
+
+  .cancelBuy{
+    width: 20vw;
+    font-weight: bold;
+  }
+
+
 .bottlePlace {
     background-image: url(/images/player-bottle.png);
     margin-top: 0.5vw;

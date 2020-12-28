@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import io from 'socket.io-client'
-
+import LetItSnow from 'vue-let-it-snow';
+ 
+Vue.use(LetItSnow);
 Vue.use(Vuex)
 
 /* https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript */
