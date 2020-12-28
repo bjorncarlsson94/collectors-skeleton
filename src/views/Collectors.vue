@@ -1,37 +1,39 @@
 <template>
   <div class="bodytest">
     <main>
-      
-           <let-it-snow
-      v-bind="snowConf"
-      :show="show1"    
-      ></let-it-snow>
+      <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
       <section id="wrapper">
-              <div
-                class="helpBoard" 
-                @click="showHelpOptions"
-                >?</div>
+        <div class="helpBoard" @click="showHelpOptions">?</div>
         <div id="grid">
           <div class="playerJoinedBox" v-show="playerJoined">
-            <div class="playerText1">{{labels.playerIntro1}}</div>
-             <input class="playerText" type="text" v-model="pname">
-              
-              <div class="playerText2">{{labels.playerIntro2}}</div>
-              <div class="colorChoice" v-for="index in playerColor.length" :key="index">
-               <div class="theColor" :style="{background: playerColor[index-1]}" @click="players[playerId].color = playerColor[index-1]"></div>
-               </div>
-               <!-- :disabled="pname == '' || players[playerId].color == null" -->
-               <button class="enterPlayerInfo"   @click="playerInfo()">Enter</button>
-          </div>
-  
+            <div class="playerText1">{{ labels.playerIntro1 }}</div>
+            <input class="playerText" type="text" v-model="pname" />
+
+            <div class="playerText2">{{ labels.playerIntro2 }}</div>
             <div
-              class="player player2"
-              v-on:click="expandLeftBoard"
-              v-bind:class="{ active: leftIsActive }"
+              class="colorChoice"
+              v-for="index in playerColor.length"
+              :key="index"
             >
+              <div
+                class="theColor"
+                :style="{ background: playerColor[index - 1] }"
+                @click="players[playerId].color = playerColor[index - 1]"
+              ></div>
+            </div>
+            <!-- :disabled="pname == '' || players[playerId].color == null" -->
+            <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
+          </div>
+
+          <div
+            class="player player2"
+            v-on:click="expandLeftBoard"
+            v-bind:class="{ active: leftIsActive }"
+          >
             <div v-if="!leftIsActive">
-              {{ labels.player2 }}</div>
-              <!--Here are the player specific things-->
+              {{ labels.player2 }}
+            </div>
+            <!--Here are the player specific things-->
 
             <div class="playerBoardGrid" v-if="leftIsActive">
               <div class="boardCollection">
@@ -87,12 +89,12 @@
             v-on:click="expandTopBoard"
             v-bind:class="{ active: topIsActive }"
           >
-            
             <div v-if="!topIsActive">
-            {{ labels.player3 }}</div>
+              {{ labels.player3 }}
+            </div>
             <!--Here are the player specific things-->
 
-          <div class="playerBoardGrid" v-if="topIsActive">
+            <div class="playerBoardGrid" v-if="topIsActive">
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
                 <div class="boardcollectiongrid">
@@ -139,8 +141,6 @@
               <div class="boardNextTurnInfo">Next turn info</div>
             </div>
           </div>
-
-              
 
           <div
             class="player player4"
@@ -148,10 +148,11 @@
             v-bind:class="{ active: rightIsActive }"
           >
             <div v-if="!rightIsActive">
-            {{ labels.player4 }}</div>
+              {{ labels.player4 }}
+            </div>
             <!--Here are the player specific things-->
-          
-          <div class="playerBoardGrid" v-if="rightIsActive">
+
+            <div class="playerBoardGrid" v-if="rightIsActive">
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
                 <div class="boardcollectiongrid">
@@ -197,8 +198,6 @@
               </div>
               <div class="boardNextTurnInfo">Next turn info</div>
             </div>
-          
-          
           </div>
 
           <div class="skills">
@@ -206,7 +205,7 @@
               <CollectorsSkillActions
                 v-if="players[playerId]"
                 :labels="labels"
-                :players ="players"
+                :players="players"
                 :player="players[playerId]"
                 :skillsOnSale="skillsOnSale"
                 :marketValues="marketValues"
@@ -264,7 +263,7 @@
                 :card="card"
                 :key="index"
               />
-              </div>
+            </div>
             <button
               class="auctionButtonWinner button1"
               v-if="players[playerId]"
@@ -295,14 +294,15 @@
               Market share
             </button>
           </div>
-           <div class="loserAuction" v-show="loserAvailable" >
-             You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
-             <button
-        class="auctionButtonLoser"
-        v-if="players[playerId]"
-        @click="loserAvailable = false"
-      >OK</button>
-
+          <div class="loserAuction" v-show="loserAvailable">
+            You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
+            <button
+              class="auctionButtonLoser"
+              v-if="players[playerId]"
+              @click="loserAvailable = false"
+            >
+              OK
+            </button>
           </div>
           <CollectorsAuction
             v-if="players[playerId]"
@@ -339,7 +339,7 @@
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
           <div
             class="playerboard"
-            :style="{background: players[playerId].color}"
+            :style="{ background: players[playerId].color }"
             v-if="players[playerId]"
             @click="expandPlayerBoard()"
             v-bind:class="{ active: isActive }"
@@ -507,6 +507,7 @@
             <p>{{ labels.roundcounter }} {{ round }}</p>
             <p>Det är {{ currentPlayer() }} tur att spela!</p>
           </div>
+
           <div class="drawCardSpace">
             <div
               class="help"
@@ -520,8 +521,11 @@
                 <img src="/images/back-of-card.png" class="deck" />
               </div>
             </div>
+            <div class="cardCounter">
+              {{  }}
+            </div>
           </div>
-        
+
           <div class="menuSpace">
             <div class="help" @click="helpPlayerHandHover">?</div>
             <button
@@ -586,8 +590,6 @@ import CollectorsStartAuction from "@/components/CollectorsStartAuction.vue";
 import CollectorsAuction from "@/components/CollectorsAuction.vue";
 import CollectorsWork from "@/components/CollectorsWork.vue";
 
-
-
 export default {
   name: "Collectors",
   components: {
@@ -599,7 +601,7 @@ export default {
     CollectorsAuction,
     CollectorsWork,
   },
-  data: function () {
+  data: function() {
     return {
       gameStarted: false,
       isActive: false,
@@ -667,41 +669,43 @@ export default {
       scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       auctionCardPaymentActive: false,
       biddingCards: [],
-      pname: '',
+      pname: "",
       playerJoined: false,
       playerColor: [],
       cardBidTotal: 0,
       //snow
       snowConf: {
-            windPower : 1,  
-            speed : 3,
-            count : 12,
-            size : 10,
-            opacity : 1,
-            images: ['https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/snow.png',
-                    'https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/sock.png',
-                    'https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/tree.png']
+        windPower: 1,
+        speed: 3,
+        count: 12,
+        size: 10,
+        opacity: 1,
+        images: [
+          "https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/snow.png",
+          "https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/sock.png",
+          "https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/tree.png",
+        ],
       },
       //  Jag hoppas att jag kan lösa detta inom kort. /Björn
 
       //help Active varaibles.
       helpPlayerHandActive: false,
-            show1: false,
+      show1: false,
     };
   },
   computed: {
-    playerId: function () {
+    playerId: function() {
       return this.$store.state.playerId;
     },
   },
   mounted() {
-        this.show1 = true
+    this.show1 = true;
     window.addEventListener("resize", () => {
       this.scalefactor = window.innerWidth / 8000; // Här är funktionen för skalningen. Denna gör specifikt så att det ändras baserat på skärmskalan.
     });
   },
   watch: {
-    players: function (newP, oldP) {
+    players: function(newP, oldP) {
       console.log(newP, oldP);
       for (let p in this.players) {
         for (let c = 0; c < this.players[p].hand.length; c += 1) {
@@ -711,7 +715,7 @@ export default {
       }
     },
   },
-  created: function () {
+  created: function() {
     this.$store.commit("SET_PLAYER_ID", this.$route.query.id);
     //TODO! Fix this ugly hack
     //background: https://github.com/quasarframework/quasar/issues/5672
@@ -726,7 +730,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsInitialize",
-      function (d) {
+      function(d) {
         this.labels = d.labels;
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
@@ -743,15 +747,15 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
-        if(this.players[this.playerId].name == null){
+        if (this.players[this.playerId].name == null) {
           this.playerJoinedFn();
-        }  
+        }
       }.bind(this)
     );
 
     this.$store.state.socket.on(
       "collectorsBottlePlaced",
-      function (d) {
+      function(d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
@@ -766,7 +770,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsCardDrawn",
-      function (d) {
+      function(d) {
         //this has been refactored to not single out one player's cards
         //better to update the state of all cards
         this.players = d;
@@ -775,7 +779,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsCardBought",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "bought a card");
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
@@ -783,7 +787,7 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsSkillBought",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "bought a skill");
         this.players = d.players;
         this.skillsOnSale = d.skillsOnSale;
@@ -792,7 +796,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsAuctionStarted",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "started auction " + this.cardInAuction);
         this.players = d.players;
         this.auctionCards = d.auctionCards;
@@ -805,7 +809,7 @@ export default {
 
     this.$store.state.socket.on(
       "auctionRound",
-      function (d) {
+      function(d) {
         console.log("är det en vinnare?" + d.auctionWinner);
         if (d.auctionWinner == true) {
           if (this.playerId == d.auctionLeaderId) {
@@ -829,9 +833,7 @@ export default {
               this.restoreHand();
             }
           }
-          
-        }
-        else {
+        } else {
           this.auctionPrice = d.auctionPrice;
           this.auctionLeaderId = d.auctionLeaderId;
           this.players = d.players;
@@ -843,7 +845,7 @@ export default {
     );
     this.$store.state.socket.on(
       "auctionFin",
-      function (d) {
+      function(d) {
         this.hiddenAuctionCard = false;
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
@@ -856,7 +858,7 @@ export default {
     );
     this.$store.state.socket.on(
       "cardsMoved",
-      function (d) {
+      function(d) {
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
         this.skillsOnSale = d.skillsOnSale;
@@ -868,7 +870,7 @@ export default {
 
     this.$store.state.socket.on(
       "playerPicked",
-      function (d) {
+      function(d) {
         console.log("spelare vald");
         this.gameStarted = true;
         this.players = d.players;
@@ -879,16 +881,16 @@ export default {
 
     this.$store.state.socket.on(
       "nameAndColorSeleced",
-      function (d) {
+      function(d) {
         this.players = d.players;
-        this.playerColor = d.playerColor
+        this.playerColor = d.playerColor;
       }.bind(this)
     );
 
     //--------WORK--------------
     this.$store.state.socket.on(
       "collectorsBottleRecycled",
-      function (d) {
+      function(d) {
         console.log("Flaska pantad");
         this.players = d;
         console.log("Det krashar inte i flaska pantad");
@@ -896,7 +898,7 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsBottleRecycled4thRound",
-      function (d) {
+      function(d) {
         console.log("Flaska pantad på fjärde omgången");
         this.players = d;
         console.log("Det krashar inte i flaska pantad");
@@ -904,27 +906,27 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsWorkCardDrawn",
-      function (d) {
+      function(d) {
         console.log("2 kort dragna");
         this.players = d;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsCardAndTokenDrawn",
-      function (d) {
+      function(d) {
         console.log("Kort samt spela först token (work)");
         this.players = d;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsCardAndPassiveIncomeDrawn",
-      function (d) {
+      function(d) {
         this.players = d;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "workerPlaced",
-      function (d) {
+      function(d) {
         console.log("workPlacement uppdaterad!");
         this.workPlacement = d;
       }.bind(this)
@@ -933,41 +935,39 @@ export default {
   },
 
   methods: {
-    playerJoinedFn: function(){
+    playerJoinedFn: function() {
       this.playerJoined = true;
     },
-    playerInfo: function(){
+    playerInfo: function() {
       this.playerJoined = false;
-      this.$store.state.socket.emit('nameAndColor', {
-          roomId: this.$route.params.id,
-          playerId: this.playerId,
-          color: this.players[this.playerId].color,
-          name: this.pname
-        }
-      );
+      this.$store.state.socket.emit("nameAndColor", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        color: this.players[this.playerId].color,
+        name: this.pname,
+      });
     },
-    selectAll: function (n) {
+    selectAll: function(n) {
       n.target.select();
     },
-    addBid: function () {
+    addBid: function() {
       this.bid += 1;
     },
-    subBid: function () {
+    subBid: function() {
       this.bid -= 1;
     },
 
-    playerName: function (pId) {
-      if( pId !== null){
+    playerName: function(pId) {
+      if (pId !== null) {
         return this.players[pId].name;
-      }
-      else {
-        return ""
+      } else {
+        return "";
       }
     },
-    addNumber: function (add){
+    addNumber: function(add) {
       this.cardBidTotal += add;
     },
-    winnerSelection: function (ifWinner) {
+    winnerSelection: function(ifWinner) {
       if (ifWinner == true) {
         this.winnerAvailable = true;
       } else {
@@ -975,7 +975,7 @@ export default {
       }
     },
 
-    currentPlayer: function () {
+    currentPlayer: function() {
       var keys = Object.keys(this.players);
 
       for (var i = 0; i < keys.length; i++) {
@@ -984,22 +984,20 @@ export default {
           return this.players[this.currentPlayerId].name;
         }
       }
-      
     },
-    hiddenAuctionCardFN: function () {
-      if(!this.hiddenAuctionCard){
+    hiddenAuctionCardFN: function() {
+      if (!this.hiddenAuctionCard) {
         this.hiddenAuctionCard = true;
-      }
-      else {
+      } else {
         this.hiddenAuctionCard = false;
       }
     },
-    auctionBoard: function () {
+    auctionBoard: function() {
       console.log("auction rutaa");
       this.auctionActive = !this.auctionActive;
       console.log("status: " + this.auctionActive);
     },
-    expandPlayerBoard: function () {
+    expandPlayerBoard: function() {
       console.log("Player click");
 
       // returnerar ifall den redan är öppen
@@ -1017,13 +1015,13 @@ export default {
 
       console.log("Status: " + this.isActive);
     },
-    openBoard: function () {
+    openBoard: function() {
       console.log("Open board");
       // Sätter till true för att öppna brädet
       this.isActive = true;
       console.log("Status: " + this.isActive);
     },
-    closeBoard: function () {
+    closeBoard: function() {
       console.log("Close BUTTON!");
 
       // Sätter till false för att stänga brädet
@@ -1031,7 +1029,7 @@ export default {
       this.playerHandHelpIsActive = false;
       console.log("Status: " + this.isActive);
     },
-    expandLeftBoard: function () {
+    expandLeftBoard: function() {
       console.log("Left click");
       this.leftIsActive = !this.leftIsActive;
 
@@ -1042,7 +1040,7 @@ export default {
 
       console.log("status: " + this.leftIsActive);
     },
-    expandRightBoard: function () {
+    expandRightBoard: function() {
       console.log("Right click");
       this.rightIsActive = !this.rightIsActive;
 
@@ -1052,7 +1050,7 @@ export default {
       this.isActive = false;
       console.log("status: " + this.rightIsActive);
     },
-    expandTopBoard: function () {
+    expandTopBoard: function() {
       console.log("Top click");
       this.topIsActive = !this.topIsActive;
 
@@ -1063,7 +1061,7 @@ export default {
 
       console.log("status: " + this.topIsActive);
     },
-    auctionOver: function (placementType) {
+    auctionOver: function(placementType) {
       this.auctionPrice -= this.cardBidTotal;
       this.cardBidTotal = 0;
       console.log(placementType);
@@ -1074,13 +1072,13 @@ export default {
         auctionPrice: this.auctionPrice,
       });
     },
-    showHelp: function (label) {
+    showHelp: function(label) {
       label;
       //do stuff
     },
-    playerHandHelpIsActive: function () {},
+    playerHandHelpIsActive: function() {},
 
-    openCloseBuyWithCard: function () {
+    openCloseBuyWithCard: function() {
       if (this.auctionCardPaymentActive == false) {
         this.auctionCardPaymentActive = true;
         this.auctionActive = false;
@@ -1089,7 +1087,7 @@ export default {
         this.auctionActive = true;
       }
     },
-    placeBottle: function (action, cost) {
+    placeBottle: function(action, cost) {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
@@ -1107,13 +1105,13 @@ export default {
         cost: cost,
       });
     },
-    drawCard: function () {
+    drawCard: function() {
       this.$store.state.socket.emit("collectorsDrawCard", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
-    buyCard: function (card) {
+    buyCard: function(card) {
       console.log("buyCard", card);
       this.aboutToBuyItem = false;
       this.$store.state.socket.emit("collectorsBuyCard", {
@@ -1123,7 +1121,7 @@ export default {
         cost: this.chosenPlacementCost,
       });
     },
-    buySkill: function (card) {
+    buySkill: function(card) {
       console.log("buySkill", card);
       this.aboutToBuySkill = false;
       this.$store.state.socket.emit("collectorsBuySkill", {
@@ -1133,7 +1131,7 @@ export default {
         cost: this.chosenPlacementCost,
       });
     },
-    notYourTurn: function () {
+    notYourTurn: function() {
       if (this.players[this.playerId].turn == false) {
         return true;
       } else if (this.auctionActive || this.auctionMiniActive) {
@@ -1142,19 +1140,19 @@ export default {
         return false;
       }
     },
-    startAuction: function (card) {
+    startAuction: function(card) {
       this.auctionAvailable = false;
       this.aboutToStartAuction = false;
       this.$store.state.socket.emit("collectorsStartAuction", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
-        hiddenAuctionCard: this.hiddenAuctionCard, 
+        hiddenAuctionCard: this.hiddenAuctionCard,
         card: card,
         cost: this.chosenPlacementCost,
       });
     },
 
-    auctionMiniActiveNow: function () {
+    auctionMiniActiveNow: function() {
       if (this.auctionMiniActive == true) {
         this.auctionMiniActive = false;
         this.auctionActive = true;
@@ -1163,7 +1161,7 @@ export default {
         this.auctionActive = false;
       }
     },
-    buyCardOrAuction: function (card) {
+    buyCardOrAuction: function(card) {
       if (this.auctionAvailable == true) {
         console.log("Starta en auktion");
         return this.startAuction(card);
@@ -1172,7 +1170,7 @@ export default {
         return this.buyCard(card);
       }
     },
-    restoreHand: function () {
+    restoreHand: function() {
       this.$store.state.socket.emit("restoreHand", {
         roomId: this.$route.params.id,
         biddingCards: this.biddingCards,
@@ -1180,20 +1178,20 @@ export default {
         playerId: this.playerId,
       });
     },
-    startTurn: function () {
+    startTurn: function() {
       console.log("hola");
 
       this.$store.state.socket.emit("startTurn", {
         roomId: this.$route.params.id,
       });
     },
-    moveCards: function () {
+    moveCards: function() {
       this.$store.state.socket.emit("moveCards", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
-    nextPlayer: function () {
+    nextPlayer: function() {
       this.$store.state.socket.emit("nextPlayer", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1201,28 +1199,27 @@ export default {
       });
     },
 
-    changeBoolean: function(){
+    changeBoolean: function() {
       this.aboutToBuyItem = false;
     },
 
     //playerHandShow
-    helpPlayerHandHover: function () {
+    helpPlayerHandHover: function() {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
-        showHelpOptions:function(){
-     
-      var tempElement =document.getElementsByClassName("raiseValue");
+    showHelpOptions: function() {
+      var tempElement = document.getElementsByClassName("raiseValue");
       tempElement.setAttribute("id", "animate");
       console.log(this.helpAuctionActive);
       console.log(tempElement.id);
-      if(this.helpAuctionActive){
+      if (this.helpAuctionActive) {
         console.log("hejhej");
         tempElement.setAttribute("id", "");
-        this.helpAuctionActive=false;
+        this.helpAuctionActive = false;
       }
-      this.helpAuctionActive=true;
-      
-    /*
+      this.helpAuctionActive = true;
+
+      /*
     helpAuctionHover();
     helpButtonsHover();
     helpInfoBoxHover();
@@ -1230,9 +1227,9 @@ export default {
     helpItemsAreaHover();
     helpSkillsAreaHover();
     */
-  },
+    },
     //---------------------------WORK metoder-------------------
-    recycleBottle: function () {
+    recycleBottle: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
@@ -1242,7 +1239,7 @@ export default {
         playerId: this.playerId,
       });
     },
-    recycleBottle4thRound: function () {
+    recycleBottle4thRound: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
@@ -1252,31 +1249,31 @@ export default {
         playerId: this.playerId,
       });
     },
-    workDrawTwoCards: function () {
+    workDrawTwoCards: function() {
       this.$store.state.socket.emit("collectorsWorkDrawTwoCards", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
-    drawACardAndFirstPlayerToken: function () {
+    drawACardAndFirstPlayerToken: function() {
       console.log("draw card and first player token");
       this.$store.state.socket.emit("collectorsDrawACardAndToken", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
-    drawCardAndPassiveIncome: function () {
+    drawCardAndPassiveIncome: function() {
       console.log("Draw passive income i Collectors.vue");
       this.$store.state.socket.emit("collectorsDrawACardAndPassiveIncome", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
-    placeWorker: function (where) {
+    placeWorker: function(where) {
       console.log("placeWorker!");
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
-        where: where
+        where: where,
       });
     },
     //----------------------------------------------------------
@@ -1305,75 +1302,75 @@ footer a:visited {
   color: ivory;
 }
 .playerJoinedBox {
-    display: grid;
-    position: absolute;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    width: 25vw;
-    height: 30vw;
-    background-color: darkslategray;
-    border-radius: 2vw;
-    border-style: solid;
-    border-width: 0.4vw;
-    padding: 2vw;
-    border-color: black;
-    z-index: 50;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  display: grid;
+  position: absolute;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 25vw;
+  height: 30vw;
+  background-color: darkslategray;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  padding: 2vw;
+  border-color: black;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .enterPlayerInfo {
   background-color: white;
-    grid-row: 5;
-    grid-column: 2/4;
-    border-width: 0;
-    font-size: 1.5vw;
-    margin: 1.4vw;
+  grid-row: 5;
+  grid-column: 2/4;
+  border-width: 0;
+  font-size: 1.5vw;
+  margin: 1.4vw;
 }
 
-.colorChoice{
-grid-row: 4; 
+.colorChoice {
+  grid-row: 4;
 }
-.theColor{
-  cursor:pointer;
-    border-style: solid;
-    border-width: 0.4vw;
-    /* border: 0.2vw; */
-    border-color: black;
-    height: 3vw;
-    width: 4.3vw;
-    border-radius: 2vw;
-    align-self: center;
-    background-color: red;
-    margin: 0.5vw;
+.theColor {
+  cursor: pointer;
+  border-style: solid;
+  border-width: 0.4vw;
+  /* border: 0.2vw; */
+  border-color: black;
+  height: 3vw;
+  width: 4.3vw;
+  border-radius: 2vw;
+  align-self: center;
+  background-color: red;
+  margin: 0.5vw;
 }
-theColor:onclick{
-  cursor:pointer;
-    border-color: white;
+theColor:onclick {
+  cursor: pointer;
+  border-color: white;
 }
-.playerText{
+.playerText {
   grid-row: 2;
-    grid-column: 1/5;
-    height: 2vw;
-    margin: 2vw;
-    font-size: 2vw;
-    text-align: center;
+  grid-column: 1/5;
+  height: 2vw;
+  margin: 2vw;
+  font-size: 2vw;
+  text-align: center;
 }
-.playerText1{
+.playerText1 {
   color: white;
-    grid-row: 1;
-    margin: auto;
-    font-size: 2vw;
-    text-align: center;
-    grid-column: 1/5;
+  grid-row: 1;
+  margin: auto;
+  font-size: 2vw;
+  text-align: center;
+  grid-column: 1/5;
 }
-.playerText2{
-    color: white;
-    grid-row: 3;
-    font-size: 2vw;
-    margin: auto;
-    text-align: center;
-    grid-column: 1/5;
+.playerText2 {
+  color: white;
+  grid-row: 3;
+  font-size: 2vw;
+  margin: auto;
+  text-align: center;
+  grid-column: 1/5;
 }
 .cardslots {
   display: grid;
@@ -1657,29 +1654,29 @@ theColor:onclick{
   cursor: pointer;
 }
 .winnerAuction {
-    display: grid;
-    position: absolute;
-    grid-template-rows: 2fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    width: 40vw;
-    height: 18vw;
-    background-color: #f5efa0;
-    border-radius: 2vw;
-    border-style: solid;
-    border-width: 0.4vw;
-    border-color: black;
-    z-index: 50;
-    top: 26%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 1vw;
+  display: grid;
+  position: absolute;
+  grid-template-rows: 2fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 40vw;
+  height: 18vw;
+  background-color: #f5efa0;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 26%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1vw;
 }
 .winnerText {
- color: black;
-    grid-column: 1/4;
-    text-align: center;
-    font-size: 2vw;
-    margin: auto;
+  color: black;
+  grid-column: 1/4;
+  text-align: center;
+  font-size: 2vw;
+  margin: auto;
 }
 
 .auctionButtonWinner {
@@ -1828,9 +1825,9 @@ theColor:onclick{
 }
 .auctionCardViewFin {
   zoom: 1.65;
-    align-content: center;
-    grid-column: 4;
-    transition: auto;
+  align-content: center;
+  grid-column: 4;
+  transition: auto;
 }
 .auctionButtonMini {
   background-image: url("https://www.pngrepo.com/download/120575/minimize.png");
@@ -2065,14 +2062,14 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   border-radius: 6px;
   border: 3px solid var(--scrollbarBG);
 }
-.helpBoard{
-  top:1vw;
-  right:1vw;
-  width:5vw;
-  height:5vw;
+.helpBoard {
+  top: 1vw;
+  right: 1vw;
+  width: 5vw;
+  height: 5vw;
   border-radius: 50%;
   position: absolute;
-   display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: blue;
