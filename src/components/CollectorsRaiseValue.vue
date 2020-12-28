@@ -106,7 +106,7 @@ export default {
 .raiseValuegrid{
   display:grid;
   grid-template-rows: 2.5vw 2.5vw 2.5vw 2.5vw 2.5vw;
-  padding:2vw;
+  padding:1vw;
   justify-self:space-evenly;
   text-align:center;
   margin-bottom: 2vw;

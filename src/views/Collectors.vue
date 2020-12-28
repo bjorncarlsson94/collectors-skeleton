@@ -521,11 +521,7 @@
               </div>
             </div>
           </div>
-          <div class="gridedge3">
-            Ruta för att visa grid lättare: 3
-            <br />
-            Här kan man t.ex. ha vissa viktiga knappar
-          </div>
+        
           <div class="menuSpace">
             <div class="help" @click="helpPlayerHandHover">?</div>
             <button
@@ -1594,7 +1590,8 @@ theColor:onclick{
 }
 .closedCardsInHand {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 2vw);
+  grid-template-columns: repeat(8, 2vw);
+  grid-template-rows: repeat(auto-fill, 1vw);
   height: 80%;
 
   margin-top: -1.5vw;
@@ -1893,16 +1890,7 @@ theColor:onclick{
 #helpDrawCardSpace {
   zoom: 150%;
 }
-.gridedge3 {
-  grid-column: 1;
-  grid-row: 1;
-  background-color: rgb(194, 194, 194);
-  border-radius: 2vw;
-  padding: 1vw;
-  font-size: 1vw;
-  text-align: center;
-  align-self: self-start;
-}
+
 .drawCardSpace {
   grid-column: 8;
   grid-row: 2;
