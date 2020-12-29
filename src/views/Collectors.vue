@@ -130,7 +130,9 @@
             <!--Here are the player specific things-->
           </div>
 
-          <div class="skills">
+          <div id="test1" :class="['skills', {'animate': helpAction}]" @click="skillsHelp()">
+            
+            
             <div class="skillsgrid">
               <CollectorsSkillActions
                 v-if="players[playerId]"
@@ -145,11 +147,11 @@
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
               />
-              <div class="help" @click="helpPlayerHandHover">?</div>
+              
             </div>
           </div>
-          <div class="auction">
-            <div class="help" @click="helpPlayerHandHover">?</div>
+          <div :class="['auction', {'animate': helpAction}]" @click="auctionHelp()">
+            
             <div class="auctiongrid">
               <CollectorsStartAuction
                 v-if="players[playerId]"
@@ -254,8 +256,8 @@
             :cardBidTotal="cardBidTotal"
           />
 
-          <div class="raiseValue">
-            <div class="help" @click="helpPlayerHandHover">?</div>
+          <div :class="['raiseValue', {'animate': helpAction}]" @click="raiseValueHelp()">
+            
             <div class="raiseValuegrid">
               <CollectorsRaiseValue
                 v-if="players[playerId]"
@@ -393,8 +395,8 @@
 
         -->
 
-          <div class="items">
-            <div class="help" @click="helpPlayerHandHover">?</div>
+          <div :class="['items', {'animate': helpAction}]" @click="itemsHelp()">
+            
             <div class="itemgrid">
               <CollectorsBuyActions
                 v-if="players[playerId]"
@@ -414,7 +416,7 @@
               <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
             </div>
           </div>
-          <div class="work">
+          <div :class="['work', {'animate': helpAction}]" @click="workHelp()">
             <CollectorsWork
               v-if="players[playerId]"
               :labels="labels"
@@ -433,31 +435,26 @@
           </div>
 
           <div class="roundCounter">
-            <div class="help" @click="helpPlayerHandHover">?</div>
+            
             <p>{{ labels.roundcounter }} {{ round }}</p>
             <p>Det är {{ currentPlayer() }} tur att spela!</p>
           </div>
           <div class="drawCardSpace">
-            <div
-              class="help"
-              id="helpDrawCardSpace"
-              @click="helpPlayerHandHover"
-            >
-              ?
-            </div>
-            <div class="buttons">
+          
+             
+            <div :class="['buttons', {'animate': helpAction}]" @click="buttonsHelp()">
               <div @click="drawCard">
                 <img src="/images/back-of-card.png" class="deck" />
               </div>
             </div>
           </div>
-          <div class="gridedge3">
+          <div class="gridedge3" >
             Ruta för att visa grid lättare: 3
             <br />
             Här kan man t.ex. ha vissa viktiga knappar
           </div>
-          <div class="menuSpace">
-            <div class="help" @click="helpPlayerHandHover">?</div>
+          <div :class="['menuSpace', {'animate': helpAction}]" @click="menuSpaceHelp()">
+            
             <button
               v-if="players[playerId]"
               :disabled="this.gameStarted"
@@ -495,6 +492,23 @@
     <button v-if="players[playerId]" @click="round += 1">
       fake more rounds
     </button>
+    <HelpCollectors
+      :labels="labels"
+      :player="players[playerId]"
+      :players="players"
+      :helpAction="this.helpAction"
+      :skillsHelpActive="this.skillsHelpActive"
+      :auctionHelpActive="this.auctionHelpActive"
+      :menuSpaceActive="this.menuSpaceActive"
+      :buttonsHelpActive="this.buttonsHelpActive"
+      :workHelpActive="this.workHelpActive"
+      :itemsHelpActive="this.itemsHelpActive"
+      :raiseValueHelpActive="this.raiseValueHelpActive"
+
+      />
+    
+
+
     <footer>
       <p>
         {{ labels.invite }}
@@ -507,6 +521,8 @@
       </p>
     </footer>
   </div>
+
+  
 </template>
 
 <script>
@@ -519,7 +535,7 @@ import CollectorsRaiseValue from "@/components/CollectorsRaiseValue.vue";
 import CollectorsStartAuction from "@/components/CollectorsStartAuction.vue";
 import CollectorsAuction from "@/components/CollectorsAuction.vue";
 import CollectorsWork from "@/components/CollectorsWork.vue";
-
+import HelpCollectors from "@/components/HelpCollectors.vue";
 
 
 export default {
@@ -532,6 +548,7 @@ export default {
     CollectorsStartAuction,
     CollectorsAuction,
     CollectorsWork,
+    HelpCollectors,
   },
   data: function () {
     return {
@@ -620,8 +637,20 @@ export default {
 
       //help Active varaibles.
       helpPlayerHandActive: false,
-            show1: false,
+      show1: false,
+      helpAction: false,
+      skillsHelpActive:false,
+      auctionHelpActive:false,
+      menuSpaceActive:false,
+      buttonsHelpActive:false,
+      workHelpActive:false,
+      itemsHelpActive:false,
+      raiseValueHelpActive:false,
     };
+  },
+  props:{
+    
+
   },
   computed: {
     playerId: function () {
@@ -1042,10 +1071,12 @@ export default {
       });
     },
     drawCard: function () {
-      this.$store.state.socket.emit("collectorsDrawCard", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-      });
+      if(!this.helpAction){
+        this.$store.state.socket.emit("collectorsDrawCard", {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+       });
+      }
     },
     buyCard: function (card) {
       console.log("buyCard", card);
@@ -1144,18 +1175,17 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
         showHelpOptions:function(){
-     
-      var tempElement =document.getElementsByClassName("raiseValue");
-      tempElement.setAttribute("id", "animate");
-      console.log(this.helpAuctionActive);
-      console.log(tempElement.id);
-      if(this.helpAuctionActive){
+        this.helpAction=!this.helpAction;
+        console.log(this.helpAction);
+        console.log(document.getElementById("test1").className);
+
+     /* if(this.helpAuctionActive){
         console.log("hejhej");
         tempElement.setAttribute("id", "");
         this.helpAuctionActive=false;
       }
       this.helpAuctionActive=true;
-      
+      */
     /*
     helpAuctionHover();
     helpButtonsHover();
@@ -1165,6 +1195,132 @@ export default {
     helpSkillsAreaHover();
     */
   },
+  skillsHelp:function(){
+    if(this.helpAction){
+
+      if(this.auctionHelpActive ||this.menuSpaceActive||this.buttonsHelpActive||this.workHelpActive ||this.itemsHelpActive||this.raiseValueHelpActive ){
+        
+        this.auctionHelpActive=false;
+        this.menuSpaceActive=false;
+        this.buttonsHelpActive=false;
+        this.workHelpActive=false;
+        this.itemsHelpActive=false;
+        this.raiseValueHelpActive=false;
+       
+
+      }
+      this.skillsHelpActive=!this.skillsHelpActive;
+      
+    }
+    
+
+  },
+  auctionHelp:function(){
+    if(this.helpAction){
+     
+      if(this.skillsHelpActive||this.menuSpaceActive||this.buttonsHelpActive||this.workHelpActive ||this.itemsHelpActive||this.raiseValueHelpActive ){
+        this.skillsHelpActive=false;
+        this.menuSpaceActive=false;
+        this.buttonsHelpActive=false;
+        this.workHelpActive=false;
+        this.itemsHelpActive=false;
+        this.raiseValueHelpActive=false;
+       
+
+      }
+      this.auctionHelpActive=!this.auctionHelpActive;
+      
+    }
+  },
+  menuSpaceHelp:function(){
+    if(this.helpAction){
+      if(this.skillsHelpActive || this.auctionHelpActive||this.buttonsHelpActive||this.workHelpActive ||this.itemsHelpActive||this.raiseValueHelpActive ){
+        this.skillsHelpActive=false;
+        this.auctionHelpActive=false;
+        this.buttonsHelpActive=false;
+        this.workHelpActive=false;
+        this.itemsHelpActive=false;
+        this.raiseValueHelpActive=false;
+       
+
+      }
+      this.menuSpaceActive=!this.menuSpaceActive;
+      
+    }
+   
+  },
+  buttonsHelp:function(){
+    if(this.helpAction){
+      if(this.skillsHelpActive || this.auctionHelpActive ||this.menuSpaceActive||this.workHelpActive ||this.itemsHelpActive||this.raiseValueHelpActive ){
+        this.skillsHelpActive=false;
+        this.auctionHelpActive=false;
+        this.menuSpaceActive=false;
+        this.workHelpActive=false;
+        this.itemsHelpActive=false;
+        this.raiseValueHelpActive=false;
+       
+
+      }
+      this.buttonsHelpActive=!this.buttonsHelpActive;
+      
+    }
+    
+  },
+  workHelp:function(){
+    if(this.helpAction){
+      if(this.skillsHelpActive || this.auctionHelpActive ||this.menuSpaceActive||this.buttonsHelpActive||this.itemsHelpActive||this.raiseValueHelpActive ){
+        this.skillsHelpActive=false;
+        this.auctionHelpActive=false;
+        this.menuSpaceActive=false;
+        this.buttonsHelpActive=false;
+        this.itemsHelpActive=false;
+        this.raiseValueHelpActive=false;
+       
+
+      }
+      this.workHelpActive=!this.workHelpActive;
+      
+    }
+    
+  },
+  itemsHelp:function(){
+    if(this.helpAction){
+      if(this.skillsHelpActive || this.auctionHelpActive ||this.menuSpaceActive||this.buttonsHelpActive||this.workHelpActive||this.raiseValueHelpActive ){
+        this.skillsHelpActive=false;
+        this.auctionHelpActive=false;
+        this.menuSpaceActive=false;
+        this.buttonsHelpActive=false;
+        this.workHelpActive=false;
+        this.raiseValueHelpActive=false;
+       
+
+      }
+      this.itemsHelpActive=!this.itemsHelpActive;
+      
+    }
+    
+  },
+  
+  raiseValueHelp:function(){
+    if(this.helpAction){
+     if(this.skillsHelpActive || this.auctionHelpActive ||this.menuSpaceActive||this.buttonsHelpActive||this.workHelpActive ||this.itemsHelpActive ){
+        this.skillsHelpActive=false;
+        this.auctionHelpActive=false;
+        this.menuSpaceActive=false;
+        this.buttonsHelpActive=false;
+        this.workHelpActive=false;
+        this.itemsHelpActive=false;
+       
+
+      }
+      this.raiseValueHelpActive=!this.raiseValueHelpActive;
+      
+    }
+   
+    
+  
+  },
+  
     //---------------------------WORK metoder-------------------
     recycleBottle: function () {
       //Här ska en flaska växlas för pengar
@@ -1995,16 +2151,18 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 
 #playerHelp::-webkit-scrollbar {
   width: 11px;
-  height: 10px;
+  height: 5px;
 }
 
 #playerHelp::-webkit-scrollbar-track {
   background: var(--scrollbarBG);
   margin: 10px;
+  padding: 2px;
 }
 #playerHelp::-webkit-scrollbar-thumb {
   background-color: var(--thumbBG);
   border-radius: 6px;
+  height: 30px;
   border: 3px solid var(--scrollbarBG);
 }
 .helpBoard{
@@ -2023,6 +2181,26 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
 }
+
+
+
+.animate{
+    animation: jiggles 1s ease-in-out;
+    animation-iteration-count:infinite;
+    box-shadow: 0 0 10px yellow;
+  }
+
+
+
+
+
+
+
+  @keyframes jiggles {
+    0% {transform:rotate(0.5deg);}
+    50% {transform:rotate(-0.5deg);}
+    100% {transform:rotate(0.5deg);}
+  }
 
 @media screen and (max-width: 800px) {
   main {
