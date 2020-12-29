@@ -10,9 +10,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
     <div class="wrapper1 raiseValuegrid">
       <div v-for="values in marketOrder" :key="values">
         <div class="valueSlot">
-          <div class="valueIcon">
-            <v-img name="valueImageComponent" :src="getIcon(values)" v-bind:alt="values"></v-img>
-          </div>
+            <img class="valueIcon" :src="getIcon(values)">
           <p class="valueValue">
             {{ values }}
             <br />
@@ -32,8 +30,6 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
 
 <script>
 import CollectorsCard from "@/components/CollectorsCard.vue";
-
-Vue.component("valueImageComponent", v-img)
 
 export default {
   name: "CollectorsRaiseValue",
@@ -72,8 +68,7 @@ export default {
           return null;
       }
     },
-    //Tänkt att i loopen som lägger till ikonen för varje valueSlot ska path
-    //till bilden i fråga hämtas här
+    //Iconerna för varje kategori
     getIcon: function(category) {
       switch (category) {
         case "fastaval":

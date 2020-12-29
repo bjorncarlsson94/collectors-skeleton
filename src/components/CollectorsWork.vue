@@ -127,8 +127,8 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 5vw 5vw 5vw 5vw 5vw;
-  grid-gap: 2vw;
-  padding: 2vw;
+  grid-gap: 0.5vw;
+  padding: 1.5vw;
 }
 .workgrid div {
   background-color: rgb(207, 207, 207);
