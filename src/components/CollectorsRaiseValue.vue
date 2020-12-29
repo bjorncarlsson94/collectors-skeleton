@@ -72,15 +72,15 @@ export default {
     getIcon: function(category) {
       switch (category) {
         case "fastaval":
-          return require("../../public/images/player-bottle.png");
+          return require("../../public/images/fastaval.png");
         case "figures":
-          return require("../../public/images/player-bottle.png");
+          return require("../../public/images/figures.png");
         case "music":
-          return require("../../public/images/player-bottle.png");
+          return require("../../public/images/music.png");
         case "movie":
-          return require("../../public/images/player-bottle.png");
+          return require("../../public/images/movie.png");
         case "tech":
-          return require("../../public/images/player-bottle.png");
+          return require("../../public/images/tech.png");
         default:
           return null;
       }
