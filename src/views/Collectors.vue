@@ -1,73 +1,43 @@
 <template>
   <div class="bodytest">
     <main>
-      
-           <let-it-snow
-      v-bind="snowConf"
-      :show="show1"    
-      ></let-it-snow>
+      <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
       <section id="wrapper">
-              <div
-                class="helpBoard" 
-                @click="showHelpOptions"
-                >?</div>
+        <div class="helpBoard" @click="showHelpOptions">?</div>
         <div id="grid">
           <div class="playerJoinedBox" v-show="playerJoined">
-            <div class="playerText1">{{labels.playerIntro1}}</div>
-             <input class="playerText" type="text" v-model="pname">
-              
-              <div class="playerText2">{{labels.playerIntro2}}</div>
-              <div class="colorChoice" v-for="index in playerColor.length" :key="index">
-               <div class="theColor" :style="{background: playerColor[index-1]}" @click="players[playerId].color = playerColor[index-1]"></div>
-               </div>
-               <!-- :disabled="pname == '' || players[playerId].color == null" -->
-               <button class="enterPlayerInfo"   @click="playerInfo()">Enter</button>
-          </div>
-  
+            <div class="playerText1">{{ labels.playerIntro1 }}</div>
+            <input class="playerText" type="text" v-model="pname" />
+
+            <div class="playerText2">{{ labels.playerIntro2 }}</div>
             <div
-              class="player player2"
-              v-on:click="expandLeftBoard"
-              v-bind:class="{ active: leftIsActive }"
+              class="colorChoice"
+              v-for="index in playerColor.length"
+              :key="index"
             >
+              <div
+                class="theColor"
+                :style="{ background: playerColor[index - 1] }"
+                @click="players[playerId].color = playerColor[index - 1]"
+              ></div>
+            </div>
+            <!-- :disabled="pname == '' || players[playerId].color == null" -->
+            <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
+          </div>
+
+          <div
+            class="player player2"
+            v-on:click="expandLeftBoard"
+            v-bind:class="{ active: leftIsActive }"
+          >
+            <div v-if="!leftIsActive">
               {{ labels.player2 }}
-              <!--Here are the player specific things-->
+            </div>
+            <!--Here are the player specific things-->
 
             <div class="playerBoardGrid" v-if="leftIsActive">
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                <div class="help" @click="helpPlayerHandHover">
-                  ?
-                  <div id="playerHelp" v-show="helpPlayerHandActive">
-                    <h3>
-                      <strong>{{ labels.helpPlayerHand.title }}</strong>
-                    </h3>
-                    <div>
-                      <h3>
-                        <strong>{{ labels.helpPlayerHand.itemArea }}</strong>
-                      </h3>
-                      <p>{{ labels.helpPlayerHand.itemAreaText }}</p>
-                    </div>
-                    <div>
-                      <h3>
-                        <strong>{{ labels.helpPlayerHand.skillsArea }}</strong>
-                      </h3>
-                      <p>{{ labels.helpPlayerHand.skillsAreaText }}</p>
-                    </div>
-                    <div>
-                      <h3>
-                        <strong>{{ labels.helpPlayerHand.handArea }}</strong>
-                      </h3>
-                      <p>{{ labels.helpPlayerHand.handAreaText }}</p>
-                    </div>
-                    <div>
-                      <h3>
-                        <strong>{{ labels.helpPlayerHand.nextTurn }}</strong>
-                      </h3>
-                      <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
-                    </div>
-                  </div>
-                </div>
-
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -113,21 +83,121 @@
               <div class="boardNextTurnInfo">Next turn info</div>
             </div>
           </div>
+
           <div
             class="player player3"
             v-on:click="expandTopBoard"
             v-bind:class="{ active: topIsActive }"
           >
-            {{ labels.player3 }}
+            <div v-if="!topIsActive">
+              {{ labels.player3 }}
+            </div>
             <!--Here are the player specific things-->
+
+            <div class="playerBoardGrid" v-if="topIsActive">
+              <div class="boardCollection">
+                <div id="collectiontitle">Collection:</div>
+                <div class="boardcollectiongrid">
+                  <div class="playercollection">
+                    <div class="collectioncards">
+                      <CollectorsCard
+                        v-for="(card, index) in players[playerId].items"
+                        :card="card"
+                        :availableAction="card.available"
+                        @doAction="buyCard(card)"
+                        :key="index"
+                      />
+                    </div>
+                  </div>
+                  <div id="hidden">Hidden:</div>
+
+                  <div id="totalvalue">Total value:</div>
+                </div>
+              </div>
+              <div class="boardSkills">
+                Skills:
+                <div class="skillsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].skills"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardHand">
+                <div id="handTitle">Hand:</div>
+                <div class="cardsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].hand"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardNextTurnInfo">Next turn info</div>
+            </div>
           </div>
+
           <div
             class="player player4"
             v-on:click="expandRightBoard"
             v-bind:class="{ active: rightIsActive }"
           >
-            {{ labels.player4 }}
+            <div v-if="!rightIsActive">
+              {{ labels.player4 }}
+            </div>
             <!--Here are the player specific things-->
+
+            <div class="playerBoardGrid" v-if="rightIsActive">
+              <div class="boardCollection">
+                <div id="collectiontitle">Collection:</div>
+                <div class="boardcollectiongrid">
+                  <div class="playercollection">
+                    <div class="collectioncards">
+                      <CollectorsCard
+                        v-for="(card, index) in players[playerId].items"
+                        :card="card"
+                        :availableAction="card.available"
+                        @doAction="buyCard(card)"
+                        :key="index"
+                      />
+                    </div>
+                  </div>
+                  <div id="hidden">Hidden:</div>
+
+                  <div id="totalvalue">Total value:</div>
+                </div>
+              </div>
+              <div class="boardSkills">
+                Skills:
+                <div class="skillsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].skills"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardHand">
+                <div id="handTitle">Hand:</div>
+                <div class="cardsinhand">
+                  <CollectorsCard
+                    v-for="(card, index) in players[playerId].hand"
+                    :card="card"
+                    :availableAction="card.available"
+                    @doAction="buyCard(card)"
+                    :key="index"
+                  />
+                </div>
+              </div>
+              <div class="boardNextTurnInfo">Next turn info</div>
+            </div>
           </div>
 
           <div id="test1" :class="['skills', {'animate': helpAction}]" @click="skillsHelp()">
@@ -137,7 +207,7 @@
               <CollectorsSkillActions
                 v-if="players[playerId]"
                 :labels="labels"
-                :players ="players"
+                :players="players"
                 :player="players[playerId]"
                 :skillsOnSale="skillsOnSale"
                 :marketValues="marketValues"
@@ -195,7 +265,7 @@
                 :card="card"
                 :key="index"
               />
-              </div>
+            </div>
             <button
               class="auctionButtonWinner button1"
               v-if="players[playerId]"
@@ -226,14 +296,15 @@
               Market share
             </button>
           </div>
-           <div class="loserAuction" v-show="loserAvailable" >
-             You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
-             <button
-        class="auctionButtonLoser"
-        v-if="players[playerId]"
-        @click="loserAvailable = false"
-      >OK</button>
-
+          <div class="loserAuction" v-show="loserAvailable">
+            You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
+            <button
+              class="auctionButtonLoser"
+              v-if="players[playerId]"
+              @click="loserAvailable = false"
+            >
+              OK
+            </button>
           </div>
           <CollectorsAuction
             v-if="players[playerId]"
@@ -263,7 +334,6 @@
                 v-if="players[playerId]"
                 :labels="labels"
                 :player="players[playerId]"
-                :raiseItems="raiseItems"
                 :raiseValue="raiseValue"
               />
             </div>
@@ -271,7 +341,7 @@
           <!-- Gav en class som beror på bolean isActive. Den ändras mellan true och false i 'expandPlayerBoard'-->
           <div
             class="playerboard"
-            :style="{background: players[playerId].color}"
+            :style="{ background: players[playerId].color }"
             v-if="players[playerId]"
             @click="expandPlayerBoard()"
             v-bind:class="{ active: isActive }"
@@ -439,6 +509,7 @@
             <p>{{ labels.roundcounter }} {{ round }}</p>
             <p>Det är {{ currentPlayer() }} tur att spela!</p>
           </div>
+
           <div class="drawCardSpace">
           
              
@@ -446,6 +517,9 @@
               <div @click="drawCard">
                 <img src="/images/back-of-card.png" class="deck" />
               </div>
+            </div>
+            <div class="cardCounter">
+              {{}}
             </div>
           </div>
           <div class="gridedge3" >
@@ -618,20 +692,22 @@ export default {
       scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       auctionCardPaymentActive: false,
       biddingCards: [],
-      pname: '',
+      pname: "",
       playerJoined: false,
       playerColor: [],
       cardBidTotal: 0,
       //snow
       snowConf: {
-            windPower : 1,  
-            speed : 3,
-            count : 12,
-            size : 10,
-            opacity : 1,
-            images: ['https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/snow.png',
-                    'https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/sock.png',
-                    'https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/tree.png']
+        windPower: 1,
+        speed: 3,
+        count: 12,
+        size: 10,
+        opacity: 1,
+        images: [
+          "https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/snow.png",
+          "https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/sock.png",
+          "https://raw.githubusercontent.com/bob-chen/let_it_snow/master/demo/tree.png",
+        ],
       },
       //  Jag hoppas att jag kan lösa detta inom kort. /Björn
 
@@ -658,7 +734,7 @@ export default {
     },
   },
   mounted() {
-        this.show1 = true
+    this.show1 = true;
     window.addEventListener("resize", () => {
       this.scalefactor = window.innerWidth / 8000; // Här är funktionen för skalningen. Denna gör specifikt så att det ändras baserat på skärmskalan.
     });
@@ -706,9 +782,9 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
-        if(this.players[this.playerId].name == null){
+        if (this.players[this.playerId].name == null) {
           this.playerJoinedFn();
-        }  
+        }
       }.bind(this)
     );
 
@@ -792,9 +868,7 @@ export default {
               this.restoreHand();
             }
           }
-          
-        }
-        else {
+        } else {
           this.auctionPrice = d.auctionPrice;
           this.auctionLeaderId = d.auctionLeaderId;
           this.players = d.players;
@@ -844,7 +918,7 @@ export default {
       "nameAndColorSeleced",
       function (d) {
         this.players = d.players;
-        this.playerColor = d.playerColor
+        this.playerColor = d.playerColor;
       }.bind(this)
     );
 
@@ -896,18 +970,17 @@ export default {
   },
 
   methods: {
-    playerJoinedFn: function(){
+    playerJoinedFn: function () {
       this.playerJoined = true;
     },
-    playerInfo: function(){
+    playerInfo: function () {
       this.playerJoined = false;
-      this.$store.state.socket.emit('nameAndColor', {
-          roomId: this.$route.params.id,
-          playerId: this.playerId,
-          color: this.players[this.playerId].color,
-          name: this.pname
-        }
-      );
+      this.$store.state.socket.emit("nameAndColor", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        color: this.players[this.playerId].color,
+        name: this.pname,
+      });
     },
     selectAll: function (n) {
       n.target.select();
@@ -920,14 +993,13 @@ export default {
     },
 
     playerName: function (pId) {
-      if( pId !== null){
+      if (pId !== null) {
         return this.players[pId].name;
-      }
-      else {
-        return ""
+      } else {
+        return "";
       }
     },
-    addNumber: function (add){
+    addNumber: function (add) {
       this.cardBidTotal += add;
     },
     winnerSelection: function (ifWinner) {
@@ -947,13 +1019,11 @@ export default {
           return this.players[this.currentPlayerId].name;
         }
       }
-      
     },
     hiddenAuctionCardFN: function () {
-      if(!this.hiddenAuctionCard){
+      if (!this.hiddenAuctionCard) {
         this.hiddenAuctionCard = true;
-      }
-      else {
+      } else {
         this.hiddenAuctionCard = false;
       }
     },
@@ -1113,7 +1183,7 @@ export default {
       this.$store.state.socket.emit("collectorsStartAuction", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
-        hiddenAuctionCard: this.hiddenAuctionCard, 
+        hiddenAuctionCard: this.hiddenAuctionCard,
         card: card,
         cost: this.chosenPlacementCost,
       });
@@ -1166,7 +1236,7 @@ export default {
       });
     },
 
-    changeBoolean: function(){
+    changeBoolean: function () {
       this.aboutToBuyItem = false;
     },
 
@@ -1182,7 +1252,7 @@ export default {
      /* if(this.helpAuctionActive){
         console.log("hejhej");
         tempElement.setAttribute("id", "");
-        this.helpAuctionActive=false;
+        this.helpAuctionActive = false;
       }
       this.helpAuctionActive=true;
       */
@@ -1366,7 +1436,7 @@ export default {
       console.log("placeWorker!");
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
-        where: where
+        where: where,
       });
     },
     //----------------------------------------------------------
@@ -1395,75 +1465,75 @@ footer a:visited {
   color: ivory;
 }
 .playerJoinedBox {
-    display: grid;
-    position: absolute;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    width: 25vw;
-    height: 30vw;
-    background-color: darkslategray;
-    border-radius: 2vw;
-    border-style: solid;
-    border-width: 0.4vw;
-    padding: 2vw;
-    border-color: black;
-    z-index: 50;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  display: grid;
+  position: absolute;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 25vw;
+  height: 30vw;
+  background-color: darkslategray;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  padding: 2vw;
+  border-color: black;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .enterPlayerInfo {
   background-color: white;
-    grid-row: 5;
-    grid-column: 2/4;
-    border-width: 0;
-    font-size: 1.5vw;
-    margin: 1.4vw;
+  grid-row: 5;
+  grid-column: 2/4;
+  border-width: 0;
+  font-size: 1.5vw;
+  margin: 1.4vw;
 }
 
-.colorChoice{
-grid-row: 4; 
+.colorChoice {
+  grid-row: 4;
 }
-.theColor{
-  cursor:pointer;
-    border-style: solid;
-    border-width: 0.4vw;
-    /* border: 0.2vw; */
-    border-color: black;
-    height: 3vw;
-    width: 4.3vw;
-    border-radius: 2vw;
-    align-self: center;
-    background-color: red;
-    margin: 0.5vw;
+.theColor {
+  cursor: pointer;
+  border-style: solid;
+  border-width: 0.4vw;
+  /* border: 0.2vw; */
+  border-color: black;
+  height: 3vw;
+  width: 4.3vw;
+  border-radius: 2vw;
+  align-self: center;
+  background-color: red;
+  margin: 0.5vw;
 }
-theColor:onclick{
-  cursor:pointer;
-    border-color: white;
+theColor:onclick {
+  cursor: pointer;
+  border-color: white;
 }
-.playerText{
+.playerText {
   grid-row: 2;
-    grid-column: 1/5;
-    height: 2vw;
-    margin: 2vw;
-    font-size: 2vw;
-    text-align: center;
+  grid-column: 1/5;
+  height: 2vw;
+  margin: 2vw;
+  font-size: 2vw;
+  text-align: center;
 }
-.playerText1{
+.playerText1 {
   color: white;
-    grid-row: 1;
-    margin: auto;
-    font-size: 2vw;
-    text-align: center;
-    grid-column: 1/5;
+  grid-row: 1;
+  margin: auto;
+  font-size: 2vw;
+  text-align: center;
+  grid-column: 1/5;
 }
-.playerText2{
-    color: white;
-    grid-row: 3;
-    font-size: 2vw;
-    margin: auto;
-    text-align: center;
-    grid-column: 1/5;
+.playerText2 {
+  color: white;
+  grid-row: 3;
+  font-size: 2vw;
+  margin: auto;
+  text-align: center;
+  grid-column: 1/5;
 }
 .cardslots {
   display: grid;
@@ -1643,12 +1713,17 @@ theColor:onclick{
   grid-column: 1;
   background-color: #d47871;
   border-radius: 2vw 2vw 0vw 0vw;
-  overflow: hidden;
+  overflow: scroll;
 }
+
+.playercollection::-webkit-scrollbar {
+  display: none;
+}
+
 .collectioncards {
   display: grid;
   grid-template-columns: repeat(auto-fill, 1.5vw);
-  grid-template-rows: repeat(2, 4vh);
+  grid-template-rows: repeat(7, 5vh);
   margin-right: 3.5vw;
   margin-left: 0.5vw;
 }
@@ -1680,7 +1755,8 @@ theColor:onclick{
 }
 .closedCardsInHand {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 2vw);
+  grid-template-columns: repeat(8, 2vw);
+  grid-template-rows: repeat(auto-fill, 1vw);
   height: 80%;
 
   margin-top: -1.5vw;
@@ -1695,11 +1771,13 @@ theColor:onclick{
 
 .cardsinhand {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 2vw);
+  grid-template-columns: repeat(9, 2vw);
+  grid-template-rows: repeat(auto-fill, 0.5vw);
   padding: 0.5vw;
   height: 80%;
   background-color: #eeedb8;
   border-radius: 2vw;
+  overflow: hidden;
 }
 #handTitle {
   margin-left: 10vw;
@@ -1746,29 +1824,29 @@ theColor:onclick{
   cursor: pointer;
 }
 .winnerAuction {
-    display: grid;
-    position: absolute;
-    grid-template-rows: 2fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    width: 40vw;
-    height: 18vw;
-    background-color: #f5efa0;
-    border-radius: 2vw;
-    border-style: solid;
-    border-width: 0.4vw;
-    border-color: black;
-    z-index: 50;
-    top: 26%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 1vw;
+  display: grid;
+  position: absolute;
+  grid-template-rows: 2fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 40vw;
+  height: 18vw;
+  background-color: #f5efa0;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 26%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1vw;
 }
 .winnerText {
- color: black;
-    grid-column: 1/4;
-    text-align: center;
-    font-size: 2vw;
-    margin: auto;
+  color: black;
+  grid-column: 1/4;
+  text-align: center;
+  font-size: 2vw;
+  margin: auto;
 }
 
 .auctionButtonWinner {
@@ -1823,8 +1901,8 @@ theColor:onclick{
 /* Om man klickar på spelaren i topp */
 .player3.active {
   background-color: #20ccbe;
-  width: 40vw;
-  height: 15vw;
+  width: 50vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;
@@ -1839,7 +1917,7 @@ theColor:onclick{
   background-color: #c236b4;
   margin-right: -110%;
   width: 50vw;
-  height: 20vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;
@@ -1853,8 +1931,8 @@ theColor:onclick{
 .player4.active {
   background-color: #e9b77a;
   margin-left: -110%;
-  width: 40vw;
-  height: 15vw;
+  width: 50vw;
+  height: 25vw;
   align-self: flex-start;
   justify-self: center;
   z-index: 1;
@@ -1917,9 +1995,9 @@ theColor:onclick{
 }
 .auctionCardViewFin {
   zoom: 1.65;
-    align-content: center;
-    grid-column: 4;
-    transition: auto;
+  align-content: center;
+  grid-column: 4;
+  transition: auto;
 }
 .auctionButtonMini {
   background-image: url("https://www.pngrepo.com/download/120575/minimize.png");
@@ -1979,16 +2057,7 @@ theColor:onclick{
 #helpDrawCardSpace {
   zoom: 150%;
 }
-.gridedge3 {
-  grid-column: 1;
-  grid-row: 1;
-  background-color: rgb(194, 194, 194);
-  border-radius: 2vw;
-  padding: 1vw;
-  font-size: 1vw;
-  text-align: center;
-  align-self: self-start;
-}
+
 .drawCardSpace {
   grid-column: 8;
   grid-row: 2;
@@ -2165,14 +2234,14 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   height: 30px;
   border: 3px solid var(--scrollbarBG);
 }
-.helpBoard{
-  top:1vw;
-  right:1vw;
-  width:5vw;
-  height:5vw;
+.helpBoard {
+  top: 1vw;
+  right: 1vw;
+  width: 5vw;
+  height: 5vw;
   border-radius: 50%;
   position: absolute;
-   display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: blue;

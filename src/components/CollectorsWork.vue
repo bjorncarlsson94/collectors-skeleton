@@ -3,14 +3,15 @@
     <div class="workgrid">
       <!-- <h1>{{ labels.workTitle }}</h1>
     <button id="helpButton" value="?" v-on:click="helpButtonPressed"></button> -->
-      <button class="workslot5" v-on:click="recycleBottle4thRound"></button>
-      <button class="workslot4" v-on:click="recycleBottle"></button>
-      <button class="workslot3" v-on:click="drawTwoCards"></button>
+      <button class="workslot" id="workslot5" v-on:click="recycleBottle4thRound"></button>
+      <button class="workslot" id="workslot4" v-on:click="recycleBottle"></button>
+      <button class="workslot" id="workslot3" v-on:click="drawTwoCards"></button>
       <button
-        class="workslot2"
+        class="workslot"
+        id="workslot2"
         v-on:click="drawACardAndFirstPlayerToken"
       ></button>
-      <button class="workslot1" v-on:click="drawCardAndPassiveIncome"></button>
+      <button class="workslot" id="workslot1" v-on:click="drawCardAndPassiveIncome"></button>
     </div>
   </div>
 </template>
@@ -127,8 +128,8 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 5vw 5vw 5vw 5vw 5vw;
-  grid-gap: 2vw;
-  padding: 2vw;
+  grid-gap: 0.5vw;
+  padding: 1.5vw;
 }
 .workgrid div {
   background-color: rgb(207, 207, 207);
@@ -139,35 +140,39 @@ export default {
   width: auto;
 }
 
-.workslot1 {
+.workslot:hover {
+  background-color: rgb(177, 177, 177);
+}
+
+#workslot1 {
   background-image: url("/images/Work1_png.png");
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   grid-row: 5;
 }
-.workslot2 {
+#workslot2 {
   background-image: url("/images/Work2_png.png");
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   grid-row: 4;
 }
-.workslot3 {
+#workslot3 {
   background-image: url("/images/Work3_png.png");
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   grid-row: 3;
 }
-.workslot4 {
+#workslot4 {
   background-image: url("/images/Work4_png.png");
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   grid-row: 2;
 }
-.workslot5 {
+#workslot5 {
   background-image: url("/images/Work5_png.png");
   background-size: 100%;
   background-repeat: no-repeat;
