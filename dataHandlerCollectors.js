@@ -627,8 +627,15 @@ Data.prototype.getCardValue = function(roomId) {
 Data.prototype.nameAndColor = function(roomId, playerId, name, color) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
+    console.log("denna färg: "+color)
+    if (typeof color !== "undefined"){
+      color = room.playerColor[0]
+    } 
     room.players[playerId].color = color;
-    if (name === "" || typeof name != String) {
+    
+   
+    console.log("detta namn: "+name)
+    if (name == "") {
       var fs = require("fs");
       var text = fs.readFileSync("./data/example-names.txt").toString('utf-8');
       console.log(text);
