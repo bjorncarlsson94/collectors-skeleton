@@ -1379,10 +1379,13 @@ theColor:onclick {
     auto-fill,
     12vw
   ); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
-  grid-template-rows: repeat(auto-fill, 12vw);
+  grid-template-rows: repeat(auto-fill, 12vw)
+  ;
 }
 .card {
   position: relative;
+  -webkit-box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+  box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
 }
 /* transform: scale(0.5)translate(-50%,-50%);*/
 
@@ -1595,7 +1598,6 @@ theColor:onclick {
   grid-template-columns: repeat(8, 2vw);
   grid-template-rows: repeat(auto-fill, 1vw);
   height: 80%;
-
   margin-top: -1.5vw;
 }
 .closedBoardHandBackground {
@@ -1616,6 +1618,19 @@ theColor:onclick {
   border-radius: 2vw;
   overflow: hidden;
 }
+.cardsinhand > .card:hover{
+  filter: brightness(110%);
+  cursor: pointer;
+  margin-top: -1vw;
+
+}
+.closedCardsInHand > .card:hover{
+  filter: brightness(110%);
+  cursor: pointer;
+  margin-top: -3vw;
+}
+
+
 #handTitle {
   margin-left: 10vw;
   position: absolute;
