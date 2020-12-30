@@ -28,6 +28,7 @@ function sockets(io, socket, data) {
       "collectorsCardDrawn",
       data.drawCard(d.roomId, d.playerId)
     );
+    console.log("drew card");
   });
   socket.on("collectorsBuyCard", function (d) {
     data.buyCard(d.roomId, d.playerId, d.card, d.cost);
