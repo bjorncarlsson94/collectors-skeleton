@@ -41,6 +41,8 @@
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
+
+
                       <CollectorsCard
                         v-for="(card, index) in players[playerId].items"
                         :card="card"
@@ -423,7 +425,6 @@
                 </div>
               </div>
               <div class="boardSkills">
-                Skills:
                 <div class="skillsinhand">
                   <CollectorsCard
                     v-for="(card, index) in players[playerId].skills"
@@ -432,6 +433,14 @@
                     @doAction="buyCard(card)"
                     :key="index"
                   />
+                </div>
+                <div class="skillsInfo">Tjo
+                  <div>bipp</div>
+                  <div>bapp</div>
+                  <div>bopp</div>
+
+
+
                 </div>
               </div>
               <div class="boardHand">
@@ -811,7 +820,9 @@ export default {
       function (d) {
         //this has been refactored to not single out one player's cards
         //better to update the state of all cards
+        console.log(d.playerId, "drew a card");
         this.players = d;
+        
       }.bind(this)
     );
 
@@ -1545,10 +1556,13 @@ theColor:onclick {
     auto-fill,
     12vw
   ); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
-  grid-template-rows: repeat(auto-fill, 12vw);
+  grid-template-rows: repeat(auto-fill, 12vw)
+  ;
 }
 .card {
   position: relative;
+  -webkit-box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+  box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
 }
 /* transform: scale(0.5)translate(-50%,-50%);*/
 
@@ -1761,7 +1775,6 @@ theColor:onclick {
   grid-template-columns: repeat(8, 2vw);
   grid-template-rows: repeat(auto-fill, 1vw);
   height: 80%;
-
   margin-top: -1.5vw;
 }
 .closedBoardHandBackground {
@@ -1782,6 +1795,20 @@ theColor:onclick {
   border-radius: 2vw;
   overflow: hidden;
 }
+.cardsinhand > .card:hover{
+  filter: brightness(110%);
+  cursor: pointer;
+  margin-top: -1vw;
+  z-index: 2;
+}
+.closedCardsInHand > .card:hover{
+  filter: brightness(110%);
+  cursor: pointer;
+  margin-top: -3vw;
+  z-index: 2;
+}
+
+
 #handTitle {
   margin-left: 10vw;
   position: absolute;
@@ -1797,6 +1824,8 @@ theColor:onclick {
 }
 
 .boardSkills {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
   border-radius: 0 2vw 0 0;
   background-color: #bddf8c;
   grid-column: 3/5;
@@ -1810,7 +1839,15 @@ theColor:onclick {
   margin: 1vw;
   border-radius: 2vw;
   background-color: #cde0b2;
+  grid-column: 1;
 }
+.skillsInfo{
+  grid-column: 2;
+  background-color: #bbd892;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
 
 .boardNextTurnInfo {
   grid-row: 4;
