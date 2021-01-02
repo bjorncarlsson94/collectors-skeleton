@@ -547,6 +547,9 @@
             <button @click="moveCards()" class="menuButton">
               hola olle testa här :)
             </button>
+            <button @click="nextPlayer()" class="menuButton">
+              nästa runda :)
+            </button>
             <button @click="hiddenAuctionCard = true" class="menuButton">
               hidden auction card
             </button>
@@ -2254,9 +2257,9 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 
 
 .animate{
-    animation: jiggles 1s ease-in-out;
+    animation: jiggles 4s ease-in-out;
     animation-iteration-count:infinite;
-    box-shadow: 0 0 10px yellow;
+    box-shadow: 0 0 10px rgb(116, 116, 9);
   }
 
 

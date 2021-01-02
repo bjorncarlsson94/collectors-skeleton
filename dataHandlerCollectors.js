@@ -667,6 +667,7 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
     console.log(auctionActive);
     if (room.startingPlayerId === keys[i + 1] && !auctionActive) {
       room.round += 1;
+      this.moveCards(roomId);
     }
     return room.players, room.round;
   }

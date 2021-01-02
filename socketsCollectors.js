@@ -78,6 +78,15 @@ function sockets(io, socket, data) {
       players: data.getPlayers(d.roomId),
       round: data.getRound(d.roomId),
     });
+    io.to(d.roomId).emit("cardsMoved", {
+      players: data.getPlayers(d.roomId),
+      round: data.getRound(d.roomId),
+      raiseItems: data.getRaiseItems(d.roomId),
+      raiseValue: data.getCardValue(d.roomId),
+      skillsOnSale: data.getSkillsOnSale(d.roomId),
+      itemsOnSale: data.getItemsOnSale(d.roomId),
+      auctionCards: data.getAuctionCards(d.roomId),
+    });
   });
   socket.on("moveCards", function (d) {
     data.moveCards(d.roomId);
@@ -176,6 +185,8 @@ socket.on('nameAndColor', function (d) {
     );
   });
   //---------------------------------------------------
+  
+  
 }
 
 module.exports = sockets;
