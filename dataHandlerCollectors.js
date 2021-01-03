@@ -168,6 +168,13 @@ Data.prototype.createDeck = function() {
   return shuffle(deck);
 };
 
+Data.prototype.getDeckLength = function {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    return room.deck.length;
+  } else return 0;
+};
+
 Data.prototype.joinGame = function(roomId, playerId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -194,6 +201,7 @@ Data.prototype.joinGame = function(roomId, playerId) {
         name: null,
         color: null,
         turn: false,
+        }
       };
       return true;
     }
@@ -638,7 +646,6 @@ Data.prototype.nameAndColor = function(roomId, playerId, name, color) {
     if (name == "") {
       var fs = require("fs");
       var text = fs.readFileSync("./data/example-names.txt").toString('utf-8');
-      console.log(text);
       var textByLine = text.split("\n");
       room.players[playerId].name = textByLine[Math.floor(Math.random() * textByLine.length)];
     } else {

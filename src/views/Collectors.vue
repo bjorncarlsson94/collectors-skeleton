@@ -519,7 +519,7 @@
               </div>
             </div>
             <div class="cardCounter">
-              {{}}
+              <!-- {{}} -->
             </div>
           </div>
           <div class="gridedge3" >
@@ -1009,7 +1009,6 @@ export default {
         this.loserAvailable = true;
       }
     },
-
     currentPlayer: function () {
       var keys = Object.keys(this.players);
 
