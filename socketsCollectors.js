@@ -28,6 +28,7 @@ function sockets(io, socket, data) {
       "collectorsCardDrawn",
       data.drawCard(d.roomId, d.playerId)
     );
+    console.log("drew card");
   });
   socket.on("collectorsGetDeckLength", function (d) {
     io.to(d.roomId).emit(
@@ -83,6 +84,15 @@ function sockets(io, socket, data) {
     io.to(d.roomId).emit("playerPicked", {
       players: data.getPlayers(d.roomId),
       round: data.getRound(d.roomId),
+    });
+    io.to(d.roomId).emit("cardsMoved", {
+      players: data.getPlayers(d.roomId),
+      round: data.getRound(d.roomId),
+      raiseItems: data.getRaiseItems(d.roomId),
+      raiseValue: data.getCardValue(d.roomId),
+      skillsOnSale: data.getSkillsOnSale(d.roomId),
+      itemsOnSale: data.getItemsOnSale(d.roomId),
+      auctionCards: data.getAuctionCards(d.roomId),
     });
   });
   socket.on("moveCards", function (d) {
@@ -182,6 +192,8 @@ socket.on('nameAndColor', function (d) {
     );
   });
   //---------------------------------------------------
+  
+  
 }
 
 module.exports = sockets;

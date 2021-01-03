@@ -41,6 +41,8 @@
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
+
+
                       <CollectorsCard
                         v-for="(card, index) in players[playerId].items"
                         :card="card"
@@ -423,7 +425,6 @@
                 </div>
               </div>
               <div class="boardSkills">
-                Skills:
                 <div class="skillsinhand">
                   <CollectorsCard
                     v-for="(card, index) in players[playerId].skills"
@@ -432,6 +433,14 @@
                     @doAction="buyCard(card)"
                     :key="index"
                   />
+                </div>
+                <div class="skillsInfo">Tjo
+                  <div>bipp</div>
+                  <div>bapp</div>
+                  <div>bopp</div>
+
+
+
                 </div>
               </div>
               <div class="boardHand">
@@ -546,6 +555,9 @@
             </button>
             <button @click="moveCards()" class="menuButton">
               hola olle testa här :)
+            </button>
+            <button @click="nextPlayer()" class="menuButton">
+              nästa runda :)
             </button>
             <button @click="hiddenAuctionCard = true" class="menuButton">
               hidden auction card
@@ -814,7 +826,9 @@ export default {
       function (d) {
         //this has been refactored to not single out one player's cards
         //better to update the state of all cards
+        console.log(d.playerId, "drew a card");
         this.players = d;
+        
       }.bind(this)
     );
 
@@ -1805,12 +1819,13 @@ theColor:onclick {
   filter: brightness(110%);
   cursor: pointer;
   margin-top: -1vw;
-
+  z-index: 2;
 }
 .closedCardsInHand > .card:hover{
   filter: brightness(110%);
   cursor: pointer;
   margin-top: -3vw;
+  z-index: 2;
 }
 
 
@@ -1829,6 +1844,8 @@ theColor:onclick {
 }
 
 .boardSkills {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
   border-radius: 0 2vw 0 0;
   background-color: #bddf8c;
   grid-column: 3/5;
@@ -1842,7 +1859,15 @@ theColor:onclick {
   margin: 1vw;
   border-radius: 2vw;
   background-color: #cde0b2;
+  grid-column: 1;
 }
+.skillsInfo{
+  grid-column: 2;
+  background-color: #bbd892;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
 
 .boardNextTurnInfo {
   grid-row: 4;
@@ -2289,9 +2314,9 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 
 
 .animate{
-    animation: jiggles 1s ease-in-out;
+    animation: jiggles 4s ease-in-out;
     animation-iteration-count:infinite;
-    box-shadow: 0 0 10px yellow;
+    box-shadow: 0 0 10px rgb(116, 116, 9);
   }
 
 
