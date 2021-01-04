@@ -24,7 +24,7 @@ export default {
     labels: Object,
     player: Object,
     round: Number,
-    workPlacement: Array, //Finns en flaska här? true/false
+    workPlacement: Object, //Finns en flaska här? true/false
     //drawTwoCards = 0
     //drawACardAndFirstPlayerToken = 0
     //drawCardAndPassiveIncome = 0
@@ -35,29 +35,29 @@ export default {
     //Lägg en flaska här och dra 2st kort
     drawTwoCards: function () {
       console.log(this.workPlacement);
-      if ((this.workPlacement[0] === false) && this.player.bottles > 0) {
+      if ((this.workPlacement.drawTwoCards === null) && this.player.bottles > 0) {
         console.log("Kraschar innan this.workPlacement");
         this.$emit("workDrawTwoCards");
-        this.placeWorker(0);
+        this.placeWorker("drawTwoCards");
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
     },
     //Lägg en flaska här och dra ett kort samt ta First Player Token
     drawACardAndFirstPlayerToken: function () {
-      if ((this.workPlacement[1] === false) && this.player.bottles > 0 && !this.player.firstPlayerToken) {
+      if ((this.workPlacement.drawACardAndFirstPlayerToken === null) && this.player.bottles > 0 && !this.player.firstPlayerToken) {
         this.$emit("drawACardAndFirstPlayerToken");
-        this.placeWorker(1);
+        this.placeWorker("drawACardAndFirstPlayerToken");
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
     },
     //Lägg en flaska här och dra ett kort samt ett kort som passiv inkomst
     drawCardAndPassiveIncome: function () {
-      console.log(this.workPlacement[2]);
-      if ((this.workPlacement[2] === false) && this.player.bottles > 0) {
+      console.log(this.workPlacement);
+      if ((this.workPlacement.drawCardAndPassiveIncome === null) && this.player.bottles > 0) {
         this.$emit("drawCardAndPassiveIncome");
-        this.placeWorker(2);
+        this.placeWorker("drawCardAndPassiveIncome");
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }

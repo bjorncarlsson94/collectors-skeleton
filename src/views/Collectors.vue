@@ -580,7 +580,11 @@ export default {
       skillPlacement: [],
       auctionPlacement: [],
       marketPlacement: [],
-      workPlacement: [false, false, false],
+      workPlacement: {
+        drawACardAndFirstPlayerToken: null,
+        drawCardAndPassiveIncome: null,
+        drawTwoCards: null,
+      },
       chosenPlacementCost: null,
       marketValues: {
         fastaval: 0,
@@ -712,6 +716,7 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
+        this.workPlacement = d.workPlacement;
         if (this.players[this.playerId].name == null) {
           this.playerJoinedFn();
         }
@@ -914,10 +919,7 @@ export default {
 
     this.$store.state.socket.on(
       "workerPlaced",
-      function (d) {
-        console.log("workPlacement uppdaterad!");
-        this.workPlacement = d;
-      }.bind(this)
+      (d) => (this.workPlacement = d.workPlacement)
     );
     //------------------------------
 
@@ -1455,6 +1457,7 @@ export default {
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
         where: where,
+        playerId: this.playerId,
       });
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
