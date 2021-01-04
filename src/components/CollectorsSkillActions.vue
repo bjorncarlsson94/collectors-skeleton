@@ -80,6 +80,7 @@ export default {
       return this.marketValues[card.market];
     },
     placeBottle: function (p) {
+      
       this.$emit('placeBottle', p.cost);
       this.highlightAvailableCards(p.cost);
     },
