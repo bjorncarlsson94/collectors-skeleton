@@ -77,24 +77,29 @@ function sockets(io, socket, data) {
   socket.on("collectorsPlaceBottle", function (d) {
     data.placeBottle(d.roomId, d.playerId, d.action, d.cost);
     io.to(d.roomId).emit(
-      "collectorsBottlePlaced",
+      "collectorsBottle",
+      data.getPlacements(d.roomId)
+    );
+  });
+  socket.on("collectorsRemoveBottle", function (d) {
+    data.removeBottle(d.roomId, d.playerId, d.action, d.cost);
+    io.to(d.roomId).emit(
+      "collectorsBottle",
       data.getPlacements(d.roomId)
     );
   });
   socket.on("startTurn", function (d) {
     data.startTurn(d.roomId);
-    io.to(d.roomId).emit("playerPicked", {
-      players: data.getPlayers(d.roomId),
-      round: data.getRound(d.roomId),
-    });
+    io.to(d.roomId).emit("playerPicked", 
+    data.getPlacements(d.roomId)
+    );
   });
 
   socket.on("nextPlayer", function (d) {
     data.nextPlayer(d.roomId, d.playerId, d.auctionActive);
-    io.to(d.roomId).emit("playerPicked", {
-      players: data.getPlayers(d.roomId),
-      round: data.getRound(d.roomId),
-    });
+    io.to(d.roomId).emit("playerPicked", 
+      data.getPlacements(d.roomId)
+    );
     io.to(d.roomId).emit("cardsMoved", {
       players: data.getPlayers(d.roomId),
       round: data.getRound(d.roomId),
