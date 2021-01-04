@@ -572,6 +572,7 @@ All pools (except the market pool) should have the same number of cards after th
         c = room.skillsOnSale.splice(i, 1, {});
         room.raiseItems.push(...c);
         room.raiseValue = this.cardValue(roomId);
+        
         break;
       }
     }
@@ -584,13 +585,16 @@ All pools (except the market pool) should have the same number of cards after th
         counter++;
       }
     }
-
+    console.log("borde vara 3:"+counter);
     for (let i = counter - 1; i >= 0; i -= 1) {
       for (let j = room.itemsOnSale.length - 1; j >= 0; j -= 1) {
         if (room.itemsOnSale[j].market) {
           k = room.itemsOnSale.splice(j, 1, {});
-
+          
+          
+          
           room.skillsOnSale.splice(i, 1, ...k);
+          console.log(room.skillsOnSale[i].item);
           break;
         }
       }
@@ -612,13 +616,12 @@ All pools (except the market pool) should have the same number of cards after th
 
     //fill pools
 
-    room.skillsOnSale = this.fillPool(roomId, "skills", room.skillsOnSale);
+    
     room.itemsOnSale = this.fillPool(roomId, "items", room.itemsOnSale);
     room.auctionCards = this.fillPool(roomId, "auction", room.auctionCards);
-
     room.auctionCards = this.bubbleSort(room.auctionCards);
     room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
-    room.skillsOnSale = this.bubbleSort(room.skillsOnSale);
+   
   } else return [];
 };
 

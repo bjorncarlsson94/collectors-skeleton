@@ -2,7 +2,7 @@
     <div>
       <!--<h1>{{ labels.buyCard }}</h1>-->
       <div class="buy-cards itemgrid">
-        <div v-for="(card, index) in itemsOnSale" :key="index">
+        <div v-for="(card, index) in itemsOnSale.slice().reverse()" :key="index">
           <CollectorsCard 
             :card="card" 
             :availableAction="card.available" 
