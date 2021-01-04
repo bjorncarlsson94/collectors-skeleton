@@ -3,7 +3,9 @@
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
       <section id="wrapper">
-        <div class="helpBoard" @click="showHelpOptions">?</div>
+        <div class="helpBoard" @click="showHelpOptions">
+          <p><strong>?</strong></p>
+        </div>
         <div id="grid">
           <div class="playerJoinedBox" v-show="playerJoined">
             <div class="playerText1">{{ labels.playerIntro1 }}</div>
@@ -25,75 +27,79 @@
             <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
           </div>
 
-
           <div class="otherplayers">
-          <div
-            v-for="(player, index) in players"
-            :key="index"
-            :style="player === players[playerId] ? 'display: none':'display: inline-block'"
-          >
+            <div
+              v-for="(player, index) in players"
+              :key="index"
+              :style="
+                player === players[playerId]
+                  ? 'display: none'
+                  : 'display: inline-block'
+              "
+            >
+              <div v-if="player != players[playerId]">
+                <div
+                  class="otherplayer"
+                  v-bind:class="{ open: player.playerIsActive }"
+                  @click="expandOtherPlayer(player)"
+                  :style="{ background: player.color }"
+                >
+                  <div v-if="!player.playerIsActive">{{ player.name }}</div>
 
-            <div v-if="player != players[playerId]">
-              <div
-                class="otherplayer"
-                v-bind:class="{ open: player.playerIsActive }"
-                @click="expandOtherPlayer(player)"
-                :style="{ background: player.color }"
-              >
-                <div v-if="!player.playerIsActive">{{ player.name }}</div>
-
-                <div class="playerBoardGrid" v-if="player.playerIsActive === true">
-                  <div class="boardCollection">
-                    <div id="collectiontitle">Collection:</div>
-                    <div class="boardcollectiongrid">
-                      <div class="playercollection">
-                        <div class="collectioncards">
-                          <CollectorsCard
-                            v-for="(card, index) in player.items"
-                            :card="card"
-                            :availableAction="card.available"
-                            @doAction="buyCard(card)"
-                            :key="index"
-                          />
+                  <div
+                    class="playerBoardGrid"
+                    v-if="player.playerIsActive === true"
+                  >
+                    <div class="boardCollection">
+                      <div id="collectiontitle">Collection:</div>
+                      <div class="boardcollectiongrid">
+                        <div class="playercollection">
+                          <div class="collectioncards">
+                            <CollectorsCard
+                              v-for="(card, index) in player.items"
+                              :card="card"
+                              :availableAction="card.available"
+                              @doAction="buyCard(card)"
+                              :key="index"
+                            />
+                          </div>
                         </div>
+                        <div id="hidden">Hidden:</div>
+
+                        <div id="totalvalue">Total value:</div>
                       </div>
-                      <div id="hidden">Hidden:</div>
+                    </div>
+                    <div class="boardSkills">
+                      Skills:
+                      <div class="skillsinhand">
+                        <CollectorsCard
+                          v-for="(card, index) in player.skills"
+                          :card="card"
+                          :availableAction="card.available"
+                          @doAction="buyCard(card)"
+                          :key="index"
+                        />
+                      </div>
+                    </div>
+                    <div class="boardHand">
+                      <div id="handTitle">Hand:</div>
+                      <div class="cardsinhand">
+                        <CollectorsCard
+                          v-for="(card, index) in player.hand"
+                          :card="card"
+                          :availableAction="card.available"
+                          @doAction="buyCard(card)"
+                          :key="index"
+                        />
+                      </div>
+                    </div>
 
-                      <div id="totalvalue">Total value:</div>
-                    </div>
+                    <div class="boardNextTurnInfo">Next turn info</div>
                   </div>
-                  <div class="boardSkills">
-                    Skills:
-                    <div class="skillsinhand">
-                      <CollectorsCard
-                        v-for="(card, index) in player.skills"
-                        :card="card"
-                        :availableAction="card.available"
-                        @doAction="buyCard(card)"
-                        :key="index"
-                      />
-                    </div>
-                  </div>
-                  <div class="boardHand">
-                    <div id="handTitle">Hand:</div>
-                    <div class="cardsinhand">
-                      <CollectorsCard
-                        v-for="(card, index) in player.hand"
-                        :card="card"
-                        :availableAction="card.available"
-                        @doAction="buyCard(card)"
-                        :key="index"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="boardNextTurnInfo">Next turn info</div>
                 </div>
               </div>
             </div>
           </div>
-</div>
-          
 
           <div
             id="test1"
@@ -304,6 +310,8 @@
               </div>
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
+                <!-- playerMoney -->
+                <div class="playerMoney">{{ getCurrentScore() }}</div>
 
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
@@ -422,7 +430,9 @@
                 <img src="/images/back-of-card.png" class="deck" />
               </div>
             </div>
-            <div class="cardCounter">{{}}</div>
+            <div class="cardCounter">
+              {{ deckLength }}
+            </div>
           </div>
           <div class="gridedge3">
             Ruta för att visa grid lättare: 3
@@ -457,6 +467,14 @@
             <button @click="hiddenAuctionCard = true" class="menuButton">
               hidden auction card
             </button>
+
+            <!--
+              Lägg till current value i spelaren. Så att varje spelare har koll på sin egna currentValue. 
+              få det att fungera att skriva ut den ordentligt
+
+
+
+            -->
           </div>
         </div>
       </section>
@@ -565,6 +583,7 @@ export default {
       skillsOnSale: [],
       auctionCards: [],
       cardInAuction: [],
+      deckLength: null,
       raiseItems: [],
       raiseValue: {
         fastaval: 0,
@@ -700,6 +719,11 @@ export default {
     this.$store.state.socket.on(
       "collectorsPointsUpdated",
       (d) => (this.points = d)
+    );
+
+    this.$store.state.socket.on(
+      "collectorsGotDeckLength",
+      (d) => (this.deckLength = d)
     );
 
     this.$store.state.socket.on(
@@ -860,12 +884,20 @@ export default {
       }.bind(this)
     );
     this.$store.state.socket.on(
+      "currentScores",
+      function (d) {
+        this.players[this.playerId].currentScore = d;
+      }.bind(this)
+    );
+
+    this.$store.state.socket.on(
       "workerPlaced",
       function (d) {
         console.log("workPlacement uppdaterad!");
         this.workPlacement = d;
       }.bind(this)
     );
+
     //------------------------------
   },
 
@@ -909,7 +941,6 @@ export default {
         this.loserAvailable = true;
       }
     },
-
     currentPlayer: function () {
       var keys = Object.keys(this.players);
 
@@ -950,11 +981,11 @@ export default {
 
       console.log("Status: " + this.isActive);
     },
-    expandOtherPlayer: function(player){
-      console.log("klicky macdicky")
+    expandOtherPlayer: function (player) {
+      console.log("klicky macdicky");
       player.playerIsActive = !player.playerIsActive;
 
-      console.log(player.name +" has opened "+ player.playerIsActive);
+      console.log(player.name + " has opened " + player.playerIsActive);
     },
     openBoard: function () {
       console.log("Open board");
@@ -1053,6 +1084,9 @@ export default {
           playerId: this.playerId,
         });
       }
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+        roomId: this.$route.params.id,
+      });
     },
     buyCard: function (card) {
       console.log("buyCard", card);
@@ -1134,6 +1168,20 @@ export default {
         playerId: this.playerId,
       });
     },
+    currentScore: function () {
+      this.$store.state.socket.emit("currentValue", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        currentValue: this.currentValue,
+      });
+    },
+    getCurrentScore: function () {
+      if (typeof this.players[this.playerId].currentScore !== "undefined") {
+        return this.players[this.playerId].currentScore;
+      }
+      return "";
+    },
+
     nextPlayer: function () {
       this.$store.state.socket.emit("nextPlayer", {
         roomId: this.$route.params.id,
@@ -1339,12 +1387,18 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+        roomId: this.$route.params.id,
+      });
     },
     drawACardAndFirstPlayerToken: function () {
       console.log("draw card and first player token");
       this.$store.state.socket.emit("collectorsDrawACardAndToken", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
+      });
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+        roomId: this.$route.params.id,
       });
     },
     drawCardAndPassiveIncome: function () {
@@ -1353,12 +1407,18 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+        roomId: this.$route.params.id,
+      });
     },
     placeWorker: function (where) {
       console.log("placeWorker!");
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
         where: where,
+      });
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+        roomId: this.$route.params.id,
       });
     },
     //----------------------------------------------------------
@@ -1549,7 +1609,7 @@ theColor:onclick {
   border-color: honeydew;
   border: solid;
   display: grid;
-  grid-template-columns:1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 .otherplayer {
   border-radius: 1vw;
@@ -1557,7 +1617,7 @@ theColor:onclick {
   z-index: 1;
   cursor: pointer;
 }
-.otherplayer.open{
+.otherplayer.open {
   position: absolute;
   margin-left: -20vw;
   width: 50vw;
@@ -2055,6 +2115,7 @@ theColor:onclick {
 .help:hover {
   background-color: rgb(61, 61, 255);
 }
+
 .menuSpace {
   grid-column: 1;
   grid-row: 3;
@@ -2110,7 +2171,7 @@ theColor:onclick {
   border: solid;
   border-width: 1px;
   border-color: black;
-  font-size: 1.5vw;
+  font-size: 3.5vw;
 }
 #playerHelp {
   --scrollbarBG: #0066ff;
@@ -2204,6 +2265,12 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   animation: jiggles 4s ease-in-out;
   animation-iteration-count: infinite;
   box-shadow: 0 0 10px rgb(116, 116, 9);
+}
+
+.playerMoney {
+  width: 20px;
+  height: 20px;
+  background: green;
 }
 
 @keyframes jiggles {

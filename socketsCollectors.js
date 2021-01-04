@@ -30,6 +30,12 @@ function sockets(io, socket, data) {
     );
     console.log("drew card");
   });
+  socket.on("collectorsGetDeckLength", function (d) {
+    io.to(d.roomId).emit(
+      "collectorsGotDeckLength",
+      data.getDeckLength(d.roomId)
+    );
+  });
   socket.on("collectorsBuyCard", function (d) {
     data.buyCard(d.roomId, d.playerId, d.card, d.cost);
     io.to(d.roomId).emit("collectorsCardBought", {
@@ -183,6 +189,13 @@ socket.on('nameAndColor', function (d) {
     io.to(d.roomId).emit(
       "workerPlaced",
       data.setWorkPlacementTrue(d.roomId, d.where)
+    );
+  });
+  socket.on("currentValue", function (d) {
+    io.to(d.roomId).emit(
+      "currentScores",
+      data.currentValue(d.roomId, d.playerId,d.currentValue)
+      
     );
   });
   //---------------------------------------------------
