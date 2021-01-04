@@ -95,7 +95,7 @@
                       </div>
                     </div>
 
-                    <div class="boardNextTurnInfo">Next turn info</div>
+                    <div class="boardNextTurnInfo">Next turn income</div>
                   </div>
                 </div>
               </div>
@@ -377,7 +377,9 @@
                 </div>
               </div>
 
-              <div class="boardNextTurnInfo">Next turn info
+              <div class="boardNextTurnInfo">Next turn income
+
+                <img src="/images/bottle-playerboard.png" class="nextturnboard">
                 <!-- playerMoney -->
                 <div class="playerMoney">{{ getCurrentScore() }}</div>
               </div>
@@ -1914,6 +1916,10 @@ theColor:onclick {
   grid-column: 3/5;
   background-color: gray;
   border-radius: 0 0 2vw 0;
+  padding: 1vw;
+}
+.nextturnboard{
+  max-width: 100%;
 }
 
 .boardclosebutton {
@@ -1997,49 +2003,6 @@ theColor:onclick {
   left: 50%;
   transform: translate(-50%, -50%);
   padding-top: 4vw;
-}
-/* Om man klickar på spelaren i topp */
-.player3.active {
-  background-color: #20ccbe;
-  width: 50vw;
-  height: 25vw;
-  align-self: flex-start;
-  justify-self: center;
-  z-index: 1;
-  font-size: 1vw;
-  cursor: default;
-  border: solid;
-  border-color: black;
-}
-
-/* Om man klickar på spelaren till vänster */
-.player2.active {
-  background-color: #c236b4;
-  margin-right: -110%;
-  width: 50vw;
-  height: 25vw;
-  align-self: flex-start;
-  justify-self: center;
-  z-index: 1;
-  font-size: 1vw;
-  cursor: default;
-  border: solid;
-  border-color: black;
-}
-
-/* Om man klickar på spelaren till höger */
-.player4.active {
-  background-color: #e9b77a;
-  margin-left: -110%;
-  width: 50vw;
-  height: 25vw;
-  align-self: flex-start;
-  justify-self: center;
-  z-index: 1;
-  font-size: 1vw;
-  cursor: default;
-  border: solid;
-  border-color: black;
 }
 
 /*
