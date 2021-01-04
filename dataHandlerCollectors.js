@@ -552,6 +552,9 @@ Data.prototype.gethiddenAuctionCard = function(roomId) {
   } else return [];
 };
 
+/* lägg till items så den byter håll. Sen lös items till skills för den verkar bugga. 
+
+*/
 Data.prototype.moveCards = function(roomId) {
   /*
 Now refill all pools (except the market pool) from the deck. 

@@ -34,8 +34,8 @@
 
     </div>
     <div class="InfoBox" id="workHelp" v-if="workHelpActive">
-      <div><h3><strong>Titel 1</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
+      <div><h3><strong>{{labels.itemsHelp.title}}</strong></h3>
+      <p>{{labels.skillsHelp.intro}}</p></div>
       <div><h3><strong>Titel 2</strong></h3>
       <p> Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
       <div><h3><strong>Titel 3</strong></h3>
@@ -49,17 +49,14 @@
 
     </div>
     <div class="InfoBox" id="itemsHelp" v-if="itemsHelpActive">
-      <div><h3><strong>Titel 1</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 2</strong></h3>
-      <p> Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 3</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 4</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>titel 5</strong></h3>
-      <p></p>
-      <img src="https://previews.123rf.com/images/yupiramos/yupiramos1706/yupiramos170639117/81165835-cute-cat-cartoon-icon-vector-illustration-graphic-design.jpg" alt="funka ej">
+      <div><h3><strong>{{labels.itemsHelp.title}}</strong></h3>
+      <p>{{labels.skillsHelp.intro}}</p></div>
+      <div><h3><strong>{{labels.itemsHelp.categoryTitle}}</strong></h3>
+      <p> {{labels.itemsHelp.category}}</p></div>
+      <div><h3><strong>{{labels.itemsHelp.costTitle}}</strong></h3>
+      <p>{{labels.itemsHelp.cost}}</p></div>
+      <div><h3><strong>{{labels.itemsHelp.extraActionsTitle}}</strong></h3>
+       <p>{{labels.itemsHelp.extraActions}}</p>
       </div>
 
     </div>
@@ -230,7 +227,8 @@ export default {
 
 .InfoBox::-webkit-scrollbar-track {
   background: var(--scrollbarBG);
-  margin: 10px;
+  margin: 20px;
+ 
 }
 .InfoBox::-webkit-scrollbar-thumb {
   background-color: var(--thumbBG);
@@ -250,19 +248,53 @@ export default {
  width: 50px;
  height: 50px;
 }
+
 #workHelp{
   -webkit-animation: workSlide 1.5s forwards;
   -webkit-animation-delay: 0.01s;
   animation: workSlide 0.5s forwards;
   animation-delay: 0.01;
   background-color: #7b7a7a;
+    --scrollbarBG: #7b7a7a;
+  --thumbBG: #3a3837;
+}
+#workHelp div{
+
+  background-color: #5c5858;
+
+}
+#workHelp h3{
+
+  background-color: #7b7a7a;
+
+}
+#workHelp p{
+  background-color: #7b7a7a;
+
 }
 #raiseValueHelp{
   -webkit-animation: raiseValueSlide 1.5s forwards;
   -webkit-animation-delay: 0.01s;
   animation: raiseValueSlide 0.5s forwards;
   animation-delay: 0.01;
-  background-color: #abb7ca;
+  background-color: #acabca;
+  --scrollbarBG: #abb7ca;
+  --thumbBG: #5b6475;
+
+}
+#raiseValueHelp div{
+
+  background-color: #7791bb;
+
+}
+#raiseValueHelp h3{
+
+  background-color: #acabca;
+
+}
+#raiseValueHelp p{
+  background-color: #acabca;
+
 }
 #menuSpaceHelp{
  -webkit-animation: menuSpaceSlide 1.5s forwards;
@@ -283,9 +315,26 @@ export default {
   -webkit-animation-delay: 0.01s;
   animation: itemsSlide 0.5s forwards;
   animation-delay: 0.01;
-  background-color: black;
+  background-color: #ecadab;
+  --scrollbarBG: #ecadab;
+  --thumbBG: #755c5b;
 
 }
+#itemsHelp div{
+
+  background-color: #b47573;
+
+}
+#itemsHelp h3{
+
+  background-color: #ecadabd3;
+
+}
+#itemsHelp p{
+  background-color: #ecadabd3;
+
+}
+
 #buttonsHelp{
   -webkit-animation: buttonsSlide 1.5s forwards;
   -webkit-animation-delay: 0.01s;

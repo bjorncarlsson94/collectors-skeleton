@@ -45,5 +45,17 @@
 		"VPSpecific":"Gain one extra score for each card in this category you own as an item, this skill will stack and there is multiple for each different category.",
 		"titleVPAll":"Collect all bonus",
 		"VPAll":"This is the big boy. If you own atleast one of each item at the end of this game and own this skil you will get five extra score to your total."
+	},
+	"itemsHelp":{
+		"title":"Info about items:",
+		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
+		"categoryTitle":"Different Categories:",
+		"category":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
+		"costTitle":"Card cost and value:",
+		"cost":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
+		"extraActionsTitle":"Other actions:",
+		"extraActions":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
+
+
 	}
 }

@@ -32,7 +32,7 @@
 		"title":"Info om skills:",
 		"intro":"Det gröna området på et kort indikerar vilken skill den har. Det finns sex olika typer av skills och här kommer du lära dig mer om dem.",
 		"titleArea":"Om skills area:",
-		"skillsArea":"Du kan köpa en skill genom att klicka på knappartna under korten i det gröna området. Genom att köpa ett kort kommer du nu få detta kort som en skill och skillsen aktiveras.",
+		"skillsArea":"Du kan köpa en skill genom att klicka på knapparna under korten i det gröna området. Genom att köpa ett kort kommer du nu få detta kort som en skill och skillsen aktiveras.",
 		"titleWorkerSkills":"Få två dollar work:",
 		"nextTurn":"Om du äger denna skillen kommer du få två extra dollar varje gång du placerar en flaska i work area.",
 		"titleDrawCardSkill":"Dra ett kort work:",
@@ -46,5 +46,18 @@
 		"titleVPAll":"Samla alla bonus",
 		"VPAll":"Detta är den stora bonusen, Om du äger denna skill och i alla fall en av varje kategori som item så får du fem extra poäng.",
 		
+	},
+	"itemsHelp":{
+		"title":"Info om items:",
+		"intro":"Det röda området på korten indkierar vilken item kategori det är. Du kan köpa ett item genom att klicka på knapparna i item area (röd). Sedan kan du välja att antingen köpa ett kort på brädet eller från din hand. ",
+		"categoryTitle":"Olika Kategories:",
+		"category":"Kort kan ha fem olika kategorier vilket otsvarar ett värde i market.",
+		"costTitle":"Card cost and value:",
+		"costTitle":"Kortens kostnad och värde:",
+		"cost":"För att se värdet på korten så kan du dels kolla på siffran under korten eller i market area. Kostnaden är värdet på knappen du klickar på + värdet på kortet.",
+		"extraActionsTitle":"Flera möjligheter:",
+		"extraActions":"Items är det viktigaste bästa sättet att få poäng i spelet. Det är därför viktigt att hålla koll på vilka kort som kommer hamna i market och vilka skills du kan ha möjlighet att få"
+
+
 	}
 }
