@@ -402,11 +402,13 @@
                     <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
                   </div>
                   <div id="collectiontitle">Collection:</div>
+                 
                 </div>
               </div>
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-
+                 <!-- playerMoney -->
+                  <div class="playerMoney">{{getCurrentScore()}}</div>
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -562,6 +564,15 @@
             <button @click="hiddenAuctionCard = true" class="menuButton">
               hidden auction card
             </button>
+            
+            <!--
+              Lägg till current value i spelaren. Så att varje spelare har koll på sin egna currentValue. 
+              få det att fungera att skriva ut den ordentligt
+
+
+
+            -->
+            
           </div>
         </div>
       </section>
@@ -648,7 +659,9 @@ export default {
       touchScreen: false,
       maxSizes: { x: 0, y: 0 },
       labels: {},
-      players: {},
+      players: {
+
+      },
       // playerId: {
       //   hand: [],
       //   money: 1,
@@ -734,6 +747,7 @@ export default {
       workHelpActive:false,
       itemsHelpActive:false,
       raiseValueHelpActive:false,
+      
     };
   },
   props:{
@@ -974,12 +988,20 @@ export default {
       }.bind(this)
     );
     this.$store.state.socket.on(
+      "currentScores",
+      function (d) {
+        this.players[this.playerId].currentScore= d;
+      }.bind(this)
+    );
+    
+    this.$store.state.socket.on(
       "workerPlaced",
       function (d) {
         console.log("workPlacement uppdaterad!");
         this.workPlacement = d;
       }.bind(this)
     );
+   
     //------------------------------
   },
 
@@ -1241,6 +1263,20 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
+    },
+     currentScore: function () {
+      this.$store.state.socket.emit("currentValue", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        currentValue:this.currentValue,
+      });
+    
+    },
+    getCurrentScore: function () {
+      if ( typeof this.players[this.playerId].currentScore !== "undefined"){
+        return this.players[this.playerId].currentScore;
+      }
+      return "";
     },
     nextPlayer: function () {
       this.$store.state.socket.emit("nextPlayer", {
@@ -2299,7 +2335,12 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
     box-shadow: 0 0 10px rgb(116, 116, 9);
   }
 
+.playerMoney{
 
+  width: 20px;
+  height: 20px;
+  background:green;
+}
 
 
 

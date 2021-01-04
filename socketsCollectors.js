@@ -185,6 +185,13 @@ socket.on('nameAndColor', function (d) {
       data.setWorkPlacementTrue(d.roomId, d.where)
     );
   });
+  socket.on("currentValue", function (d) {
+    io.to(d.roomId).emit(
+      "currentScores",
+      data.currentValue(d.roomId, d.playerId,d.currentValue)
+      
+    );
+  });
   //---------------------------------------------------
   
   
