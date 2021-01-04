@@ -168,6 +168,13 @@ Data.prototype.createDeck = function() {
   return shuffle(deck);
 };
 
+Data.prototype.getDeckLength = function(roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    return room.deck.length;
+  } else return 0;
+};
+
 Data.prototype.joinGame = function(roomId, playerId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -194,12 +201,13 @@ Data.prototype.joinGame = function(roomId, playerId) {
         name: null,
         color: null,
         turn: false,
+        playerIsActive: false,
+        currentScore:0,
       };
-      return true;
     }
-    console.log("Player", playerId, "was declined due to player limit");
+    return true;
   }
-  return false;
+  console.log("Player", playerId, "was declined due to player limit");
 };
 
 Data.prototype.getPlayers = function(id) {
@@ -463,6 +471,7 @@ Data.prototype.placeBottle = function(roomId, playerId, action, cost) {
         break;
       }
     }
+    this.currentValue(roomId,playerId);
   }
 };
 
@@ -587,6 +596,9 @@ Data.prototype.gethiddenAuctionCard = function(roomId) {
   } else return [];
 };
 
+/* lägg till items så den byter håll. Sen lös items till skills för den verkar bugga. 
+
+*/
 Data.prototype.moveCards = function(roomId) {
   /*
 Now refill all pools (except the market pool) from the deck. 
@@ -669,20 +681,19 @@ Data.prototype.getCardValue = function(roomId) {
 Data.prototype.nameAndColor = function(roomId, playerId, name, color) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
-    console.log("denna färg: "+color)
-    if (typeof color !== "undefined"){
-      color = room.playerColor[0]
-    } 
+    console.log("denna färg: " + color);
+    if (typeof color !== "undefined") {
+      color = room.playerColor[0];
+    }
     room.players[playerId].color = color;
-    
-   
-    console.log("detta namn: "+name)
+
+    console.log("detta namn: " + name);
     if (name == "") {
       var fs = require("fs");
-      var text = fs.readFileSync("./data/example-names.txt").toString('utf-8');
-      console.log(text);
+      var text = fs.readFileSync("./data/example-names.txt").toString("utf-8");
       var textByLine = text.split("\n");
-      room.players[playerId].name = textByLine[Math.floor(Math.random() * textByLine.length)];
+      room.players[playerId].name =
+        textByLine[Math.floor(Math.random() * textByLine.length)];
     } else {
       room.players[playerId].name = name;
     }
@@ -710,6 +721,7 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
     if (room.startingPlayerId === keys[i + 1] && !auctionActive) {
       room.round += 1;
       this.moveCards(roomId);
+      this.currentValue(roomId, playerId)
     }
     return room.players, room.round;
   }
@@ -938,6 +950,74 @@ Data.prototype.setWorkPlacementTrue = function(roomId, place) {
     console.log(room.workPlacement);
     console.log("---------------");
     return room.workPlacement;
+  } else return [];
+};
+Data.prototype.currentValue = function(roomId,playerId) {
+  let room = this.rooms[roomId];
+  var fastaval = 0;
+  var figures = 0;
+  var music = 0;
+  var movie = 0;
+  var technology = 0;
+  var extraValue=0; 
+ 
+  if (typeof room !== "undefined") {
+    
+    for (let index = 0; index < room.players[playerId].items.length; index++) {
+      if(room.players[playerId].items[index].item=="fastaval"){
+        fastaval+=1;
+      }
+      else if(room.players[playerId].items[index].item=="movie"){
+        movie+=1;
+      }
+      else if(room.players[playerId].items[index].item=="technology"){
+        technology+=1;
+      }
+      else if(room.players[playerId].items[index].item=="figures"){
+        figures+=1;
+      }
+      else if(room.players[playerId].items[index].item=="music"){
+        music+=1;
+      }
+    }
+    for (let index = 0; index < room.players[playerId].skills.length; index++) {
+      if(room.players[playerId].skills[index].skill=="VP-all" && fastaval>0 && figures>0 && music>0 && movie>0 && technology>0){
+        extraValue+=5;
+
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-fastaval" && fastaval>0){
+        extraValue+=fastaval;
+
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-figures" && figures>0){
+        extraValue+=figures;
+        
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-music" && music>0){
+        extraValue+=music;
+        
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-movie" && movie>0){
+        extraValue+=movie;
+        
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-technology" && technology>0){
+        extraValue+=technology;
+        
+      }
+    
+    }
+    fastaval=fastaval*room.raiseValue.fastaval;
+    figures=figures*room.raiseValue.figures;
+    music=music*room.raiseValue.music;
+    movie=movie*room.raiseValue.movie;
+    technology=technology*room.raiseValue.technology;
+    extraValue+=Math.floor(room.players[playerId].money/3);
+    room.players[playerId].currentScore=extraValue+fastaval+figures+music+movie+technology;
+    console.log("score:"+room.players[playerId].currentScore);
+    return room.players[playerId].currentScore;
+
+
   } else return [];
 };
 //------------------------------------------------------

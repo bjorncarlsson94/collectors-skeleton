@@ -27,5 +27,35 @@
 		"skillsAreaText":"In the green area your skills are shown. they give you bonuses and are important. Click on the ? next to skills on the playerBoard for more information. ",
 		"handAreaText":" These cards are in your hand. You can spend bottles to place these cards on the playerBoard or buy them as a skill or item. They are also used as currencies in the auction",
 		"nextTurnText":"In the grey area you are shown what will happen next turn. Your income next turn, how many cards you will get andhow many bottles."
+	},
+	"skillsHelp":{
+		"title":"Info about skills:",
+		"intro":"The green area of a card indicates which skill it has. There is six different types of skills and here you will learn about them.",
+		"titleArea":"About the skill area:",
+		"skillsArea":"You can buy a skill by clicking on the buttons under the cards in the green area. By doing so the card will belon to you and you aquire the corresponding skills",
+		"titleWorkerSkills":"Gain two dollars work:",
+		"nextTurn":"If you own this skill you will gain two extra dollars when you place a worker(bottle) in the work area",
+		"titleDrawCardSkill":"Draw a card work:",
+		"DrawCardSkill":"If you own this skill you will draw one card to your hand when you place a worker(bottle) in the work area",
+		"titleAuctionSkill":"auctionSkill",
+		"auctionSkill":"You will gain one extra dollar everytime an auction is started. This skill works for every auction that is started. It will also stack. ",
+		"titleGainWorker":"Gain an extra worker",
+		"gainWorker":" This skill will activate directly so that you have an extra bottle to use for the rest of the game ",
+		"titleVPSpecific":"Gain one extra score",
+		"VPSpecific":"Gain one extra score for each card in this category you own as an item, this skill will stack and there is multiple for each different category.",
+		"titleVPAll":"Collect all bonus",
+		"VPAll":"This is the big boy. If you own atleast one of each item at the end of this game and own this skil you will get five extra score to your total."
+	},
+	"itemsHelp":{
+		"title":"Info about items:",
+		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
+		"categoryTitle":"Different Categories:",
+		"category":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
+		"costTitle":"Card cost and value:",
+		"cost":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
+		"extraActionsTitle":"Other actions:",
+		"extraActions":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
+
+
 	}
 }
