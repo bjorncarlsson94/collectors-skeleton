@@ -438,8 +438,10 @@
                 <img src="/images/back-of-card.png" class="deck" />
               </div>
             </div>
-            <div class="cardCounter">
-              {{ deckLength }}
+            <div class="cardCounterSpace">
+              <p class="drawCardCounter">
+                {{ deckLength }}
+              </p>
             </div>
           </div>
           <div class="gridedge3">
@@ -917,8 +919,11 @@ export default {
         this.workPlacement = d;
       }.bind(this)
     );
-
     //------------------------------
+
+    this.$store.state.socket.emit("collectorsGetDeckLength", {
+        roomId: this.$route.params.id,
+      });
   },
 
   methods: {
@@ -2089,30 +2094,36 @@ theColor:onclick {
   border-radius: 2vw;
   padding: 2vw;
   position: relative;
+  display: grid;
 
   justify-self: center;
   align-self: center;
   zoom: 0.5;
 }
-.drawCardSpace .buttons:hover {
-  filter: brightness(110%);
-}
+
 #helpDrawCardSpace {
   zoom: 150%;
 }
 
-.drawCardSpace {
-  grid-column: 8;
-  grid-row: 2;
-  border-radius: 2vw;
-  padding: 2vw;
-  justify-self: center;
-  align-self: center;
-  zoom: 0.5;
+.cardCounterSpace {
+  grid-column: 2;
 }
+.drawCardCounter {
+  align-content: center;
+  padding: 50%;
+  padding-right: 150%;
+  border-top-right-radius: 10%;
+  border-bottom-right-radius: 10%;
+  background-color: rgb(34, 55, 94);
+}
+
 .drawCardSpace .buttons:hover {
   filter: brightness(110%);
   background-color: rgb(194, 194, 194);
+}
+
+.drawCardSpace .buttons {
+  grid-column: 1;
 }
 
 .deck {
