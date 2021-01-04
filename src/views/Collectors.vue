@@ -401,7 +401,7 @@
                 :notYourTurn="notYourTurn"
                 @buyCard="buyCard($event)"
                 @placeBottle="placeBottle('buy', $event)"
-                @cancelBuy="changeBoolean()"
+                @cancelBuy="removeBottle('buy', $event)"
               />
               <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
             </div>
@@ -724,12 +724,13 @@ export default {
     );
 
     this.$store.state.socket.on(
-      "collectorsBottlePlaced",
+      "collectorsBottle",
       function (d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
         this.auctionPlacement = d.auctionPlacement;
+        this.players = d.players;
       }.bind(this)
     );
 
@@ -859,6 +860,10 @@ export default {
       function (d) {
         console.log("spelare vald");
         this.gameStarted = true;
+        this.buyPlacement = d.buyPlacement;
+        this.skillPlacement = d.skillPlacement;
+        this.marketPlacement = d.marketPlacement;
+        this.auctionPlacement = d.auctionPlacement;
         this.players = d.players;
         this.round = d.round;
         console.log("Det är runda: " + this.round);
@@ -1127,6 +1132,7 @@ export default {
         card: card,
         cost: this.chosenPlacementCost,
       });
+      this.nextPlayer();
     },
     buySkill: function (card) {
       console.log("buySkill", card);
@@ -1137,6 +1143,7 @@ export default {
         card: card,
         cost: this.chosenPlacementCost,
       });
+      this.nextPlayer();
     },
 
     raisingValue: function(card){
@@ -1231,8 +1238,23 @@ export default {
       });
     },
 
-    changeBoolean: function () {
-      this.aboutToBuyItem = false;
+    removeBottle: function (action,cost) {
+      if (action === "buy") {
+        this.aboutToBuyItem = false;
+      }
+      if (action === "auction") {
+        this.aboutToStartAuction = false;
+      }
+      if (action === "skill") {
+        this.aboutToBuySkill = false;
+      }
+      this.chosenPlacementCost = cost;
+      this.$store.state.socket.emit("collectorsRemoveBottle", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        action: action,
+        cost: cost,
+      });
     },
 
     //playerHandShow
