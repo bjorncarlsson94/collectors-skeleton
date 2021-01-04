@@ -3,7 +3,9 @@
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
       <section id="wrapper">
-        <div class="helpBoard" @click="showHelpOptions"><p><strong>?</strong></p></div>
+        <div class="helpBoard" @click="showHelpOptions">
+          <p><strong>?</strong></p>
+        </div>
         <div id="grid">
           <div class="playerJoinedBox" v-show="playerJoined">
             <div class="playerText1">{{ labels.playerIntro1 }}</div>
@@ -25,186 +27,85 @@
             <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
           </div>
 
-          <div
-            class="player player2"
-            v-on:click="expandLeftBoard"
-            v-bind:class="{ active: leftIsActive }"
-          >
-            <div v-if="!leftIsActive">
-              {{ labels.player2 }}
-            </div>
-            <!--Here are the player specific things-->
+          <div class="otherplayers">
+            <div
+              v-for="(player, index) in players"
+              :key="index"
+              :style="
+                player === players[playerId]
+                  ? 'display: none'
+                  : 'display: inline-block'
+              "
+            >
+              <div v-if="player != players[playerId]">
+                <div
+                  class="otherplayer"
+                  v-bind:class="{ open: player.playerIsActive }"
+                  @click="expandOtherPlayer(player)"
+                  :style="{ background: player.color }"
+                >
+                  <div v-if="!player.playerIsActive">{{ player.name }}</div>
 
-            <div class="playerBoardGrid" v-if="leftIsActive">
-              <div class="boardCollection">
-                <div id="collectiontitle">Collection:</div>
-                <div class="boardcollectiongrid">
-                  <div class="playercollection">
-                    <div class="collectioncards">
+                  <div
+                    class="playerBoardGrid"
+                    v-if="player.playerIsActive === true"
+                  >
+                    <div class="boardCollection">
+                      <div id="collectiontitle">Collection:</div>
+                      <div class="boardcollectiongrid">
+                        <div class="playercollection">
+                          <div class="collectioncards">
+                            <CollectorsCard
+                              v-for="(card, index) in player.items"
+                              :card="card"
+                              :availableAction="card.available"
+                              @doAction="buyCard(card)"
+                              :key="index"
+                            />
+                          </div>
+                        </div>
+                        <div id="hidden">Hidden:</div>
 
-
-                      <CollectorsCard
-                        v-for="(card, index) in players[playerId].items"
-                        :card="card"
-                        :availableAction="card.available"
-                        @doAction="buyCard(card)"
-                        :key="index"
-                      />
+                        <div id="totalvalue">Total value:</div>
+                      </div>
                     </div>
+                    <div class="boardSkills">
+                      Skills:
+                      <div class="skillsinhand">
+                        <CollectorsCard
+                          v-for="(card, index) in player.skills"
+                          :card="card"
+                          :availableAction="card.available"
+                          @doAction="buyCard(card)"
+                          :key="index"
+                        />
+                      </div>
+                    </div>
+                    <div class="boardHand">
+                      <div id="handTitle">Hand:</div>
+                      <div class="cardsinhand">
+                        <CollectorsCard
+                          v-for="(card, index) in player.hand"
+                          :card="card"
+                          :availableAction="card.available"
+                          @doAction="buyCard(card)"
+                          :key="index"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="boardNextTurnInfo">Next turn info</div>
                   </div>
-                  <div id="hidden">Hidden:</div>
-
-                  <div id="totalvalue">Total value:</div>
                 </div>
               </div>
-              <div class="boardSkills">
-                Skills:
-                <div class="skillsinhand">
-                  <CollectorsCard
-                    v-for="(card, index) in players[playerId].skills"
-                    :card="card"
-                    :availableAction="card.available"
-                    @doAction="buyCard(card)"
-                    :key="index"
-                  />
-                </div>
-              </div>
-              <div class="boardHand">
-                <div id="handTitle">Hand:</div>
-                <div class="cardsinhand">
-                  <CollectorsCard
-                    v-for="(card, index) in players[playerId].hand"
-                    :card="card"
-                    :availableAction="card.available"
-                    @doAction="buyCard(card)"
-                    :key="index"
-                  />
-                </div>
-              </div>
-
-              <div class="boardNextTurnInfo">Next turn info</div>
             </div>
           </div>
 
           <div
-            class="player player3"
-            v-on:click="expandTopBoard"
-            v-bind:class="{ active: topIsActive }"
+            id="test1"
+            :class="['skills', { animate: helpAction }]"
+            @click="skillsHelp()"
           >
-            <div v-if="!topIsActive">
-              {{ labels.player3 }}
-            </div>
-            <!--Here are the player specific things-->
-
-            <div class="playerBoardGrid" v-if="topIsActive">
-              <div class="boardCollection">
-                <div id="collectiontitle">Collection:</div>
-                <div class="boardcollectiongrid">
-                  <div class="playercollection">
-                    <div class="collectioncards">
-                      <CollectorsCard
-                        v-for="(card, index) in players[playerId].items"
-                        :card="card"
-                        :availableAction="card.available"
-                        @doAction="buyCard(card)"
-                        :key="index"
-                      />
-                    </div>
-                  </div>
-                  <div id="hidden">Hidden:</div>
-
-                  <div id="totalvalue">Total value:</div>
-                </div>
-              </div>
-              <div class="boardSkills">
-                Skills:
-                <div class="skillsinhand">
-                  <CollectorsCard
-                    v-for="(card, index) in players[playerId].skills"
-                    :card="card"
-                    :availableAction="card.available"
-                    @doAction="buyCard(card)"
-                    :key="index"
-                  />
-                </div>
-              </div>
-              <div class="boardHand">
-                <div id="handTitle">Hand:</div>
-                <div class="cardsinhand">
-                  <CollectorsCard
-                    v-for="(card, index) in players[playerId].hand"
-                    :card="card"
-                    :availableAction="card.available"
-                    @doAction="buyCard(card)"
-                    :key="index"
-                  />
-                </div>
-              </div>
-              <div class="boardNextTurnInfo">Next turn info</div>
-            </div>
-          </div>
-
-          <div
-            class="player player4"
-            v-on:click="expandRightBoard"
-            v-bind:class="{ active: rightIsActive }"
-          >
-            <div v-if="!rightIsActive">
-              {{ labels.player4 }}
-            </div>
-            <!--Here are the player specific things-->
-
-            <div class="playerBoardGrid" v-if="rightIsActive">
-              <div class="boardCollection">
-                <div id="collectiontitle">Collection:</div>
-                <div class="boardcollectiongrid">
-                  <div class="playercollection">
-                    <div class="collectioncards">
-                      <CollectorsCard
-                        v-for="(card, index) in players[playerId].items"
-                        :card="card"
-                        :availableAction="card.available"
-                        @doAction="buyCard(card)"
-                        :key="index"
-                      />
-                    </div>
-                  </div>
-                  <div id="hidden">Hidden:</div>
-
-                  <div id="totalvalue">Total value:</div>
-                </div>
-              </div>
-              <div class="boardSkills">
-                Skills:
-                <div class="skillsinhand">
-                  <CollectorsCard
-                    v-for="(card, index) in players[playerId].skills"
-                    :card="card"
-                    :availableAction="card.available"
-                    @doAction="buyCard(card)"
-                    :key="index"
-                  />
-                </div>
-              </div>
-              <div class="boardHand">
-                <div id="handTitle">Hand:</div>
-                <div class="cardsinhand">
-                  <CollectorsCard
-                    v-for="(card, index) in players[playerId].hand"
-                    :card="card"
-                    :availableAction="card.available"
-                    @doAction="buyCard(card)"
-                    :key="index"
-                  />
-                </div>
-              </div>
-              <div class="boardNextTurnInfo">Next turn info</div>
-            </div>
-          </div>
-
-          <div id="test1" :class="['skills', {'animate': helpAction}]" @click="skillsHelp()">
-            
-            
             <div class="skillsgrid">
               <CollectorsSkillActions
                 v-if="players[playerId]"
@@ -219,11 +120,12 @@
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
               />
-              
             </div>
           </div>
-          <div :class="['auction', {'animate': helpAction}]" @click="auctionHelp()">
-            
+          <div
+            :class="['auction', { animate: helpAction }]"
+            @click="auctionHelp()"
+          >
             <div class="auctiongrid">
               <CollectorsStartAuction
                 v-if="players[playerId]"
@@ -329,8 +231,10 @@
             :cardBidTotal="cardBidTotal"
           />
 
-          <div :class="['raiseValue', {'animate': helpAction}]" @click="raiseValueHelp()">
-            
+          <div
+            :class="['raiseValue', { animate: helpAction }]"
+            @click="raiseValueHelp()"
+          >
             <div class="raiseValuegrid">
               <CollectorsRaiseValue
                 v-if="players[playerId]"
@@ -402,13 +306,12 @@
                     <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
                   </div>
                   <div id="collectiontitle">Collection:</div>
-                 
                 </div>
               </div>
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                 <!-- playerMoney -->
-                  <div class="playerMoney">{{getCurrentScore()}}</div>
+                <!-- playerMoney -->
+                <div class="playerMoney">{{ getCurrentScore() }}</div>
 
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
@@ -437,13 +340,11 @@
                     :key="index"
                   />
                 </div>
-                <div class="skillsInfo">Tjo
+                <div class="skillsInfo">
+                  Tjo
                   <div>bipp</div>
                   <div>bapp</div>
                   <div>bopp</div>
-
-
-
                 </div>
               </div>
               <div class="boardHand">
@@ -477,8 +378,7 @@
 
         -->
 
-          <div :class="['items', {'animate': helpAction}]" @click="itemsHelp()">
-            
+          <div :class="['items', { animate: helpAction }]" @click="itemsHelp()">
             <div class="itemgrid">
               <CollectorsBuyActions
                 v-if="players[playerId]"
@@ -498,7 +398,7 @@
               <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
             </div>
           </div>
-          <div :class="['work', {'animate': helpAction}]" @click="workHelp()">
+          <div :class="['work', { animate: helpAction }]" @click="workHelp()">
             <CollectorsWork
               v-if="players[playerId]"
               :labels="labels"
@@ -517,15 +417,15 @@
           </div>
 
           <div class="roundCounter">
-            
             <p>{{ labels.roundcounter }} {{ round }}</p>
             <p>Det är {{ currentPlayer() }} tur att spela!</p>
           </div>
 
           <div class="drawCardSpace">
-          
-             
-            <div :class="['buttons', {'animate': helpAction}]" @click="buttonsHelp()">
+            <div
+              :class="['buttons', { animate: helpAction }]"
+              @click="buttonsHelp()"
+            >
               <div @click="drawCard">
                 <img src="/images/back-of-card.png" class="deck" />
               </div>
@@ -534,13 +434,15 @@
               {{ deckLength }}
             </div>
           </div>
-          <div class="gridedge3" >
+          <div class="gridedge3">
             Ruta för att visa grid lättare: 3
             <br />
             Här kan man t.ex. ha vissa viktiga knappar
           </div>
-          <div :class="['menuSpace', {'animate': helpAction}]" @click="menuSpaceHelp()">
-            
+          <div
+            :class="['menuSpace', { animate: helpAction }]"
+            @click="menuSpaceHelp()"
+          >
             <button
               v-if="players[playerId]"
               :disabled="this.gameStarted"
@@ -565,7 +467,7 @@
             <button @click="hiddenAuctionCard = true" class="menuButton">
               hidden auction card
             </button>
-            
+
             <!--
               Lägg till current value i spelaren. Så att varje spelare har koll på sin egna currentValue. 
               få det att fungera att skriva ut den ordentligt
@@ -573,7 +475,6 @@
 
 
             -->
-            
           </div>
         </div>
       </section>
@@ -602,10 +503,7 @@
       :workHelpActive="this.workHelpActive"
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
-
-      />
-    
-
+    />
 
     <footer>
       <p>
@@ -619,8 +517,6 @@
       </p>
     </footer>
   </div>
-
-  
 </template>
 
 <script>
@@ -634,7 +530,6 @@ import CollectorsStartAuction from "@/components/CollectorsStartAuction.vue";
 import CollectorsAuction from "@/components/CollectorsAuction.vue";
 import CollectorsWork from "@/components/CollectorsWork.vue";
 import HelpCollectors from "@/components/HelpCollectors.vue";
-
 
 export default {
   name: "Collectors",
@@ -655,14 +550,13 @@ export default {
       leftIsActive: false,
       rightIsActive: false,
       topIsActive: false,
+      open: false,
 
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
       touchScreen: false,
       maxSizes: { x: 0, y: 0 },
       labels: {},
-      players: {
-
-      },
+      players: {},
       // playerId: {
       //   hand: [],
       //   money: 1,
@@ -742,20 +636,16 @@ export default {
       helpPlayerHandActive: false,
       show1: false,
       helpAction: false,
-      skillsHelpActive:false,
-      auctionHelpActive:false,
-      menuSpaceActive:false,
-      buttonsHelpActive:false,
-      workHelpActive:false,
-      itemsHelpActive:false,
-      raiseValueHelpActive:false,
-      
+      skillsHelpActive: false,
+      auctionHelpActive: false,
+      menuSpaceActive: false,
+      buttonsHelpActive: false,
+      workHelpActive: false,
+      itemsHelpActive: false,
+      raiseValueHelpActive: false,
     };
   },
-  props:{
-    
-
-  },
+  props: {},
   computed: {
     playerId: function () {
       return this.$store.state.playerId;
@@ -843,7 +733,6 @@ export default {
         //better to update the state of all cards
         console.log(d.playerId, "drew a card");
         this.players = d;
-        
       }.bind(this)
     );
 
@@ -997,10 +886,10 @@ export default {
     this.$store.state.socket.on(
       "currentScores",
       function (d) {
-        this.players[this.playerId].currentScore= d;
+        this.players[this.playerId].currentScore = d;
       }.bind(this)
     );
-    
+
     this.$store.state.socket.on(
       "workerPlaced",
       function (d) {
@@ -1008,7 +897,7 @@ export default {
         this.workPlacement = d;
       }.bind(this)
     );
-   
+
     //------------------------------
   },
 
@@ -1091,6 +980,12 @@ export default {
       this.leftIsActive = false;
 
       console.log("Status: " + this.isActive);
+    },
+    expandOtherPlayer: function (player) {
+      console.log("klicky macdicky");
+      player.playerIsActive = !player.playerIsActive;
+
+      console.log(player.name + " has opened " + player.playerIsActive);
     },
     openBoard: function () {
       console.log("Open board");
@@ -1183,14 +1078,14 @@ export default {
       });
     },
     drawCard: function () {
-      if(!this.helpAction){
+      if (!this.helpAction) {
         this.$store.state.socket.emit("collectorsDrawCard", {
           roomId: this.$route.params.id,
           playerId: this.playerId,
-       });
+        });
       }
       this.$store.state.socket.emit("collectorsGetDeckLength", {
-          roomId: this.$route.params.id
+        roomId: this.$route.params.id,
       });
     },
     buyCard: function (card) {
@@ -1273,21 +1168,20 @@ export default {
         playerId: this.playerId,
       });
     },
-     currentScore: function () {
+    currentScore: function () {
       this.$store.state.socket.emit("currentValue", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
-        currentValue:this.currentValue,
+        currentValue: this.currentValue,
       });
-    
     },
     getCurrentScore: function () {
-      if ( typeof this.players[this.playerId].currentScore !== "undefined"){
+      if (typeof this.players[this.playerId].currentScore !== "undefined") {
         return this.players[this.playerId].currentScore;
       }
       return "";
     },
-    
+
     nextPlayer: function () {
       this.$store.state.socket.emit("nextPlayer", {
         roomId: this.$route.params.id,
@@ -1304,19 +1198,19 @@ export default {
     helpPlayerHandHover: function () {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
-        showHelpOptions:function(){
-        this.helpAction=!this.helpAction;
-        console.log(this.helpAction);
-        console.log(document.getElementById("test1").className);
+    showHelpOptions: function () {
+      this.helpAction = !this.helpAction;
+      console.log(this.helpAction);
+      console.log(document.getElementById("test1").className);
 
-     /* if(this.helpAuctionActive){
+      /* if(this.helpAuctionActive){
         console.log("hejhej");
         tempElement.setAttribute("id", "");
         this.helpAuctionActive = false;
       }
       this.helpAuctionActive=true;
       */
-    /*
+      /*
     helpAuctionHover();
     helpButtonsHover();
     helpInfoBoxHover();
@@ -1324,133 +1218,149 @@ export default {
     helpItemsAreaHover();
     helpSkillsAreaHover();
     */
-  },
-  skillsHelp:function(){
-    if(this.helpAction){
-
-      if(this.auctionHelpActive ||this.menuSpaceActive||this.buttonsHelpActive||this.workHelpActive ||this.itemsHelpActive||this.raiseValueHelpActive ){
-        
-        this.auctionHelpActive=false;
-        this.menuSpaceActive=false;
-        this.buttonsHelpActive=false;
-        this.workHelpActive=false;
-        this.itemsHelpActive=false;
-        this.raiseValueHelpActive=false;
-       
-
+    },
+    skillsHelp: function () {
+      if (this.helpAction) {
+        if (
+          this.auctionHelpActive ||
+          this.menuSpaceActive ||
+          this.buttonsHelpActive ||
+          this.workHelpActive ||
+          this.itemsHelpActive ||
+          this.raiseValueHelpActive
+        ) {
+          this.auctionHelpActive = false;
+          this.menuSpaceActive = false;
+          this.buttonsHelpActive = false;
+          this.workHelpActive = false;
+          this.itemsHelpActive = false;
+          this.raiseValueHelpActive = false;
+        }
+        this.skillsHelpActive = !this.skillsHelpActive;
       }
-      this.skillsHelpActive=!this.skillsHelpActive;
-      
-    }
-    
-
-  },
-  auctionHelp:function(){
-    if(this.helpAction){
-     
-      if(this.skillsHelpActive||this.menuSpaceActive||this.buttonsHelpActive||this.workHelpActive ||this.itemsHelpActive||this.raiseValueHelpActive ){
-        this.skillsHelpActive=false;
-        this.menuSpaceActive=false;
-        this.buttonsHelpActive=false;
-        this.workHelpActive=false;
-        this.itemsHelpActive=false;
-        this.raiseValueHelpActive=false;
-       
-
+    },
+    auctionHelp: function () {
+      if (this.helpAction) {
+        if (
+          this.skillsHelpActive ||
+          this.menuSpaceActive ||
+          this.buttonsHelpActive ||
+          this.workHelpActive ||
+          this.itemsHelpActive ||
+          this.raiseValueHelpActive
+        ) {
+          this.skillsHelpActive = false;
+          this.menuSpaceActive = false;
+          this.buttonsHelpActive = false;
+          this.workHelpActive = false;
+          this.itemsHelpActive = false;
+          this.raiseValueHelpActive = false;
+        }
+        this.auctionHelpActive = !this.auctionHelpActive;
       }
-      this.auctionHelpActive=!this.auctionHelpActive;
-      
-    }
-  },
-  menuSpaceHelp:function(){
-    if(this.helpAction){
-      if(this.skillsHelpActive || this.auctionHelpActive||this.buttonsHelpActive||this.workHelpActive ||this.itemsHelpActive||this.raiseValueHelpActive ){
-        this.skillsHelpActive=false;
-        this.auctionHelpActive=false;
-        this.buttonsHelpActive=false;
-        this.workHelpActive=false;
-        this.itemsHelpActive=false;
-        this.raiseValueHelpActive=false;
-       
-
+    },
+    menuSpaceHelp: function () {
+      if (this.helpAction) {
+        if (
+          this.skillsHelpActive ||
+          this.auctionHelpActive ||
+          this.buttonsHelpActive ||
+          this.workHelpActive ||
+          this.itemsHelpActive ||
+          this.raiseValueHelpActive
+        ) {
+          this.skillsHelpActive = false;
+          this.auctionHelpActive = false;
+          this.buttonsHelpActive = false;
+          this.workHelpActive = false;
+          this.itemsHelpActive = false;
+          this.raiseValueHelpActive = false;
+        }
+        this.menuSpaceActive = !this.menuSpaceActive;
       }
-      this.menuSpaceActive=!this.menuSpaceActive;
-      
-    }
-   
-  },
-  buttonsHelp:function(){
-    if(this.helpAction){
-      if(this.skillsHelpActive || this.auctionHelpActive ||this.menuSpaceActive||this.workHelpActive ||this.itemsHelpActive||this.raiseValueHelpActive ){
-        this.skillsHelpActive=false;
-        this.auctionHelpActive=false;
-        this.menuSpaceActive=false;
-        this.workHelpActive=false;
-        this.itemsHelpActive=false;
-        this.raiseValueHelpActive=false;
-       
-
+    },
+    buttonsHelp: function () {
+      if (this.helpAction) {
+        if (
+          this.skillsHelpActive ||
+          this.auctionHelpActive ||
+          this.menuSpaceActive ||
+          this.workHelpActive ||
+          this.itemsHelpActive ||
+          this.raiseValueHelpActive
+        ) {
+          this.skillsHelpActive = false;
+          this.auctionHelpActive = false;
+          this.menuSpaceActive = false;
+          this.workHelpActive = false;
+          this.itemsHelpActive = false;
+          this.raiseValueHelpActive = false;
+        }
+        this.buttonsHelpActive = !this.buttonsHelpActive;
       }
-      this.buttonsHelpActive=!this.buttonsHelpActive;
-      
-    }
-    
-  },
-  workHelp:function(){
-    if(this.helpAction){
-      if(this.skillsHelpActive || this.auctionHelpActive ||this.menuSpaceActive||this.buttonsHelpActive||this.itemsHelpActive||this.raiseValueHelpActive ){
-        this.skillsHelpActive=false;
-        this.auctionHelpActive=false;
-        this.menuSpaceActive=false;
-        this.buttonsHelpActive=false;
-        this.itemsHelpActive=false;
-        this.raiseValueHelpActive=false;
-       
-
+    },
+    workHelp: function () {
+      if (this.helpAction) {
+        if (
+          this.skillsHelpActive ||
+          this.auctionHelpActive ||
+          this.menuSpaceActive ||
+          this.buttonsHelpActive ||
+          this.itemsHelpActive ||
+          this.raiseValueHelpActive
+        ) {
+          this.skillsHelpActive = false;
+          this.auctionHelpActive = false;
+          this.menuSpaceActive = false;
+          this.buttonsHelpActive = false;
+          this.itemsHelpActive = false;
+          this.raiseValueHelpActive = false;
+        }
+        this.workHelpActive = !this.workHelpActive;
       }
-      this.workHelpActive=!this.workHelpActive;
-      
-    }
-    
-  },
-  itemsHelp:function(){
-    if(this.helpAction){
-      if(this.skillsHelpActive || this.auctionHelpActive ||this.menuSpaceActive||this.buttonsHelpActive||this.workHelpActive||this.raiseValueHelpActive ){
-        this.skillsHelpActive=false;
-        this.auctionHelpActive=false;
-        this.menuSpaceActive=false;
-        this.buttonsHelpActive=false;
-        this.workHelpActive=false;
-        this.raiseValueHelpActive=false;
-       
-
+    },
+    itemsHelp: function () {
+      if (this.helpAction) {
+        if (
+          this.skillsHelpActive ||
+          this.auctionHelpActive ||
+          this.menuSpaceActive ||
+          this.buttonsHelpActive ||
+          this.workHelpActive ||
+          this.raiseValueHelpActive
+        ) {
+          this.skillsHelpActive = false;
+          this.auctionHelpActive = false;
+          this.menuSpaceActive = false;
+          this.buttonsHelpActive = false;
+          this.workHelpActive = false;
+          this.raiseValueHelpActive = false;
+        }
+        this.itemsHelpActive = !this.itemsHelpActive;
       }
-      this.itemsHelpActive=!this.itemsHelpActive;
-      
-    }
-    
-  },
-  
-  raiseValueHelp:function(){
-    if(this.helpAction){
-     if(this.skillsHelpActive || this.auctionHelpActive ||this.menuSpaceActive||this.buttonsHelpActive||this.workHelpActive ||this.itemsHelpActive ){
-        this.skillsHelpActive=false;
-        this.auctionHelpActive=false;
-        this.menuSpaceActive=false;
-        this.buttonsHelpActive=false;
-        this.workHelpActive=false;
-        this.itemsHelpActive=false;
-       
+    },
 
+    raiseValueHelp: function () {
+      if (this.helpAction) {
+        if (
+          this.skillsHelpActive ||
+          this.auctionHelpActive ||
+          this.menuSpaceActive ||
+          this.buttonsHelpActive ||
+          this.workHelpActive ||
+          this.itemsHelpActive
+        ) {
+          this.skillsHelpActive = false;
+          this.auctionHelpActive = false;
+          this.menuSpaceActive = false;
+          this.buttonsHelpActive = false;
+          this.workHelpActive = false;
+          this.itemsHelpActive = false;
+        }
+        this.raiseValueHelpActive = !this.raiseValueHelpActive;
       }
-      this.raiseValueHelpActive=!this.raiseValueHelpActive;
-      
-    }
-   
-    
-  
-  },
-  
+    },
+
     //---------------------------WORK metoder-------------------
     recycleBottle: function () {
       //Här ska en flaska växlas för pengar
@@ -1478,7 +1388,7 @@ export default {
         playerId: this.playerId,
       });
       this.$store.state.socket.emit("collectorsGetDeckLength", {
-          roomId: this.$route.params.id
+        roomId: this.$route.params.id,
       });
     },
     drawACardAndFirstPlayerToken: function () {
@@ -1488,7 +1398,7 @@ export default {
         playerId: this.playerId,
       });
       this.$store.state.socket.emit("collectorsGetDeckLength", {
-          roomId: this.$route.params.id
+        roomId: this.$route.params.id,
       });
     },
     drawCardAndPassiveIncome: function () {
@@ -1498,7 +1408,7 @@ export default {
         playerId: this.playerId,
       });
       this.$store.state.socket.emit("collectorsGetDeckLength", {
-          roomId: this.$route.params.id
+        roomId: this.$route.params.id,
       });
     },
     placeWorker: function (where) {
@@ -1508,7 +1418,7 @@ export default {
         where: where,
       });
       this.$store.state.socket.emit("collectorsGetDeckLength", {
-          roomId: this.$route.params.id
+        roomId: this.$route.params.id,
       });
     },
     //----------------------------------------------------------
@@ -1614,13 +1524,12 @@ theColor:onclick {
     auto-fill,
     12vw
   ); /* Det här är en koddel som bestämmer avståndet mellan korten, typ. */
-  grid-template-rows: repeat(auto-fill, 12vw)
-  ;
+  grid-template-rows: repeat(auto-fill, 12vw);
 }
 .card {
   position: relative;
-  -webkit-box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
-  box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+  -webkit-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
 }
 /* transform: scale(0.5)translate(-50%,-50%);*/
 
@@ -1694,32 +1603,37 @@ theColor:onclick {
   text-align: center;
   align-self: flex-end;
 }
-
-.player2 {
-  grid-column: 3;
+.otherplayers {
   grid-row: 1;
-  background-color: #7e2174;
-  margin-left: -10vw;
+  grid-column: 3/6;
+  border-color: honeydew;
+  border: solid;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
-.player3 {
-  grid-column: 4;
-  grid-row: 1;
-  background-color: #19b3a7;
+.otherplayer {
+  border-radius: 1vw;
+  padding: 1vw;
+  z-index: 1;
+  cursor: pointer;
+}
+.otherplayer.open {
+  position: absolute;
+  margin-left: -20vw;
+  width: 50vw;
+  height: 25vw;
+  align-self: end;
   justify-self: center;
+  font-size: 1vw;
+  cursor: default;
+  border: solid;
+  border-color: black;
+  z-index: 10;
+  cursor: pointer;
 }
-.player4 {
-  grid-column: 5;
-  grid-row: 1;
-  background-color: #ca9e68;
-  margin-left: 5vw;
-}
+
 .playerboard {
   border-radius: 2vw;
-  background-color: rgb(
-    70,
-    181,
-    214
-  ); /* Choose colour based on the 4 player colours */
   grid-column: 3/6;
   grid-row: 5;
   padding: 1vw;
@@ -1743,7 +1657,6 @@ theColor:onclick {
 
 /* Om man klickar på handen aktiveras denna. Denna ger attribut bara om isActive på divven = true */
 .playerboard.active {
-  background-color: rgb(95, 216, 253);
   margin-top: -110%;
   width: 50vw;
   height: 25vw;
@@ -1853,19 +1766,18 @@ theColor:onclick {
   border-radius: 2vw;
   overflow: hidden;
 }
-.cardsinhand > .card:hover{
+.cardsinhand > .card:hover {
   filter: brightness(110%);
   cursor: pointer;
   margin-top: -1vw;
   z-index: 2;
 }
-.closedCardsInHand > .card:hover{
+.closedCardsInHand > .card:hover {
   filter: brightness(110%);
   cursor: pointer;
   margin-top: -3vw;
   z-index: 2;
 }
-
 
 #handTitle {
   margin-left: 10vw;
@@ -1899,13 +1811,12 @@ theColor:onclick {
   background-color: #cde0b2;
   grid-column: 1;
 }
-.skillsInfo{
+.skillsInfo {
   grid-column: 2;
   background-color: #bbd892;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
 }
-
 
 .boardNextTurnInfo {
   grid-row: 4;
@@ -2350,30 +2261,29 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: rgb(61, 61, 255);
 }
 
-
-
-.animate{
-    animation: jiggles 4s ease-in-out;
-    animation-iteration-count:infinite;
-    box-shadow: 0 0 10px rgb(116, 116, 9);
-  }
-
-.playerMoney{
-
-  width: 20px;
-  height: 20px;
-  background:green;
+.animate {
+  animation: jiggles 4s ease-in-out;
+  animation-iteration-count: infinite;
+  box-shadow: 0 0 10px rgb(116, 116, 9);
 }
 
+.playerMoney {
+  width: 20px;
+  height: 20px;
+  background: green;
+}
 
-
-
-
-  @keyframes jiggles {
-    0% {transform:rotate(0.5deg);}
-    50% {transform:rotate(-0.5deg);}
-    100% {transform:rotate(0.5deg);}
+@keyframes jiggles {
+  0% {
+    transform: rotate(0.5deg);
   }
+  50% {
+    transform: rotate(-0.5deg);
+  }
+  100% {
+    transform: rotate(0.5deg);
+  }
+}
 
 @media screen and (max-width: 800px) {
   main {

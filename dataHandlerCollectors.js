@@ -201,6 +201,7 @@ Data.prototype.joinGame = function(roomId, playerId) {
         name: null,
         color: null,
         turn: false,
+        playerIsActive: false,
         currentScore:0,
       };
     }
