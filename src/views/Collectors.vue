@@ -240,7 +240,15 @@
                 v-if="players[playerId]"
                 :labels="labels"
                 :player="players[playerId]"
+                :players="players"
                 :raiseValue="raiseValue"
+                :raiseItemsFromBoard="raiseItemsFromBoard"
+                :placement="marketPlacement"
+                :marketValues="marketValues"
+                :notYourTurn="notYourTurn"
+                :aboutToRaiseValue="aboutToRaiseValue"
+                @placeBottle="placeBottle('market', $event)"
+                @raiseValue="raisingValue($event)"
               />
             </div>
           </div>
@@ -582,9 +590,10 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
-      cardInAuction: [],
+      raiseItemsFromBoard:[],
       deckLength: null,
       raiseItems: [],
+      cardInAuction: [],
       raiseValue: {
         fastaval: 0,
         movie: 0,
@@ -609,6 +618,7 @@ export default {
       aboutToBuyItem: false,
       aboutToStartAuction: false,
       aboutToBuySkill: false,
+      aboutToRaiseValue: false,
       hiddenAuctionCard: false,
       scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       auctionCardPaymentActive: false,
@@ -765,6 +775,16 @@ export default {
         this.auctionPrice = 0;
       }.bind(this)
     );
+
+    this.$store.state.socket.on(
+      "collectorsValueRaised",
+      function(d){
+        console.log(d.playerId, "raised value");
+        this.players = d.players;
+        this.raiseItems = d.raiseItems;
+        this.raiseValue = d.raiseValue;
+      }.bind(this)
+    )
 
     this.$store.state.socket.on(
       "auctionRound",
@@ -1069,6 +1089,9 @@ export default {
       if (action === "skill") {
         this.aboutToBuySkill = true;
       }
+      if (action === 'market'){
+        this.aboutToRaiseValue = true;
+      }
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         roomId: this.$route.params.id,
@@ -1108,6 +1131,17 @@ export default {
         cost: this.chosenPlacementCost,
       });
     },
+
+    raisingValue: function(card){
+      this.aboutToRaiseValue = false,
+        this.$store.state.socket.emit("collectorsRaiseValue", {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          card: card,
+          cost: this.chosenPlacementCost,
+      });
+    },
+
     notYourTurn: function () {
       if (this.players[this.playerId].turn == false) {
         return true;

@@ -8,20 +8,63 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
   <div>
     <!--<h1>{{labels.raiseValue}}</h1>-->
     <div class="wrapper1 raiseValuegrid">
-      <div v-for="values in marketOrder" :key="values">
-        <div class="valueSlot">
-            <img class="valueIcon" :src="getIcon(values)">
-          <p class="valueValue">
-            {{ values }}
-            <br />
-            {{ cardCost(values) }}
-          </p>
-        </div>
-
-        <div class="cardslots" v-for="(card, index) in raiseItems" :key="index">
-          <div v-if="card.market == values">
-            <CollectorsCard :card="card" :availableAction="card.available" />
+      <div class="valueGrid">
+        <div v-for="values in marketOrder" :key="values">
+          <div class="valueSlot">
+            <img class="valueIcon" :src="getIcon(values)" />
+            <p class="valueValue">
+              {{ values }}
+              <br />
+              {{ cardCost(values) }}
+            </p>
           </div>
+        </div>
+      </div>
+      <div class="valueGrid">
+        <div v-for="(p, index) in placement" :key="'A' + index">
+          <button
+            class="button"
+            v-if="p.playerId === null"
+            :disabled="notYourTurn() || cannotAfford(p.cost)"
+            @click="placeBottle(p)"
+          >
+            ${{ p.cost }}
+          </button>
+          <div
+            class="bottlePlace"
+            :style="{ backgroundColor: players[p.playerId].color }"
+            v-if="p.playerId !== null"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <div class="raiseCardsAvailable" v-show="aboutToRaiseValue" v-if="player">
+      <h1 class="raiseValueHeadings">Välj ett kort från spelplanen:</h1>
+      <div class="raiseValueCardGrid">
+        <div
+          class="cardsFromBoard"
+          v-for="(card, index) in raiseItemsFromBoard"
+          :key="index"
+        >
+          <CollectorsCard
+            :card="card"
+            :availableAction="card.available"
+            @doAction="raiseValueNow(card)"
+          />
+        </div>
+      </div>
+      <h1 class="raiseValueHeadings">Välj ett kort från handen:</h1>
+      <div class="raiseValueCardGrid">
+        <div
+          class="cardsFromHand"
+          v-for="(card, index) in player.hand"
+          :key="'B' + index"
+        >
+          <CollectorsCard
+            :card="card"
+            :availableAction="card.available"
+            @doAction="raiseValueNow(card)"
+          />
         </div>
       </div>
     </div>
@@ -36,7 +79,7 @@ export default {
   components: {
     CollectorsCard,
   },
-  data: function() {
+  data: function () {
     return {
       marketOrder: ["fastaval", "figures", "music", "movie", "tech"],
     };
@@ -45,14 +88,20 @@ export default {
   props: {
     labels: Object,
     player: Object,
+    players: Object,
     raiseItems: Array,
     raiseValue: Object,
+    raiseItemsFromBoard: Array,
+    placement: Array,
+    marketValues: Object,
+    notYourTurn: Function,
+    aboutToRaiseValue: Boolean,
   },
   methods: {
     log() {
       console.log("hejsan " + this.raiseItems);
     },
-    cardCost: function(values) {
+    cardCost: function (values) {
       switch (values) {
         case "fastaval":
           return this.raiseValue.fastaval;
@@ -69,7 +118,7 @@ export default {
       }
     },
     //Iconerna för varje kategori
-    getIcon: function(category) {
+    getIcon: function (category) {
       switch (category) {
         case "fastaval":
           return require("../../public/images/fastaval.png");
@@ -83,6 +132,47 @@ export default {
           return require("../../public/images/tech.png");
         default:
           return null;
+      }
+    },
+
+    raiseValueNow: function(card){
+      this.$emit('raiseValue', card);
+    },
+
+    placeBottle: function (p) {
+      this.$emit("placeBottle", p.cost);
+      this.highlightAvailableCards(p.cost);
+    },
+
+    cannotAfford: function (cost) {
+      let minCost = 100;
+      for (let key in this.marketValues) {
+        if (cost + this.marketValues[key] < minCost)
+          minCost = cost + this.marketValues[key];
+      }
+      return this.player.money < minCost;
+    },
+
+    highlightAvailableCards: function (cost=100) {
+  
+      for (let i = 0; i < this.raiseItemsFromBoard.length; i += 1) {
+        if (this.marketValues[this.raiseItemsFromBoard[i].item] <= this.player.money - cost) {
+          this.$set(this.raiseItemsFromBoard[i], "available", true);
+        }
+        else {
+          this.$set(this.raiseItemsFromBoard[i], "available", false);
+        }
+        this.chosenPlacementCost = cost; 
+      }
+      for (let i = 0; i < this.player.hand.length; i += 1) {
+        if (this.marketValues[this.player.hand[i].item] <= this.player.money - cost) {
+          this.$set(this.player.hand[i], "available", true);
+          this.chosenPlacementCost = cost;
+        }
+        else {
+          this.$set(this.player.hand[i], "available", false);
+          this.chosenPlacementCost = cost; 
+        }
       }
     },
   },
@@ -138,6 +228,91 @@ export default {
   grid-column: 2;
   margin: auto;
 }
+.button {
+  float: left;
+  font-size: 1vw;
+  justify-content: space-around;
+  margin: 1vw;
+  padding: 0.2vw;
+  color: black;
+  background-color: #d2ebad;
+  border-radius: 1vw;
+  box-shadow: 0 0.3vw #999;
+}
+.button:active {
+  background-color: #aeda6e;
+  box-shadow: 0 0.2vw #999;
+  transform: translateY(0.1vw);
+}
+.button:hover {
+  background-color: #aeda6e;
+}
+.bottlePlace {
+  background-image: url(/images/player-bottle.png);
+  margin-top: 0.5vw;
+  height: 3vw;
+  width: 3vw;
+  background-color: rgb(95, 216, 253);
+  border-radius: 1.5vw;
+  z-index: 60;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.valueGrid {
+  grid-row: 1/2;
+  grid-auto-flow: row;
+}
+
+/*Nedan är all css för rutan man får upp vid kortköp*/
+  .raiseCardsAvailable {
+  display: grid;
+  position: absolute;
+  grid-template-rows: 15% 35% 15% auto;
+  width: 60vw;
+  height: 40vw;
+  background-color: #dfeccc;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  transform: translate(-110%, -70%);  
+  }
+
+  .raiseValueCardGrid{
+    display: grid;
+    align-content: center;
+    grid-auto-flow: column;
+    grid-column: 1/6;
+  }
+
+  .raiseValueHeadings{
+    justify-content: center;
+    text-align: center;
+    color: black;
+    grid-column: 1/6;
+  }
+
+  .cardsFromBoard{
+    display: grid;
+    justify-items:center;
+    align-items: center;
+    zoom: 2;
+    overflow: hidden;
+  }
+
+  .cardsFromHand{
+    display: grid;
+    justify-items:center;
+    align-items: center;
+    zoom: 2;
+    overflow: hidden;
+
+  }
 
 /*
   .available-to-choose {
