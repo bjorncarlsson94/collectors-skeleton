@@ -2,7 +2,7 @@
     <div>
       <!--<h1>{{ labels.buyCard }}</h1>-->
       <div class="buy-cards itemgrid">
-        <div v-for="(card, index) in itemsOnSale" :key="index">
+        <div v-for="(card, index) in itemsOnSale.slice().reverse()" :key="index">
           <CollectorsCard 
             :card="card" 
             :availableAction="card.available" 
@@ -47,7 +47,7 @@
                 </div>
               </div>  
               <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(player.aboutToBuyItem)">Avbryt köp</button>
+               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">Avbryt köp</button>
               </div>
           </div>
     </div>
@@ -69,7 +69,8 @@ export default {
          movie: this.raiseValue.movie,
          technology: this.raiseValue.technology,
          figures: this.raiseValue.figures,
-         music: this.raiseValue.music },
+         music: this.raiseValue.music,
+         currentPlacementCost: null}
        
        
 
@@ -123,6 +124,7 @@ export default {
   },
     
     placeBottle: function (p) {
+      this.currentPlacementCost = p.cost;
       this.cardCostUppdate(p.cost);
       this.$emit('placeBottle', p.cost);
       
@@ -163,8 +165,8 @@ export default {
      
     },
 
-    hideWindow: function(available){
-      this.$emit('cancelBuy', available);
+    hideWindow: function(cost){
+      this.$emit('cancelBuy', cost);
     }
 
 

@@ -50,7 +50,7 @@
     </div>
     <div class="InfoBox" id="itemsHelp" v-if="itemsHelpActive">
       <div><h3><strong>{{labels.itemsHelp.title}}</strong></h3>
-      <p>{{labels.skillsHelp.intro}}</p></div>
+      <p>{{labels.itemsHelp.intro}}</p></div>
       <div><h3><strong>{{labels.itemsHelp.categoryTitle}}</strong></h3>
       <p> {{labels.itemsHelp.category}}</p></div>
       <div><h3><strong>{{labels.itemsHelp.costTitle}}</strong></h3>
@@ -301,14 +301,46 @@ export default {
   -webkit-animation-delay: 0.01s;
   animation: menuSpaceSlide 0.5s forwards;
   animation-delay: 0.01;
-  background-color: #9a9494;
+  background-color: rgb(194, 194, 194);
+    --scrollbarBG: rgb(194, 194, 194);
+  --thumbBG: #908ea0;
+}
+#menuSpaceHelp div{
+
+  background-color: #908ea0;
+
+}
+#menuSpaceHelp h3{
+
+  background-color: rgb(153, 140, 140);
+
+}
+#menuSpaceHelp p{
+  background-color: rgb(153, 140, 140);
+
 }
 #auctionHelp{
  -webkit-animation: auctionSlide 1.5s forwards;
   -webkit-animation-delay: 0.01s;
   animation: auctionSlide 0.5s forwards;
   animation-delay: 0.01;
-  background-color: #7b7a7a;
+  background-color: #90917b;
+    --scrollbarBG: #90917b;
+  --thumbBG: #f5ef9e;
+}
+#auctionHelp div{
+
+  background-color: #f5ef9e;
+
+}
+#auctionHelp h3{
+
+  background-color: #90917b;
+
+}
+#auctionHelp p{
+  background-color: #90917b;
+
 }
 #itemsHelp{
   -webkit-animation: itemsSlide 1.5s forwards;
@@ -341,6 +373,22 @@ export default {
   animation: buttonsSlide 0.5s forwards;
   animation-delay: 0.01;
   background-color: #fafbf0;
+    --scrollbarBG: #fafbf0;
+  --thumbBG: #755c5b;
+}
+#buttonsHelp div{
+
+  background-color: #250b2e;
+
+}
+#buttonsHelp h3{
+
+  background-color: #5f2741a4;
+
+}
+#buttonsHelp p{
+  background-color: #5f2741a4;
+
 }
 
   

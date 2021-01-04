@@ -241,7 +241,15 @@
                 v-if="players[playerId]"
                 :labels="labels"
                 :player="players[playerId]"
+                :players="players"
                 :raiseValue="raiseValue"
+                :raiseItemsFromBoard="raiseItemsFromBoard"
+                :placement="marketPlacement"
+                :marketValues="marketValues"
+                :notYourTurn="notYourTurn"
+                :aboutToRaiseValue="aboutToRaiseValue"
+                @placeBottle="placeBottle('market', $event)"
+                @raiseValue="raisingValue($event)"
               />
             </div>
           </div>
@@ -405,7 +413,7 @@
                 :notYourTurn="notYourTurn"
                 @buyCard="buyCard($event)"
                 @placeBottle="placeBottle('buy', $event)"
-                @cancelBuy="changeBoolean()"
+                @cancelBuy="removeBottle('buy', $event)"
               />
               <!--<CollectorsCard v-for="(card, index) in players[playerId].items" :card="card" :key="index"/>-->
             </div>
@@ -442,8 +450,10 @@
                 <img src="/images/back-of-card.png" class="deck" />
               </div>
             </div>
-            <div class="cardCounter">
-              {{ deckLength }}
+            <div class="cardCounterSpace">
+              <p class="drawCardCounter">
+                {{ deckLength }}
+              </p>
             </div>
           </div>
           <div class="gridedge3">
@@ -594,9 +604,10 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
-      cardInAuction: [],
+      raiseItemsFromBoard:[],
       deckLength: null,
       raiseItems: [],
+      cardInAuction: [],
       raiseValue: {
         fastaval: 0,
         movie: 0,
@@ -621,6 +632,7 @@ export default {
       aboutToBuyItem: false,
       aboutToStartAuction: false,
       aboutToBuySkill: false,
+      aboutToRaiseValue: false,
       hiddenAuctionCard: false,
       scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       auctionCardPaymentActive: false,
@@ -719,12 +731,13 @@ export default {
     );
 
     this.$store.state.socket.on(
-      "collectorsBottlePlaced",
+      "collectorsBottle",
       function (d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
         this.auctionPlacement = d.auctionPlacement;
+        this.players = d.players;
       }.bind(this)
     );
 
@@ -777,6 +790,16 @@ export default {
         this.auctionPrice = 0;
       }.bind(this)
     );
+
+    this.$store.state.socket.on(
+      "collectorsValueRaised",
+      function(d){
+        console.log(d.playerId, "raised value");
+        this.players = d.players;
+        this.raiseItems = d.raiseItems;
+        this.raiseValue = d.raiseValue;
+      }.bind(this)
+    )
 
     this.$store.state.socket.on(
       "auctionRound",
@@ -844,6 +867,10 @@ export default {
       function (d) {
         console.log("spelare vald");
         this.gameStarted = true;
+        this.buyPlacement = d.buyPlacement;
+        this.skillPlacement = d.skillPlacement;
+        this.marketPlacement = d.marketPlacement;
+        this.auctionPlacement = d.auctionPlacement;
         this.players = d.players;
         this.round = d.round;
         console.log("Det är runda: " + this.round);
@@ -909,8 +936,11 @@ export default {
         this.workPlacement = d;
       }.bind(this)
     );
-
     //------------------------------
+
+    this.$store.state.socket.emit("collectorsGetDeckLength", {
+        roomId: this.$route.params.id,
+      });
   },
 
   methods: {
@@ -1081,6 +1111,9 @@ export default {
       if (action === "skill") {
         this.aboutToBuySkill = true;
       }
+      if (action === 'market'){
+        this.aboutToRaiseValue = true;
+      }
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         roomId: this.$route.params.id,
@@ -1109,6 +1142,7 @@ export default {
         card: card,
         cost: this.chosenPlacementCost,
       });
+      this.nextPlayer();
     },
     buySkill: function (card) {
       console.log("buySkill", card);
@@ -1119,7 +1153,19 @@ export default {
         card: card,
         cost: this.chosenPlacementCost,
       });
+      this.nextPlayer();
     },
+
+    raisingValue: function(card){
+      this.aboutToRaiseValue = false,
+        this.$store.state.socket.emit("collectorsRaiseValue", {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          card: card,
+          cost: this.chosenPlacementCost,
+      });
+    },
+
     notYourTurn: function () {
       if (this.players[this.playerId].turn == false) {
         return true;
@@ -1202,8 +1248,23 @@ export default {
       });
     },
 
-    changeBoolean: function () {
-      this.aboutToBuyItem = false;
+    removeBottle: function (action,cost) {
+      if (action === "buy") {
+        this.aboutToBuyItem = false;
+      }
+      if (action === "auction") {
+        this.aboutToStartAuction = false;
+      }
+      if (action === "skill") {
+        this.aboutToBuySkill = false;
+      }
+      this.chosenPlacementCost = cost;
+      this.$store.state.socket.emit("collectorsRemoveBottle", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        action: action,
+        cost: cost,
+      });
     },
 
     //playerHandShow
@@ -2085,30 +2146,36 @@ theColor:onclick {
   border-radius: 2vw;
   padding: 2vw;
   position: relative;
+  display: grid;
 
   justify-self: center;
   align-self: center;
   zoom: 0.5;
 }
-.drawCardSpace .buttons:hover {
-  filter: brightness(110%);
-}
+
 #helpDrawCardSpace {
   zoom: 150%;
 }
 
-.drawCardSpace {
-  grid-column: 8;
-  grid-row: 2;
-  border-radius: 2vw;
-  padding: 2vw;
-  justify-self: center;
-  align-self: center;
-  zoom: 0.5;
+.cardCounterSpace {
+  grid-column: 2;
 }
+.drawCardCounter {
+  align-content: center;
+  padding: 50%;
+  padding-right: 150%;
+  border-top-right-radius: 10%;
+  border-bottom-right-radius: 10%;
+  background-color: rgb(34, 55, 94);
+}
+
 .drawCardSpace .buttons:hover {
   filter: brightness(110%);
   background-color: rgb(194, 194, 194);
+}
+
+.drawCardSpace .buttons {
+  grid-column: 1;
 }
 
 .deck {
