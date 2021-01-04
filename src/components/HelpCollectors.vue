@@ -1,17 +1,35 @@
 <template>
 <div>
     <div class="InfoBox" id="skillsHelp" v-if="skillsHelpActive">
-      <div><h3><strong>Titel 1</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 2</strong></h3>
-      <p> Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 3</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 4</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>titel 5</strong></h3>
-      <p></p>
-      <img src="https://previews.123rf.com/images/yupiramos/yupiramos1706/yupiramos170639117/81165835-cute-cat-cartoon-icon-vector-illustration-graphic-design.jpg" alt="funka ej">
+       <div><h3><strong>{{labels.skillsHelp.title}}</strong></h3>
+      <p>{{labels.skillsHelp.intro}}</p></div>
+      <div><h3><strong>{{labels.skillsHelp.titleArea}}</strong></h3>
+      
+      <p>{{labels.skillsHelp.skillsArea}}</p></div>
+      <div><h3><strong>{{labels.skillsHelp.titleWorkerSkills}}</strong></h3>
+      <img src='/images/Skills_work1.png' alt="funka ej">
+      
+      <p> {{labels.skillsHelp.nextTurn}}</p></div>
+      <div><h3><strong>{{labels.skillsHelp.titleDrawCardSkill}}</strong></h3>
+      <img src='/images/Skills_work2.png' alt="funka ej">
+      
+      <p>{{labels.skillsHelp.DrawCardSkill}}</p></div>
+      <div><h3><strong>{{labels.skillsHelp.titleAuctionSkill}}</strong></h3>
+      <img src='/images/Skills_auction.png' alt="funka ej">
+      
+      <p>{{labels.skillsHelp.auctionSkill}}</p></div>
+      <div><h3><strong>{{labels.skillsHelp.titleGainWorker}}</strong></h3>
+      <img src='/images/Skills_extraWorker.png' alt="funka ej">
+      <p>{{labels.skillsHelp.gainWorker}}</p>
+      </div>
+      <div><h3><strong>{{labels.skillsHelp.titleVPSpecific}}</strong></h3>
+      <img src='/images/Skills_VP.png' alt="funka ej">
+      <p>{{labels.skillsHelp.VPSpecific}}</p>
+      </div>
+      <div><h3><strong>{{labels.skillsHelp.titleVPAll}}</strong></h3>
+      <img src='/images/Skills_VP_all.png' alt="funka ej">
+      
+      <p>{{labels.skillsHelp.VPAll}}</p>
       </div>
 
     </div>
@@ -225,6 +243,12 @@ export default {
   animation: skillSlide 0.5s forwards;
   animation-delay: 0.01;
   
+}
+#skillsHelp img{
+ float:right;
+ margin-top: -60px;
+ width: 50px;
+ height: 50px;
 }
 #workHelp{
   -webkit-animation: workSlide 1.5s forwards;

@@ -3,7 +3,7 @@
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
       <section id="wrapper">
-        <div class="helpBoard" @click="showHelpOptions">?</div>
+        <div class="helpBoard" @click="showHelpOptions"><p><strong>?</strong></p></div>
         <div id="grid">
           <div class="playerJoinedBox" v-show="playerJoined">
             <div class="playerText1">{{ labels.playerIntro1 }}</div>
@@ -409,6 +409,7 @@
                 <div id="collectiontitle">Collection:</div>
                  <!-- playerMoney -->
                   <div class="playerMoney">{{getCurrentScore()}}</div>
+
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -1286,6 +1287,7 @@ export default {
       }
       return "";
     },
+    
     nextPlayer: function () {
       this.$store.state.socket.emit("nextPlayer", {
         roomId: this.$route.params.id,
@@ -2202,6 +2204,7 @@ theColor:onclick {
 .help:hover {
   background-color: rgb(61, 61, 255);
 }
+
 .menuSpace {
   grid-column: 1;
   grid-row: 3;
@@ -2257,7 +2260,7 @@ theColor:onclick {
   border: solid;
   border-width: 1px;
   border-color: black;
-  font-size: 1.5vw;
+  font-size: 3.5vw;
 }
 #playerHelp {
   --scrollbarBG: #0066ff;
