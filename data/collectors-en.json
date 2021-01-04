@@ -57,5 +57,95 @@
 		"extraActions":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
 
 
+	},
+	"workHelp":{
+		"title":"Info about items:",
+		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
+		"work1Title":"Different Categories:",
+		"work1":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
+		"work2Title":"Card cost and value:",
+		"work2":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
+		"work3Title":"Other actions:",
+		"work3":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work4Title":"Other actions:",
+		"work4":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work5Title":"Other actions:",
+		"work5":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
+		
+
+
+
+	},
+	"raiseValueHelp":{
+		"title":"Info about items:",
+		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
+		"work1Title":"Different Categories:",
+		"work1":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
+		"work2Title":"Card cost and value:",
+		"work2":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
+		"work3Title":"Other actions:",
+		"work3":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work4Title":"Other actions:",
+		"work4":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work5Title":"Other actions:",
+		"work5":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
+		
+
+
+
+	},
+	"deckHelp":{
+		"title":"Info about items:",
+		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
+		"work1Title":"Different Categories:",
+		"work1":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
+		"work2Title":"Card cost and value:",
+		"work2":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
+		"work3Title":"Other actions:",
+		"work3":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work4Title":"Other actions:",
+		"work4":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work5Title":"Other actions:",
+		"work5":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
+		
+
+
+
+	},
+	"menuSpaceHelp":{
+		"title":"Info about items:",
+		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
+		"work1Title":"Different Categories:",
+		"work1":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
+		"work2Title":"Card cost and value:",
+		"work2":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
+		"work3Title":"Other actions:",
+		"work3":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work4Title":"Other actions:",
+		"work4":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work5Title":"Other actions:",
+		"work5":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
+		
+
+
+
+	},
+	"auctionHelp":{
+		"title":"Info about items:",
+		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
+		"work1Title":"Different Categories:",
+		"work1":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
+		"work2Title":"Card cost and value:",
+		"work2":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
+		"work3Title":"Other actions:",
+		"work3":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work4Title":"Other actions:",
+		"work4":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
+		"work5Title":"Other actions:",
+		"work5":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
+		
+
+
+
 	}
 }

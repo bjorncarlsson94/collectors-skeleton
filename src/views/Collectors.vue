@@ -2324,9 +2324,10 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 }
 
 .animate {
-  animation: jiggles 4s ease-in-out;
+  animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
-  box-shadow: 0 0 10px rgb(116, 116, 9);
+  box-shadow: 0px 0px 10px 11px rgb(116, 116, 9),0 0 5px  rgb(116, 116, 9);
+  
 }
 
 .playerMoney {
