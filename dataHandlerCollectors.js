@@ -168,6 +168,13 @@ Data.prototype.createDeck = function() {
   return shuffle(deck);
 };
 
+Data.prototype.getDeckLength = function(roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    return room.deck.length;
+  } else return 0;
+};
+
 Data.prototype.joinGame = function(roomId, playerId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -196,11 +203,10 @@ Data.prototype.joinGame = function(roomId, playerId) {
         turn: false,
         currentScore:0,
       };
-      return true;
     }
-    console.log("Player", playerId, "was declined due to player limit");
+    return true;
   }
-  return false;
+  console.log("Player", playerId, "was declined due to player limit");
 };
 
 Data.prototype.getPlayers = function(id) {
@@ -629,20 +635,19 @@ Data.prototype.getCardValue = function(roomId) {
 Data.prototype.nameAndColor = function(roomId, playerId, name, color) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
-    console.log("denna färg: "+color)
-    if (typeof color !== "undefined"){
-      color = room.playerColor[0]
-    } 
+    console.log("denna färg: " + color);
+    if (typeof color !== "undefined") {
+      color = room.playerColor[0];
+    }
     room.players[playerId].color = color;
-    
-   
-    console.log("detta namn: "+name)
+
+    console.log("detta namn: " + name);
     if (name == "") {
       var fs = require("fs");
-      var text = fs.readFileSync("./data/example-names.txt").toString('utf-8');
-      console.log(text);
+      var text = fs.readFileSync("./data/example-names.txt").toString("utf-8");
       var textByLine = text.split("\n");
-      room.players[playerId].name = textByLine[Math.floor(Math.random() * textByLine.length)];
+      room.players[playerId].name =
+        textByLine[Math.floor(Math.random() * textByLine.length)];
     } else {
       room.players[playerId].name = name;
     }

@@ -530,7 +530,7 @@
               </div>
             </div>
             <div class="cardCounter">
-              {{}}
+              {{ deckLength }}
             </div>
           </div>
           <div class="gridedge3" >
@@ -688,6 +688,7 @@ export default {
       skillsOnSale: [],
       auctionCards: [],
       cardInAuction: [],
+      deckLength: null,
       raiseItems: [],
       raiseValue: {
         fastaval: 0,
@@ -827,6 +828,11 @@ export default {
     this.$store.state.socket.on(
       "collectorsPointsUpdated",
       (d) => (this.points = d)
+    );
+
+    this.$store.state.socket.on(
+      "collectorsGotDeckLength",
+      (d) => (this.deckLength = d)
     );
 
     this.$store.state.socket.on(
@@ -1045,7 +1051,6 @@ export default {
         this.loserAvailable = true;
       }
     },
-
     currentPlayer: function () {
       var keys = Object.keys(this.players);
 
@@ -1183,6 +1188,9 @@ export default {
           playerId: this.playerId,
        });
       }
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+          roomId: this.$route.params.id
+      });
     },
     buyCard: function (card) {
       console.log("buyCard", card);
@@ -1467,12 +1475,18 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+          roomId: this.$route.params.id
+      });
     },
     drawACardAndFirstPlayerToken: function () {
       console.log("draw card and first player token");
       this.$store.state.socket.emit("collectorsDrawACardAndToken", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
+      });
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+          roomId: this.$route.params.id
       });
     },
     drawCardAndPassiveIncome: function () {
@@ -1481,12 +1495,18 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+          roomId: this.$route.params.id
+      });
     },
     placeWorker: function (where) {
       console.log("placeWorker!");
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
         where: where,
+      });
+      this.$store.state.socket.emit("collectorsGetDeckLength", {
+          roomId: this.$route.params.id
       });
     },
     //----------------------------------------------------------
