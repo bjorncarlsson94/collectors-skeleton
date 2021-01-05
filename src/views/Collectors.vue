@@ -1274,9 +1274,22 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
     showHelpOptions: function () {
+      if(this.helpAction){
+      
+       this.skillsHelpActive= false;
+      this.auctionHelpActive= false;
+      this.menuSpaceActive= false;
+      this.buttonsHelpActive= false;
+      this.workHelpActive= false;
+      this.itemsHelpActive= false;
+      this.raiseValueHelpActive= false;
+        
+
+      }
       this.helpAction = !this.helpAction;
       console.log(this.helpAction);
       console.log(document.getElementById("test1").className);
+      
 
       /* if(this.helpAuctionActive){
         console.log("hejhej");
@@ -1727,6 +1740,10 @@ theColor:onclick {
   padding: 1vw;
   font-size: 1vw;
   cursor: pointer;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 
 /* Hover över spelarområdena*/
@@ -1782,6 +1799,7 @@ theColor:onclick {
   grid-template-columns: 3fr 1fr;
   grid-template-rows: 5fr 1fr 1fr;
   height: 100%;
+  
 }
 
 .playercollection {
@@ -1812,6 +1830,7 @@ theColor:onclick {
   border-radius: 0 0 0 2vw;
   padding: 1vw;
   align-items: center;
+  
 }
 
 .closedBoardGrid {
@@ -2015,6 +2034,10 @@ theColor:onclick {
   grid-column: 4 / span 3;
   grid-row: 2;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .skills {
   border-radius: 2vw;
@@ -2022,6 +2045,10 @@ theColor:onclick {
   grid-column: 4 / span 3;
   grid-row: 3;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .work {
   text-align: center;
@@ -2029,6 +2056,10 @@ theColor:onclick {
   background-color: grey;
   grid-column: 2;
   grid-row: 2 / span 2;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .raiseValue {
   border-radius: 2vw;
@@ -2036,6 +2067,10 @@ theColor:onclick {
   grid-column: 8;
   grid-row: 3 / span 1;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .raiseValuegrid div {
   font-size: 1vw;
@@ -2048,6 +2083,10 @@ theColor:onclick {
   grid-column: 3;
   grid-row: 2 / span 2;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .auctionCardViewMini {
   zoom: 1.65;
@@ -2154,11 +2193,16 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   overflow: hidden;
+  
 }
 
 .menuSpace > * {
   /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
   zoom: 0.8;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .help {
   width: 40px;
@@ -2171,6 +2215,10 @@ theColor:onclick {
   align-items: center;
   background-color: blue;
   cursor: pointer;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .help:hover {
   background-color: rgb(61, 61, 255);
@@ -2187,6 +2235,10 @@ theColor:onclick {
   display: grid;
   grid-template-rows: repeat(auto-fill, 3.5vh);
   align-content: center;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .buttons {
   display: inline-block;
@@ -2231,7 +2283,8 @@ theColor:onclick {
   border: solid;
   border-width: 1px;
   border-color: black;
-  font-size: 3.5vw;
+  font-size: 150%;
+  
 }
 #playerHelp {
   --scrollbarBG: #0066ff;
@@ -2318,6 +2371,11 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   grid-row: 1;
   grid-column: 8;
   justify-self: flex-end;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  font-size: 200%;
 }
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);

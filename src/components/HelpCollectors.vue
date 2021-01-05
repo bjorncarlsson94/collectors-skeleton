@@ -65,15 +65,13 @@
     </div>
     <div class="InfoBox" id="raiseValueHelp" v-if="raiseValueHelpActive">
       <div><h3><strong>{{labels.raiseValueHelp.title}}</strong></h3>
-      <p>{{labels.raiseValueHelp.title}}</p></div>
-      <div><h3><strong>{{labels.raiseValueHelp.title}}</strong></h3>
-      <p> {{labels.raiseValueHelp.title}}</p></div>
-      <div><h3><strong>{{labels.raiseValueHelp.title}}</strong></h3>
-      <p>{{labels.raiseValueHelp.title}}</p></div>
-      <div><h3><strong>{{labels.raiseValueHelp.title}}</strong></h3>
-      <p>{{labels.raiseValueHelp.title}}</p></div>
-      <div><h3><strong>{{labels.raiseValueHelp.title}}</strong></h3>
-      <p>{{labels.raiseValueHelp.title}}</p>
+      <p>{{labels.raiseValueHelp.intro}}</p></div>
+      <div><h3><strong>{{labels.raiseValueHelp.buttonsTitle}}</strong></h3>
+      <p> {{labels.raiseValueHelp.actions}}</p>
+      <p>{{labels.raiseValueHelp.actionsExplained}}</p></div>
+      <div><h3><strong>{{labels.raiseValueHelp.endOfRound}}</strong></h3>
+      <p>{{labels.raiseValueHelp.EORexp1}}</p>
+      <p>{{labels.raiseValueHelp.EORexp2}}</p>
       
       </div>
 
