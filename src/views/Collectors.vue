@@ -242,7 +242,8 @@
                 :player="players[playerId]"
                 :players="players"
                 :raiseValue="raiseValue"
-                :raiseItemsFromBoard="raiseItemsFromBoard"
+                :skillOnSale="getLastElement(skillsOnSale)"
+                :auctionCard="getLastElement(auctionCards)"
                 :placement="marketPlacement"
                 :marketValues="marketValues"
                 :notYourTurn="notYourTurn"
@@ -592,7 +593,6 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
-      raiseItemsFromBoard:[],
       deckLength: null,
       raiseItems: [],
       cardInAuction: [],
@@ -712,6 +712,7 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
+        //this.raiseItemsFromBoard = d.raiseItemsFromBoard;
         if (this.players[this.playerId].name == null) {
           this.playerJoinedFn();
         }
@@ -786,6 +787,9 @@ export default {
         this.players = d.players;
         this.raiseItems = d.raiseItems;
         this.raiseValue = d.raiseValue;
+        this.skillsOnSale = d.skillsOnSale;
+        this.auctionCards = d.auctionCards;
+        this.itemsOnSale = d.itemsOnSale;
       }.bind(this)
     )
 
@@ -1154,6 +1158,21 @@ export default {
       });
     },
 
+    getLastElement: function(cardArray){
+      for(let i = cardArray.length - 1; i>=1; i--){
+        if(cardArray[i].market){
+          return cardArray[i];
+        }
+      }
+    },
+
+    /*getRaiseItemsFromBoard: function(){
+      this.raiseItemsFromBoard.push(this.skillsOnSale[this.skillsOnSale.length - 1]);
+      this.raiseItemsFromBoard.push(this.auctionCards[this.auctionCards.length - 1]);
+      return this.raiseItemsFromBoard;
+    },*/
+
+
     notYourTurn: function () {
       if (this.players[this.playerId].turn == false) {
         return true;
@@ -1184,15 +1203,7 @@ export default {
         this.auctionActive = false;
       }
     },
-    buyCardOrAuction: function (card) {
-      if (this.auctionAvailable == true) {
-        console.log("Starta en auktion");
-        return this.startAuction(card);
-      } else {
-        console.log("Köp ett kort istället");
-        return this.buyCard(card);
-      }
-    },
+
     restoreHand: function () {
       this.$store.state.socket.emit("restoreHand", {
         roomId: this.$route.params.id,
