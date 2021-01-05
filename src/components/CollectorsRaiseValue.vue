@@ -41,15 +41,16 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
     <div class="raiseCardsAvailable" v-show="aboutToRaiseValue" v-if="player">
       <h1 class="raiseValueHeadings">Välj ett kort från spelplanen:</h1>
       <div class="raiseValueCardGrid">
-        <div
-          class="cardsFromBoard"
-          v-for="(card, index) in raiseItemsFromBoard"
-          :key="index"
-        >
+        <div class="cardsFromBoard">
           <CollectorsCard
-            :card="card"
-            :availableAction="card.available"
-            @doAction="raiseValueNow(card)"
+            :card="auctionCard"
+            :availableAction="auctionCard.available"
+            @doAction="raiseValueNow(auctionCard)"
+          />
+          <CollectorsCard
+            :card="skillOnSale"
+            :availableAction="skillOnSale.available"
+            @doAction="raiseValueNow(skillOnSale)"
           />
         </div>
       </div>
@@ -91,7 +92,8 @@ export default {
     players: Object,
     raiseItems: Array,
     raiseValue: Object,
-    raiseItemsFromBoard: Array,
+    auctionCard: Object,
+    skillOnSale: Object,
     placement: Array,
     marketValues: Object,
     notYourTurn: Function,
@@ -141,7 +143,17 @@ export default {
 
     placeBottle: function (p) {
       this.$emit("placeBottle", p.cost);
-      this.highlightAvailableCards(p.cost);
+      console.log(this.skillOnSale);
+      //this.highlightAvailableCards(p.cost);
+    },
+
+    findLastCard: function(cardArray){
+      for(let i = cardArray.length-1; i>=0; i--){
+        if (cardArray[i].length !== 0){
+          //console.log(cardArray[i]);
+          return cardArray[i];
+        }
+      }
     },
 
     cannotAfford: function (cost) {
@@ -175,6 +187,7 @@ export default {
         }
       }
     },
+
   },
 };
 //
@@ -272,7 +285,7 @@ export default {
   grid-template-rows: 15% 35% 15% auto;
   width: 60vw;
   height: 40vw;
-  background-color: #dfeccc;
+  background-color: #cfdcf2;
   border-radius: 2vw;
   border-style: solid;
   border-width: 0.4vw;
@@ -303,6 +316,7 @@ export default {
     align-items: center;
     zoom: 2;
     overflow: hidden;
+    grid-auto-flow: column;
   }
 
   .cardsFromHand{

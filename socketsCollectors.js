@@ -19,7 +19,7 @@ function sockets(io, socket, data) {
         auctionCards: data.getAuctionCards(d.roomId),
         cardInAuction: data.getCardInAuction(d.roomID),
         placements: data.getPlacements(d.roomId),
-        workPlacement: data.getWorkPlacement(d.roomId)
+        workPlacement: data.getWorkPlacement(d.roomId),
       });
     }
   });
@@ -60,6 +60,9 @@ function sockets(io, socket, data) {
       players: data.getPlayers(d.roomId),
       raiseItems: data.getRaiseItems(d.roomId),
       raiseValue: data.getCardValue(d.roomId),
+      skillsOnSale: data.getSkillsOnSale(d.roomId),
+      auctionCards: data.getAuctionCards(d.roomId),
+      itemsOnSale: data.getItemsOnSale(d.roomId),
     });
   });
 
@@ -204,7 +207,7 @@ socket.on('nameAndColor', function (d) {
     console.log("hej");
     io.to(d.roomId).emit(
       "workerPlaced",
-      data.setWorkPlacementTrue(d.roomId, d.where)
+      data.setWorkPlacementTrue(d.roomId, d.where, d.playerId)
     );
   });
   socket.on("currentValue", function (d) {

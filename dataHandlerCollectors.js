@@ -156,7 +156,11 @@ Data.prototype.createRoom = function(roomId, playerCount, lang = "en") {
       playerId: null,
     },
   ];
-  room.workPlacement = [false, false, false];
+  room.workPlacement = {
+    drawACardAndFirstPlayerToken: null,
+    drawCardAndPassiveIncome: null,
+    drawTwoCards: null,
+  };
   this.rooms[roomId] = room;
 };
 
@@ -388,20 +392,32 @@ Data.prototype.raiseValue = function(
 
   if (typeof room !== "undefined") {
     let c = null;
-    let k = null;
     /// check first if the card is among the items on sale
-    for (let i = 0; i < room.raiseItems.length; i += 1) {
+    for (let i = 0; i < room.skillsOnSale.length; i += 1) {
        //since card comes from the client, it is NOT the same object (reference)
        //so we need to compare properties for determining equality
       if (
-        room.raiseItems[i].x === card.x &&
-        room.raiseItems[i].y === card.y
+        room.skillsOnSale[i].x === card.x &&
+        room.skillsOnSale[i].y === card.y
       ) {
-        c = room.raiseItems.splice(i, 1, {});
+        c = room.skillsOnSale.splice(i, 1, {});
 
         break;
       }
     }
+
+    for (let i = 0; i < room.auctionCards.length; i += 1) {
+      //since card comes from the client, it is NOT the same object (reference)
+      //so we need to compare properties for determining equality
+     if (
+       room.auctionCards[i].x === card.x &&
+       room.auctionCards[i].y === card.y
+     ) {
+       c = room.auctionCards.splice(i, 1, {});
+
+       break;
+     }
+   }
     // ...then check if it is in the hand. It cannot be in both so it's safe
     for (let i = 0; i < room.players[playerId].hand.length; i += 1) {
       // since card comes from the client, it is NOT the same object (reference)
@@ -522,9 +538,9 @@ Data.prototype.clearBottles = function(roomId) {
     for (let i = 0; i < room.marketPlacement.length; i += 1) {
       room.marketPlacement[i].playerId = null;  
     }
-    for (let i = 0; i < room.workPlacement.length; i += 1) {
-      room.workPlacement[i] = false;  
-    }
+    room.workPlacement.drawTwoCards = null;
+    room.workPlacement.drawACardAndFirstPlayerToken = null;
+    room.workPlacement.drawCardAndPassiveIncome = null;
   }
 };
 
@@ -1038,11 +1054,25 @@ Data.prototype.getWorkPlacement = function(roomId) {
     return room.workPlacement;
   } else return [];
 };
-Data.prototype.setWorkPlacementTrue = function(roomId, place) {
+Data.prototype.setWorkPlacementTrue = function(roomId, place, playerId) {
   console.log("Set workplacement körs!");
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
-    room.workPlacement[place] = true;
+    switch (place) {
+      case "drawTwoCards":
+        room.workPlacement.drawTwoCards = playerId;
+        break;
+      case "drawACardAndFirstPlayerToken":
+        room.workPlacement.drawACardAndFirstPlayerToken = playerId;
+        break;
+      case "drawCardAndPassiveIncome":
+        room.workPlacement.drawCardAndPassiveIncome = playerId;
+        break;
+      default:
+        console.log("Shits fucked");
+        break;
+    }
+    
     console.log("workPlacement:");
     console.log(room.workPlacement);
     console.log("---------------");

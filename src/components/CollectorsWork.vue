@@ -3,75 +3,119 @@
     <div class="workgrid">
       <!-- <h1>{{ labels.workTitle }}</h1>
     <button id="helpButton" value="?" v-on:click="helpButtonPressed"></button> -->
-      <button class="workslot" id="workslot5" v-on:click="recycleBottle4thRound"></button>
-      <button class="workslot" id="workslot4" v-on:click="recycleBottle"></button>
-      <button class="workslot" id="workslot3" v-on:click="drawTwoCards"></button>
+      <button
+        class="workslot"
+        id="workslot5"
+        v-on:click="recycleBottle4thRound"
+      ></button>
+      <button
+        class="workslot"
+        id="workslot4"
+        v-on:click="recycleBottle"
+      ></button>
+      <button
+        class="workslot"
+        id="workslot3"
+        v-on:click="drawTwoCards"
+      ></button>
       <button
         class="workslot"
         id="workslot2"
         v-on:click="drawACardAndFirstPlayerToken"
       ></button>
-      <button class="workslot" id="workslot1" v-on:click="drawCardAndPassiveIncome"></button>
+      <button
+        class="workslot"
+        id="workslot1"
+        v-on:click="drawCardAndPassiveIncome"
+      ></button>
     </div>
-    <div class="bottlePlace" id="workBottle0"  v-if="this.workPlacement[0] == true"></div>
-    <div class="bottlePlace" id="workBottle1"  v-if="this.workPlacement[1] == true"></div>
-    <div class="bottlePlace" id="workBottle2"   v-if="this.workPlacement[2] == true"></div>
+    <div
+      class="bottlePlace"
+      id="workBottle0"
+      v-if="this.workPlacement.drawTwoCards !== null"
+      :style="{
+        backgroundColor: players[this.workPlacement.drawTwoCards].color,
+      }"
+    ></div>
+    <div
+      class="bottlePlace"
+      id="workBottle1"
+      v-if="this.workPlacement.drawACardAndFirstPlayerToken !== null"
+      :style="{
+        backgroundColor:
+          players[this.workPlacement.drawACardAndFirstPlayerToken].color,
+      }"
+    ></div>
+    <div
+      class="bottlePlace"
+      id="workBottle2"
+      v-if="this.workPlacement.drawCardAndPassiveIncome !== null"
+      :style="{
+        backgroundColor:
+          players[this.workPlacement.drawCardAndPassiveIncome].color,
+      }"
+    ></div>
   </div>
 </template>
 
 <script>
 export default {
   name: "CollectorsWork",
-  components: {
-   
-
-
-  },
+  components: {},
   props: {
     labels: Object,
     player: Object,
+    players: Object,
     round: Number,
-    workPlacement: Array, //Finns en flaska här? true/false
+    workPlacement: Object, //Finns en flaska här? true/false
     //drawTwoCards = 0
     //drawACardAndFirstPlayerToken = 0
     //drawCardAndPassiveIncome = 0
   },
   methods: {
     //  (this.workPlacement[0] === false) detta är en fuling quick fix tänk silvertejp. Det funkar det är det viktigaste än så länge.
-    helpButtonPressed: function () {},
+    helpButtonPressed: function() {},
     //Lägg en flaska här och dra 2st kort
-    drawTwoCards: function () {
+    drawTwoCards: function() {
       console.log(this.workPlacement);
-      if ((this.workPlacement[0] === false) && this.player.bottles > 0) {
+      if (this.workPlacement.drawTwoCards === null && this.player.bottles > 0) {
         console.log("Kraschar innan this.workPlacement");
         this.$emit("workDrawTwoCards");
-        this.placeWorker(0);
-        
+        this.placeWorker("drawTwoCards");
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
     },
     //Lägg en flaska här och dra ett kort samt ta First Player Token
-    drawACardAndFirstPlayerToken: function () {
-      if ((this.workPlacement[1] === false) && this.player.bottles > 0 && !this.player.firstPlayerToken) {
+    drawACardAndFirstPlayerToken: function() {
+      if (
+        this.workPlacement.drawACardAndFirstPlayerToken === null &&
+        this.player.bottles > 0 &&
+        !this.player.firstPlayerToken
+      ) {
         this.$emit("drawACardAndFirstPlayerToken");
-        this.placeWorker(1);
+        this.placeWorker("drawACardAndFirstPlayerToken");
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
     },
     //Lägg en flaska här och dra ett kort samt ett kort som passiv inkomst
-    drawCardAndPassiveIncome: function () {
-      console.log(this.workPlacement[2]);
-      if ((this.workPlacement[2] === false) && this.player.bottles > 0) {
+    drawCardAndPassiveIncome: function() {
+      console.log("workPlacement:");
+      console.log(this.workPlacement);
+      console.log("----------------");
+      if (
+        this.workPlacement.drawCardAndPassiveIncome === null &&
+        this.player.bottles > 0
+      ) {
         this.$emit("drawCardAndPassiveIncome");
-        this.placeWorker(2);
+        this.placeWorker("drawCardAndPassiveIncome");
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
     },
     //Panta en flaska så får du en peng, går att gö hur många gånger som helst
-    recycleBottle: function () {
+    recycleBottle: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks");
@@ -87,7 +131,7 @@ export default {
       }
     },
     //På fjärde omgången kan du panta en flaska och få 3 pengar ist
-    recycleBottle4thRound: function () {
+    recycleBottle4thRound: function() {
       console.log("Panta 4 trycks");
       if (this.round === 4 && this.player.bottles > 0) {
         console.log("Är runda 4 och har 1+ flaskor");
@@ -98,9 +142,9 @@ export default {
         alert("Too few bottles :^(");
       }
     },
-    placeWorker: function (where) {
+    placeWorker: function(where) {
       console.log("setWorkPlacement");
-      this.$emit("placeWorker", where, );
+      this.$emit("placeWorker", where);
     },
     /*showPopup: function(typeOfAlert){
       if(typeOfAlert=="aaa"){
@@ -124,7 +168,6 @@ export default {
       }
 
     }*/
-
   },
 };
 </script>
@@ -214,31 +257,28 @@ export default {
   grid-row: 1;
 }
 .bottlePlace {
-    background-image: url(/images/player-bottle.png);
-    margin-top: 0.5vw;
-    height: 3vw;
-    width: 3vw;
-    background-color: black;
-    border-radius: 1.5vw;
-    z-index: 60;
-    position: absolute;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-  }
-  #workBottle0{
-    top :43%;
-    left:16%;
-
-  }
-  #workBottle1{
-    top :61%;
-    left:16%;
-    
-  }
-  #workBottle2{
-    top :80%;
-    left:16%;
-    
-  }
+  background-image: url(/images/player-bottle.png);
+  margin-top: 0.5vw;
+  height: 3vw;
+  width: 3vw;
+  background-color: black;
+  border-radius: 1.5vw;
+  z-index: 60;
+  position: absolute;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+#workBottle0 {
+  top: 43%;
+  left: 16%;
+}
+#workBottle1 {
+  top: 61%;
+  left: 16%;
+}
+#workBottle2 {
+  top: 80%;
+  left: 16%;
+}
 </style>
