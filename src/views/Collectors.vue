@@ -3,10 +3,11 @@
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
       <section id="wrapper">
-        <div class="helpBoard" @click="showHelpOptions">
+        
+        <div id="grid">
+          <div class="helpBoard" @click="showHelpOptions">
           <p><strong>?</strong></p>
         </div>
-        <div id="grid">
           <div class="playerJoinedBox" v-show="playerJoined">
             <div class="playerText1">{{ labels.playerIntro1 }}</div>
             <input class="playerText" type="text" v-model="pname" />
@@ -83,18 +84,18 @@
                     </div>
                     <div class="boardHand">
                       <div id="handTitle">Hand:</div>
-                      <div class="cardsinhand">
+                      <div 
+                      class="cardsinhand">
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
                           :card="card"
-                          :availableAction="card.available"
-                          @doAction="buyCard(card)"
                           :key="index"
+                          class="otherHand"
                         />
                       </div>
                     </div>
 
-                    <div class="boardNextTurnInfo">Next turn info</div>
+                    <div class="boardNextTurnInfo">Next turn income</div>
                   </div>
                 </div>
               </div>
@@ -269,8 +270,6 @@
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].hand"
                       :card="card"
-                      :availableAction="card.available"
-                      @doAction="buyCard(card)"
                       :key="index"
                     />
                   </div>
@@ -278,7 +277,11 @@
 
                 <div class="closedBoardHandBackground"></div>
 
-                <div class="totalValue">Hej</div>
+                <div class="totalValue">Hej
+                  <!-- playerMoney -->
+                <div class="playerMoney">{{ getCurrentScore() }}</div>
+                </div>
+                
               </div>
             </div>
 
@@ -319,8 +322,7 @@
               </div>
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                <!-- playerMoney -->
-                <div class="playerMoney">{{ getCurrentScore() }}</div>
+                
 
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
@@ -336,7 +338,14 @@
                   </div>
                   <div id="hidden">Hidden:</div>
 
+
+                  <div class="itemicons">
+                    
+
+                  </div>
                   <div id="totalvalue">Total value:</div>
+
+
                 </div>
               </div>
               <div class="boardSkills">
@@ -369,7 +378,12 @@
                 </div>
               </div>
 
-              <div class="boardNextTurnInfo">Next turn info</div>
+              <div class="boardNextTurnInfo">Next turn income
+
+                <img src="/images/bottle-playerboard.png" class="nextturnboard">
+                <!-- playerMoney -->
+                <div class="playerMoney">{{ getCurrentScore() }}</div>
+              </div>
             </div>
           </div>
 
@@ -412,6 +426,8 @@
               v-if="players[playerId]"
               :labels="labels"
               :player="players[playerId]"
+              :players="players"
+
               :round="round"
               :workPlacement="workPlacement"
               @recycleBottle="recycleBottle($event)"
@@ -446,9 +462,8 @@
             </div>
           </div>
           <div class="gridedge3">
-            Ruta för att visa grid lättare: 3
-            <br />
-            Här kan man t.ex. ha vissa viktiga knappar
+            <p>{{ labels.roundcounter }} {{ round }}/4 </p>
+            
           </div>
           <div
             :class="['menuSpace', { animate: helpAction }]"
@@ -581,7 +596,11 @@ export default {
       skillPlacement: [],
       auctionPlacement: [],
       marketPlacement: [],
-      workPlacement: [false, false, false],
+      workPlacement: {
+        drawACardAndFirstPlayerToken: null,
+        drawCardAndPassiveIncome: null,
+        drawTwoCards: null,
+      },
       chosenPlacementCost: null,
       marketValues: {
         fastaval: 0,
@@ -713,6 +732,7 @@ export default {
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
         //this.raiseItemsFromBoard = d.raiseItemsFromBoard;
+        this.workPlacement = d.workPlacement;
         if (this.players[this.playerId].name == null) {
           this.playerJoinedFn();
         }
@@ -923,10 +943,7 @@ export default {
 
     this.$store.state.socket.on(
       "workerPlaced",
-      function (d) {
-        console.log("workPlacement uppdaterad!");
-        this.workPlacement = d;
-      }.bind(this)
+      (d) => (this.workPlacement = d)
     );
     //------------------------------
 
@@ -1271,9 +1288,22 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
     showHelpOptions: function () {
+      if(this.helpAction){
+      
+       this.skillsHelpActive= false;
+      this.auctionHelpActive= false;
+      this.menuSpaceActive= false;
+      this.buttonsHelpActive= false;
+      this.workHelpActive= false;
+      this.itemsHelpActive= false;
+      this.raiseValueHelpActive= false;
+        
+
+      }
       this.helpAction = !this.helpAction;
       console.log(this.helpAction);
       console.log(document.getElementById("test1").className);
+      
 
       /* if(this.helpAuctionActive){
         console.log("hejhej");
@@ -1488,6 +1518,7 @@ export default {
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
         where: where,
+        playerId: this.playerId,
       });
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
@@ -1603,6 +1634,10 @@ theColor:onclick {
   -webkit-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
   box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
 }
+.otherHand.card{
+  background-image: url('/images/back-of-card.png');
+}
+
 /* transform: scale(0.5)translate(-50%,-50%);*/
 
 .cardslots div {
@@ -1629,9 +1664,14 @@ theColor:onclick {
 }
 */
 #wrapper {
-  padding: 2vw;
+  padding: 0.3vw;
   justify-self: center;
   position: relative;
+  background-image: url('/images/tim-mossholder-ysDq0fY-bzo-unsplash.jpg');
+  background-size: contain;
+  border-color: rgb(34, 21, 9);
+  border-style: solid;
+  border-width: 1vw;
 }
 
 #grid {
@@ -1639,6 +1679,8 @@ theColor:onclick {
   grid-gap: 0.5vw;
   grid-template-columns: 9vw 13vw 13vw 13vw 13vw 13vw 1vw 10vw;
   grid-template-rows: 5vw 15vw 15vw 1vw 7vw;
+  justify-content: center;
+  
 }
 /*
   Här kan vi testa att sätta en storlek på grid eller wrapper och göra om storlekarna nedan till t.ex. %avParent för att få till så det hamnar inne i skärmen.
@@ -1676,9 +1718,11 @@ theColor:onclick {
   align-self: flex-end;
 }
 .otherplayers {
+  border-radius: 1vw;
   grid-row: 1;
   grid-column: 3/6;
-  border-color: honeydew;
+  border-color: rgb(82, 82, 82);
+  background-color: grey;
   border: solid;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -1711,6 +1755,10 @@ theColor:onclick {
   padding: 1vw;
   font-size: 1vw;
   cursor: pointer;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 
 /* Hover över spelarområdena*/
@@ -1763,9 +1811,10 @@ theColor:onclick {
 .boardcollectiongrid {
   display: grid;
   position: relative;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 5fr 1fr;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 5fr 1fr 1fr;
   height: 100%;
+  
 }
 
 .playercollection {
@@ -1796,6 +1845,7 @@ theColor:onclick {
   border-radius: 0 0 0 2vw;
   padding: 1vw;
   align-items: center;
+  
 }
 
 .closedBoardGrid {
@@ -1804,9 +1854,7 @@ theColor:onclick {
   grid-template-columns: 1fr 1fr;
 }
 
-.totalValue {
-  grid-column: 2;
-}
+
 
 .closedBoardHand {
   grid-column: 1 / span 1;
@@ -1863,6 +1911,13 @@ theColor:onclick {
   background-color: gray;
   border-radius: 0vw 0vw 2vw 2vw;
   text-align: center;
+  grid-row: 3;
+}
+.itemicons{
+  grid-row: 2;
+  background-color: hotpink;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .boardSkills {
@@ -1895,6 +1950,10 @@ theColor:onclick {
   grid-column: 3/5;
   background-color: gray;
   border-radius: 0 0 2vw 0;
+  padding: 1vw;
+}
+.nextturnboard{
+  max-width: 100%;
 }
 
 .boardclosebutton {
@@ -1979,49 +2038,6 @@ theColor:onclick {
   transform: translate(-50%, -50%);
   padding-top: 4vw;
 }
-/* Om man klickar på spelaren i topp */
-.player3.active {
-  background-color: #20ccbe;
-  width: 50vw;
-  height: 25vw;
-  align-self: flex-start;
-  justify-self: center;
-  z-index: 1;
-  font-size: 1vw;
-  cursor: default;
-  border: solid;
-  border-color: black;
-}
-
-/* Om man klickar på spelaren till vänster */
-.player2.active {
-  background-color: #c236b4;
-  margin-right: -110%;
-  width: 50vw;
-  height: 25vw;
-  align-self: flex-start;
-  justify-self: center;
-  z-index: 1;
-  font-size: 1vw;
-  cursor: default;
-  border: solid;
-  border-color: black;
-}
-
-/* Om man klickar på spelaren till höger */
-.player4.active {
-  background-color: #e9b77a;
-  margin-left: -110%;
-  width: 50vw;
-  height: 25vw;
-  align-self: flex-start;
-  justify-self: center;
-  z-index: 1;
-  font-size: 1vw;
-  cursor: default;
-  border: solid;
-  border-color: black;
-}
 
 /*
   Här nedan är CSS specifika för kortrutorna
@@ -2033,6 +2049,10 @@ theColor:onclick {
   grid-column: 4 / span 3;
   grid-row: 2;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .skills {
   border-radius: 2vw;
@@ -2040,6 +2060,10 @@ theColor:onclick {
   grid-column: 4 / span 3;
   grid-row: 3;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .work {
   text-align: center;
@@ -2047,6 +2071,10 @@ theColor:onclick {
   background-color: grey;
   grid-column: 2;
   grid-row: 2 / span 2;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .raiseValue {
   border-radius: 2vw;
@@ -2054,6 +2082,10 @@ theColor:onclick {
   grid-column: 8;
   grid-row: 3 / span 1;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .raiseValuegrid div {
   font-size: 1vw;
@@ -2066,6 +2098,10 @@ theColor:onclick {
   grid-column: 3;
   grid-row: 2 / span 2;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .auctionCardViewMini {
   zoom: 1.65;
@@ -2120,6 +2156,10 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .drawCardSpace {
   grid-column: 8;
@@ -2172,11 +2212,27 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   overflow: hidden;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  
+}
+.gridedge3 p{
+  align-self: center;
+  font-size: 140%;
+  margin-top: -25px;
+ text-indent: 5px;
+
 }
 
 .menuSpace > * {
   /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
   zoom: 0.8;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .help {
   width: 40px;
@@ -2189,6 +2245,10 @@ theColor:onclick {
   align-items: center;
   background-color: blue;
   cursor: pointer;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .help:hover {
   background-color: rgb(61, 61, 255);
@@ -2205,6 +2265,10 @@ theColor:onclick {
   display: grid;
   grid-template-rows: repeat(auto-fill, 3.5vh);
   align-content: center;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .buttons {
   display: inline-block;
@@ -2249,7 +2313,8 @@ theColor:onclick {
   border: solid;
   border-width: 1px;
   border-color: black;
-  font-size: 3.5vw;
+  font-size: 150%;
+  
 }
 #playerHelp {
   --scrollbarBG: #0066ff;
@@ -2328,21 +2393,29 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   width: 5vw;
   height: 5vw;
   border-radius: 50%;
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: blue;
   cursor: pointer;
+  grid-row: 1;
+  grid-column: 8;
+  justify-self: flex-end;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  font-size: 200%;
 }
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
 }
 
 .animate {
-  animation: jiggles 4s ease-in-out;
+  animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
-  box-shadow: 0 0 10px rgb(116, 116, 9);
+  box-shadow: 0px 0px 10px 11px rgb(116, 116, 9),0 0 5px  rgb(116, 116, 9);
+  
 }
 
 .playerMoney {

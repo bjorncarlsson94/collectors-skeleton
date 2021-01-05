@@ -204,9 +204,10 @@ socket.on('nameAndColor', function (d) {
     );
   });
   socket.on("placeWorker", function (d) {
+    console.log("hej");
     io.to(d.roomId).emit(
       "workerPlaced",
-      data.setWorkPlacementTrue(d.roomId, d.where)
+      data.setWorkPlacementTrue(d.roomId, d.where, d.playerId)
     );
   });
   socket.on("currentValue", function (d) {

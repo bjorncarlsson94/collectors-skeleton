@@ -34,18 +34,21 @@
 
     </div>
     <div class="InfoBox" id="workHelp" v-if="workHelpActive">
-      <div><h3><strong>{{labels.itemsHelp.title}}</strong></h3>
-      <p>{{labels.skillsHelp.intro}}</p></div>
-      <div><h3><strong>Titel 2</strong></h3>
-      <p> Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 3</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 4</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>titel 5</strong></h3>
-      <p></p>
-      <img src="https://previews.123rf.com/images/yupiramos/yupiramos1706/yupiramos170639117/81165835-cute-cat-cartoon-icon-vector-illustration-graphic-design.jpg" alt="funka ej">
+      <div><h3><strong>{{labels.workHelp.title}}</strong></h3>
+      <p>{{labels.workHelp.intro}}</p></div>
+      <div><h3><strong>{{labels.workHelp.work1Title}}</strong></h3>
+      <p> {{labels.workHelp.work1}}</p></div>
+      <div><h3><strong>{{labels.workHelp.work2Title}}</strong></h3>
+      <p>{{labels.workHelp.work2}}</p></div>
+      <div><h3><strong>{{labels.workHelp.work3}}</strong></h3>
+      <p>{{labels.workHelp.work3}}</p></div>
+      <div><h3><strong>{{labels.workHelp.work4Title}}</strong></h3>
+      <p>{{labels.workHelp.work4}}</p>
       </div>
+      <div><h3><strong>{{labels.workHelp.work5}}</strong></h3>
+      <p>{{labels.workHelp.work5}}</p>
+      </div>
+
 
     </div>
     <div class="InfoBox" id="itemsHelp" v-if="itemsHelpActive">
@@ -61,66 +64,64 @@
 
     </div>
     <div class="InfoBox" id="raiseValueHelp" v-if="raiseValueHelpActive">
-      <div><h3><strong>Titel 1</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 2</strong></h3>
-      <p> Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 3</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 4</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>titel 5</strong></h3>
-      <p></p>
-      <img src="https://previews.123rf.com/images/yupiramos/yupiramos1706/yupiramos170639117/81165835-cute-cat-cartoon-icon-vector-illustration-graphic-design.jpg" alt="funka ej">
+      <div><h3><strong>{{labels.raiseValueHelp.title}}</strong></h3>
+      <p>{{labels.raiseValueHelp.intro}}</p></div>
+      <div><h3><strong>{{labels.raiseValueHelp.buttonsTitle}}</strong></h3>
+      <p> {{labels.raiseValueHelp.actions}}</p>
+      <p>{{labels.raiseValueHelp.actionsExplained}}</p></div>
+      <div><h3><strong>{{labels.raiseValueHelp.endOfRound}}</strong></h3>
+      <p>{{labels.raiseValueHelp.EORexp1}}</p>
+      <p>{{labels.raiseValueHelp.EORexp2}}</p>
+      
       </div>
 
     </div>
     <div class="InfoBox" id="buttonsHelp" v-if="buttonsHelpActive">
-      <div><h3><strong>Titel 1</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 2</strong></h3>
-      <p> Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
+      <div><h3><strong>{{labels.deckHelp.title}}</strong></h3>
+      <p>{{labels.deckHelp.title}}</p></div>
+      <div><h3><strong>{{labels.deckHelp.title}}</strong></h3>
+      <p>{{labels.deckHelp.title}}</p></div>
       <div><h3><strong>Titel 3</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 4</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>titel 5</strong></h3>
-      <p></p>
-      <img src="https://previews.123rf.com/images/yupiramos/yupiramos1706/yupiramos170639117/81165835-cute-cat-cartoon-icon-vector-illustration-graphic-design.jpg" alt="funka ej">
+      <p>{{labels.deckHelp.title}}</p></div>
+      <div><h3><strong>{{labels.deckHelp.title}}</strong></h3>
+      <p>{{labels.deckHelp.title}}</p></div>
+      <div><h3><strong>{{labels.deckHelp.title}}</strong></h3>
+      <p>{{labels.deckHelp.title}}</p>
+     
       </div>
 
     </div>
     <div class="InfoBox" id="menuSpaceHelp" v-if="menuSpaceActive">
-      <div><h3><strong>Titel 1</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 2</strong></h3>
-      <p> Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 3</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>Titel 4</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p></div>
-      <div><h3><strong>titel 5</strong></h3>
-      <p></p>
-      <img src="https://previews.123rf.com/images/yupiramos/yupiramos1706/yupiramos170639117/81165835-cute-cat-cartoon-icon-vector-illustration-graphic-design.jpg" alt="funka ej">
+      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
+      <p>{{labels.menuSpaceHelp.title}}</p></div>
+      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
+      <p> {{labels.menuSpaceHelp.title}}</p></div>
+      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
+      <p>{{labels.menuSpaceHelp.title}}</p></div>
+      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
+      <p> {{labels.menuSpaceHelp.title}}</p></div>
+      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
+      <p>{{labels.menuSpaceHelp.title}}</p>
+      
       </div>
 
     </div>
      <div class="InfoBox" id="auctionHelp" v-if="auctionHelpActive">
-      <div><h3><strong>Titel 1</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p>
+      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
+      <p>{{labels.auctionHelp.title}}</p>
       </div>
-      <div><h3><strong>Titel 2</strong></h3>
-      <p> Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p>
+      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
+      <p> {{labels.auctionHelp.title}}</p>
       </div>
-      <div><h3><strong>Titel 3</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p>
+      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
+      <p>{{labels.auctionHelp.title}}</p>
       </div>
-      <div><h3><strong>Titel 4</strong></h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi tellus, posuere id neque ut, venenatis facilisis velit. Donec fringilla tellus non neque pretium, vel fermentum tortor maximus. Mauris gravida molestie est ac imperdiet. Etiam vestibulum</p>
+      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
+      <p>{{labels.auctionHelp.title}}</p>
       </div>
-      <div><h3><strong>titel 5</strong></h3>
-      <p>aa</p>
-      <img src="https://previews.123rf.com/images/yupiramos/yupiramos1706/yupiramos170639117/81165835-cute-cat-cartoon-icon-vector-illustration-graphic-design.jpg" alt="funka ej">
+      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
+      <p>{{labels.auctionHelp.title}}</p>
+      
       </div>
      
      </div>
@@ -244,7 +245,7 @@ export default {
 }
 #skillsHelp img{
  float:right;
- margin-top: -60px;
+ margin-top: -62px;
  width: 50px;
  height: 50px;
 }

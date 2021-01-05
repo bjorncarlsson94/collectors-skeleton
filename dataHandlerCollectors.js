@@ -156,7 +156,11 @@ Data.prototype.createRoom = function(roomId, playerCount, lang = "en") {
       playerId: null,
     },
   ];
-  room.workPlacement = [false, false, false];
+  room.workPlacement = {
+    drawACardAndFirstPlayerToken: null,
+    drawCardAndPassiveIncome: null,
+    drawTwoCards: null,
+  };
   this.rooms[roomId] = room;
 };
 
@@ -534,9 +538,9 @@ Data.prototype.clearBottles = function(roomId) {
     for (let i = 0; i < room.marketPlacement.length; i += 1) {
       room.marketPlacement[i].playerId = null;  
     }
-    for (let i = 0; i < room.workPlacement.length; i += 1) {
-      room.workPlacement[i] = false;  
-    }
+    room.workPlacement.drawTwoCards = null;
+    room.workPlacement.drawACardAndFirstPlayerToken = null;
+    room.workPlacement.drawCardAndPassiveIncome = null;
   }
 };
 
@@ -1050,11 +1054,25 @@ Data.prototype.getWorkPlacement = function(roomId) {
     return room.workPlacement;
   } else return [];
 };
-Data.prototype.setWorkPlacementTrue = function(roomId, place) {
+Data.prototype.setWorkPlacementTrue = function(roomId, place, playerId) {
   console.log("Set workplacement körs!");
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
-    room.workPlacement[place] = true;
+    switch (place) {
+      case "drawTwoCards":
+        room.workPlacement.drawTwoCards = playerId;
+        break;
+      case "drawACardAndFirstPlayerToken":
+        room.workPlacement.drawACardAndFirstPlayerToken = playerId;
+        break;
+      case "drawCardAndPassiveIncome":
+        room.workPlacement.drawCardAndPassiveIncome = playerId;
+        break;
+      default:
+        console.log("Shits fucked");
+        break;
+    }
+    
     console.log("workPlacement:");
     console.log(room.workPlacement);
     console.log("---------------");
