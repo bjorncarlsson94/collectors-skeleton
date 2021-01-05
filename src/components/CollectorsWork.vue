@@ -13,13 +13,20 @@
       ></button>
       <button class="workslot" id="workslot1" v-on:click="drawCardAndPassiveIncome"></button>
     </div>
+    <div class="bottlePlace" id="workBottle0"  v-if="this.workPlacement[0] == true"></div>
+    <div class="bottlePlace" id="workBottle1"  v-if="this.workPlacement[1] == true"></div>
+    <div class="bottlePlace" id="workBottle2"   v-if="this.workPlacement[2] == true"></div>
   </div>
 </template>
 
 <script>
 export default {
   name: "CollectorsWork",
-  components: {},
+  components: {
+   
+
+
+  },
   props: {
     labels: Object,
     player: Object,
@@ -39,6 +46,7 @@ export default {
         console.log("Kraschar innan this.workPlacement");
         this.$emit("workDrawTwoCards");
         this.placeWorker(0);
+        
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
       }
@@ -92,8 +100,31 @@ export default {
     },
     placeWorker: function (where) {
       console.log("setWorkPlacement");
-      this.$emit("placeWorker", where);
+      this.$emit("placeWorker", where, );
     },
+    /*showPopup: function(typeOfAlert){
+      if(typeOfAlert=="aaa"){
+
+
+      }else if(typeOfAlert=="aa"){
+
+
+      }
+      else if(typeOfAlert=="aaaa"){
+
+        
+      }
+      else if(typeOfAlert=="aaaaa"){
+
+        
+      }
+      else if(typeOfAlert=="aaaaa"){
+
+        
+      }
+
+    }*/
+
   },
 };
 </script>
@@ -122,6 +153,7 @@ export default {
   background-color: grey;
   grid-column: 2;
   grid-row: 2 / span 2;
+  position: relative;
 }
 
 .workgrid {
@@ -130,6 +162,7 @@ export default {
   grid-template-rows: 5vw 5vw 5vw 5vw 5vw;
   grid-gap: 0.5vw;
   padding: 1.5vw;
+  position: relative;
 }
 .workgrid div {
   background-color: rgb(207, 207, 207);
@@ -138,6 +171,7 @@ export default {
   border-color: black;
   height: 5vw;
   width: auto;
+  position: relative;
 }
 
 .workslot:hover {
@@ -179,4 +213,32 @@ export default {
   background-position: center;
   grid-row: 1;
 }
+.bottlePlace {
+    background-image: url(/images/player-bottle.png);
+    margin-top: 0.5vw;
+    height: 3vw;
+    width: 3vw;
+    background-color: black;
+    border-radius: 1.5vw;
+    z-index: 60;
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  #workBottle0{
+    top :43%;
+    left:16%;
+
+  }
+  #workBottle1{
+    top :61%;
+    left:16%;
+    
+  }
+  #workBottle2{
+    top :80%;
+    left:16%;
+    
+  }
 </style>

@@ -201,6 +201,7 @@ socket.on('nameAndColor', function (d) {
     );
   });
   socket.on("placeWorker", function (d) {
+    console.log("hej");
     io.to(d.roomId).emit(
       "workerPlaced",
       data.setWorkPlacementTrue(d.roomId, d.where)

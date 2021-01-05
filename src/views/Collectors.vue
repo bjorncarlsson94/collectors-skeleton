@@ -425,6 +425,8 @@
               v-if="players[playerId]"
               :labels="labels"
               :player="players[playerId]"
+              :players="players"
+
               :round="round"
               :workPlacement="workPlacement"
               @recycleBottle="recycleBottle($event)"
@@ -459,9 +461,8 @@
             </div>
           </div>
           <div class="gridedge3">
-            Ruta för att visa grid lättare: 3
-            <br />
-            Här kan man t.ex. ha vissa viktiga knappar
+            <p>{{ labels.roundcounter }} {{ round }}/4 </p>
+            
           </div>
           <div
             :class="['menuSpace', { animate: helpAction }]"
@@ -2141,6 +2142,10 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .drawCardSpace {
   grid-column: 8;
@@ -2193,7 +2198,18 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   overflow: hidden;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
   
+}
+.gridedge3 p{
+  align-self: center;
+  font-size: 140%;
+  margin-top: -25px;
+ text-indent: 5px;
+
 }
 
 .menuSpace > * {
