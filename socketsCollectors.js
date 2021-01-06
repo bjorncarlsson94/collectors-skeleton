@@ -83,16 +83,16 @@ function sockets(io, socket, data) {
   });
 
   socket.on("collectorsPlaceBottle", function (d) {
-    data.placeBottle(d.roomId, d.playerId, d.action, d.cost);
+    data.placeBottle(d.roomId, d.playerId, d.action, d.cost, d.players);
     io.to(d.roomId).emit(
-      "collectorsBottle",
-      data.getPlacements(d.roomId)
+      "collectorsBottlePlaced",
+      data.getBottlePlacements(d.roomId)
     );
   });
   socket.on("collectorsRemoveBottle", function (d) {
     data.removeBottle(d.roomId, d.playerId, d.action, d.cost);
     io.to(d.roomId).emit(
-      "collectorsBottle",
+      "collectorsBottleRemoved",
       data.getPlacements(d.roomId)
     );
   });
@@ -156,6 +156,13 @@ function sockets(io, socket, data) {
     console.log(data.getCardInAuction(d.roomId));
   });
 
+  socket.on("placeBottleOnPlayerboard", function (d) {
+    data.placeBottleOnPlayerboard(d.roomId, d.playerId, d.tempBottlePlacement);
+    io.to(d.roomId).emit("bottleOnPlayerboardPlaced", {
+      players: data.getPlayers(d.roomId)
+    });
+    console.log(data.getCardInAuction(d.roomId));
+  });
   socket.on("restoreHand", function (d) {
     data.restoreHands(d.roomId, d.playerId, d.biddingCards);
     io.to(d.roomId).emit("handRestord", {

@@ -146,14 +146,17 @@ Data.prototype.createRoom = function(roomId, playerCount, lang = "en") {
     {
       cost: 2,
       playerId: null,
+      amountOfCards: 2,
     },
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 2,
     },
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 1,
     },
   ];
   room.workPlacement = {
@@ -197,6 +200,7 @@ Data.prototype.joinGame = function(roomId, playerId) {
         money: 3,
         bottles: 2,
         totalBottles: 2,
+        bottlesOnPlayerbord: [true, true, false, false, false],
         points: 0,
         firstPlayerToken: false,
         skills: [],
@@ -478,9 +482,10 @@ Data.prototype.auctionWon = function(
 };
 // ...then check if it is in the hand. It cannot be in both so it's safe
 
-Data.prototype.placeBottle = function(roomId, playerId, action, cost) {
+Data.prototype.placeBottle = function(roomId, playerId, action, cost, players) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
+    room.players = players
     let activePlacement = [];
     if (action === "buy") {
       activePlacement = room.buyPlacement;
@@ -492,6 +497,7 @@ Data.prototype.placeBottle = function(roomId, playerId, action, cost) {
       activePlacement = room.marketPlacement;
     }
     room.players[playerId].bottles--;
+    this.changeBottleOnPlayerboarad(roomId, playerId, false);
     for (let i = 0; i < activePlacement.length; i += 1) {
       if (
         activePlacement[i].cost === cost &&
@@ -519,6 +525,7 @@ Data.prototype.removeBottle = function(roomId, playerId, action, cost) {
       activePlacement = room.marketPlacement;
     }
     room.players[playerId].bottles++;
+    this.changeBottleOnPlayerboarad(roomId, playerId, true);
     for (let i = 0; i < activePlacement.length; i += 1) {
       if (
         activePlacement[i].cost === cost &&
@@ -552,6 +559,33 @@ Data.prototype.clearBottles = function(roomId) {
   }
 };
 
+Data.prototype.placeBottleOnPlayerboard = function(roomId, playerId, tempBottlePlacement) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    room.players[playerId].bottlesOnPlayerbord = tempBottlePlacement;
+    if(tempBottlePlacement[0] == false){
+      room.players[playerId].bottles ++;
+      room.players[playerId].totalBottles ++;
+      room.players[playerId].bottlesOnPlayerbord[0] = true;
+    }
+    if(tempBottlePlacement[1] == false){
+      room.players[playerId].bottles ++;
+      room.players[playerId].totalBottles ++;
+      room.players[playerId].bottlesOnPlayerbord[1] = true;
+    }
+    if(tempBottlePlacement[2] == false){
+      this.drawCard(roomId, playerId);
+    }
+    }
+    if(tempBottlePlacement[3] == false){
+      room.players[playerId].money ++;
+    }
+    if(tempBottlePlacement[4] == false){
+      room.players[playerId].money ++;
+      room.players[playerId].money ++;
+    }
+};
+
 Data.prototype.getCardInAuction = function(roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -568,6 +602,19 @@ Data.prototype.getCards = function(roomId, playerId) {
   } else return [];
 };
 
+Data.prototype.getBottlePlacements = function(roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    return {
+      buyPlacement: room.buyPlacement,
+      skillPlacement: room.skillPlacement,
+      auctionPlacement: room.auctionPlacement,
+      marketPlacement: room.marketPlacement,
+      round: room.round, 
+      players: room.players
+    };
+  } else return {};
+};
 Data.prototype.getPlacements = function(roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -833,10 +880,31 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
           }
         }
       }
+      if(room.round==5){
+        console.log("yo Olle å hugo");
+        for (const player in room.players) {
+          if(player.secret[0].market){
+          player.items.splice(0,0,player.secret);
+          this.currentValue(roomId, player);
+        }
+      }
+    }
     }
     return room.players, room.round;
   }
 };
+
+Data.prototype.changeBottleOnPlayerboarad = function(roomId, playerId, addBottle) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    for (let i = 0; i < room.players[playerId].bottlesOnPlayerbord.length; i += 1) {
+      if(room.players[playerId].bottlesOnPlayerbord[i] != addBottle){
+        room.players[playerId].bottlesOnPlayerbord[i] = addBottle;
+        break;
+      }
+    }   
+  }  
+}
 Data.prototype.fillBottles = function(roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -1067,6 +1135,7 @@ Data.prototype.bottleRecycled = function(roomId, playerId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     room.players[playerId].bottles--;
+    room.players[playerId].totalBottles--;
     room.players[playerId].money++;
     return room.players;
   } else return [];
@@ -1195,32 +1264,24 @@ Data.prototype.currentValue = function(roomId,playerId) {
       }
 
     }
-    console.log("fastaval:"+fastaval+":"+room.raiseValue.fastaval);
-    console.log("figures:"+figures+":"+room.raiseValue.figures);
-    console.log("music:"+":"+music+room.raiseValue.music);
-    console.log("movie:"+movie+":"+room.raiseValue.movie);
-    console.log("technology:"+technology+":"+room.raiseValue.technology);
-
-
-    console.log("--------------");
+  
     fastaval=fastaval*room.raiseValue.fastaval;
     figures=figures*room.raiseValue.figures;
     music=music*room.raiseValue.music;
     movie=movie*room.raiseValue.movie;
     technology=technology*room.raiseValue.technology;
-    console.log("fastaval:"+fastaval);
-    console.log("figures:"+figures);
-    console.log("music:"+":"+music);
-    console.log("movie:"+movie);
-    console.log("technology:"+technology);
+    
+    if(room.round==5){
     extraValue+=Math.floor(room.players[playerId].money/3);
-    console.log("extraValue:"+extraValue);
+
+  }
+   
     if(extraValue<0){
       extraValue=0;
 
     }
     extraValue=extraValue+fastaval+figures+music+movie+technology;
-    console.log("score:"+extraValue);
+    
     room.players[playerId].currentScore=extraValue;
     
     return room.players[playerId].currentScore;
