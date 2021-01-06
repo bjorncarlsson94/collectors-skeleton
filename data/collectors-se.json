@@ -16,6 +16,7 @@
 	"player2": "Spelare 2",
 	"player3": "Spelare 3",
 	"player4": "Spelare 4",
+
 	"helpPlayerHand":{
 		"title":"Din hand:",
 		"itemArea":"Item Area (red):",
@@ -28,9 +29,8 @@
 		"nextTurnText":"Det gråa området visar information om ditt läge i spelet, Hur din inkomst kommer se ut nästa runda och hur många kort / flaskor du kommer ha"
 	},
 	"skillsHelp":{
-		
 		"title":"Info om skills:",
-		"intro":"Det gröna området på et kort indikerar vilken skill den har. Det finns sex olika typer av skills och här kommer du lära dig mer om dem.",
+		"intro":"Det gröna området på ett kort indikerar vilken skill den har. Det finns sex olika typer av skills och här kommer du lära dig mer om dem.",
 		"titleArea":"Om skills area:",
 		"skillsArea":"Du kan köpa en skill genom att klicka på knapparna under korten i det gröna området. Genom att köpa ett kort kommer du nu få detta kort som en skill och skillsen aktiveras.",
 		"titleWorkerSkills":"Få två dollar work:",
@@ -52,12 +52,33 @@
 		"intro":"Det röda området på korten indkierar vilken item kategori det är. Du kan köpa ett item genom att klicka på knapparna i item area (röd). Sedan kan du välja att antingen köpa ett kort på brädet eller från din hand. ",
 		"categoryTitle":"Olika Kategories:",
 		"category":"Kort kan ha fem olika kategorier vilket otsvarar ett värde i market.",
-		"costTitle":"Card cost and value:",
 		"costTitle":"Kortens kostnad och värde:",
 		"cost":"För att se värdet på korten så kan du dels kolla på siffran under korten eller i market area. Kostnaden är värdet på knappen du klickar på + värdet på kortet.",
 		"extraActionsTitle":"Flera möjligheter:",
 		"extraActions":"Items är det viktigaste bästa sättet att få poäng i spelet. Det är därför viktigt att hålla koll på vilka kort som kommer hamna i market och vilka skills du kan ha möjlighet att få"
-
-
+	},
+	"workHelp":{
+		"title":"Information om items",
+		"intro":"Det röda området på ett kort indikerar vilken kategori det tillhör. Du kan köpa ett item genom att klicka på en av knapparna i item-fältet (Rött). Där kan du välja antingen ett kort från brädet eller från din hand.",
+		"work1Title": "Olika kategorier",
+		"work1":"Kort kan tillhöra 5 olika kategorier, detta visas i det röda området på kortet och symbolen där motsvarar en symbol i marknaden",
+		"work2Title":"Card cost and value",
+		"work2":"Ett korts nuvarande värde finns att se i det blåa marknadsområdet. Hur mycket ett kort kostar avgörs av dess marknadsvärde + kostnaden på knappen du klickat på",
+		"work3Title":"Other actions:",
+		"work3":"Items är den huvudsakliga källan till poäng, för att få mer poäng per item kort du har, se till att öka marknadsvärdet för respektive kategori.",
+		"work4Title":"Other actions:",
+		"work4":"Items är den huvudsakliga källan till poäng, för att få mer poäng per item kort du har, se till att öka marknadsvärdet för respektive kategori.",
+		"work5Title": "Other actions:",
+		"work5":"Items är den huvudsakliga källan till poäng, för att få mer poäng per item kort du har, se till att öka marknadsvärdet för respektive kategori."
+	},
+	"raiseValueHelp":{
+		"title": "Information om marknadsområdet",
+		"intro": "I marknadsområdet kan du se marknadsvärdet på varje kategori som är representarat av symbolen, namnet och sen det nuvarande marknadsvärdet.",
+		"buttonsTitle":"Möjliga handlingar:",
+		"action":"Du kan placera kort i marknadsområdet via knapparna. Den första knappen kostar 2 dollar och du måste lägga 2 kort. Den andra knappen kostar 0 dollar och du måste lägga 2 kort. Den tredje kostar 0 dollar och du måste lägga ett kort.",
+		"actionsExplained":"När du placerar ett kort i marknadsområdet så kan du välja från 3 ställen. 1. Det sista kortet i Auctionområdet, 2. Det sista kortet i Skillsområdet, 3. Ett kort från din hand.",
+		"endOfRound":"Slutet på rundan:",
+		"EORexp1":"Vid slutet av varje runda kommer korten rotera runt. Det sista kortet från Skills och Auction flyttas in i marknaden. Skills och Auction fylls sen på på nytt.",
+		"EORexp2":"Håll noga koll på vilka kort som hamnar i marknaden, så du kan planera din strategi därefter"
 	}
 }
