@@ -825,6 +825,7 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
             this.clearBottles(roomId)
             this.moveCards(roomId);
             this.fillBottles(roomId);
+            this.currentValue(roomId, playerId)
             playerWithBottle = true;
           }
         }
@@ -1151,7 +1152,7 @@ Data.prototype.currentValue = function(roomId,playerId) {
   var extraValue=0;
 
   if (typeof room !== "undefined") {
-
+    console.log("gick in hit");
     for (let index = 0; index < room.players[playerId].items.length; index++) {
       if(room.players[playerId].items[index].item=="fastaval"){
         fastaval+=1;
@@ -1170,6 +1171,7 @@ Data.prototype.currentValue = function(roomId,playerId) {
       }
     }
     for (let index = 0; index < room.players[playerId].skills.length; index++) {
+      console.log("borde inte vara inne här");
       if(room.players[playerId].skills[index].skill=="VP-all" && fastaval>0 && figures>0 && music>0 && movie>0 && technology>0){
         extraValue+=5;
 
@@ -1196,14 +1198,34 @@ Data.prototype.currentValue = function(roomId,playerId) {
       }
 
     }
+    console.log("fastaval:"+fastaval+":"+room.raiseValue.fastaval);
+    console.log("figures:"+figures+":"+room.raiseValue.figures);
+    console.log("music:"+":"+music+room.raiseValue.music);
+    console.log("movie:"+movie+":"+room.raiseValue.movie);
+    console.log("technology:"+technology+":"+room.raiseValue.technology);
+
+
+    console.log("--------------");
     fastaval=fastaval*room.raiseValue.fastaval;
     figures=figures*room.raiseValue.figures;
     music=music*room.raiseValue.music;
     movie=movie*room.raiseValue.movie;
     technology=technology*room.raiseValue.technology;
+    console.log("fastaval:"+fastaval);
+    console.log("figures:"+figures);
+    console.log("music:"+":"+music);
+    console.log("movie:"+movie);
+    console.log("technology:"+technology);
     extraValue+=Math.floor(room.players[playerId].money/3);
-    room.players[playerId].currentScore=extraValue+fastaval+figures+music+movie+technology;
-    console.log("score:"+room.players[playerId].currentScore);
+    console.log("extraValue:"+extraValue);
+    if(extraValue<0){
+      extraValue=0;
+
+    }
+    extraValue=extraValue+fastaval+figures+music+movie+technology;
+    console.log("score:"+extraValue);
+    room.players[playerId].currentScore=extraValue;
+    
     return room.players[playerId].currentScore;
 
 

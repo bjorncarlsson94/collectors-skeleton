@@ -89,7 +89,7 @@
                           <div> <img src="/images/tech.png" width="50%"> {{ player.itemValues.itechnology }}</div>
                         </div>
 
-                        <div id="totalvalue">Score: {{ player.currentScore}}
+                        <div class="totalvalue">Score: {{ player.currentScore}}
 
                         </div>
                       </div>
@@ -304,18 +304,23 @@
 
                 <div class="closedBoardHandBackground"></div>
 
-                <div class="totalValue">
-                  Hej
+                <div class="closedBoardInfo">
                   <!-- playerMoney -->
-                <div class="playerMoney">
-                  <div class="itemicons">
-                    <div> <img src="/images/fastaval.png" width="150%"> {{ players[playerId].itemValues.ifastaval }}</div>
-                    <div> <img src="/images/figures.png" width="150%"> {{ players[playerId].itemValues.ifigures }}</div>
-                    <div> <img src="/images/music.png" width="150%"> {{ players[playerId].itemValues.imusic }}</div>
-                    <div> <img src="/images/movie.png" width="150%"> {{ players[playerId].itemValues.imovie }}</div>
-                    <div> <img src="/images/tech.png" width="150%"> {{ players[playerId].itemValues.itechnology }}</div>
+                <div class="scoreDisplay closed">Score: {{ players[playerId].currentScore }}</div>
+                  <div class="closedItemIcons">
+                    <div> <img src="/images/fastaval.png" width="70%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="70%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="70%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="70%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="70%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
-                </div>
+
+                <div class="countspace">
+                  <div class="bottlecount"> <img src="/images/player-bottle.png" width="80%"> </div>
+                  <div class="moneycount"> <img src="/images/moneybag.png" width="80%"> </div>
+                  </div>
+
+
                 </div>
               </div>
             </div>
@@ -380,7 +385,7 @@
                     <div> <img src="/images/movie.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
                     <div> <img src="/images/tech.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
-                  <div id="totalvalue">Score: {{ players[playerId].currentScore }} </div>
+                  <div class="totalvalue">Score: {{ players[playerId].currentScore }} </div>
 
                   
                 </div>
@@ -829,6 +834,7 @@ export default {
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
         this.itemValues = d.itemValues;
+        this.currentScore=d.currentScore;
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -2019,6 +2025,45 @@ theColor:onclick {
   grid-row: 1;
   height: 5vw;
 }
+.closedBoardInfo{
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.closedItemIcons {
+  grid-row: 1/2;
+  grid-column: 1;
+  background-color: red;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  text-align: center;
+}
+
+.countspace{
+  grid-row: 1/3;
+  grid-column: 2/3;
+  display: grid;
+  grid-template-columns:1fr 1fr;
+}
+.bottlecount{
+  grid-column: 2;
+  grid-row: 1/3;
+  text-align: center;
+  align-self: center;
+}
+.moneycount{
+  grid-column: 1;
+  grid-row: 1/3;
+  text-align: center;
+  align-self: center;
+}
+.scoreDisplay.closed{
+  grid-row: 2;
+  grid-column: 1;
+  align-self: center;
+  align-content: center;
+}
 
 .cardsinhand {
   display: grid;
@@ -2051,7 +2096,7 @@ theColor:onclick {
   padding: 0.3vw;
   z-index: 1;
 }
-#totalvalue {
+.totalvalue {
   background-color: gray;
   border-radius: 0vw 0vw 2vw 2vw;
   text-align: center;
@@ -2062,6 +2107,7 @@ theColor:onclick {
   background-color: red;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  text-align: center;
 }
 
 .boardSkills {

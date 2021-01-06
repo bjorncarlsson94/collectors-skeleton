@@ -43,7 +43,8 @@ function sockets(io, socket, data) {
       playerId: d.playerId,
       players: data.getPlayers(d.roomId),
       itemsOnSale: data.getItemsOnSale(d.roomId),
-      itemValues: data.getItemValue(d.roomId, d.playerId, d.card)
+      itemValues: data.getItemValue(d.roomId, d.playerId, d.card),
+       
     });
   });
  
