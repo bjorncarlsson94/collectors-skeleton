@@ -29,6 +29,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             @click="placeBottle(p)"
           >
             ${{ p.cost }}
+            {{ p.amountOfCards + "cards" }}
           </button>
           <div
             class="bottlePlace"
@@ -83,6 +84,7 @@ export default {
   data: function () {
     return {
       marketOrder: ["fastaval", "figures", "music", "movie", "tech"],
+      currentPlacementAmount: null,
     };
   },
 
@@ -138,12 +140,20 @@ export default {
     },
 
     raiseValueNow: function(card){
-      this.$emit('raiseValue', card);
+      if(this.currentPlacementAmount === 2){
+        this.$emit('raiseValue', card);
+        this.$emit('keepWindowOpen');
+        this.currentPlacementAmount = 1;
+      }
+      else{
+        this.$emit('raiseValue', card);
+      }
     },
 
     placeBottle: function (p) {
+      this.currentPlacementAmount = p.amountOfCards;
+      console.log(this.currentPlacementAmount);
       this.$emit("placeBottle", p.cost);
-      console.log(this.skillOnSale);
       //this.highlightAvailableCards(p.cost);
     },
 
@@ -208,7 +218,6 @@ export default {
 .raiseValuegrid {
   display: grid;
   grid-template-rows: 2.5vw 2.5vw 2.5vw 2.5vw 2.5vw;
-  padding: 1vw;
   justify-self: space-evenly;
   text-align: center;
   margin-bottom: 2vw;

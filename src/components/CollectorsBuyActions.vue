@@ -8,7 +8,7 @@
             :availableAction="card.available" 
             @doAction="buyCard(card)"/>
           
-          <div class="cardcost" v-for="(value,key) in currentValues" :key="key">
+          <div class="cardcost" v-for="(value,key) in raiseValue" :key="key">
             <p v-if="card.item===key">{{value}}</p>
           </div>
         </div>

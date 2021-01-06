@@ -146,14 +146,17 @@ Data.prototype.createRoom = function(roomId, playerCount, lang = "en") {
     {
       cost: 2,
       playerId: null,
+      amountOfCards: 2,
     },
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 2,
     },
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 1,
     },
   ];
   room.workPlacement = {

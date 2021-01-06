@@ -275,6 +275,7 @@
                 :aboutToRaiseValue="aboutToRaiseValue"
                 @placeBottle="placeBottle('market', $event)"
                 @raiseValue="raisingValue($event)"
+                @keepWindowOpen="keepWindowOpen()"
               />
             </div>
           </div>
@@ -1239,6 +1240,10 @@ export default {
           return cardArray[i];
         }
       }
+    },
+
+    keepWindowOpen: function(){
+      this.aboutToRaiseValue = true;
     },
 
     /*getRaiseItemsFromBoard: function(){
