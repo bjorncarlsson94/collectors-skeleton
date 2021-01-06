@@ -19,7 +19,7 @@ function sockets(io, socket, data) {
         auctionCards: data.getAuctionCards(d.roomId),
         cardInAuction: data.getCardInAuction(d.roomID),
         placements: data.getPlacements(d.roomId),
-        workPlacement: data.getWorkPlacement(d.roomId)
+        workPlacement: data.getWorkPlacement(d.roomId),
       });
     }
   });
@@ -38,12 +38,16 @@ function sockets(io, socket, data) {
   });
   socket.on("collectorsBuyCard", function (d) {
     data.buyCard(d.roomId, d.playerId, d.card, d.cost);
+    
     io.to(d.roomId).emit("collectorsCardBought", {
       playerId: d.playerId,
       players: data.getPlayers(d.roomId),
       itemsOnSale: data.getItemsOnSale(d.roomId),
+      itemValues: data.getItemValue(d.roomId, d.playerId)
     });
   });
+ 
+  
   socket.on("collectorsBuySkill", function (d) {
     data.buySkill(d.roomId, d.playerId, d.card, d.cost);
     io.to(d.roomId).emit("collectorsSkillBought", {
@@ -60,6 +64,9 @@ function sockets(io, socket, data) {
       players: data.getPlayers(d.roomId),
       raiseItems: data.getRaiseItems(d.roomId),
       raiseValue: data.getCardValue(d.roomId),
+      skillsOnSale: data.getSkillsOnSale(d.roomId),
+      auctionCards: data.getAuctionCards(d.roomId),
+      itemsOnSale: data.getItemsOnSale(d.roomId),
     });
   });
 
@@ -214,6 +221,7 @@ socket.on('nameAndColor', function (d) {
     );
   });
   socket.on("addMoney", function (d) {
+    console.log("addMoney i socketsCollecors körs");
     io.to(d.roomId).emit(
       "moneyAdded",
       data.addMoney(d.roomId, d.playerId, d.amount)

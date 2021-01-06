@@ -6,28 +6,28 @@
       <div><h3><strong>{{labels.skillsHelp.titleArea}}</strong></h3>
       
       <p>{{labels.skillsHelp.skillsArea}}</p></div>
-      <div><h3><strong>{{labels.skillsHelp.titleWorkerSkills}}</strong></h3>
-      <img src='/images/Skills_work1.png' alt="funka ej">
+      <div><h3><strong>{{labels.skillsHelp.titleWorkerSkills}}</strong><img src='/images/Skills_work1.png' alt="funka ej"></h3>
+      
       
       <p> {{labels.skillsHelp.nextTurn}}</p></div>
-      <div><h3><strong>{{labels.skillsHelp.titleDrawCardSkill}}</strong></h3>
-      <img src='/images/Skills_work2.png' alt="funka ej">
+      <div><h3><strong>{{labels.skillsHelp.titleDrawCardSkill}}</strong><img src='/images/Skills_work2.png' alt="funka ej"></h3>
+      
       
       <p>{{labels.skillsHelp.DrawCardSkill}}</p></div>
-      <div><h3><strong>{{labels.skillsHelp.titleAuctionSkill}}</strong></h3>
-      <img src='/images/Skills_auction.png' alt="funka ej">
+      <div><h3><strong>{{labels.skillsHelp.titleAuctionSkill}}</strong><img src='/images/Skills_auction.png' alt="funka ej"></h3>
+      
       
       <p>{{labels.skillsHelp.auctionSkill}}</p></div>
-      <div><h3><strong>{{labels.skillsHelp.titleGainWorker}}</strong></h3>
-      <img src='/images/Skills_extraWorker.png' alt="funka ej">
+      <div><h3><strong>{{labels.skillsHelp.titleGainWorker}}</strong><img src='/images/Skills_extraWorker.png' alt="funka ej"></h3>
+      
       <p>{{labels.skillsHelp.gainWorker}}</p>
       </div>
-      <div><h3><strong>{{labels.skillsHelp.titleVPSpecific}}</strong></h3>
-      <img src='/images/Skills_VP.png' alt="funka ej">
+      <div><h3><strong>{{labels.skillsHelp.titleVPSpecific}}</strong><img src='/images/Skills_VP.png' alt="funka ej"></h3>
+      
       <p>{{labels.skillsHelp.VPSpecific}}</p>
       </div>
-      <div><h3><strong>{{labels.skillsHelp.titleVPAll}}</strong></h3>
-      <img src='/images/Skills_VP_all.png' alt="funka ej">
+      <div><h3><strong>{{labels.skillsHelp.titleVPAll}}</strong><img src='/images/Skills_VP_all.png' alt="funka ej"></h3>
+      
       
       <p>{{labels.skillsHelp.VPAll}}</p>
       </div>
@@ -78,52 +78,63 @@
     </div>
     <div class="InfoBox" id="buttonsHelp" v-if="buttonsHelpActive">
       <div><h3><strong>{{labels.deckHelp.title}}</strong></h3>
-      <p>{{labels.deckHelp.title}}</p></div>
-      <div><h3><strong>{{labels.deckHelp.title}}</strong></h3>
-      <p>{{labels.deckHelp.title}}</p></div>
-      <div><h3><strong>Titel 3</strong></h3>
-      <p>{{labels.deckHelp.title}}</p></div>
-      <div><h3><strong>{{labels.deckHelp.title}}</strong></h3>
-      <p>{{labels.deckHelp.title}}</p></div>
-      <div><h3><strong>{{labels.deckHelp.title}}</strong></h3>
-      <p>{{labels.deckHelp.title}}</p>
-     
-      </div>
+      <p>{{labels.deckHelp.intro}}</p></div>
+      <div><h3><strong>{{labels.deckHelp.cardAsItemsTitle}}</strong></h3>
+      <p>{{labels.deckHelp.cardAsItems}}</p></div>
+      <div><h3><strong>{{labels.deckHelp.cardAsSkillsTitle}}</strong></h3>
+      <p>{{labels.deckHelp.cardAsSkills}}</p></div>
+      <div><h3><strong>{{labels.deckHelp.cardAsMarketTitle}}</strong></h3>
+      <p>{{labels.deckHelp.cardAsMarket}}</p></div>
+      
 
     </div>
     <div class="InfoBox" id="menuSpaceHelp" v-if="menuSpaceActive">
       <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
-      <p>{{labels.menuSpaceHelp.title}}</p></div>
-      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
-      <p> {{labels.menuSpaceHelp.title}}</p></div>
-      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
-      <p>{{labels.menuSpaceHelp.title}}</p></div>
-      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
-      <p> {{labels.menuSpaceHelp.title}}</p></div>
-      <div><h3><strong>{{labels.menuSpaceHelp.title}}</strong></h3>
-      <p>{{labels.menuSpaceHelp.title}}</p>
+      <p>{{labels.menuSpaceHelp.intro}}</p></div>
+      <div><h3><strong>{{labels.menuSpaceHelp.gameBoardTitle}}</strong></h3>
+      <p> {{labels.menuSpaceHelp.gameBoard}}</p></div>
+      <div><h3><strong>{{labels.menuSpaceHelp.BottlesTitle}}</strong></h3>
+      <p>{{labels.menuSpaceHelp.Bottles}}</p></div>
+      <div><h3><strong>{{labels.menuSpaceHelp.playerBoardTitle}}</strong></h3>
+      <p> {{labels.menuSpaceHelp.playerBoard}}</p>
+      </div>
+      <div><h3><strong>{{labels.menuSpaceHelp.roundsTitle}}</strong></h3>
+      <p>{{labels.menuSpaceHelp.rounds}}</p>
+      <p> {{labels.menuSpaceHelp.eachRound}}</p>
+      
+      </div>
+       <div><h3><strong>{{labels.menuSpaceHelp.winTitle}}</strong></h3>
+      <p>{{labels.menuSpaceHelp.win}}</p>
+      
+      
+      </div>
+      <div><h3><strong>{{labels.menuSpaceHelp.detailedScoringTitle}}</strong></h3>
+      <p>{{labels.menuSpaceHelp.detailedScoring1}}</p>
+      <p>{{labels.menuSpaceHelp.detailedScoring2}}</p>
+      <p>{{labels.menuSpaceHelp.detailedScoring3}}</p>
+      <p>{{labels.menuSpaceHelp.detailedScoring4}}</p>
+      
+      </div>
+       <div><h3><strong>{{labels.menuSpaceHelp.TieTitle}}</strong></h3>
+      <p>{{labels.menuSpaceHelp.Tie}}</p>
+      
       
       </div>
 
     </div>
      <div class="InfoBox" id="auctionHelp" v-if="auctionHelpActive">
       <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
-      <p>{{labels.auctionHelp.title}}</p>
+      <p>{{labels.auctionHelp.intro}}</p>
       </div>
-      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
-      <p> {{labels.auctionHelp.title}}</p>
+      <div><h3><strong>{{labels.auctionHelp.areaInfoTitle}}</strong></h3>
+      <p> {{labels.auctionHelp.areaInfo1}}</p>
+      <p>{{labels.auctionHelp.areaInfo2}}</p>
+      <p>{{labels.auctionHelp.areaInfo3}}</p>
+      <p>{{labels.auctionHelp.areaInfo4}}</p>
       </div>
-      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
-      <p>{{labels.auctionHelp.title}}</p>
-      </div>
-      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
-      <p>{{labels.auctionHelp.title}}</p>
-      </div>
-      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
-      <p>{{labels.auctionHelp.title}}</p>
       
-      </div>
-     
+    ¨
+  
      </div>
  </div>
 
@@ -245,7 +256,8 @@ export default {
 }
 #skillsHelp img{
  float:right;
- margin-top: -62px;
+ 
+ margin-top: -15px;
  width: 50px;
  height: 50px;
 }
@@ -397,7 +409,7 @@ export default {
     0%{left: 0%;}
     0%{top: 10%;}
     
-    100% { left: 16%; }
+    100% { left: 20%; }
     100% { top: 10%; }
 }
 
@@ -405,29 +417,29 @@ export default {
   0%{left: 0%;}
     0%{top: 10%;}
    
-    100% { left: 16%; }
+    100% { left: 20%; }
     100% { top: 10%; }
 }
  @-webkit-keyframes workSlide {
     0%{left: 0%;}
-    0%{top: 14%;}
+    0%{top: 13%;}
     
-    100% { left: 25%; }
-    100% { top: 14%; }
+    100% { left: 29%; }
+    100% { top: 13%; }
 }
 
 @keyframes workSlide {
   0%{left: 0%;}
-    0%{top:14%}
+    0%{top:13%}
    
-    100% { left: 25%; }
-    100% { top: 14%; }
+    100% { left: 29%; }
+    100% { top: 13%; }
 }
  @-webkit-keyframes raiseValueSlide {
     0%{left: 0%;}
     0%{top: 14%;}
     
-    100% { left: 58%; }
+    100% { left: 62%; }
     100% { top: 14%; }
 }
 
@@ -435,14 +447,14 @@ export default {
   0%{left: 0%;}
     0%{top:14%}
    
-    100% { left: 58%; }
+    100% { left: 62%; }
     100% { top: 14%; }
 }
  @-webkit-keyframes itemsSlide {
     0%{left: 0%;}
     0%{top: 14%;}
     
-    100% { left: 16%; }
+    100% { left: 20%; }
     100% { top: 14%; }
 }
 
@@ -450,14 +462,14 @@ export default {
   0%{left: 0%;}
     0%{top:14%}
    
-    100% { left: 16%; }
+    100% { left: 20%; }
     100% { top: 14%; }
 }
  @-webkit-keyframes buttonsSlide {
     0%{left: 0%;}
     0%{top: 14%;}
     
-    100% { left: 58%; }
+    100% { left: 62%; }
     100% { top: 14%; }
 }
 
@@ -465,14 +477,14 @@ export default {
   0%{left: 0%;}
     0%{top:14%}
    
-    100% { left: 58%; }
+    100% { left: 62%; }
     100% { top: 14%; }
 }
  @-webkit-keyframes menuSpaceSlide {
     0%{left: 0%;}
     0%{top: 10%;}
     
-    100% { left: 12%; }
+    100% { left: 15%; }
     100% { top: 10%; }
 }
 
@@ -480,23 +492,23 @@ export default {
   0%{left: 0%;}
     0%{top:10%}
    
-    100% { left: 12%; }
+    100% { left: 15%; }
     100% { top: 10%; }
 }
  @-webkit-keyframes auctionSlide {
     0%{left: 0%;}
-    0%{top: 14%;}
+    0%{top: 13%;}
     
-    100% { left: 2%; }
-    100% { top: 14%; }
+    100% { left: 12%; }
+    100% { top: 13%; }
 }
 
 @keyframes auctionSlide {
   0%{left: 0%;}
-    0%{top:14%}
+    0%{top:13%}
    
-    100% { left: 2%; }
-    100% { top: 14%; }
+    100% { left: 12%; }
+    100% { top: 13%; }
 }
 
 

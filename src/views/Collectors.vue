@@ -66,7 +66,14 @@
                         </div>
                         <div id="hidden">Hidden:</div>
 
-                        <div id="totalvalue">Total value:</div>
+                        <div id="totalvalue">Total value:
+                             {{ itemValues.ifastaval }}
+                    {{ itemValues.ifigures }}
+                    {{ itemValues.imusic }}
+                    {{ itemValues.imovie }}
+                    {{ itemValues.itechnology }}
+
+                        </div>
                       </div>
                     </div>
                     <div class="boardSkills">
@@ -241,7 +248,8 @@
                 :player="players[playerId]"
                 :players="players"
                 :raiseValue="raiseValue"
-                :raiseItemsFromBoard="raiseItemsFromBoard"
+                :skillOnSale="getLastElement(skillsOnSale)"
+                :auctionCard="getLastElement(auctionCards)"
                 :placement="marketPlacement"
                 :marketValues="marketValues"
                 :notYourTurn="notYourTurn"
@@ -267,6 +275,8 @@
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].hand"
                       :card="card"
+                      :availableAction="card.available"
+                      @doAction="buyCard(card)"
                       :key="index"
                     />
                   </div>
@@ -277,7 +287,15 @@
                 <div class="totalValue">
                   Hej
                   <!-- playerMoney -->
-                  <div class="playerMoney">{{ getCurrentScore() }}</div>
+                <div class="playerMoney">{{ getCurrentScore() }}
+                   <div class="itemicons">
+                    <div> <img src="/images/fastaval.png" width="100%"> {{ itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="100%"> {{ itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="100%"> {{ itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="100%"> {{ itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="100%"> {{ itemValues.itechnology }}</div>
+                  </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -334,8 +352,17 @@
                   </div>
                   <div id="hidden">Hidden:</div>
 
-                  <div class="itemicons"></div>
-                  <div id="totalvalue">Total value:</div>
+
+                  <div class="itemicons">
+                    <div> <img src="/images/fastaval.png" width="50%"> {{ itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="50%"> {{ itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="50%"> {{ itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="50%"> {{ itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="50%"> {{ itemValues.itechnology }}</div>
+                  </div>
+                  <div id="totalvalue">Total value: {{ itemValues.ifastaval + itemValues.ifigures + itemValues.imusic + itemValues.imovie + itemValues.itechnology}} </div>
+
+                  
                 </div>
               </div>
               <div class="boardSkills">
@@ -431,6 +458,8 @@
               "
               @drawCardAndPassiveIncome="drawCardAndPassiveIncome($event)"
               @placeWorker="placeWorker($event)"
+              @drawCard="drawCard($event)"
+              @addMoney="addMoney($event)"
             />
           </div>
 
@@ -604,7 +633,7 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
-      raiseItemsFromBoard: [],
+      raiseItemsFromBoard: [],    //Ska den här va kvar den orsaka nån mergekonflikt så den fick va kvar
       deckLength: null,
       raiseItems: [],
       cardInAuction: [],
@@ -614,6 +643,13 @@ export default {
         technology: 0,
         figures: 0,
         music: 0,
+      },
+      itemValues: {
+        ifastaval: 0,
+        imovie: 0,
+        itechnology: 0,
+        ifigures: 0,
+        imusic: 0,
       },
       playerid: 0,
       round: 0,
@@ -724,6 +760,7 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
+        //this.raiseItemsFromBoard = d.raiseItemsFromBoard;
         this.workPlacement = d.workPlacement;
         if (this.players[this.playerId].name == null) {
           this.playerJoinedFn();
@@ -768,6 +805,7 @@ export default {
         console.log(d.playerId, "bought a card");
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
+        this.itemValues = d.itemValues;
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -799,6 +837,9 @@ export default {
         this.players = d.players;
         this.raiseItems = d.raiseItems;
         this.raiseValue = d.raiseValue;
+        this.skillsOnSale = d.skillsOnSale;
+        this.auctionCards = d.auctionCards;
+        this.itemsOnSale = d.itemsOnSale;
       }.bind(this)
     );
 
@@ -1145,6 +1186,7 @@ export default {
         card: card,
         cost: this.chosenPlacementCost,
       });
+
       this.nextPlayer();
     },
     buySkill: function(card) {
@@ -1169,7 +1211,22 @@ export default {
         });
     },
 
-    notYourTurn: function() {
+    getLastElement: function(cardArray){
+      for(let i = cardArray.length - 1; i>=1; i--){
+        if(cardArray[i].market){
+          return cardArray[i];
+        }
+      }
+    },
+
+    /*getRaiseItemsFromBoard: function(){
+      this.raiseItemsFromBoard.push(this.skillsOnSale[this.skillsOnSale.length - 1]);
+      this.raiseItemsFromBoard.push(this.auctionCards[this.auctionCards.length - 1]);
+      return this.raiseItemsFromBoard;
+    },*/
+
+
+    notYourTurn: function () {
       if (this.players[this.playerId].turn == false) {
         return true;
       } else if (this.auctionActive || this.auctionMiniActive) {
@@ -1199,16 +1256,8 @@ export default {
         this.auctionActive = false;
       }
     },
-    buyCardOrAuction: function(card) {
-      if (this.auctionAvailable == true) {
-        console.log("Starta en auktion");
-        return this.startAuction(card);
-      } else {
-        console.log("Köp ett kort istället");
-        return this.buyCard(card);
-      }
-    },
-    restoreHand: function() {
+
+    restoreHand: function () {
       this.$store.state.socket.emit("restoreHand", {
         roomId: this.$route.params.id,
         biddingCards: this.biddingCards,
@@ -1508,7 +1557,8 @@ export default {
       });
     },
     addMoney: function(amount) {
-      this.$store.state.socket.emit("currentValue", {
+      console.log("addMoney i Collectors.vue körs");
+      this.$store.state.socket.emit("addMoney", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
         amount: amount,
@@ -1900,7 +1950,7 @@ theColor:onclick {
 }
 .itemicons {
   grid-row: 2;
-  background-color: hotpink;
+  background-color: red;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }

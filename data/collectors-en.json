@@ -88,57 +88,48 @@
 
 	},
 	"deckHelp":{
-		"title":"Info about items:",
-		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
-		"work1Title":"Different Categories:",
-		"work1":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
-		"work2Title":"Card cost and value:",
-		"work2":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
-		"work3Title":"Other actions:",
-		"work3":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
-		"work4Title":"Other actions:",
-		"work4":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
-		"work5Title":"Other actions:",
-		"work5":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
-		
-
+		"title":"Info about the cards:",
+		"intro":"The main resource of the game is the cards. Depending on where a card is placed under the game board or a player board, the card will represent different things. If the red side (the upper part of the card) is shown, the card represents an item. If the left side of the card (green) is shown, the card represents a skill. If the lower side of a card is shown, the card represents a market influence. .",
+		"cardAsItemsTitle":"Item Value:",
+		"cardAsItems":"The red area of the card indicates its item value. You can see what each item is worth by checking the market pool number for that item. You will gain score equal to the item value.",
+		"cardAsSkillsTitle":"Skill value:",
+		"cardAsSkills":"The green area of the card indicates its skill. there are multiple skills and you can learn more by clicking the skill area.",
+		"cardAsMarketTitle":"Market value:",
+		"cardAsMarket":"The blue are of the card indicates which value it will raise in the market pool. blue music => music +1 => music items are worth one more."
 
 
 	},
 	"menuSpaceHelp":{
-		"title":"Info about items:",
-		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
-		"work1Title":"Different Categories:",
-		"work1":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
-		"work2Title":"Card cost and value:",
-		"work2":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
-		"work3Title":"Other actions:",
-		"work3":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
-		"work4Title":"Other actions:",
-		"work4":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
-		"work5Title":"Other actions:",
-		"work5":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
-		
-
-
+		"title":"Info about the Game:",
+		"intro":"Collectors is a 20-40 minutes worker placement game for 2-4 players where every choice matters. The winning player is the one with the most valuable collection of rare collectables by the end of the game. Beware though, you have a limited number of actions and turns - make sure that you use them wisely",
+		"gameBoardTitle":"Game Board:",
+		"gameBoard":"The game board is divided into five areas, each corresponding to one type of action. The actions are: buy item, gain skill, start auction, work, and raise value. These actions are further described if you click on each area instead.",
+		"BottlesTitle":"Bottles:",
+		"Bottles":"These tokens represent the energy of a player. The more bottles a player owns, the more action they can take during a round.",
+		"playerBoardTitle":"PLAYER BOARD:",
+		"playerBoard":"Each player has their own player board to keep track of their items, bottles, skills, and income. See by clicking your hand and then the questionmark. ",
+		"roundsTitle":"Rounds and quarters:",
+		"rounds":"The game is divided by 4 quarters or rounds. During a round all the players spend their bottles and when the bottles are spent the next round will start. At the end your score will be calculated and a winner decided.",
+		"winTitle":"HOW TO WIN THE GAME:",
+		"win":"Players buy items and acquire skills over the course of the game. By the end of the game, each item gives their owner one point per market card in the market pool sharing the item symbol with the item. In addition some of the abilities give extra points at the end of the game. Read more about this under items/ skills or in the market pool. ",
+		"eachRound":"Each round you will get passive income, your bottles will refresh. A rotation of the cards will take place placing cards in the market pool",
+		"detailedScoringTitle":"Detailed Scoring",
+		"detailedScoring1":"At the end of the game, you total your points, with your hidden item which is not counted during gameplay.", 
+		"detailedScoring2":"Each item gives their owner one point per market card in the market pool sharing the item symbol with the item. If there are no matching cards in the market pool to an item it is worth zero points.",
+		"detailedScoring3":"Every third $1 gives their owner one point.",
+		"detailedScoring4":"Some skill cards give further points, see skills ",
+		"TieTitle":"In case if tie",
+		"Tie":"The player with the most points is the winner of the game. In the case of a tie, the player with the most cards in their hand wins. If there’s still a tie, the victory is shared."
 
 	},
 	"auctionHelp":{
-		"title":"Info about items:",
-		"intro":"The red area of a card indicates which item category it is. You can buy an item buy clicking on one of the buttons in the item area (red). Then you can pick one of the cards in the items area or from your hand.",
-		"work1Title":"Different Categories:",
-		"work1":"Cards can have five different categories and this is indicated by the red area on the cards and corresponds to the same in the market pool.",
-		"work2Title":"Card cost and value:",
-		"work2":"To see the value of a card you can look in the blue market area. How much a card cost is determent buy how much it's worth + the cost of the button you clicked.",
-		"work3Title":"Other actions:",
-		"work3":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
-		"work4Title":"Other actions:",
-		"work4":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills.",
-		"work5Title":"Other actions:",
-		"work5":"Items is the major way to get score in the end. You can gain extra score for your items by card getting added to the market pool and by skills."
-		
-
-
+		"title":"Info about auctions:",
+		"intro":"The auction area is the yellow area, you can start an auction by clicking on one of the buttons",
+		"areaInfoTitle":"How auction works:",
+		"areaInfo1":"Choose one of the four cards in the Auction pool or one card from your hand and place it in the space reserved for auctioned items. If you placed a card from your hand, you may place it face down. The card remains face down and the auction is performed without any other players knowing what kind of card it is.",
+		"areaInfo2":"When paying for the auction you may use cards from your hands as coins. Cards can be worth $1 or $2 as depicted in the upper right corner of the cards. Note that cards can only be used as coins during an auction.",
+		"areaInfo3":"If the card just won was placed face down, the winning player may look at the card without showing it to other players and use it as a hidden item",
+		"areaInfo4":"The player that wins the auction may place the card wherever they want; as an item under their player board, as a market share in the market pool, or as a skill under their player board. If the newly won card was face down, the auction winner may place the card face down as a secret item (next to the one that was chosen during the setup)."
 
 	}
 }
