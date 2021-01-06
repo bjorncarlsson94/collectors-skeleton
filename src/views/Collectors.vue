@@ -88,7 +88,7 @@
                           <div> <img src="/images/tech.png" width="50%"> {{ player.itemValues.itechnology }}</div>
                         </div>
 
-                        <div id="totalvalue">Amount of items: {{ player.itemValues.ifastaval + player.itemValues.ifigures + player.itemValues.imusic + player.itemValues.imovie + player.itemValues.itechnology}}
+                        <div id="totalvalue">Score: {{ player.currentScore}}
 
                         </div>
                       </div>
@@ -377,7 +377,7 @@
                     <div> <img src="/images/movie.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
                     <div> <img src="/images/tech.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
-                  <div id="totalvalue">Amount of items: {{ players[playerId].itemValues.ifastaval + players[playerId].itemValues.ifigures + players[playerId].itemValues.imusic + players[playerId].itemValues.imovie + players[playerId].itemValues.itechnology}} </div>
+                  <div id="totalvalue">Score: {{ players[playerId].currentScore }} </div>
 
                   
                 </div>
