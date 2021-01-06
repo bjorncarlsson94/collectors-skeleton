@@ -570,7 +570,7 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round==1"> 
+    <div class="winnerBox" v-if="round==5"> 
      
       <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
        <h3><strong> {{item.name}}:
