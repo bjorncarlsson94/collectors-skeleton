@@ -868,9 +868,13 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
             room.players[room.startingPlayerId].turn = true;
             this.clearBottles(roomId)
             this.moveCards(roomId);
-            this.fillBottles(roomId);
-            this.currentValue(roomId, playerId)
+            this.fillBottles(roomId);    
+            
             playerWithBottle = true;
+            for (const player in room.players) {
+              
+              this.currentValue(roomId, player);
+            }
           }
         }
         else {
@@ -883,7 +887,7 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
       if(room.round==5){
         console.log("yo Olle å hugo");
         for (const player in room.players) {
-          if(player.secret[0].market){
+          if(player.secret){
           player.items.splice(0,0,player.secret);
           this.currentValue(roomId, player);
         }
@@ -1237,7 +1241,6 @@ Data.prototype.currentValue = function(roomId,playerId) {
       }
     }
     for (let index = 0; index < room.players[playerId].skills.length; index++) {
-      console.log("borde inte vara inne här");
       if(room.players[playerId].skills[index].skill=="VP-all" && fastaval>0 && figures>0 && music>0 && movie>0 && technology>0){
         extraValue+=5;
 
