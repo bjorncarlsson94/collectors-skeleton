@@ -159,7 +159,6 @@ export default {
 <style scoped>
 .start-auction {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 130px);
 }
 .button {
   float: left;
@@ -189,10 +188,14 @@ export default {
 .cards {
   grid-column: 1;
   grid-row: repeat(auto-fill, 1);
+  justify-self: center;
+  align-self: center;
 }
 .buttons {
+  grid-column: 2;
   color: black;
-    grid-row: 2;
+  justify-self: center;
+  align-self: center;
 }
 .secretOptionText {   
     color: black;
@@ -202,7 +205,7 @@ export default {
     font-size: 2vw;
 }
 .secretOptionBox {
-      display: grid;
+    display: grid;
     position: absolute;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 3fr 3fr 1fr;
@@ -231,7 +234,7 @@ export default {
   grid-column: 3;
 }
 /*Nedan är all css för rutan man får upp vid kortköp*/
-  .auctionCardsAvailable {
+.auctionCardsAvailable {
   display: grid;
   position: absolute;
   grid-template-rows: 15% 35% 15% auto;
@@ -246,7 +249,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-20%, -45%);  
-  }
+}
 
   .startAuctionCardGrid{
     display: grid;
