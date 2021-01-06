@@ -250,7 +250,8 @@
                 :player="players[playerId]"
                 :players="players"
                 :raiseValue="raiseValue"
-                :raiseItemsFromBoard="raiseItemsFromBoard"
+                :skillOnSale="getLastElement(skillsOnSale)"
+                :auctionCard="getLastElement(auctionCards)"
                 :placement="marketPlacement"
                 :marketValues="marketValues"
                 :notYourTurn="notYourTurn"
@@ -445,6 +446,8 @@
               v-if="players[playerId]"
               :labels="labels"
               :player="players[playerId]"
+              :players="players"
+
               :round="round"
               :workPlacement="workPlacement"
               @recycleBottle="recycleBottle($event)"
@@ -479,9 +482,8 @@
             </div>
           </div>
           <div class="gridedge3">
-            Ruta för att visa grid lättare: 3
-            <br />
-            Här kan man t.ex. ha vissa viktiga knappar
+            <p>{{ labels.roundcounter }} {{ round }}/4 </p>
+            
           </div>
           <div
             :class="['menuSpace', { animate: helpAction }]"
@@ -614,7 +616,11 @@ export default {
       skillPlacement: [],
       auctionPlacement: [],
       marketPlacement: [],
-      workPlacement: [false, false, false],
+      workPlacement: {
+        drawACardAndFirstPlayerToken: null,
+        drawCardAndPassiveIncome: null,
+        drawTwoCards: null,
+      },
       chosenPlacementCost: null,
       marketValues: {
         fastaval: 0,
@@ -626,7 +632,6 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
-      raiseItemsFromBoard:[],
       deckLength: null,
       raiseItems: [],
       cardInAuction: [],
@@ -753,6 +758,8 @@ export default {
         this.skillPlacement = d.placements.skillPlacement;
         this.marketPlacement = d.placements.marketPlacement;
         this.auctionPlacement = d.placements.auctionPlacement;
+        //this.raiseItemsFromBoard = d.raiseItemsFromBoard;
+        this.workPlacement = d.workPlacement;
         if (this.players[this.playerId].name == null) {
           this.playerJoinedFn();
         }
@@ -828,6 +835,9 @@ export default {
         this.players = d.players;
         this.raiseItems = d.raiseItems;
         this.raiseValue = d.raiseValue;
+        this.skillsOnSale = d.skillsOnSale;
+        this.auctionCards = d.auctionCards;
+        this.itemsOnSale = d.itemsOnSale;
       }.bind(this)
     )
 
@@ -961,10 +971,7 @@ export default {
 
     this.$store.state.socket.on(
       "workerPlaced",
-      function (d) {
-        console.log("workPlacement uppdaterad!");
-        this.workPlacement = d;
-      }.bind(this)
+      (d) => (this.workPlacement = d)
     );
     //------------------------------
 
@@ -1197,6 +1204,21 @@ export default {
       });
     },
 
+    getLastElement: function(cardArray){
+      for(let i = cardArray.length - 1; i>=1; i--){
+        if(cardArray[i].market){
+          return cardArray[i];
+        }
+      }
+    },
+
+    /*getRaiseItemsFromBoard: function(){
+      this.raiseItemsFromBoard.push(this.skillsOnSale[this.skillsOnSale.length - 1]);
+      this.raiseItemsFromBoard.push(this.auctionCards[this.auctionCards.length - 1]);
+      return this.raiseItemsFromBoard;
+    },*/
+
+
     notYourTurn: function () {
       if (this.players[this.playerId].turn == false) {
         return true;
@@ -1227,15 +1249,7 @@ export default {
         this.auctionActive = false;
       }
     },
-    buyCardOrAuction: function (card) {
-      if (this.auctionAvailable == true) {
-        console.log("Starta en auktion");
-        return this.startAuction(card);
-      } else {
-        console.log("Köp ett kort istället");
-        return this.buyCard(card);
-      }
-    },
+
     restoreHand: function () {
       this.$store.state.socket.emit("restoreHand", {
         roomId: this.$route.params.id,
@@ -1533,6 +1547,7 @@ export default {
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
         where: where,
+        playerId: this.playerId,
       });
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
@@ -2170,6 +2185,10 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   position: relative;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .drawCardSpace {
   grid-column: 8;
@@ -2222,7 +2241,18 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   overflow: hidden;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
   
+}
+.gridedge3 p{
+  align-self: center;
+  font-size: 140%;
+  margin-top: -25px;
+ text-indent: 5px;
+
 }
 
 .menuSpace > * {
