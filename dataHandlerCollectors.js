@@ -880,6 +880,15 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
           }
         }
       }
+      if(room.round==5){
+        console.log("yo Olle å hugo");
+        for (const player in room.players) {
+          if(player.secret[0].market){
+          player.items.splice(0,0,player.secret);
+          this.currentValue(roomId, player);
+        }
+      }
+    }
     }
     return room.players, room.round;
   }
@@ -1255,32 +1264,24 @@ Data.prototype.currentValue = function(roomId,playerId) {
       }
 
     }
-    console.log("fastaval:"+fastaval+":"+room.raiseValue.fastaval);
-    console.log("figures:"+figures+":"+room.raiseValue.figures);
-    console.log("music:"+":"+music+room.raiseValue.music);
-    console.log("movie:"+movie+":"+room.raiseValue.movie);
-    console.log("technology:"+technology+":"+room.raiseValue.technology);
-
-
-    console.log("--------------");
+  
     fastaval=fastaval*room.raiseValue.fastaval;
     figures=figures*room.raiseValue.figures;
     music=music*room.raiseValue.music;
     movie=movie*room.raiseValue.movie;
     technology=technology*room.raiseValue.technology;
-    console.log("fastaval:"+fastaval);
-    console.log("figures:"+figures);
-    console.log("music:"+":"+music);
-    console.log("movie:"+movie);
-    console.log("technology:"+technology);
+    
+    if(room.round==5){
     extraValue+=Math.floor(room.players[playerId].money/3);
-    console.log("extraValue:"+extraValue);
+
+  }
+   
     if(extraValue<0){
       extraValue=0;
 
     }
     extraValue=extraValue+fastaval+figures+music+movie+technology;
-    console.log("score:"+extraValue);
+    
     room.players[playerId].currentScore=extraValue;
     
     return room.players[playerId].currentScore;
