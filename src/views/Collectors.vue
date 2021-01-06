@@ -315,8 +315,8 @@
                   </div>
 
                 <div class="countspace">
-                  <div class="bottlecount"> <img src="/images/player-bottle.png" width="80%"> </div>
-                  <div class="moneycount"> <img src="/images/moneybag.png" width="80%"> </div>
+                  <div class="moneycount"> <img src="/images/moneybag.png" width="80%"> {{ players[playerId].money }}  </div>
+                  <div class="bottlecount"> <img src="/images/player-bottle.png" width="80%"> {{ players[playerId].bottles }} </div>
                   </div>
 
 
@@ -2046,12 +2046,18 @@ theColor:onclick {
   grid-row: 1/3;
   text-align: center;
   align-self: center;
+  background-color: rgb(75, 10, 75);
+  border-radius: 1vw;
+  margin: 0.2vw;
 }
 .moneycount{
   grid-column: 1;
   grid-row: 1/3;
   text-align: center;
   align-self: center;
+  background-color: rgb(31, 107, 31);
+  border-radius: 1vw;
+  margin: 0.2vw;
 }
 .scoreDisplay.closed{
   grid-row: 2;
