@@ -207,6 +207,12 @@ Data.prototype.joinGame = function(roomId, playerId) {
         color: null,
         turn: false,
         playerIsActive: false,
+        itemValues: {
+          ifastaval: 0,
+          imovie: 0,
+          itechnology: 0,
+          ifigures: 0,
+          imusic: 0},
         currentScore:0,
       };
     }
@@ -933,50 +939,39 @@ Data.prototype.cardValue = function(roomId) {
   }
 };
 
-Data.prototype.getItemValue = function(roomId, playerId) {
+Data.prototype.getItemValue = function(roomId, playerId, card) {
   console.log("Hej på dig din jävla king");
 
-  var ifastaval = 0;
-  var ifigures = 0;
-  var imusic = 0;
-  var imovie = 0;
-  var itechnology = 0;
 
   let room = this.rooms[roomId];
 
   if (typeof room !== "undefined") {
-    for (let i = 0; i < room.players[playerId].items.length; i += 1) {
 
-      if (room.players[playerId].items[i].item == "fastaval") {
-        ifastaval += 1;
+      if (card.item == "fastaval") {
+        room.players[playerId].itemValues.ifastaval += 1;
         console.log("Ny fastaval");
-        console.log(ifastaval);
-      } else if (room.players[playerId].items[i].item == "figures") {
-        ifigures += 1;
+        // console.log(ifastaval);
+      } else if (card.item == "figures") {
+        room.players[playerId].itemValues.ifigures += 1;
         console.log("Ny figures");
-        console.log(ifigures);
-      } else if (room.players[playerId].items[i].item == "music") {
-        imusic += 1;
+        // console.log(ifigures);
+      } else if (card.item == "music") {
+        room.players[playerId].itemValues.imusic += 1;
         console.log("Ny music");
-        console.log(imusic);
-      } else if (room.players[playerId].items[i].item == "movie") {
-        imovie += 1;
+        // console.log(imusic);
+      } else if (card.item == "movie") {
+        room.players[playerId].itemValues.imovie += 1;
         console.log("Ny movie");
-        console.log(imovie);
-      } else if (room.players[playerId].items[i].item == "technology") {
-        itechnology += 1;
+        // console.log(imovie);
+      } else if (card.item == "technology") {
+        room.players[playerId].itemValues.itechnology += 1;
         console.log("Ny tech");
-        console.log(itechnology);
+        // console.log(itechnology);
       }
-
-    }
+    
     
     return {
-      ifastaval: ifastaval,
-      ifigures: ifigures,
-      imusic: imusic,
-      imovie: imovie,
-      itechnology: itechnology,
+      
     };
   } else {
     return [];

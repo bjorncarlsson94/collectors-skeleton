@@ -45,7 +45,22 @@
                   @click="expandOtherPlayer(player)"
                   :style="{ background: player.color }"
                 >
-                  <div v-if="!player.playerIsActive">{{ player.name }}</div>
+                  <div v-if="!player.playerIsActive"
+                  class="otherPlayerClosed"
+                  >
+                  {{ player.name }} 
+                  <div class="closedCardsInHand">
+                        <CollectorsCard
+                          v-for="(card, index) in player.hand"
+                          :card="card"
+                          :key="index"
+                          class="otherHand otherClosed" 
+                        />
+                      </div>
+                      
+                  <div class="scoreDisplay"> Score: {{ player.currentScore }} </div>
+                  
+                  </div>
 
                   <div
                     class="playerBoardGrid"
@@ -66,13 +81,15 @@
                           </div>
                         </div>
                         <div id="hidden">Hidden:</div>
+                        <div class="itemicons">
+                          <div> <img src="/images/fastaval.png" width="50%"> {{ player.itemValues.ifastaval }}</div>
+                          <div> <img src="/images/figures.png" width="50%"> {{ player.itemValues.ifigures }}</div>
+                          <div> <img src="/images/music.png" width="50%"> {{ player.itemValues.imusic }}</div>
+                          <div> <img src="/images/movie.png" width="50%"> {{ player.itemValues.imovie }}</div>
+                          <div> <img src="/images/tech.png" width="50%"> {{ player.itemValues.itechnology }}</div>
+                        </div>
 
-                        <div id="totalvalue">Total value:
-                             {{ itemValues.ifastaval }}
-                    {{ itemValues.ifigures }}
-                    {{ itemValues.imusic }}
-                    {{ itemValues.imovie }}
-                    {{ itemValues.itechnology }}
+                        <div id="totalvalue">Amount of items: {{ player.itemValues.ifastaval + player.itemValues.ifigures + player.itemValues.imusic + player.itemValues.imovie + player.itemValues.itechnology}}
 
                         </div>
                       </div>
@@ -289,12 +306,12 @@
                 <div class="totalValue">Hej
                   <!-- playerMoney -->
                 <div class="playerMoney">{{ getCurrentScore() }}
-                   <div class="itemicons">
-                    <div> <img src="/images/fastaval.png" width="100%"> {{ itemValues.ifastaval }}</div>
-                    <div> <img src="/images/figures.png" width="100%"> {{ itemValues.ifigures }}</div>
-                    <div> <img src="/images/music.png" width="100%"> {{ itemValues.imusic }}</div>
-                    <div> <img src="/images/movie.png" width="100%"> {{ itemValues.imovie }}</div>
-                    <div> <img src="/images/tech.png" width="100%"> {{ itemValues.itechnology }}</div>
+                  <div class="itemicons">
+                    <div> <img src="/images/fastaval.png" width="150%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="150%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="150%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="150%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="150%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
                 </div>
                 </div>
@@ -357,13 +374,13 @@
 
 
                   <div class="itemicons">
-                    <div> <img src="/images/fastaval.png" width="50%"> {{ itemValues.ifastaval }}</div>
-                    <div> <img src="/images/figures.png" width="50%"> {{ itemValues.ifigures }}</div>
-                    <div> <img src="/images/music.png" width="50%"> {{ itemValues.imusic }}</div>
-                    <div> <img src="/images/movie.png" width="50%"> {{ itemValues.imovie }}</div>
-                    <div> <img src="/images/tech.png" width="50%"> {{ itemValues.itechnology }}</div>
+                    <div> <img src="/images/fastaval.png" width="50%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="50%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="50%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
-                  <div id="totalvalue">Total value: {{ itemValues.ifastaval + itemValues.ifigures + itemValues.imusic + itemValues.imovie + itemValues.itechnology}} </div>
+                  <div id="totalvalue">Amount of items: {{ players[playerId].itemValues.ifastaval + players[playerId].itemValues.ifigures + players[playerId].itemValues.imusic + players[playerId].itemValues.imovie + players[playerId].itemValues.itechnology}} </div>
 
                   
                 </div>
@@ -593,9 +610,6 @@ export default {
     return {
       gameStarted: false,
       isActive: false,
-      leftIsActive: false,
-      rightIsActive: false,
-      topIsActive: false,
       open: false,
 
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
@@ -642,15 +656,9 @@ export default {
         figures: 0,
         music: 0,
       },
-      itemValues: {
-        ifastaval: 0,
-        imovie: 0,
-        itechnology: 0,
-        ifigures: 0,
-        imusic: 0,
-      },
       playerid: 0,
       round: 0,
+    
       startingPlayerId: null,
       auctionAvailable: false,
       auctionActive: false,
@@ -1755,12 +1763,15 @@ theColor:onclick {
   border: solid;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  align-content: space-evenly;
 }
 .otherplayer {
   border-radius: 1vw;
   padding: 1vw;
   z-index: 1;
   cursor: pointer;
+  height: 2.6vw; 
+  /* ändra height sen */
 }
 .otherplayer.open {
   position: absolute;
@@ -1775,6 +1786,32 @@ theColor:onclick {
   border-color: black;
   z-index: 10;
   cursor: pointer;
+}
+.otherPlayerClosed{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 2vw 1vw;
+}
+.otherPlayerClosed > .closedCardsInHand{
+  grid-column: 2;
+  grid-row: 1/3;
+  display: grid;
+  grid-template-columns: repeat(5, 0.6vw);
+  grid-template-rows: repeat(auto-fill, 0.3vw);
+  height: 80%;
+  margin-top: -1.5vw;
+  justify-self: self-start;
+}
+.otherHand.otherClosed.card{
+  zoom: 0.15 !important;
+}
+
+.scoreDisplay{
+  font-size: 1vw;
+  background-color: grey;
+  border-radius: 0.5vw;
+  height: 1.2vw;
+  padding: 0.1vw;
 }
 
 .playerboard {
@@ -1897,6 +1934,7 @@ theColor:onclick {
   height: 80%;
   margin-top: -1.5vw;
 }
+
 .closedBoardHandBackground {
   border-radius: 2vw;
   background-color: #eeedb8;
