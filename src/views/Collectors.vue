@@ -1246,6 +1246,7 @@ export default {
           return cardArray[i];
         }
       }
+      return {};
     },
 
     keepWindowOpen: function(){
