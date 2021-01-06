@@ -200,6 +200,7 @@ Data.prototype.joinGame = function(roomId, playerId) {
         money: 3,
         bottles: 2,
         totalBottles: 2,
+        bottlesOnPlayerbord: [true, true, false, false, false],
         points: 0,
         firstPlayerToken: false,
         skills: [],
@@ -481,9 +482,10 @@ Data.prototype.auctionWon = function(
 };
 // ...then check if it is in the hand. It cannot be in both so it's safe
 
-Data.prototype.placeBottle = function(roomId, playerId, action, cost) {
+Data.prototype.placeBottle = function(roomId, playerId, action, cost, players) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
+    room.players = players
     let activePlacement = [];
     if (action === "buy") {
       activePlacement = room.buyPlacement;
@@ -495,6 +497,7 @@ Data.prototype.placeBottle = function(roomId, playerId, action, cost) {
       activePlacement = room.marketPlacement;
     }
     room.players[playerId].bottles--;
+    this.changeBottleOnPlayerboarad(roomId, playerId, false);
     for (let i = 0; i < activePlacement.length; i += 1) {
       if (
         activePlacement[i].cost === cost &&
@@ -522,6 +525,7 @@ Data.prototype.removeBottle = function(roomId, playerId, action, cost) {
       activePlacement = room.marketPlacement;
     }
     room.players[playerId].bottles++;
+    this.changeBottleOnPlayerboarad(roomId, playerId, true);
     for (let i = 0; i < activePlacement.length; i += 1) {
       if (
         activePlacement[i].cost === cost &&
@@ -555,6 +559,33 @@ Data.prototype.clearBottles = function(roomId) {
   }
 };
 
+Data.prototype.placeBottleOnPlayerboard = function(roomId, playerId, tempBottlePlacement) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    room.players[playerId].bottlesOnPlayerbord = tempBottlePlacement;
+    if(tempBottlePlacement[0] == false){
+      room.players[playerId].bottles ++;
+      room.players[playerId].totalBottles ++;
+      room.players[playerId].bottlesOnPlayerbord[0] = true;
+    }
+    if(tempBottlePlacement[1] == false){
+      room.players[playerId].bottles ++;
+      room.players[playerId].totalBottles ++;
+      room.players[playerId].bottlesOnPlayerbord[1] = true;
+    }
+    if(tempBottlePlacement[2] == false){
+      this.drawCard(roomId, playerId);
+    }
+    }
+    if(tempBottlePlacement[3] == false){
+      room.players[playerId].money ++;
+    }
+    if(tempBottlePlacement[4] == false){
+      room.players[playerId].money ++;
+      room.players[playerId].money ++;
+    }
+};
+
 Data.prototype.getCardInAuction = function(roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -571,6 +602,19 @@ Data.prototype.getCards = function(roomId, playerId) {
   } else return [];
 };
 
+Data.prototype.getBottlePlacements = function(roomId) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    return {
+      buyPlacement: room.buyPlacement,
+      skillPlacement: room.skillPlacement,
+      auctionPlacement: room.auctionPlacement,
+      marketPlacement: room.marketPlacement,
+      round: room.round, 
+      players: room.players
+    };
+  } else return {};
+};
 Data.prototype.getPlacements = function(roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -840,6 +884,18 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
     return room.players, room.round;
   }
 };
+
+Data.prototype.changeBottleOnPlayerboarad = function(roomId, playerId, addBottle) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    for (let i = 0; i < room.players[playerId].bottlesOnPlayerbord.length; i += 1) {
+      if(room.players[playerId].bottlesOnPlayerbord[i] != addBottle){
+        room.players[playerId].bottlesOnPlayerbord[i] = addBottle;
+        break;
+      }
+    }   
+  }  
+}
 Data.prototype.fillBottles = function(roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -1070,6 +1126,7 @@ Data.prototype.bottleRecycled = function(roomId, playerId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     room.players[playerId].bottles--;
+    room.players[playerId].totalBottles--;
     room.players[playerId].money++;
     return room.players;
   } else return [];

@@ -286,6 +286,7 @@ export default {
 
   }
 
+
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
   margin-top: 0.5vw;

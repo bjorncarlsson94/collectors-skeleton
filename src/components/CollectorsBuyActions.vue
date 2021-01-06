@@ -182,6 +182,7 @@ export default {
     },
 
     hideWindow: function(cost){
+      
       this.$emit('cancelBuy', cost);
     }
 
