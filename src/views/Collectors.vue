@@ -828,6 +828,7 @@ export default {
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
         this.itemValues = d.itemValues;
+        this.currentScore=d.currentScore;
       }.bind(this)
     );
     this.$store.state.socket.on(
