@@ -217,7 +217,13 @@ socket.on('nameAndColor', function (d) {
     io.to(d.roomId).emit(
       "currentScores",
       data.currentValue(d.roomId, d.playerId,d.currentValue)
-      
+    );
+  });
+  socket.on("addMoney", function (d) {
+    console.log("addMoney i socketsCollecors körs");
+    io.to(d.roomId).emit(
+      "moneyAdded",
+      data.addMoney(d.roomId, d.playerId, d.amount)
     );
   });
   //---------------------------------------------------

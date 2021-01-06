@@ -1129,6 +1129,15 @@ Data.prototype.setWorkPlacementTrue = function(roomId, place, playerId) {
     return room.workPlacement;
   } else return [];
 };
+Data.prototype.addMoney = function(roomId, playerId, amount) {
+  console.log("addMoney i dataHandler");
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    room.players[playerId].money += amount;
+    return room.players;
+  } else return [];
+};
+
 Data.prototype.currentValue = function(roomId,playerId) {
   let room = this.rooms[roomId];
   var fastaval = 0;
