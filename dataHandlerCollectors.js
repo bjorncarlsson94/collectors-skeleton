@@ -1079,6 +1079,7 @@ Data.prototype.setWorkPlacementTrue = function(roomId, place, playerId) {
     return room.workPlacement;
   } else return [];
 };
+
 Data.prototype.currentValue = function(roomId,playerId) {
   let room = this.rooms[roomId];
   var fastaval = 0;

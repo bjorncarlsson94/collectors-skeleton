@@ -13,6 +13,7 @@ function sockets(io, socket, data) {
         marketValues: data.getMarketValues(d.roomId),
         raiseItems:data.getRaiseItems(d.roomId),
         playerColor:data.getPlayerColor(d.roomId),
+        
         //här kallar vi på getCardValue
         raiseValue: data.getCardValue(d.roomId),
         skillsOnSale: data.getSkillsOnSale(d.roomId),
