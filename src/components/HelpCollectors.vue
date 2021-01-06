@@ -381,6 +381,8 @@ export default {
 }
 
 #buttonsHelp{
+
+  
   -webkit-animation: buttonsSlide 1.5s forwards;
   -webkit-animation-delay: 0.01s;
   animation: buttonsSlide 0.5s forwards;

@@ -69,6 +69,7 @@
                       <div id="collectiontitle">Collection:</div>
                       <div class="boardcollectiongrid">
                         <div class="playercollection">
+                    <div class="playerMoney">{{ player.currentScore}}</div>
                           <div class="collectioncards">
                             <CollectorsCard
                               v-for="(card, index) in player.items"
@@ -111,6 +112,7 @@
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
                           :card="card"
+                          :availableAction="card.available" 
                           :key="index"
                           class="otherHand"
                         />
@@ -425,7 +427,7 @@
                   class="nextturnboard"
                 />
                 <!-- playerMoney -->
-                <div class="playerMoney">{{ getCurrentScore() }}</div>
+              <div class="playerMoney">{{ players[playerId].currentScore}}</div>
               </div>
             </div>
           </div>
@@ -573,6 +575,17 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
+    <div class="winnerBox" v-if="round==5"> 
+     
+      <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
+       <h3><strong> {{item.name}}:
+        {{item.currentScore}}</strong></h3>   
+      </div>
+     <h1 class="winner">W I N N E R:
+      {{getWinner()}}
+     </h1>
+    </div>
+
 
     <footer>
       <p>
@@ -599,6 +612,7 @@ import CollectorsStartAuction from "@/components/CollectorsStartAuction.vue";
 import CollectorsAuction from "@/components/CollectorsAuction.vue";
 import CollectorsWork from "@/components/CollectorsWork.vue";
 import HelpCollectors from "@/components/HelpCollectors.vue";
+//import func from '../../vue-temp/vue-editor-bridge';
 
 export default {
   name: "Collectors",
@@ -819,6 +833,7 @@ export default {
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
         this.itemValues = d.itemValues;
+        this.currentScore=d.currentScore;
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1298,11 +1313,63 @@ export default {
         currentValue: this.currentValue,
       });
     },
-    getCurrentScore: function() {
-      if (typeof this.players[this.playerId].currentScore !== "undefined") {
-        return this.players[this.playerId].currentScore;
+   getWinner: function(){
+  var currentWinner=[];
+ 
+  if (typeof room !== "undefined") {
+    
+  if(this.players !=="undefined"){
+  for (let index = 0; index < this.players.length; index++) {
+    if(index==0){
+      currentWinner[0]=this.players[index];
+
+    }else{
+      if(currentWinner[0].currentScore<this.players[index].currentScore){
+        if(currentWinner.length==1){
+        currentWinner[0]=this.players[index];
+        }else{
+          currentWinner.splice(0,currentWinner.length,this.players[index]);
+
+        }
+        
+
+      }else if(currentWinner[0].currentScore==this.players[index].currentScore){
+        currentWinner.push(this.players[index]);
+        
+
       }
-      return "";
+
+    }
+    
+  }
+  if(currentWinner.length>1){
+    var currentWinnersHand=[];
+    for (let index = 0; index < this.currentWinner.length; index++) {
+      if(index==0){
+        currentWinnersHand.push(currentWinner[index]);
+
+      }else if(currentWinner[index].hand>currentWinnersHand[0] && currentWinnersHand.length==1 ){
+        currentWinnersHand.splice(0,1,currentWinner[index]);
+
+      }else if(currentWinner[index].hand>currentWinnersHand[0] && currentWinnersHand.length>1 ){
+        currentWinnersHand.splice(0,currentWinnersHand.length,currentWinner[index]);
+
+      }else if(currentWinner[index].hand==currentWinnersHand[0]){
+        currentWinnersHand.push(currentWinner[index]);
+      }
+    }
+    return currentWinnersHand.name;
+  }else{
+    return currentWinner.name;
+  }
+  }
+  else return [];
+}return[];
+
+},
+    finalScoreUpdate: function(){
+      //this.players[this.playerId].item.push(this.players[this.playerId].hidden);
+      this.currentScore();
     },
 
     nextPlayer: function() {
@@ -2555,6 +2622,63 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
     width: 90vw;
   }
 }
+.winnerBox{
+  display:grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 40px;
+  justify-content: center;
+  -webkit-animation: winnerFade 1.5s forwards;
+  -webkit-animation-delay: 0.01s;
+  animation: winnerFade 0.5s forwards;
+  animation-delay: 0.01;
+  border-radius: 5%;
+  width: 1200px;
+  height: 800px;
+  background-color: white;
+  position: absolute;
+  top:7%;
+  left:19%;
+
+}
+.winnerBoxPlayers{
+
+   border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  height: 100px;
+  width: 200px;
+  border-radius: 20%;
+  position: relative;
+  background-color: yellow;
+  float:left;
+  margin: 80px;
+}
+.winner{
+  color:tomato;
+  position: absolute;
+  align-self: center;
+  right:35%;
+  font-size: 500%;
+
+}
+
+ @-webkit-keyframes winnerFade {
+     0%{opacity: 0%;}
+    
+   
+    100% { opacity:  100%; }
+    
+}
+
+@keyframes winnerFade {
+  0%{opacity: 0%;}
+    
+   
+  100% { opacity:  100%; }
+    
+}
+
 </style>
 
 /* NOTES: Here are notes from the supervision sessions

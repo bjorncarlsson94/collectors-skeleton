@@ -13,6 +13,7 @@ function sockets(io, socket, data) {
         marketValues: data.getMarketValues(d.roomId),
         raiseItems:data.getRaiseItems(d.roomId),
         playerColor:data.getPlayerColor(d.roomId),
+        
         //här kallar vi på getCardValue
         raiseValue: data.getCardValue(d.roomId),
         skillsOnSale: data.getSkillsOnSale(d.roomId),
@@ -42,7 +43,8 @@ function sockets(io, socket, data) {
       playerId: d.playerId,
       players: data.getPlayers(d.roomId),
       itemsOnSale: data.getItemsOnSale(d.roomId),
-      itemValues: data.getItemValue(d.roomId, d.playerId, d.card)
+      itemValues: data.getItemValue(d.roomId, d.playerId, d.card),
+       
     });
   });
  
