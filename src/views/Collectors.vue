@@ -3,11 +3,10 @@
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
       <section id="wrapper">
-        
         <div id="grid">
           <div class="helpBoard" @click="showHelpOptions">
-          <p><strong>?</strong></p>
-        </div>
+            <p><strong>?</strong></p>
+          </div>
           <div class="playerJoinedBox" v-show="playerJoined">
             <div class="playerText1">{{ labels.playerIntro1 }}</div>
             <input class="playerText" type="text" v-model="pname" />
@@ -45,7 +44,22 @@
                   @click="expandOtherPlayer(player)"
                   :style="{ background: player.color }"
                 >
-                  <div v-if="!player.playerIsActive">{{ player.name }}</div>
+                  <div v-if="!player.playerIsActive"
+                  class="otherPlayerClosed"
+                  >
+                  {{ player.name }} 
+                  <div class="closedCardsInHand">
+                        <CollectorsCard
+                          v-for="(card, index) in player.hand"
+                          :card="card"
+                          :key="index"
+                          class="otherHand otherClosed" 
+                        />
+                      </div>
+                      
+                  <div class="scoreDisplay"> Score: {{ player.currentScore }} </div>
+                  
+                  </div>
 
                   <div
                     class="playerBoardGrid"
@@ -66,8 +80,17 @@
                           </div>
                         </div>
                         <div id="hidden">Hidden:</div>
+                        <div class="itemicons">
+                          <div> <img src="/images/fastaval.png" width="50%"> {{ player.itemValues.ifastaval }}</div>
+                          <div> <img src="/images/figures.png" width="50%"> {{ player.itemValues.ifigures }}</div>
+                          <div> <img src="/images/music.png" width="50%"> {{ player.itemValues.imusic }}</div>
+                          <div> <img src="/images/movie.png" width="50%"> {{ player.itemValues.imovie }}</div>
+                          <div> <img src="/images/tech.png" width="50%"> {{ player.itemValues.itechnology }}</div>
+                        </div>
 
-                        <div id="totalvalue">Total value:</div>
+                        <div id="totalvalue">Score: {{ player.currentScore}}
+
+                        </div>
                       </div>
                     </div>
                     <div class="boardSkills">
@@ -84,8 +107,7 @@
                     </div>
                     <div class="boardHand">
                       <div id="handTitle">Hand:</div>
-                      <div 
-                      class="cardsinhand">
+                      <div class="cardsinhand">
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
                           :card="card"
@@ -270,6 +292,8 @@
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].hand"
                       :card="card"
+                      :availableAction="card.available"
+                      @doAction="buyCard(card)"
                       :key="index"
                     />
                   </div>
@@ -277,11 +301,19 @@
 
                 <div class="closedBoardHandBackground"></div>
 
-                <div class="totalValue">Hej
+                <div class="totalValue">
+                  Hej
                   <!-- playerMoney -->
-                <div class="playerMoney">{{ getCurrentScore() }}</div>
+                <div class="playerMoney">{{ getCurrentScore() }}
+                  <div class="itemicons">
+                    <div> <img src="/images/fastaval.png" width="150%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="150%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="150%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="150%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="150%"> {{ players[playerId].itemValues.itechnology }}</div>
+                  </div>
                 </div>
-                
+                </div>
               </div>
             </div>
 
@@ -322,7 +354,6 @@
               </div>
               <div class="boardCollection">
                 <div id="collectiontitle">Collection:</div>
-                
 
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
@@ -340,12 +371,15 @@
 
 
                   <div class="itemicons">
-                    
-
+                    <div> <img src="/images/fastaval.png" width="50%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="50%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="50%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
-                  <div id="totalvalue">Total value:</div>
+                  <div id="totalvalue">Score: {{ players[playerId].currentScore }} </div>
 
-
+                  
                 </div>
               </div>
               <div class="boardSkills">
@@ -378,9 +412,13 @@
                 </div>
               </div>
 
-              <div class="boardNextTurnInfo">Next turn income
+              <div class="boardNextTurnInfo">
+                Next turn income
 
-                <img src="/images/bottle-playerboard.png" class="nextturnboard">
+                <img
+                  src="/images/bottle-playerboard.png"
+                  class="nextturnboard"
+                />
                 <!-- playerMoney -->
                 <div class="playerMoney">{{ getCurrentScore() }}</div>
               </div>
@@ -427,7 +465,6 @@
               :labels="labels"
               :player="players[playerId]"
               :players="players"
-
               :round="round"
               :workPlacement="workPlacement"
               @recycleBottle="recycleBottle($event)"
@@ -438,6 +475,8 @@
               "
               @drawCardAndPassiveIncome="drawCardAndPassiveIncome($event)"
               @placeWorker="placeWorker($event)"
+              @drawCard="drawCard($event)"
+              @addMoney="addMoney($event)"
             />
           </div>
 
@@ -462,8 +501,7 @@
             </div>
           </div>
           <div class="gridedge3">
-            <p>{{ labels.roundcounter }} {{ round }}/4 </p>
-            
+            <p>{{ labels.roundcounter }} {{ round }}/4</p>
           </div>
           <div
             :class="['menuSpace', { animate: helpAction }]"
@@ -569,13 +607,10 @@ export default {
     CollectorsWork,
     HelpCollectors,
   },
-  data: function () {
+  data: function() {
     return {
       gameStarted: false,
       isActive: false,
-      leftIsActive: false,
-      rightIsActive: false,
-      topIsActive: false,
       open: false,
 
       publicPath: "localhost:8080/#", //"collectors-groupxx.herokuapp.com/#",
@@ -612,6 +647,7 @@ export default {
       itemsOnSale: [],
       skillsOnSale: [],
       auctionCards: [],
+      raiseItemsFromBoard: [],    //Ska den här va kvar den orsaka nån mergekonflikt så den fick va kvar
       deckLength: null,
       raiseItems: [],
       cardInAuction: [],
@@ -624,6 +660,7 @@ export default {
       },
       playerid: 0,
       round: 0,
+    
       startingPlayerId: null,
       auctionAvailable: false,
       auctionActive: false,
@@ -678,7 +715,7 @@ export default {
   },
   props: {},
   computed: {
-    playerId: function () {
+    playerId: function() {
       return this.$store.state.playerId;
     },
   },
@@ -689,7 +726,7 @@ export default {
     });
   },
   watch: {
-    players: function (newP, oldP) {
+    players: function(newP, oldP) {
       console.log(newP, oldP);
       for (let p in this.players) {
         for (let c = 0; c < this.players[p].hand.length; c += 1) {
@@ -699,7 +736,7 @@ export default {
       }
     },
   },
-  created: function () {
+  created: function() {
     this.$store.commit("SET_PLAYER_ID", this.$route.query.id);
     //TODO! Fix this ugly hack
     //background: https://github.com/quasarframework/quasar/issues/5672
@@ -714,7 +751,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsInitialize",
-      function (d) {
+      function(d) {
         this.labels = d.labels;
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
@@ -741,7 +778,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsBottle",
-      function (d) {
+      function(d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
@@ -762,7 +799,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsCardDrawn",
-      function (d) {
+      function(d) {
         //this has been refactored to not single out one player's cards
         //better to update the state of all cards
         console.log(d.playerId, "drew a card");
@@ -772,15 +809,16 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsCardBought",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "bought a card");
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
+        this.itemValues = d.itemValues;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsSkillBought",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "bought a skill");
         this.players = d.players;
         this.skillsOnSale = d.skillsOnSale;
@@ -789,7 +827,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsAuctionStarted",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "started auction " + this.cardInAuction);
         this.players = d.players;
         this.auctionCards = d.auctionCards;
@@ -802,7 +840,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsValueRaised",
-      function(d){
+      function(d) {
         console.log(d.playerId, "raised value");
         this.players = d.players;
         this.raiseItems = d.raiseItems;
@@ -811,11 +849,11 @@ export default {
         this.auctionCards = d.auctionCards;
         this.itemsOnSale = d.itemsOnSale;
       }.bind(this)
-    )
+    );
 
     this.$store.state.socket.on(
       "auctionRound",
-      function (d) {
+      function(d) {
         console.log("är det en vinnare?" + d.auctionWinner);
         if (d.auctionWinner == true) {
           if (this.playerId == d.auctionLeaderId) {
@@ -851,7 +889,7 @@ export default {
     );
     this.$store.state.socket.on(
       "auctionFin",
-      function (d) {
+      function(d) {
         this.hiddenAuctionCard = false;
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
@@ -864,7 +902,7 @@ export default {
     );
     this.$store.state.socket.on(
       "cardsMoved",
-      function (d) {
+      function(d) {
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
         this.skillsOnSale = d.skillsOnSale;
@@ -876,7 +914,7 @@ export default {
 
     this.$store.state.socket.on(
       "playerPicked",
-      function (d) {
+      function(d) {
         console.log("spelare vald");
         this.gameStarted = true;
         this.buyPlacement = d.buyPlacement;
@@ -891,7 +929,7 @@ export default {
 
     this.$store.state.socket.on(
       "nameAndColorSeleced",
-      function (d) {
+      function(d) {
         this.players = d.players;
         this.playerColor = d.playerColor;
       }.bind(this)
@@ -900,7 +938,7 @@ export default {
     //--------WORK--------------
     this.$store.state.socket.on(
       "collectorsBottleRecycled",
-      function (d) {
+      function(d) {
         console.log("Flaska pantad");
         this.players = d;
         console.log("Det krashar inte i flaska pantad");
@@ -908,7 +946,7 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsBottleRecycled4thRound",
-      function (d) {
+      function(d) {
         console.log("Flaska pantad på fjärde omgången");
         this.players = d;
         console.log("Det krashar inte i flaska pantad");
@@ -916,27 +954,27 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsWorkCardDrawn",
-      function (d) {
+      function(d) {
         console.log("2 kort dragna");
         this.players = d;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsCardAndTokenDrawn",
-      function (d) {
+      function(d) {
         console.log("Kort samt spela först token (work)");
         this.players = d;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsCardAndPassiveIncomeDrawn",
-      function (d) {
+      function(d) {
         this.players = d;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "currentScores",
-      function (d) {
+      function(d) {
         this.players[this.playerId].currentScore = d;
       }.bind(this)
     );
@@ -945,18 +983,23 @@ export default {
       "workerPlaced",
       (d) => (this.workPlacement = d)
     );
+
+    this.$store.state.socket.on(
+      "moneyAdded", 
+      (d) => (this.players = d)
+    );
     //------------------------------
 
     this.$store.state.socket.emit("collectorsGetDeckLength", {
-        roomId: this.$route.params.id,
-      });
+      roomId: this.$route.params.id,
+    });
   },
 
   methods: {
-    playerJoinedFn: function () {
+    playerJoinedFn: function() {
       this.playerJoined = true;
     },
-    playerInfo: function () {
+    playerInfo: function() {
       this.playerJoined = false;
       this.$store.state.socket.emit("nameAndColor", {
         roomId: this.$route.params.id,
@@ -965,34 +1008,34 @@ export default {
         name: this.pname,
       });
     },
-    selectAll: function (n) {
+    selectAll: function(n) {
       n.target.select();
     },
-    addBid: function () {
+    addBid: function() {
       this.bid += 1;
     },
-    subBid: function () {
+    subBid: function() {
       this.bid -= 1;
     },
 
-    playerName: function (pId) {
+    playerName: function(pId) {
       if (pId !== null) {
         return this.players[pId].name;
       } else {
         return "";
       }
     },
-    addNumber: function (add) {
+    addNumber: function(add) {
       this.cardBidTotal += add;
     },
-    winnerSelection: function (ifWinner) {
+    winnerSelection: function(ifWinner) {
       if (ifWinner == true) {
         this.winnerAvailable = true;
       } else {
         this.loserAvailable = true;
       }
     },
-    currentPlayer: function () {
+    currentPlayer: function() {
       var keys = Object.keys(this.players);
 
       for (var i = 0; i < keys.length; i++) {
@@ -1002,19 +1045,19 @@ export default {
         }
       }
     },
-    hiddenAuctionCardFN: function () {
+    hiddenAuctionCardFN: function() {
       if (!this.hiddenAuctionCard) {
         this.hiddenAuctionCard = true;
       } else {
         this.hiddenAuctionCard = false;
       }
     },
-    auctionBoard: function () {
+    auctionBoard: function() {
       console.log("auction rutaa");
       this.auctionActive = !this.auctionActive;
       console.log("status: " + this.auctionActive);
     },
-    expandPlayerBoard: function () {
+    expandPlayerBoard: function() {
       console.log("Player click");
 
       // returnerar ifall den redan är öppen
@@ -1032,19 +1075,19 @@ export default {
 
       console.log("Status: " + this.isActive);
     },
-    expandOtherPlayer: function (player) {
+    expandOtherPlayer: function(player) {
       console.log("klicky macdicky");
       player.playerIsActive = !player.playerIsActive;
 
       console.log(player.name + " has opened " + player.playerIsActive);
     },
-    openBoard: function () {
+    openBoard: function() {
       console.log("Open board");
       // Sätter till true för att öppna brädet
       this.isActive = true;
       console.log("Status: " + this.isActive);
     },
-    closeBoard: function () {
+    closeBoard: function() {
       console.log("Close BUTTON!");
 
       // Sätter till false för att stänga brädet
@@ -1052,7 +1095,7 @@ export default {
       this.playerHandHelpIsActive = false;
       console.log("Status: " + this.isActive);
     },
-    expandLeftBoard: function () {
+    expandLeftBoard: function() {
       console.log("Left click");
       this.leftIsActive = !this.leftIsActive;
 
@@ -1063,7 +1106,7 @@ export default {
 
       console.log("status: " + this.leftIsActive);
     },
-    expandRightBoard: function () {
+    expandRightBoard: function() {
       console.log("Right click");
       this.rightIsActive = !this.rightIsActive;
 
@@ -1073,7 +1116,7 @@ export default {
       this.isActive = false;
       console.log("status: " + this.rightIsActive);
     },
-    expandTopBoard: function () {
+    expandTopBoard: function() {
       console.log("Top click");
       this.topIsActive = !this.topIsActive;
 
@@ -1084,7 +1127,7 @@ export default {
 
       console.log("status: " + this.topIsActive);
     },
-    auctionOver: function (placementType) {
+    auctionOver: function(placementType) {
       this.auctionPrice -= this.cardBidTotal;
       this.cardBidTotal = 0;
       console.log(placementType);
@@ -1095,13 +1138,13 @@ export default {
         auctionPrice: this.auctionPrice,
       });
     },
-    showHelp: function (label) {
+    showHelp: function(label) {
       label;
       //do stuff
     },
-    playerHandHelpIsActive: function () {},
+    playerHandHelpIsActive: function() {},
 
-    openCloseBuyWithCard: function () {
+    openCloseBuyWithCard: function() {
       if (this.auctionCardPaymentActive == false) {
         this.auctionCardPaymentActive = true;
         this.auctionActive = false;
@@ -1110,7 +1153,7 @@ export default {
         this.auctionActive = true;
       }
     },
-    placeBottle: function (action, cost) {
+    placeBottle: function(action, cost) {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
@@ -1120,7 +1163,7 @@ export default {
       if (action === "skill") {
         this.aboutToBuySkill = true;
       }
-      if (action === 'market'){
+      if (action === "market") {
         this.aboutToRaiseValue = true;
       }
       this.chosenPlacementCost = cost;
@@ -1131,7 +1174,7 @@ export default {
         cost: cost,
       });
     },
-    drawCard: function () {
+    drawCard: function() {
       if (!this.helpAction) {
         this.$store.state.socket.emit("collectorsDrawCard", {
           roomId: this.$route.params.id,
@@ -1142,7 +1185,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    buyCard: function (card) {
+    buyCard: function(card) {
       console.log("buyCard", card);
       this.aboutToBuyItem = false;
       this.$store.state.socket.emit("collectorsBuyCard", {
@@ -1151,9 +1194,10 @@ export default {
         card: card,
         cost: this.chosenPlacementCost,
       });
+
       this.nextPlayer();
     },
-    buySkill: function (card) {
+    buySkill: function(card) {
       console.log("buySkill", card);
       this.aboutToBuySkill = false;
       this.$store.state.socket.emit("collectorsBuySkill", {
@@ -1165,14 +1209,14 @@ export default {
       this.nextPlayer();
     },
 
-    raisingValue: function(card){
-      this.aboutToRaiseValue = false,
+    raisingValue: function(card) {
+      (this.aboutToRaiseValue = false),
         this.$store.state.socket.emit("collectorsRaiseValue", {
           roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
           cost: this.chosenPlacementCost,
-      });
+        });
     },
 
     getLastElement: function(cardArray){
@@ -1199,7 +1243,7 @@ export default {
         return false;
       }
     },
-    startAuction: function (card) {
+    startAuction: function(card) {
       this.auctionAvailable = false;
       this.aboutToStartAuction = false;
       this.$store.state.socket.emit("collectorsStartAuction", {
@@ -1211,7 +1255,7 @@ export default {
       });
     },
 
-    auctionMiniActiveNow: function () {
+    auctionMiniActiveNow: function() {
       if (this.auctionMiniActive == true) {
         this.auctionMiniActive = false;
         this.auctionActive = true;
@@ -1229,34 +1273,34 @@ export default {
         playerId: this.playerId,
       });
     },
-    startTurn: function () {
+    startTurn: function() {
       console.log("hola");
 
       this.$store.state.socket.emit("startTurn", {
         roomId: this.$route.params.id,
       });
     },
-    moveCards: function () {
+    moveCards: function() {
       this.$store.state.socket.emit("moveCards", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
-    currentScore: function () {
+    currentScore: function() {
       this.$store.state.socket.emit("currentValue", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
         currentValue: this.currentValue,
       });
     },
-    getCurrentScore: function () {
+    getCurrentScore: function() {
       if (typeof this.players[this.playerId].currentScore !== "undefined") {
         return this.players[this.playerId].currentScore;
       }
       return "";
     },
 
-    nextPlayer: function () {
+    nextPlayer: function() {
       this.$store.state.socket.emit("nextPlayer", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1264,7 +1308,7 @@ export default {
       });
     },
 
-    removeBottle: function (action,cost) {
+    removeBottle: function(action, cost) {
       if (action === "buy") {
         this.aboutToBuyItem = false;
       }
@@ -1284,26 +1328,22 @@ export default {
     },
 
     //playerHandShow
-    helpPlayerHandHover: function () {
+    helpPlayerHandHover: function() {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
-    showHelpOptions: function () {
-      if(this.helpAction){
-      
-       this.skillsHelpActive= false;
-      this.auctionHelpActive= false;
-      this.menuSpaceActive= false;
-      this.buttonsHelpActive= false;
-      this.workHelpActive= false;
-      this.itemsHelpActive= false;
-      this.raiseValueHelpActive= false;
-        
-
+    showHelpOptions: function() {
+      if (this.helpAction) {
+        this.skillsHelpActive = false;
+        this.auctionHelpActive = false;
+        this.menuSpaceActive = false;
+        this.buttonsHelpActive = false;
+        this.workHelpActive = false;
+        this.itemsHelpActive = false;
+        this.raiseValueHelpActive = false;
       }
       this.helpAction = !this.helpAction;
       console.log(this.helpAction);
       console.log(document.getElementById("test1").className);
-      
 
       /* if(this.helpAuctionActive){
         console.log("hejhej");
@@ -1321,7 +1361,7 @@ export default {
     helpSkillsAreaHover();
     */
     },
-    skillsHelp: function () {
+    skillsHelp: function() {
       if (this.helpAction) {
         if (
           this.auctionHelpActive ||
@@ -1341,7 +1381,7 @@ export default {
         this.skillsHelpActive = !this.skillsHelpActive;
       }
     },
-    auctionHelp: function () {
+    auctionHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1361,7 +1401,7 @@ export default {
         this.auctionHelpActive = !this.auctionHelpActive;
       }
     },
-    menuSpaceHelp: function () {
+    menuSpaceHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1381,7 +1421,7 @@ export default {
         this.menuSpaceActive = !this.menuSpaceActive;
       }
     },
-    buttonsHelp: function () {
+    buttonsHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1401,7 +1441,7 @@ export default {
         this.buttonsHelpActive = !this.buttonsHelpActive;
       }
     },
-    workHelp: function () {
+    workHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1421,7 +1461,7 @@ export default {
         this.workHelpActive = !this.workHelpActive;
       }
     },
-    itemsHelp: function () {
+    itemsHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1442,7 +1482,7 @@ export default {
       }
     },
 
-    raiseValueHelp: function () {
+    raiseValueHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1464,7 +1504,7 @@ export default {
     },
 
     //---------------------------WORK metoder-------------------
-    recycleBottle: function () {
+    recycleBottle: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
@@ -1474,7 +1514,7 @@ export default {
         playerId: this.playerId,
       });
     },
-    recycleBottle4thRound: function () {
+    recycleBottle4thRound: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
@@ -1484,7 +1524,7 @@ export default {
         playerId: this.playerId,
       });
     },
-    workDrawTwoCards: function () {
+    workDrawTwoCards: function() {
       this.$store.state.socket.emit("collectorsWorkDrawTwoCards", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1493,7 +1533,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    drawACardAndFirstPlayerToken: function () {
+    drawACardAndFirstPlayerToken: function() {
       console.log("draw card and first player token");
       this.$store.state.socket.emit("collectorsDrawACardAndToken", {
         roomId: this.$route.params.id,
@@ -1503,7 +1543,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    drawCardAndPassiveIncome: function () {
+    drawCardAndPassiveIncome: function() {
       console.log("Draw passive income i Collectors.vue");
       this.$store.state.socket.emit("collectorsDrawACardAndPassiveIncome", {
         roomId: this.$route.params.id,
@@ -1513,7 +1553,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    placeWorker: function (where) {
+    placeWorker: function(where) {
       console.log("placeWorker!");
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
@@ -1522,6 +1562,14 @@ export default {
       });
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
+      });
+    },
+    addMoney: function(amount) {
+      console.log("addMoney i Collectors.vue körs");
+      this.$store.state.socket.emit("addMoney", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        amount: amount,
       });
     },
     //----------------------------------------------------------
@@ -1634,8 +1682,8 @@ theColor:onclick {
   -webkit-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
   box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
 }
-.otherHand.card{
-  background-image: url('/images/back-of-card.png');
+.otherHand.card {
+  background-image: url("/images/back-of-card.png");
 }
 
 /* transform: scale(0.5)translate(-50%,-50%);*/
@@ -1667,7 +1715,7 @@ theColor:onclick {
   padding: 0.3vw;
   justify-self: center;
   position: relative;
-  background-image: url('/images/tim-mossholder-ysDq0fY-bzo-unsplash.jpg');
+  background-image: url("/images/tim-mossholder-ysDq0fY-bzo-unsplash.jpg");
   background-size: contain;
   border-color: rgb(34, 21, 9);
   border-style: solid;
@@ -1680,7 +1728,6 @@ theColor:onclick {
   grid-template-columns: 9vw 13vw 13vw 13vw 13vw 13vw 1vw 10vw;
   grid-template-rows: 5vw 15vw 15vw 1vw 7vw;
   justify-content: center;
-  
 }
 /*
   Här kan vi testa att sätta en storlek på grid eller wrapper och göra om storlekarna nedan till t.ex. %avParent för att få till så det hamnar inne i skärmen.
@@ -1726,12 +1773,15 @@ theColor:onclick {
   border: solid;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  align-content: space-evenly;
 }
 .otherplayer {
   border-radius: 1vw;
   padding: 1vw;
   z-index: 1;
   cursor: pointer;
+  height: 2.6vw; 
+  /* ändra height sen */
 }
 .otherplayer.open {
   position: absolute;
@@ -1747,6 +1797,32 @@ theColor:onclick {
   z-index: 10;
   cursor: pointer;
 }
+.otherPlayerClosed{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 2vw 1vw;
+}
+.otherPlayerClosed > .closedCardsInHand{
+  grid-column: 2;
+  grid-row: 1/3;
+  display: grid;
+  grid-template-columns: repeat(5, 0.6vw);
+  grid-template-rows: repeat(auto-fill, 0.3vw);
+  height: 80%;
+  margin-top: -1.5vw;
+  justify-self: self-start;
+}
+.otherHand.otherClosed.card{
+  zoom: 0.15 !important;
+}
+
+.scoreDisplay{
+  font-size: 1vw;
+  background-color: grey;
+  border-radius: 0.5vw;
+  height: 1.2vw;
+  padding: 0.1vw;
+}
 
 .playerboard {
   border-radius: 2vw;
@@ -1755,7 +1831,7 @@ theColor:onclick {
   padding: 1vw;
   font-size: 1vw;
   cursor: pointer;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -1814,7 +1890,6 @@ theColor:onclick {
   grid-template-columns: 3fr 1fr;
   grid-template-rows: 5fr 1fr 1fr;
   height: 100%;
-  
 }
 
 .playercollection {
@@ -1845,7 +1920,6 @@ theColor:onclick {
   border-radius: 0 0 0 2vw;
   padding: 1vw;
   align-items: center;
-  
 }
 
 .closedBoardGrid {
@@ -1853,8 +1927,6 @@ theColor:onclick {
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
 }
-
-
 
 .closedBoardHand {
   grid-column: 1 / span 1;
@@ -1868,6 +1940,7 @@ theColor:onclick {
   height: 80%;
   margin-top: -1.5vw;
 }
+
 .closedBoardHandBackground {
   border-radius: 2vw;
   background-color: #eeedb8;
@@ -1913,9 +1986,9 @@ theColor:onclick {
   text-align: center;
   grid-row: 3;
 }
-.itemicons{
+.itemicons {
   grid-row: 2;
-  background-color: hotpink;
+  background-color: red;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
@@ -1952,7 +2025,7 @@ theColor:onclick {
   border-radius: 0 0 2vw 0;
   padding: 1vw;
 }
-.nextturnboard{
+.nextturnboard {
   max-width: 100%;
 }
 
@@ -2049,7 +2122,7 @@ theColor:onclick {
   grid-column: 4 / span 3;
   grid-row: 2;
   position: relative;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2060,7 +2133,7 @@ theColor:onclick {
   grid-column: 4 / span 3;
   grid-row: 3;
   position: relative;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2071,7 +2144,7 @@ theColor:onclick {
   background-color: grey;
   grid-column: 2;
   grid-row: 2 / span 2;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2082,7 +2155,7 @@ theColor:onclick {
   grid-column: 8;
   grid-row: 3 / span 1;
   position: relative;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2098,7 +2171,7 @@ theColor:onclick {
   grid-column: 3;
   grid-row: 2 / span 2;
   position: relative;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2156,7 +2229,7 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   position: relative;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2212,24 +2285,22 @@ theColor:onclick {
   padding: 2vw;
   font-size: 1vw;
   overflow: hidden;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
-  
 }
-.gridedge3 p{
+.gridedge3 p {
   align-self: center;
   font-size: 140%;
   margin-top: -25px;
- text-indent: 5px;
-
+  text-indent: 5px;
 }
 
 .menuSpace > * {
   /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
   zoom: 0.8;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2245,7 +2316,7 @@ theColor:onclick {
   align-items: center;
   background-color: blue;
   cursor: pointer;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2265,7 +2336,7 @@ theColor:onclick {
   display: grid;
   grid-template-rows: repeat(auto-fill, 3.5vh);
   align-content: center;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2314,7 +2385,6 @@ theColor:onclick {
   border-width: 1px;
   border-color: black;
   font-size: 150%;
-  
 }
 #playerHelp {
   --scrollbarBG: #0066ff;
@@ -2401,7 +2471,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   grid-row: 1;
   grid-column: 8;
   justify-self: flex-end;
-  border:solid;
+  border: solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
@@ -2414,8 +2484,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .animate {
   animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
-  box-shadow: 0px 0px 10px 11px rgb(116, 116, 9),0 0 5px  rgb(116, 116, 9);
-  
+  box-shadow: 0px 0px 10px 11px rgb(116, 116, 9), 0 0 5px rgb(116, 116, 9);
 }
 
 .playerMoney {

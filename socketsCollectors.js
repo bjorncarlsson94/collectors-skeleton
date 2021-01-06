@@ -42,8 +42,11 @@ function sockets(io, socket, data) {
       playerId: d.playerId,
       players: data.getPlayers(d.roomId),
       itemsOnSale: data.getItemsOnSale(d.roomId),
+      itemValues: data.getItemValue(d.roomId, d.playerId, d.card)
     });
   });
+ 
+  
   socket.on("collectorsBuySkill", function (d) {
     data.buySkill(d.roomId, d.playerId, d.card, d.cost);
     io.to(d.roomId).emit("collectorsSkillBought", {
@@ -214,7 +217,13 @@ socket.on('nameAndColor', function (d) {
     io.to(d.roomId).emit(
       "currentScores",
       data.currentValue(d.roomId, d.playerId,d.currentValue)
-      
+    );
+  });
+  socket.on("addMoney", function (d) {
+    console.log("addMoney i socketsCollecors körs");
+    io.to(d.roomId).emit(
+      "moneyAdded",
+      data.addMoney(d.roomId, d.playerId, d.amount)
     );
   });
   //---------------------------------------------------
