@@ -218,6 +218,8 @@ Data.prototype.getPlayers = function(id) {
   } else return {};
 };
 
+
+
 Data.prototype.updatePoints = function(roomId, player, points) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -313,8 +315,8 @@ Data.prototype.buySkill = function(roomId, playerId, card, cost) {
       }
     }
     if (card.skill == "bottle") {
-      room.players[playerId].bottles ++; 
-      room.players[playerId].totalBottles ++; 
+      room.players[playerId].bottles ++;
+      room.players[playerId].totalBottles ++;
     }
 
 
@@ -511,19 +513,19 @@ Data.prototype.clearBottles = function(roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     for (let i = 0; i < room.buyPlacement.length; i += 1) {
-      room.buyPlacement[i].playerId = null;  
+      room.buyPlacement[i].playerId = null;
     }
     for (let i = 0; i < room.skillPlacement.length; i += 1) {
-      room.skillPlacement[i].playerId = null;  
+      room.skillPlacement[i].playerId = null;
     }
     for (let i = 0; i < room.auctionPlacement.length; i += 1) {
-      room.auctionPlacement[i].playerId = null;  
+      room.auctionPlacement[i].playerId = null;
     }
     for (let i = 0; i < room.marketPlacement.length; i += 1) {
-      room.marketPlacement[i].playerId = null;  
+      room.marketPlacement[i].playerId = null;
     }
     for (let i = 0; i < room.workPlacement.length; i += 1) {
-      room.workPlacement[i] = false;  
+      room.workPlacement[i] = false;
     }
   }
 };
@@ -651,12 +653,12 @@ Data.prototype.gethiddenAuctionCard = function(roomId) {
   } else return [];
 };
 
-/* lägg till items så den byter håll. Sen lös items till skills för den verkar bugga. 
+/* lägg till items så den byter håll. Sen lös items till skills för den verkar bugga.
 
 */
 Data.prototype.moveCards = function(roomId) {
   /*
-Now refill all pools (except the market pool) from the deck. 
+Now refill all pools (except the market pool) from the deck.
 All pools (except the market pool) should have the same number of cards after this step as after setup. */
   let c = null;
   let k = null;
@@ -670,7 +672,7 @@ All pools (except the market pool) should have the same number of cards after th
         c = room.skillsOnSale.splice(i, 1, {});
         room.raiseItems.push(...c);
         room.raiseValue = this.cardValue(roomId);
-        
+
         break;
       }
     }
@@ -688,9 +690,9 @@ All pools (except the market pool) should have the same number of cards after th
       for (let j = room.itemsOnSale.length - 1; j >= 0; j -= 1) {
         if (room.itemsOnSale[j].market) {
           k = room.itemsOnSale.splice(j, 1, {});
-          
-          
-          
+
+
+
           room.skillsOnSale.splice(i, 1, ...k);
           console.log(room.skillsOnSale[i].item);
           break;
@@ -714,12 +716,12 @@ All pools (except the market pool) should have the same number of cards after th
 
     //fill pools
 
-    
+
     room.itemsOnSale = this.fillPool(roomId, "items", room.itemsOnSale);
     room.auctionCards = this.fillPool(roomId, "auction", room.auctionCards);
     room.auctionCards = this.bubbleSort(room.auctionCards);
     room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
-   
+
   } else return [];
 };
 
@@ -795,7 +797,7 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
           else {
             room.round += 1;
             room.players[room.startingPlayerId].turn = true;
-            this.clearBottles(roomId) 
+            this.clearBottles(roomId)
             this.moveCards(roomId);
             this.fillBottles(roomId);
             playerWithBottle = true;
@@ -813,7 +815,7 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
   }
 };
 Data.prototype.fillBottles = function(roomId) {
-  let room = this.rooms[roomId];  
+  let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     var keys = Object.keys(room.players);
     for (let i = 0; i < keys.length; i += 1) {
@@ -914,6 +916,59 @@ Data.prototype.cardValue = function(roomId) {
     return [];
   }
 };
+
+Data.prototype.getItemValue = function(roomId, playerId) {
+  console.log("Hej på dig din jävla king");
+
+  var ifastaval = 0;
+  var ifigures = 0;
+  var imusic = 0;
+  var imovie = 0;
+  var itechnology = 0;
+
+  let room = this.rooms[roomId];
+
+  if (typeof room !== "undefined") {
+    for (let i = 0; i < room.players[playerId].items.length; i += 1) {
+
+      if (room.players[playerId].items[i].item == "fastaval") {
+        ifastaval += 1;
+        console.log("Ny fastaval");
+        console.log(ifastaval);
+      } else if (room.players[playerId].items[i].item == "figures") {
+        ifigures += 1;
+        console.log("Ny figures");
+        console.log(ifigures);
+      } else if (room.players[playerId].items[i].item == "music") {
+        imusic += 1;
+        console.log("Ny music");
+        console.log(imusic);
+      } else if (room.players[playerId].items[i].item == "movie") {
+        imovie += 1;
+        console.log("Ny movie");
+        console.log(imovie);
+      } else if (room.players[playerId].items[i].item == "technology") {
+        itechnology += 1;
+        console.log("Ny tech");
+        console.log(itechnology);
+      }
+
+    }
+    
+    return {
+      ifastaval: ifastaval,
+      ifigures: ifigures,
+      imusic: imusic,
+      imovie: imovie,
+      itechnology: itechnology,
+    };
+  } else {
+    return [];
+  }
+ 
+};
+
+
 Data.prototype.bubbleSort = function(cardArray = 10) {
   var swapp;
   var n = cardArray.length - 1;
@@ -1056,10 +1111,10 @@ Data.prototype.currentValue = function(roomId,playerId) {
   var music = 0;
   var movie = 0;
   var technology = 0;
-  var extraValue=0; 
- 
+  var extraValue=0;
+
   if (typeof room !== "undefined") {
-    
+
     for (let index = 0; index < room.players[playerId].items.length; index++) {
       if(room.players[playerId].items[index].item=="fastaval"){
         fastaval+=1;
@@ -1088,21 +1143,21 @@ Data.prototype.currentValue = function(roomId,playerId) {
       }
       else if(room.players[playerId].skills[index].skill=="VP-figures" && figures>0){
         extraValue+=figures;
-        
+
       }
       else if(room.players[playerId].skills[index].skill=="VP-music" && music>0){
         extraValue+=music;
-        
+
       }
       else if(room.players[playerId].skills[index].skill=="VP-movie" && movie>0){
         extraValue+=movie;
-        
+
       }
       else if(room.players[playerId].skills[index].skill=="VP-technology" && technology>0){
         extraValue+=technology;
-        
+
       }
-    
+
     }
     fastaval=fastaval*room.raiseValue.fastaval;
     figures=figures*room.raiseValue.figures;

@@ -67,7 +67,14 @@
                         </div>
                         <div id="hidden">Hidden:</div>
 
-                        <div id="totalvalue">Total value:</div>
+                        <div id="totalvalue">Total value:
+                             {{ itemValues.ifastaval }}
+                    {{ itemValues.ifigures }}
+                    {{ itemValues.imusic }}
+                    {{ itemValues.imovie }}
+                    {{ itemValues.itechnology }}
+
+                        </div>
                       </div>
                     </div>
                     <div class="boardSkills">
@@ -269,6 +276,8 @@
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].hand"
                       :card="card"
+                      :availableAction="card.available"
+                      @doAction="buyCard(card)"
                       :key="index"
                     />
                   </div>
@@ -278,7 +287,15 @@
 
                 <div class="totalValue">Hej
                   <!-- playerMoney -->
-                <div class="playerMoney">{{ getCurrentScore() }}</div>
+                <div class="playerMoney">{{ getCurrentScore() }}
+                   <div class="itemicons">
+                    <div> <img src="/images/fastaval.png" width="100%"> {{ itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="100%"> {{ itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="100%"> {{ itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="100%"> {{ itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="100%"> {{ itemValues.itechnology }}</div>
+                  </div>
+                </div>
                 </div>
                 
               </div>
@@ -339,12 +356,15 @@
 
 
                   <div class="itemicons">
-                    
-
+                    <div> <img src="/images/fastaval.png" width="50%"> {{ itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="50%"> {{ itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="50%"> {{ itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="50%"> {{ itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="50%"> {{ itemValues.itechnology }}</div>
                   </div>
-                  <div id="totalvalue">Total value:</div>
+                  <div id="totalvalue">Total value: {{ itemValues.ifastaval + itemValues.ifigures + itemValues.imusic + itemValues.imovie + itemValues.itechnology}} </div>
 
-
+                  
                 </div>
               </div>
               <div class="boardSkills">
@@ -617,6 +637,13 @@ export default {
         figures: 0,
         music: 0,
       },
+      itemValues: {
+        ifastaval: 0,
+        imovie: 0,
+        itechnology: 0,
+        ifigures: 0,
+        imusic: 0,
+      },
       playerid: 0,
       round: 0,
       startingPlayerId: null,
@@ -769,6 +796,7 @@ export default {
         console.log(d.playerId, "bought a card");
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
+        this.itemValues = d.itemValues;
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1144,6 +1172,7 @@ export default {
         card: card,
         cost: this.chosenPlacementCost,
       });
+
       this.nextPlayer();
     },
     buySkill: function (card) {
@@ -1900,7 +1929,7 @@ theColor:onclick {
 }
 .itemicons{
   grid-row: 2;
-  background-color: hotpink;
+  background-color: red;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
