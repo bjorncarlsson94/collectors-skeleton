@@ -66,10 +66,25 @@
                         />
                       </div>
                       
-                  <div class="scoreDisplay"> Score: {{ player.currentScore }} </div>
+                  <div class="scoreDisplay"> VP: {{ player.currentScore }} </div>
                   
+                  <div class="othercount">
+                    <div class="o moneycount"> 
+                      <div > <img src="/images/moneybag.png" width="70%">  </div> 
+                      <div class="counter oth">{{ player.money }}</div> 
+                   </div>
+                  
+                  <div class="o bottlecount">
+                    <div > <img src="/images/player-bottle.png" width="57%"> </div>
+                    <div class="counter oth">{{ player.bottles }}</div>
+                  </div>
                   </div>
 
+                  </div>
+
+
+
+                <!-- Open other players board -->
                   <div
                     class="playerBoardGrid"
                     v-if="player.playerIsActive === true"
@@ -78,13 +93,10 @@
                       <div id="collectiontitle">Collection:</div>
                       <div class="boardcollectiongrid">
                         <div class="playercollection">
-                    <div class="playerMoney">{{ player.currentScore}}</div>
                           <div class="collectioncards">
                             <CollectorsCard
                               v-for="(card, index) in player.items"
                               :card="card"
-                              :availableAction="card.available"
-                              @doAction="buyCard(card)"
                               :key="index"
                             />
                           </div>
@@ -98,7 +110,7 @@
                           <div> <img src="/images/tech_red.png" width="50%"> {{ player.itemValues.itechnology }}</div>
                         </div>
 
-                        <div class="totalvalue">Score: {{ player.currentScore}}
+                        <div class="totalvalue">Victory Points: {{ player.currentScore}}
 
                         </div>
                       </div>
@@ -109,8 +121,6 @@
                         <CollectorsCard
                           v-for="(card, index) in player.skills"
                           :card="card"
-                          :availableAction="card.available"
-                          @doAction="buyCard(card)"
                           :key="index"
                         />
                       </div>
@@ -120,8 +130,6 @@
                       <div class="cardsinhand">
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
-                          :card="card"
-                          :availableAction="card.available" 
                           :key="index"
                           class="otherHand"
                         />
@@ -133,8 +141,19 @@
                   <div v-show="bottlePlace" class="bottles" :style="{backgroundColor: player.color}"></div>
                 </div>
                 <img src="/images/bottle-playerboard.png" class="nextturnboard">
-                <!-- playerMoney -->
-              <div class="playerMoney">{{ player.currentScore}}</div>
+  
+                <div class="countbackground"></div>
+
+                 <div class="b moneycount"> 
+                    <div > <img src="/images/moneybag.png" width="80%">  </div> 
+                    <div class="counter m">{{ player.money }}</div> 
+                  </div>
+                  
+                  <div class="b bottlecount">
+                    <div > <img src="/images/player-bottle.png" width="60%"> </div>
+                    <div class="counter b">{{ player.bottles }}</div>
+                  </div>
+
               </div>
                   </div>
                 </div>
@@ -314,8 +333,6 @@
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].hand"
                       :card="card"
-                      :availableAction="card.available"
-                      @doAction="buyCard(card)"
                       :key="index"
                     />
                   </div>
@@ -324,8 +341,8 @@
                 <div class="closedBoardHandBackground"></div>
 
                 <div class="closedBoardInfo">
-                  <!-- playerMoney -->
-                <div class="scoreDisplay closed">Score: {{ players[playerId].currentScore }}</div>
+                  <!-- Score -->
+                <div class="scoreDisplay closed">Victory Points: {{ players[playerId].currentScore }}</div>
                   <div class="closedItemIcons">
                     <div> <img src="/images/fastaval_red.png" width="70%"> {{ players[playerId].itemValues.ifastaval }}</div>
                     <div> <img src="/images/figures_red.png" width="70%"> {{ players[playerId].itemValues.ifigures }}</div>
@@ -344,23 +361,6 @@
                     <div > <img src="/images/player-bottle.png" width="50%"> </div>
                     <div class="counter b">{{ players[playerId].bottles }}</div>
                   </div>
-
-            
-                
-                <!-- <div class="countspace">
-                  <div> 
-                    <div class="moneycount"> <img src="/images/moneybag.png" width="40%">  </div> 
-                    <div class="counter m">{{ players[playerId].money }}</div> 
-                  </div>
-                  
-                  <div>
-                    <div class="counter b">{{ players[playerId].bottles }}</div>
-                    <div class="bottlecount"> <img src="/images/player-bottle.png" width="20%"> </div>
-                  </div>
-
-                </div> -->
-
-
                 </div>
               </div>
             </div>
@@ -425,7 +425,7 @@
                     <div> <img src="/images/movie_red.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
                     <div> <img src="/images/tech_red.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
-                  <div class="totalvalue">Score: {{ players[playerId].currentScore }} </div>
+                  <div class="totalvalue">Victory Points: {{ players[playerId].currentScore }} </div>
 
                   
                 </div>
@@ -435,16 +435,16 @@
                   <CollectorsCard
                     v-for="(card, index) in players[playerId].skills"
                     :card="card"
-                    :availableAction="card.available"
-                    @doAction="buyCard(card)"
                     :key="index"
                   />
                 </div>
                 <div class="skillsInfo">
-                  Tjo
-                  <div>bipp</div>
-                  <div>bapp</div>
-                  <div>bopp</div>
+                  <div class="tooltip"><img src="/images/Skills_auction.png" width="70%"> <span class="tooltiptext">{{labels.skillsAuction}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_extraWorker.png" width="70%"> <span class="tooltiptext">{{labels.skillsExtraWorker}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_VP_all.png" width="70%"> <span class="tooltiptext"> {{labels.skillsVpAll}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_VP.png" width="70%"> <span class="tooltiptext">{{labels.skillsVp}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_work1.png" width="70%"> <span class="tooltiptext">{{labels.skillsWork1}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_work2.png" width="70%"> <span class="tooltiptext">{{labels.skillsWork2}}</span> </div>
                 </div>
               </div>
               <div class="boardHand">
@@ -453,8 +453,6 @@
                   <CollectorsCard
                     v-for="(card, index) in players[playerId].hand"
                     :card="card"
-                    :availableAction="card.available"
-                    @doAction="buyCard(card)"
                     :key="index"
                   />
                 </div>
@@ -465,8 +463,20 @@
                   <div v-show="bottlePlace" class="bottles" :style="{backgroundColor: players[playerId].color}"></div>
                 </div>
                 <img src="/images/bottle-playerboard.png" class="nextturnboard">
-                <!-- playerMoney -->
-              <div class="playerMoney">{{ players[playerId].currentScore}}</div>
+                 
+                
+                <div class="countbackground"></div>
+
+                 <div class="b moneycount"> 
+                    <div > <img src="/images/moneybag.png" width="80%">  </div> 
+                    <div class="counter m">{{ players[playerId].money }}</div> 
+                  </div>
+                  
+                  <div class="b bottlecount">
+                    <div > <img src="/images/player-bottle.png" width="60%"> </div>
+                    <div class="counter b">{{ players[playerId].bottles }}</div>
+                  </div>
+                
               </div>
             </div>
           </div>
@@ -614,7 +624,7 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round==5"> 
+    <div class="winnerBox" v-if="round>=5"> 
       <div class="winnerBoxContent">
         <div class="winnerPlayerGrid" >
         <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
@@ -1928,15 +1938,15 @@ theColor:onclick {
   border-radius: 1vw;
   grid-row: 1;
   grid-column: 3/6;
-  border-color: rgb(82, 82, 82);
-  background-color: grey;
-  border: solid;
+  background-color: rgba(0, 0, 0, 0.479);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-content: space-evenly;
 }
 .otherplayer {
   border-radius: 1vw;
+  border-style: ridge;
+  border-color: currentColor;
   padding: 1vw;
   z-index: 1;
   cursor: pointer;
@@ -1946,6 +1956,7 @@ theColor:onclick {
 .otherplayer.open {
   position: absolute;
   margin-left: -20vw;
+  margin-top: -2.5vw;
   width: 50vw;
   height: 25vw;
   align-self: end;
@@ -2132,6 +2143,7 @@ theColor:onclick {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   text-align: center;
+  border-radius: 0.2vw;
 }
 
 .counter{
@@ -2142,16 +2154,25 @@ theColor:onclick {
   width: fit-content;
   justify-self: center;
   align-self: center;
-  margin-left: 2.7vw;
-  margin-top: -1vw;
   -webkit-text-stroke: thin;
   z-index: 1;
 }
 .counter.m{
   position: absolute;
+  margin-left: 2.7vw;
+  margin-top: -1vw;
 }
 .counter.b{
   position: absolute;
+  margin-left: 2.7vw;
+  margin-top: -1vw;
+}
+
+.counter.oth{
+  position: absolute;
+  margin-left: 1.2vw;
+  margin-top: -2vw;
+  font-size: 1vw;
 }
 
 .c{
@@ -2170,10 +2191,44 @@ theColor:onclick {
   background-color: rgb(75, 10, 75);
 
 }
+
 .c.moneycount{
   grid-column: 2;
   grid-row: 1;
   background-color: rgb(31, 107, 31);
+}
+
+.b.moneycount{
+  grid-row: 2;
+  grid-column: 4;
+}
+.b.bottlecount{
+  grid-row: 2;
+  grid-column: 5;
+  text-align: center;
+}
+.countbackground{
+  grid-row: 2;
+  grid-column: 4/6;
+  border-radius: 1vw;
+  background-color: rgba(0, 0, 0, 0.349);
+}
+
+
+.othercount{
+  grid-row: 2;
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.o.moneycount{
+  grid-row: 1;
+  grid-column: 1;
+}
+.o.bottlecount{
+  grid-row: 1;
+  grid-column: 2;
+  margin-left: 0.2vw;
 }
 .scoreDisplay.closed{
   grid-row: 2;
@@ -2187,6 +2242,10 @@ theColor:onclick {
     height: 3vw;
     width: 3vw;
     border-radius: 4vw;
+    border-style: ridge;
+    box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+    border-width: 0.2vw;
+    border-color: rgba(77, 58, 58, 0.658);
     z-index: 100;
     background-position: center;
     background-repeat: no-repeat;
@@ -2263,6 +2322,27 @@ theColor:onclick {
   background-color: #bbd892;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  align-self: center;
+  align-items: center;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(0, 0, 0, 0.61);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
 .boardNextTurnInfo {
@@ -2270,11 +2350,12 @@ theColor:onclick {
     grid-column: 3/5;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-row: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     background-color: gray;
     border-radius: 0 0 2vw 0;
     padding: 1vw;
 }
+
 .nextturnboard {
    width: 23vw;
     position: absolute;
@@ -2754,11 +2835,6 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   box-shadow: 0px 0px 10px 11px rgb(116, 116, 9), 0 0 5px rgb(116, 116, 9);
 }
 
-.playerMoney {
-  width: 20px;
-  height: 20px;
-  background: green;
-}
 
 @keyframes jiggles {
   0% {
