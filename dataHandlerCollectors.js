@@ -866,9 +866,12 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
           else {
             room.round += 1;
             room.players[room.startingPlayerId].turn = true;
-            this.clearBottles(roomId)
+           
             this.moveCards(roomId);
-            this.fillBottles(roomId);    
+            if(room.round!=5){
+              this.clearBottles(roomId)
+              this.fillBottles(roomId); 
+            }   
             
             playerWithBottle = true;
             for (const player in room.players) {

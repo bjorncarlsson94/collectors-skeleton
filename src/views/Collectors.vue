@@ -590,7 +590,7 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round==5"> 
+    <div class="winnerBox" v-if="round==1"> 
      
       <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
        <h3><strong> {{item.name}}:
@@ -1375,13 +1375,15 @@ export default {
     },
    getWinner: function(){
   var currentWinner=[];
- 
   if (typeof room !== "undefined") {
-    
+    console.log("room är inte undefined.");
   if(this.players !=="undefined"){
+     console.log("players är inte undefined.");
   for (let index = 0; index < this.players.length; index++) {
+     console.log("inne i for loopen");
     if(index==0){
       currentWinner[0]=this.players[index];
+       console.log("currentWinner:"+currentWinner[0]);
 
     }else{
       if(currentWinner[0].currentScore<this.players[index].currentScore){
