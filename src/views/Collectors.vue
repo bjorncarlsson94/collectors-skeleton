@@ -49,7 +49,7 @@
               <div v-if="player != players[playerId]">
                 <div
                   class="otherplayer"
-                  v-bind:class="{ open: player.playerIsActive }"
+                  v-bind:class="{ open: player.playerIsActive, turnhighlight: player.turn }"
                   @click="expandOtherPlayer(player)"
                   :style="{ background: player.color }"
                 >
@@ -301,7 +301,7 @@
             :style="{ background: players[playerId].color }"
             v-if="players[playerId]"
             @click="expandPlayerBoard()"
-            v-bind:class="{ active: isActive }"
+            v-bind:class="{ active: isActive, turnhighlight: players[playerId].turn }"
           >
             <!-- Visas när handen är stängd-->
             <div v-if="!isActive">
@@ -1961,6 +1961,11 @@ theColor:onclick {
   z-index: 10;
   cursor: pointer;
 }
+.otherplayer.turnhighlight{
+  filter:brightness(120%);
+  border-color: grey;
+  box-shadow: 0 0 1vw white;
+}
 .otherPlayerClosed{
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1999,6 +2004,11 @@ theColor:onclick {
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+}
+.playerboard.turnhighlight{
+  filter:brightness(120%);
+  border-color: grey;
+  box-shadow: 0 0 1vw white;
 }
 
 /* Hover över spelarområdena*/
