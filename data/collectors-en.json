@@ -13,6 +13,13 @@
 	"showAuction": "Show Auction",
 	"recycleBottle": "Recycle a bottle",
 
+	"skillsAuction":"Gain 1 money each time an auction is started",
+	"skillsExtraWorker":"Get an extra bottle",
+	"skillsVpAll":"Gain 5 Victory Points by the end of the game, if you have an item of each category",
+	"skillsVp":"Gain 1 Victory Point for each item in specified category, at the end of the game",
+	"skillsWork1":"Gain 2 money, each time you do work",
+	"skillsWork2":"Draw a card, each time you do work",
+	"cancelBuy":"Cancel Action",
 	"player2": "Player 2",
 	"player3": "Player 3",
 	"player4": "Player 4",

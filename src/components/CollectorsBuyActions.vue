@@ -28,7 +28,7 @@
                 Välj ett kort från spelplanen:
               </h1>
               <div class="buyItemCardGrid">
-                <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale" :key="index">
+                <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale.slice().reverse()" :key="index">
                   <CollectorsCard 
                   :card="card" 
                   :availableAction="card.available" 
@@ -47,7 +47,7 @@
                 </div>
               </div>  
               <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">Avbryt köp</button>
+               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">{{labels.cancelBuy}}</button>
               </div>
           </div>
     </div>
@@ -143,7 +143,7 @@ export default {
         
       }
       
-      for (let i = 0; i < this.player.hand.length; i += 1) {
+      for (let i =0; i<this.player.hand.length;  i += 1) {
         console.log(this.player.hand[i].item);
         if (this.currentValues[this.player.hand[i].item] <= this.player.money) {
           this.$set(this.player.hand[i],"available" ,true);
@@ -298,11 +298,15 @@ export default {
 
 .bottlePlace {
     background-image: url(/images/player-bottle.png);
-    margin-top: 0.5vw;
+    margin-top: 0vw;
     height: 3vw;
     width: 3vw;
     background-color: rgb(95, 216, 253);
-    border-radius: 1.5vw;
+    border-radius: 4vw;
+    border-style: ridge;
+    box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+    border-width: 0.2vw;
+    border-color: rgba(77, 58, 58, 0.658);
     z-index: 60;
     background-position: center;
     background-repeat: no-repeat;

@@ -69,8 +69,13 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
           />
         </div>
       </div>
+       <div class="buttonGrid">
+               <button class="cancelBuy" @click="hideWindow(currentPlacementAmount)">{{labels.cancelBuy}}</button>
+              </div>
     </div>
+   
   </div>
+  
 </template>
 
 <script>
@@ -198,6 +203,10 @@ export default {
       }
     },
 
+    hideWindow: function(cost){
+      
+      this.$emit('cancelBuy', cost);
+    }
   },
 };
 //
@@ -258,29 +267,33 @@ export default {
   margin: 1vw;
   padding: 0.2vw;
   color: black;
-  background-color: #d2ebad;
+  background-color: rgb(130, 226, 255);
   border-radius: 1vw;
   box-shadow: 0 0.3vw #999;
 }
 .button:active {
-  background-color: #aeda6e;
+  background-color:rgb(95, 216, 253);
   box-shadow: 0 0.2vw #999;
   transform: translateY(0.1vw);
 }
 .button:hover {
-  background-color: #aeda6e;
+  background-color: rgb(95, 216, 253);
 }
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
-  margin-top: 0.5vw;
-  height: 3vw;
-  width: 3vw;
-  background-color: rgb(95, 216, 253);
-  border-radius: 1.5vw;
-  z-index: 60;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+    margin-top: 0vw;
+    height: 3vw;
+    width: 3vw;
+    background-color: rgb(95, 216, 253);
+    border-radius: 4vw;
+    border-style: ridge;
+    box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+    border-width: 0.2vw;
+    border-color: rgba(77, 58, 58, 0.658);
+    z-index: 60;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .valueGrid {
@@ -336,6 +349,11 @@ export default {
     zoom: 2;
     overflow: hidden;
 
+  }
+  .buttonGrid{
+    justify-content: center;
+    display: grid;
+    grid-column: 1/6;
   }
 
 /*

@@ -56,6 +56,9 @@
           />
         </div>
       </div>
+      <div class="buttonGrid">
+               <button class="cancelBuy" @click="hideWindow(chosenPlacementCost)">{{labels.cancelBuy}}</button>
+              </div>
     </div>
     <div class="secretOptionBox" v-show="secretOptionBoxAvailable">
       <div class="secretOptionText">How do you wanna auction this card?</div>
@@ -153,6 +156,10 @@ export default {
         this.highlightAvailableCards();
       }
     },
+    hideWindow: function(cost){
+      
+      this.$emit('cancelBuy', cost);
+    }
     // notYourTurn: function () {
     //   return (this.player.turn== false)
     // }
@@ -183,6 +190,9 @@ export default {
 .button:hover {
   background-color: #d6ce58;
 }
+.auctionColumn{
+  align-self:center;
+}
 .auctiongrid {
   display: grid;
   grid-template-rows: auto;
@@ -193,7 +203,7 @@ export default {
   grid-column: 1;
   grid-row: repeat(auto-fill, 1);
   justify-self: center;
-  align-self: center;
+  align-self: space-evenly;
 }
 .buttons {
   grid-column: 2;
@@ -299,6 +309,12 @@ export default {
   background-repeat: no-repeat;
   background-size: contain;
 }
+.buttonGrid{
+    justify-content: center;
+    display: grid;
+    grid-column: 1/6;
+  }
+
 
 .auctionColumn{
   grid-row: 1/2;
