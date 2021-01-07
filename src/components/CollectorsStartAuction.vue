@@ -190,6 +190,9 @@ export default {
 .button:hover {
   background-color: #d6ce58;
 }
+.auctionColumn{
+  align-self:center;
+}
 .auctiongrid {
   display: grid;
   grid-template-rows: auto;
@@ -200,7 +203,7 @@ export default {
   grid-column: 1;
   grid-row: repeat(auto-fill, 1);
   justify-self: center;
-  align-self: center;
+  align-self: space-evenly;
 }
 .buttons {
   grid-column: 2;
