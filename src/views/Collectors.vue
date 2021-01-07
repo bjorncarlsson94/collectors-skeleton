@@ -160,6 +160,7 @@
                 :aboutToBuySkill="aboutToBuySkill"
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
+                @cancelBuy="removeBottle('skill', $event)"
               />
             </div>
           </div>
@@ -182,6 +183,7 @@
                 :aboutToStartAuction="aboutToStartAuction"
                 @startAuction="startAuction($event)"
                 @placeBottle="placeBottle('auction', $event)"
+                @cancelBuy="removeBottle('auction', $event)"
               />
             </div>
           </div>
