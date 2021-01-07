@@ -91,11 +91,11 @@
                         </div>
                         <div id="hidden">Hidden:</div>
                         <div class="itemicons">
-                          <div> <img src="/images/fastaval.png" width="50%"> {{ player.itemValues.ifastaval }}</div>
-                          <div> <img src="/images/figures.png" width="50%"> {{ player.itemValues.ifigures }}</div>
-                          <div> <img src="/images/music.png" width="50%"> {{ player.itemValues.imusic }}</div>
-                          <div> <img src="/images/movie.png" width="50%"> {{ player.itemValues.imovie }}</div>
-                          <div> <img src="/images/tech.png" width="50%"> {{ player.itemValues.itechnology }}</div>
+                          <div> <img src="/images/fastaval_red.png" width="50%"> {{ player.itemValues.ifastaval }}</div>
+                          <div> <img src="/images/figures_red.png" width="50%"> {{ player.itemValues.ifigures }}</div>
+                          <div> <img src="/images/music_red.png" width="50%"> {{ player.itemValues.imusic }}</div>
+                          <div> <img src="/images/movie_red.png" width="50%"> {{ player.itemValues.imovie }}</div>
+                          <div> <img src="/images/tech_red.png" width="50%"> {{ player.itemValues.itechnology }}</div>
                         </div>
 
                         <div class="totalvalue">Score: {{ player.currentScore}}
@@ -160,6 +160,7 @@
                 :aboutToBuySkill="aboutToBuySkill"
                 @buySkill="buySkill($event)"
                 @placeBottle="placeBottle('skill', $event)"
+                @cancelBuy="removeBottle('skill', $event)"
               />
             </div>
           </div>
@@ -182,6 +183,7 @@
                 :aboutToStartAuction="aboutToStartAuction"
                 @startAuction="startAuction($event)"
                 @placeBottle="placeBottle('auction', $event)"
+                @cancelBuy="removeBottle('auction', $event)"
               />
             </div>
           </div>
@@ -292,6 +294,7 @@
                 @placeBottle="placeBottle('market', $event)"
                 @raiseValue="raisingValue($event)"
                 @keepWindowOpen="keepWindowOpen()"
+                @cancelBuy="removeBottle('market', $event)"
               />
             </div>
           </div>
@@ -324,17 +327,38 @@
                   <!-- playerMoney -->
                 <div class="scoreDisplay closed">Score: {{ players[playerId].currentScore }}</div>
                   <div class="closedItemIcons">
-                    <div> <img src="/images/fastaval.png" width="70%"> {{ players[playerId].itemValues.ifastaval }}</div>
-                    <div> <img src="/images/figures.png" width="70%"> {{ players[playerId].itemValues.ifigures }}</div>
-                    <div> <img src="/images/music.png" width="70%"> {{ players[playerId].itemValues.imusic }}</div>
-                    <div> <img src="/images/movie.png" width="70%"> {{ players[playerId].itemValues.imovie }}</div>
-                    <div> <img src="/images/tech.png" width="70%"> {{ players[playerId].itemValues.itechnology }}</div>
+                    <div> <img src="/images/fastaval_red.png" width="70%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures_red.png" width="70%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music_red.png" width="70%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie_red.png" width="70%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech_red.png" width="70%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
 
-                <div class="countspace">
-                  <div class="moneycount"> <img src="/images/moneybag.png" width="80%"> {{ players[playerId].money }}  </div>
-                  <div class="bottlecount"> <img src="/images/player-bottle.png" width="80%"> {{ players[playerId].bottles }} </div>
+                
+                  <div class="c moneycount"> 
+                    <div > <img src="/images/moneybag.png" width="70%">  </div> 
+                    <div class="counter m">{{ players[playerId].money }}</div> 
                   </div>
+                  
+                  <div class="c bottlecount">
+                    <div > <img src="/images/player-bottle.png" width="50%"> </div>
+                    <div class="counter b">{{ players[playerId].bottles }}</div>
+                  </div>
+
+            
+                
+                <!-- <div class="countspace">
+                  <div> 
+                    <div class="moneycount"> <img src="/images/moneybag.png" width="40%">  </div> 
+                    <div class="counter m">{{ players[playerId].money }}</div> 
+                  </div>
+                  
+                  <div>
+                    <div class="counter b">{{ players[playerId].bottles }}</div>
+                    <div class="bottlecount"> <img src="/images/player-bottle.png" width="20%"> </div>
+                  </div>
+
+                </div> -->
 
 
                 </div>
@@ -395,11 +419,11 @@
 
 
                   <div class="itemicons">
-                    <div> <img src="/images/fastaval.png" width="50%"> {{ players[playerId].itemValues.ifastaval }}</div>
-                    <div> <img src="/images/figures.png" width="50%"> {{ players[playerId].itemValues.ifigures }}</div>
-                    <div> <img src="/images/music.png" width="50%"> {{ players[playerId].itemValues.imusic }}</div>
-                    <div> <img src="/images/movie.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
-                    <div> <img src="/images/tech.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
+                    <div> <img src="/images/fastaval_red.png" width="50%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures_red.png" width="50%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music_red.png" width="50%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie_red.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech_red.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
                   <div class="totalvalue">Score: {{ players[playerId].currentScore }} </div>
 
@@ -590,15 +614,18 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round==1"> 
-     
-      <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
+    <div class="winnerBox" v-if="round==5"> 
+      <div class="winnerBoxContent">
+        <div class="winnerPlayerGrid" >
+        <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
        <h3><strong> {{item.name}}:
         {{item.currentScore}}</strong></h3>   
       </div>
-     <h1 class="winner">W I N N E R:
-      {{getWinner()}}
+      </div>
+     <h1 class="winner">W I N N E R: <br>
+      {{getWinner()[2]}} <br>  {{labels.points}}: {{getWinner()[0]}}
      </h1>
+      </div>
     </div>
 
 
@@ -1374,60 +1401,47 @@ export default {
       });
     },
    getWinner: function(){
-  var currentWinner=[];
-  if (typeof room !== "undefined") {
-    console.log("room är inte undefined.");
+    
+    var currentWinner=-10;
+    var tie=false;
+    var winnerName;
+    var biggestHand=-10;
   if(this.players !=="undefined"){
      console.log("players är inte undefined.");
-  for (let index = 0; index < this.players.length; index++) {
-     console.log("inne i for loopen");
-    if(index==0){
-      currentWinner[0]=this.players[index];
-       console.log("currentWinner:"+currentWinner[0]);
 
-    }else{
-      if(currentWinner[0].currentScore<this.players[index].currentScore){
-        if(currentWinner.length==1){
-        currentWinner[0]=this.players[index];
-        }else{
-          currentWinner.splice(0,currentWinner.length,this.players[index]);
+     for (const player in this.players) {
+       
+       
+        if(this.players[player].currentScore>currentWinner){
+          
+          currentWinner=this.players[player].currentScore;
+          winnerName=this.players[player].name;
+          tie=false;
+
+        }else if(this.players[player].currentScore==currentWinner){
+          tie=true;
+          winnerName=winnerName+" | "+this.players[player].name;
 
         }
-        
+     }
+     if(tie==true){
+       
+        for (const player in this.players) {
+          if(this.players[player].hand.length>biggestHand && this.players[player].currentScore==currentWinner ){
+          
+          biggestHand=this.players[player].hand.length;
+          winnerName=this.players[player].name;
+          tie=false;
+          }
+          else if(this.players[player].hand.length==biggestHand && this.players[player].currentScore==currentWinner ){
+            winnerName=winnerName+" | "+this.players[player].name;
+            tie=true;
+          }
+        }
 
-      }else if(currentWinner[0].currentScore==this.players[index].currentScore){
-        currentWinner.push(this.players[index]);
-        
-
-      }
-
-    }
-    
-  }
-  if(currentWinner.length>1){
-    var currentWinnersHand=[];
-    for (let index = 0; index < this.currentWinner.length; index++) {
-      if(index==0){
-        currentWinnersHand.push(currentWinner[index]);
-
-      }else if(currentWinner[index].hand>currentWinnersHand[0] && currentWinnersHand.length==1 ){
-        currentWinnersHand.splice(0,1,currentWinner[index]);
-
-      }else if(currentWinner[index].hand>currentWinnersHand[0] && currentWinnersHand.length>1 ){
-        currentWinnersHand.splice(0,currentWinnersHand.length,currentWinner[index]);
-
-      }else if(currentWinner[index].hand==currentWinnersHand[0]){
-        currentWinnersHand.push(currentWinner[index]);
-      }
-    }
-    return currentWinnersHand.name;
-  }else{
-    return currentWinner.name;
-  }
-  }
-  else return [];
-}return[];
-
+        }  
+     }
+     return [currentWinner,tie,winnerName];  
 },
     finalScoreUpdate: function(){
       //this.players[this.playerId].item.push(this.players[this.playerId].hidden);
@@ -1451,6 +1465,9 @@ export default {
       }
       if (action === "skill") {
         this.aboutToBuySkill = false;
+      }
+      if (action === "market") {
+        this.aboutToRaiseValue = false;
       }
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit("collectorsRemoveBottle", {
@@ -2096,7 +2113,7 @@ theColor:onclick {
 
 .closedBoardHandBackground {
   border-radius: 2vw;
-  background-color: #eeedb8;
+  background-color: #ffffff3f;
   grid-column: 1 / span 1;
   grid-row: 1;
   height: 5vw;
@@ -2104,49 +2121,64 @@ theColor:onclick {
 .closedBoardInfo{
   grid-column: 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 1fr;
   margin-left: 1vw;
 }
 .closedItemIcons {
   grid-row: 1/2;
   grid-column: 1;
-  background-color: red;
+  background-color: rgb(255, 64, 64);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   text-align: center;
 }
 
-.countspace{
-  grid-row: 1/3;
-  grid-column: 2/3;
-  display: grid;
-  grid-template-columns:1fr 1fr;
-  
+.counter{
   border-radius: 1vw;
+  background-color: #0000004b;
+  padding: 0.2vw;
+  text-align: center;
+  width: fit-content;
+  justify-self: center;
+  align-self: center;
+  margin-left: 2.7vw;
+  margin-top: -1vw;
+  -webkit-text-stroke: thin;
+  z-index: 1;
 }
-.bottlecount{
+.counter.m{
+  position: absolute;
+}
+.counter.b{
+  position: absolute;
+}
+
+.c{
   grid-column: 2;
-  grid-row: 1/3;
+  grid-row: 2;
   text-align: center;
-  align-self: center;
-  background-color: rgb(75, 10, 75);
   border-radius: 1vw;
-  margin: 0.2vw;
+  margin-left: 2vw;
+  height: 70%;
+  overflow: hidden;
 }
-.moneycount{
-  grid-column: 1;
-  grid-row: 1/3;
-  text-align: center;
-  align-self: center;
+
+.c.bottlecount{
+  grid-column: 2;
+  grid-row: 2;
+  background-color: rgb(75, 10, 75);
+
+}
+.c.moneycount{
+  grid-column: 2;
+  grid-row: 1;
   background-color: rgb(31, 107, 31);
-  border-radius: 1vw;
-  margin: 0.2vw;
 }
 .scoreDisplay.closed{
   grid-row: 2;
   grid-column: 1;
-  align-self: center;
+  margin-top: 0.4vw;
   align-content: center;
 }
 
@@ -2202,7 +2234,7 @@ theColor:onclick {
 }
 .itemicons {
   grid-row: 2;
-  background-color: red;
+  background-color: rgb(255, 64, 64);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   text-align: center;
@@ -2742,44 +2774,141 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   }
 }
 .winnerBox{
-  display:grid;
-  grid-template-columns: auto auto auto;
-  grid-gap: 40px;
+  display:flex;
   justify-content: center;
   -webkit-animation: winnerFade 1.5s forwards;
   -webkit-animation-delay: 0.01s;
+  background-color: pink;
   animation: winnerFade 0.5s forwards;
   animation-delay: 0.01;
-  border-radius: 5%;
   width: 1200px;
-  height: 800px;
-  background-color: white;
-  position: absolute;
+	height: 800px;
+	box-sizing: border-box;
+	padding: 15px;
+	position: absolute;
+	overflow: hidden;
   top:7%;
   left:19%;
 
+  
+
+}
+.winnerBoxContent{
+  display: grid;
+  grid-template-rows: auto auto ;
+  position: relative;
+  justify-content: center;
+  grid-gap: 40px;
+  height: 1000px;
+  width: 100%;
+ 
+  
+}
+.winnerPlayerGrid{
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  position: relative;
+  justify-content: center;
+  grid-gap:10px;
+   width: auto;
+  height: fit-content;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 80px;
+  padding-right: 60px;
+  background-color: #005a87;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
+        
 }
 .winnerBoxPlayers{
-
-   border:solid;
+  grid-column-start: auto;
+  grid-column-end: auto;
+  border:solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
   height: 100px;
   width: 200px;
   border-radius: 20%;
-  position: relative;
   background-color: yellow;
-  float:left;
-  margin: 80px;
+  
+  
 }
 .winner{
-  color:tomato;
+  margin-top:100px;
+  grid-row: 1;
+  grid-column: 1;
+  
+  color:#872d00;
   position: absolute;
   align-self: center;
-  right:35%;
-  font-size: 500%;
 
+  font-size: 500%;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  padding:10px;
+  width: 63.5%;
+  height: auto;
+  box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
+  font: bold 330%/100% "Lucida Grande";
+  text-shadow: 1px 1px 1px rgb(59, 58, 58),
+             2px 2px 1px rgb(59, 58, 58);
+  background-color: #005a87;
+
+
+}
+
+.winnerBox .winnerBoxContent{
+  height: 100%;
+
+
+	background-color: pink;
+  position: relative;
+	background-color: #f0ead6;
+	flex-direction: column;
+  box-sizing: border-box;
+	padding: 30px;
+	text-align: center;
+	font-family: sans-serif;
+	z-index: 2;
+  box-shadow: 0 0 2px deeppink,
+				0 0 5px rgba(0, 0, 0, 1),
+				inset 0 0 5px rgba(0, 0, 0, 1);
+	border-radius: 10px;
+
+}
+.winnerBox:before {
+	content: '';
+  content: '';
+	position: absolute;
+	width: 250%;
+	height: 250%;
+	background: repeating-linear-gradient(
+			white 0%,
+			white 7.5px,
+			hotpink 7.5px,
+			hotpink 15px,
+			white 15px,
+			white 22.5px,
+			hotpink 22.5px,
+			hotpink 30px);
+	transform: translateX(-20%) translateY(-20%) rotate(-45deg);
+	animation: winnerBorder 20s linear infinite;
+}
+
+@keyframes winnerBorder {
+	from {
+		background-position: 0;
+	}
+
+	to {
+		background-position: 0 1000px;
+	}
 }
 
  @-webkit-keyframes winnerFade {

@@ -13,10 +13,13 @@
 	"showAuction": "Show Auction",
 	"recycleBottle": "Recycle a bottle",
 
+	"cancelBuy":"Cancel Action",
+
 	"player2": "Player 2",
 	"player3": "Player 3",
 	"player4": "Player 4",
 	"_comment": "För att komma åt den här infon kör lables.helpPlayerHand.title exempelvis",
+	"points":"Score",
 	"helpPlayerHand":{
 		"title":"Player Hand:",
 		"itemArea":"Item Area (red):",
