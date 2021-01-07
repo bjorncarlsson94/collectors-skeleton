@@ -536,7 +536,7 @@
               :class="['buttons', { animate: helpAction }]"
               @click="buttonsHelp()"
             >
-              <div @click="drawCard">
+              <div >
                 <img src="/images/back-of-card.png" class="deck" />
               </div>
             </div>
