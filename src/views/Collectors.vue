@@ -439,12 +439,12 @@
                   />
                 </div>
                 <div class="skillsInfo">
-                  <div class="tooltip"><img src="/images/Skills_auction.png" width="70%"> <span class="tooltiptext">Gain 1 money each time an auction is started</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_extraWorker.png" width="70%"> <span class="tooltiptext">Get an extra bottle</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_VP_all.png" width="70%"> <span class="tooltiptext"> Gain 5 Victory Points by the end of the game, if you have an item of each category</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_VP.png" width="70%"> <span class="tooltiptext">Gain 1 Victory Point for each item in specified category, at the end of the game</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_work1.png" width="70%"> <span class="tooltiptext">Gain 2 money, each time you do work</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_work2.png" width="70%"> <span class="tooltiptext">Draw a card, each time you do work</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_auction.png" width="70%"> <span class="tooltiptext">{{labels.skillsAuction}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_extraWorker.png" width="70%"> <span class="tooltiptext">{{labels.skillsExtraWorker}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_VP_all.png" width="70%"> <span class="tooltiptext"> {{labels.skillsVpAll}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_VP.png" width="70%"> <span class="tooltiptext">{{labels.skillsVp}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_work1.png" width="70%"> <span class="tooltiptext">{{labels.skillsWork1}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_work2.png" width="70%"> <span class="tooltiptext">{{labels.skillsWork2}}</span> </div>
                 </div>
               </div>
               <div class="boardHand">
