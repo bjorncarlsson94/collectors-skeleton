@@ -45,7 +45,11 @@
                   @doAction="buySkill(card)"/>
                 </div>
               </div>    
+              <div class="buttonGrid">
+               <button class="cancelBuy" @click="hideWindow(chosenPlacementCost)">{{labels.cancelBuy}}</button>
+              </div>
           </div>
+          
     </div>
 </template>
 
@@ -112,6 +116,10 @@ export default {
         this.highlightAvailableCards()
       }
     },
+     hideWindow: function(cost){
+      
+      this.$emit('cancelBuy', cost);
+    }
     // notYourTurn: function () {
     //   return (this.player.turn== false)
     // }
@@ -200,6 +208,11 @@ export default {
     zoom: 2;
     overflow: hidden;
 
+  }
+   .buttonGrid{
+    justify-content: center;
+    display: grid;
+    grid-column: 1/6;
   }
 
 

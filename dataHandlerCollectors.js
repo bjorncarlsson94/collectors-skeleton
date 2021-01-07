@@ -680,6 +680,11 @@ Data.prototype.startTurn = function(roomId) {
     // x=Math.floor(Math.random()*2)
     room.round = 1;
     var keys = Object.keys(room.players);
+    for (let j = 0; j < keys.length; j += 1){
+      this.drawCard(roomId, keys[j]);
+      this.drawCard(roomId, keys[j]);
+      this.drawCard(roomId, keys[j]);
+    }
     room.startingPlayerId = keys[Math.floor(keys.length * Math.random())];
     room.players[room.startingPlayerId].turn = true;
     return room.players, room.round;
@@ -729,6 +734,8 @@ Data.prototype.moveCards = function(roomId) {
   /*
 Now refill all pools (except the market pool) from the deck.
 All pools (except the market pool) should have the same number of cards after this step as after setup. */
+
+
   let c = null;
   let k = null;
 
@@ -741,7 +748,7 @@ All pools (except the market pool) should have the same number of cards after th
         c = room.skillsOnSale.splice(i, 1, {});
         room.raiseItems.push(...c);
         room.raiseValue = this.cardValue(roomId);
-
+        //console.log("visas 1 gång. Kort försvinner.");
         break;
       }
     }
@@ -751,20 +758,35 @@ All pools (except the market pool) should have the same number of cards after th
     var counter = 0;
     for (let i = room.skillsOnSale.length - 1; i >= 0; i -= 1) {
       if (typeof room.skillsOnSale[i].market == "undefined") {
+        
         counter++;
       }
     }
-    console.log("borde vara 3:"+counter);
-    for (let i = counter - 1; i >= 0; i -= 1) {
-      for (let j = room.itemsOnSale.length - 1; j >= 0; j -= 1) {
-        if (room.itemsOnSale[j].market) {
-          k = room.itemsOnSale.splice(j, 1, {});
+    //console.log("counter:"+counter);
+    //sort Items
+    room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
+    //fill Items
+    room.itemsOnSale = this.fillPool(roomId, "items", room.itemsOnSale);
+    var cardCounter=5-counter;
 
 
-
-          room.skillsOnSale.splice(i, 1, ...k);
-          console.log(room.skillsOnSale[i].item);
-          break;
+    var j=room.itemsOnSale.length-1;
+      for (let i = counter-1; i >= 0; i -= 1) {
+        if(cardCounter<room.playerCount+1){
+            if(room.itemsOnSale.market !="undefined"){
+              //console.log("itemsonsale:"+room.itemsOnSale[j].market);
+              k = room.itemsOnSale.splice(j, 1, {});
+              
+              room.skillsOnSale.splice(i, 1, ...k);
+             // console.log("skillsOnSale:"+room.skillsOnSale[i].market);
+              //console.log("plats:"+i);
+              cardCounter+=1;
+              //console.log("vi gick in hit");
+              j-=1;
+             
+              
+        
+          
         }
       }
     }
@@ -866,9 +888,9 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
           else {
             room.round += 1;
             room.players[room.startingPlayerId].turn = true;
-           
+            
             this.moveCards(roomId);
-            if(room.round!=5){
+            if(room.round<5){
               this.clearBottles(roomId)
               this.fillBottles(roomId); 
             }   

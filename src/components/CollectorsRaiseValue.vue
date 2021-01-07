@@ -69,8 +69,13 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
           />
         </div>
       </div>
+       <div class="buttonGrid">
+               <button class="cancelBuy" @click="hideWindow(currentPlacementAmount)">{{labels.cancelBuy}}</button>
+              </div>
     </div>
+   
   </div>
+  
 </template>
 
 <script>
@@ -198,6 +203,10 @@ export default {
       }
     },
 
+    hideWindow: function(cost){
+      
+      this.$emit('cancelBuy', cost);
+    }
   },
 };
 //
@@ -258,17 +267,17 @@ export default {
   margin: 1vw;
   padding: 0.2vw;
   color: black;
-  background-color: #d2ebad;
+  background-color: rgb(130, 226, 255);
   border-radius: 1vw;
   box-shadow: 0 0.3vw #999;
 }
 .button:active {
-  background-color: #aeda6e;
+  background-color:rgb(95, 216, 253);
   box-shadow: 0 0.2vw #999;
   transform: translateY(0.1vw);
 }
 .button:hover {
-  background-color: #aeda6e;
+  background-color: rgb(95, 216, 253);
 }
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
@@ -340,6 +349,11 @@ export default {
     zoom: 2;
     overflow: hidden;
 
+  }
+  .buttonGrid{
+    justify-content: center;
+    display: grid;
+    grid-column: 1/6;
   }
 
 /*
