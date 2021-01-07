@@ -2,32 +2,33 @@
   <div class="work">
     <div class="workgrid">
       <!-- <h1>{{ labels.workTitle }}</h1>
-    <button id="helpButton" value="?" v-on:click="helpButtonPressed"></button> -->
+    <button id="helpButton" value="?" v-on:click="helpButtonPressed"/> -->
       <button
         class="workslot"
         id="workslot5"
+        :style="{ backgroundImage: 'url(' + getWorkslot5Image() + ')' }"
         v-on:click="recycleBottle4thRound"
-      ></button>
+      />
       <button
         class="workslot"
         id="workslot4"
         v-on:click="recycleBottle"
-      ></button>
+      />
       <button
         class="workslot"
         id="workslot3"
         v-on:click="drawTwoCards"
-      ></button>
+      />
       <button
         class="workslot"
         id="workslot2"
         v-on:click="drawACardAndFirstPlayerToken"
-      ></button>
+      />
       <button
         class="workslot"
         id="workslot1"
         v-on:click="drawCardAndPassiveIncome"
-      ></button>
+      />
     </div>
     <div
       class="bottlePlace"
@@ -167,6 +168,21 @@ export default {
       }
       console.log("*************")
     },
+    getWorkslot5Image: function() {
+      // quarter_tile_1st.png, quarter_tile_2nd.png, quarter_tile_3rd.png, Work5_png.png
+      switch (this.round) {
+        case 0:
+          return "/images/quarter_tile_1st.png";
+        case 1:
+          return "/images/quarter_tile_1st.png";
+        case 2:
+          return "/images/quarter_tile_2nd.png";
+        case 3:
+          return "/images/quarter_tile_3rd.png";
+        case 4:
+          return "/images/Work5_png.png";
+      }
+    },
     /*showPopup: function(typeOfAlert){
       if(typeOfAlert=="aaa"){
 
@@ -270,8 +286,10 @@ export default {
   background-position: center;
   grid-row: 2;
 }
+/*
+  quarter_tile_1st.png, quarter_tile_2nd.png, quarter_tile_3rd.png, Work5_png.png
+*/
 #workslot5 {
-  background-image: url("/images/Work5_png.png");
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
