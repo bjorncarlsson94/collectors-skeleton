@@ -17,6 +17,7 @@
 	"player3": "Player 3",
 	"player4": "Player 4",
 	"_comment": "För att komma åt den här infon kör lables.helpPlayerHand.title exempelvis",
+	"points":"Score",
 	"helpPlayerHand":{
 		"title":"Player Hand:",
 		"itemArea":"Item Area (red):",

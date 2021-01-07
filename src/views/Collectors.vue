@@ -591,14 +591,17 @@
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
     <div class="winnerBox" v-if="round==1"> 
-     
-      <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
+      <div class="winnerBoxContent">
+        <div class="winnerPlayerGrid" >
+        <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
        <h3><strong> {{item.name}}:
         {{item.currentScore}}</strong></h3>   
       </div>
-     <h1 class="winner">W I N N E R:
-      {{getWinner()}}
+      </div>
+     <h1 class="winner">W I N N E R: <br>
+      {{getWinner()[2]}} <br>  {{labels.points}}: {{getWinner()[0]}}
      </h1>
+      </div>
     </div>
 
 
@@ -1374,60 +1377,47 @@ export default {
       });
     },
    getWinner: function(){
-  var currentWinner=[];
-  if (typeof room !== "undefined") {
-    console.log("room är inte undefined.");
+    
+    var currentWinner=-10;
+    var tie=false;
+    var winnerName;
+    var biggestHand=-10;
   if(this.players !=="undefined"){
      console.log("players är inte undefined.");
-  for (let index = 0; index < this.players.length; index++) {
-     console.log("inne i for loopen");
-    if(index==0){
-      currentWinner[0]=this.players[index];
-       console.log("currentWinner:"+currentWinner[0]);
 
-    }else{
-      if(currentWinner[0].currentScore<this.players[index].currentScore){
-        if(currentWinner.length==1){
-        currentWinner[0]=this.players[index];
-        }else{
-          currentWinner.splice(0,currentWinner.length,this.players[index]);
+     for (const player in this.players) {
+       
+       
+        if(this.players[player].currentScore>currentWinner){
+          
+          currentWinner=this.players[player].currentScore;
+          winnerName=this.players[player].name;
+          tie=false;
+
+        }else if(this.players[player].currentScore==currentWinner){
+          tie=true;
+          winnerName=winnerName+" | "+this.players[player].name;
 
         }
-        
+     }
+     if(tie==true){
+       
+        for (const player in this.players) {
+          if(this.players[player].hand.length>biggestHand && this.players[player].currentScore==currentWinner ){
+          
+          biggestHand=this.players[player].hand.length;
+          winnerName=this.players[player].name;
+          tie=false;
+          }
+          else if(this.players[player].hand.length==biggestHand && this.players[player].currentScore==currentWinner ){
+            winnerName=winnerName+" | "+this.players[player].name;
+            tie=true;
+          }
+        }
 
-      }else if(currentWinner[0].currentScore==this.players[index].currentScore){
-        currentWinner.push(this.players[index]);
-        
-
-      }
-
-    }
-    
-  }
-  if(currentWinner.length>1){
-    var currentWinnersHand=[];
-    for (let index = 0; index < this.currentWinner.length; index++) {
-      if(index==0){
-        currentWinnersHand.push(currentWinner[index]);
-
-      }else if(currentWinner[index].hand>currentWinnersHand[0] && currentWinnersHand.length==1 ){
-        currentWinnersHand.splice(0,1,currentWinner[index]);
-
-      }else if(currentWinner[index].hand>currentWinnersHand[0] && currentWinnersHand.length>1 ){
-        currentWinnersHand.splice(0,currentWinnersHand.length,currentWinner[index]);
-
-      }else if(currentWinner[index].hand==currentWinnersHand[0]){
-        currentWinnersHand.push(currentWinner[index]);
-      }
-    }
-    return currentWinnersHand.name;
-  }else{
-    return currentWinner.name;
-  }
-  }
-  else return [];
-}return[];
-
+        }  
+     }
+     return [currentWinner,tie,winnerName];  
 },
     finalScoreUpdate: function(){
       //this.players[this.playerId].item.push(this.players[this.playerId].hidden);
@@ -2720,44 +2710,141 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   }
 }
 .winnerBox{
-  display:grid;
-  grid-template-columns: auto auto auto;
-  grid-gap: 40px;
+  display:flex;
   justify-content: center;
   -webkit-animation: winnerFade 1.5s forwards;
   -webkit-animation-delay: 0.01s;
+  background-color: pink;
   animation: winnerFade 0.5s forwards;
   animation-delay: 0.01;
-  border-radius: 5%;
   width: 1200px;
-  height: 800px;
-  background-color: white;
-  position: absolute;
+	height: 800px;
+	box-sizing: border-box;
+	padding: 15px;
+	position: absolute;
+	overflow: hidden;
   top:7%;
   left:19%;
 
+  
+
+}
+.winnerBoxContent{
+  display: grid;
+  grid-template-rows: auto auto ;
+  position: relative;
+  justify-content: center;
+  grid-gap: 40px;
+  height: 1000px;
+  width: 100%;
+ 
+  
+}
+.winnerPlayerGrid{
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  position: relative;
+  justify-content: center;
+  grid-gap:10px;
+   width: auto;
+  height: fit-content;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 80px;
+  padding-right: 60px;
+  background-color: #005a87;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
+        
 }
 .winnerBoxPlayers{
-
-   border:solid;
+  grid-column-start: auto;
+  grid-column-end: auto;
+  border:solid;
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
   height: 100px;
   width: 200px;
   border-radius: 20%;
-  position: relative;
   background-color: yellow;
-  float:left;
-  margin: 80px;
+  
+  
 }
 .winner{
-  color:tomato;
+  margin-top:100px;
+  grid-row: 1;
+  grid-column: 1;
+  
+  color:#872d00;
   position: absolute;
   align-self: center;
-  right:35%;
-  font-size: 500%;
 
+  font-size: 500%;
+  border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  padding:10px;
+  width: 63.5%;
+  height: auto;
+  box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
+  font: bold 330%/100% "Lucida Grande";
+  text-shadow: 1px 1px 1px rgb(59, 58, 58),
+             2px 2px 1px rgb(59, 58, 58);
+  background-color: #005a87;
+
+
+}
+
+.winnerBox .winnerBoxContent{
+  height: 100%;
+
+
+	background-color: pink;
+  position: relative;
+	background-color: #f0ead6;
+	flex-direction: column;
+  box-sizing: border-box;
+	padding: 30px;
+	text-align: center;
+	font-family: sans-serif;
+	z-index: 2;
+  box-shadow: 0 0 2px deeppink,
+				0 0 5px rgba(0, 0, 0, 1),
+				inset 0 0 5px rgba(0, 0, 0, 1);
+	border-radius: 10px;
+
+}
+.winnerBox:before {
+	content: '';
+  content: '';
+	position: absolute;
+	width: 250%;
+	height: 250%;
+	background: repeating-linear-gradient(
+			white 0%,
+			white 7.5px,
+			hotpink 7.5px,
+			hotpink 15px,
+			white 15px,
+			white 22.5px,
+			hotpink 22.5px,
+			hotpink 30px);
+	transform: translateX(-20%) translateY(-20%) rotate(-45deg);
+	animation: winnerBorder 20s linear infinite;
+}
+
+@keyframes winnerBorder {
+	from {
+		background-position: 0;
+	}
+
+	to {
+		background-position: 0 1000px;
+	}
 }
 
  @-webkit-keyframes winnerFade {
