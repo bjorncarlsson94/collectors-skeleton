@@ -523,7 +523,7 @@
             </div>
           </div>
           <div class="gridedge3">
-            <p>{{ labels.roundcounter }} {{ round }}/4</p>
+            <img src="images/collectors_icon.png" class="collectorsIcon">
           </div>
           <div
             :class="['menuSpace', { animate: helpAction }]"
@@ -2498,7 +2498,17 @@ theColor:onclick {
   max-width: 100%;
   max-height: 100%;
 }
-
+.gridedge3 {
+  grid-column: 1;
+  grid-row: 1;
+  text-align:center;
+}
+.gridedge3 .collectorsIcon{
+  object-fit:cover;
+  max-width:50%;
+  height: auto;
+}
+/*
 .gridedge3 {
   grid-column: 1;
   grid-row: 1;
@@ -2513,12 +2523,11 @@ theColor:onclick {
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .gridedge3 p {
-  align-self: center;
-  font-size: 140%;
-  margin-top: -25px;
-  text-indent: 5px;
+  text-align:center;
+  justify-self: center;
+  margin-top: -1vw;
 }
-
+*/
 .menuSpace > * {
   /* This makes the buttons in the grid element smaller - redo this with proper scaling. Arbitrary magic number right now */
   zoom: 0.8;
