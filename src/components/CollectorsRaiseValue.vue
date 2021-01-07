@@ -231,8 +231,8 @@ export default {
 }
 
 .valueIcon {
-  width: 20px;
-  height: 20px;
+  width: 1vw;
+  height: 1vw;
   margin: auto;
   grid-column: 1;
 }
