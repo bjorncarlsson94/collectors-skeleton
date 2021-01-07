@@ -7,18 +7,10 @@
         class="workslot"
         id="workslot5"
         :style="{ backgroundImage: 'url(' + getWorkslot5Image() + ')' }"
-        v-on:click="recycleBottle4thRound"
+        v-on:click="quarterTilePressed"
       />
-      <button
-        class="workslot"
-        id="workslot4"
-        v-on:click="recycleBottle"
-      />
-      <button
-        class="workslot"
-        id="workslot3"
-        v-on:click="drawTwoCards"
-      />
+      <button class="workslot" id="workslot4" v-on:click="recycleBottle" />
+      <button class="workslot" id="workslot3" v-on:click="drawTwoCards" />
       <button
         class="workslot"
         id="workslot2"
@@ -56,6 +48,15 @@
           players[this.workPlacement.drawCardAndPassiveIncome].color,
       }"
     ></div>
+    <div
+      class="bottlePlace"
+      id="workBottle5"
+      v-if="this.workPlacement.quarterTile !== null"
+      :style="{
+        backgroundColor:
+          players[this.workPlacement.quarterTile].color,
+      }"
+    ></div>
   </div>
 </template>
 
@@ -82,6 +83,7 @@ export default {
       if (this.workPlacement.drawTwoCards === null && this.player.bottles > 0) {
         this.applySkills();
         this.$emit("workDrawTwoCards");
+        this.$emit("addMoney", 1);
         this.placeWorker("drawTwoCards");
       } else {
         alert("Antingen för få flaskor eller så är platsen upptagen");
@@ -134,15 +136,35 @@ export default {
       }
     },
     //På fjärde omgången kan du panta en flaska och få 3 pengar ist
-    recycleBottle4thRound: function() {
-      console.log("Panta 4 trycks");
-      if (this.round === 4 && this.player.bottles > 0) {
-        console.log("Är runda 4 och har 1+ flaskor");
-        this.$emit("recycleBottle4thRound");
-      } else if (this.round !== 4) {
-        alert("Not round 4");
-      } else if (!(this.player.bottles > 0)) {
-        alert("Too few bottles :^(");
+    quarterTilePressed: function() {
+      switch (this.round) {
+        case 0:
+          break;
+        case 1:
+          if (this.player.bottles > 0 && this.workPlacement.quarterTile === null) {
+            this.$emit("addPassiveIncome", 2);
+            this.placeWorker("quarterTile");
+          }
+          break;
+        case 2:
+          if (this.player.bottles > 0 && this.workPlacement.quarterTile === null) {
+            this.$emit("addPassiveIncome", 2);
+            this.$emit("addMoney", 1);
+            this.placeWorker("quarterTile");
+          }
+          break;
+        case 3:
+          if (this.player.bottles > 0 && this.workPlacement.quarterTile === null) {
+            this.$emit("addPassiveIncome", 2);
+            this.$emit("addMoney", 2);
+            this.placeWorker("quarterTile");
+          }
+          break;
+        case 4:
+          if (this.player.bottles > 0) {
+            this.$emit("recycleBottle4thRound");
+          }
+          break;
       }
     },
     placeWorker: function(where) {
@@ -166,7 +188,7 @@ export default {
           this.$emit("drawCard");
         }
       }
-      console.log("*************")
+      console.log("*************");
     },
     getWorkslot5Image: function() {
       // quarter_tile_1st.png, quarter_tile_2nd.png, quarter_tile_3rd.png, Work5_png.png
@@ -318,6 +340,10 @@ export default {
 }
 #workBottle2 {
   top: 80%;
+  left: 16%;
+}
+#workBottle5 {
+  top: 7%;
   left: 16%;
 }
 </style>

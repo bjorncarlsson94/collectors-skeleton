@@ -235,6 +235,12 @@ socket.on('nameAndColor', function (d) {
       data.addMoney(d.roomId, d.playerId, d.amount)
     );
   });
+  socket.on("addPassiveIncome", function (d) {
+    io.to(d.roomId).emit(
+      "passiveIncomeAdded",
+      data.addPassiveIncome(d.roomId, d.playerId, d.amount)
+    );
+  });
   //---------------------------------------------------
   
   

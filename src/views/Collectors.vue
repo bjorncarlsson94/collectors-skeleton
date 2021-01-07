@@ -520,6 +520,7 @@
               @placeWorker="placeWorker($event)"
               @drawCard="drawCard($event)"
               @addMoney="addMoney($event)"
+              @addPassiveIncome="addPassiveIncome($event)"
             />
           </div>
 
@@ -695,6 +696,7 @@ export default {
         drawACardAndFirstPlayerToken: null,
         drawCardAndPassiveIncome: null,
         drawTwoCards: null,
+        quarterTile: null,
       },
       chosenPlacementCost: null,
       marketValues: {
@@ -1069,6 +1071,11 @@ export default {
 
     this.$store.state.socket.on(
       "moneyAdded", 
+      (d) => (this.players = d)
+    );
+
+    this.$store.state.socket.on(
+      "passiveIncomeAdded",
       (d) => (this.players = d)
     );
     //------------------------------
@@ -1725,6 +1732,14 @@ export default {
         playerId: this.playerId,
         amount: amount,
       });
+    },
+    addPassiveIncome: function(amount) {
+      this.$store.state.socket.emit(
+        "addPassiveIncome", {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          amount: amount,
+        });
     },
     //----------------------------------------------------------
   },
