@@ -213,12 +213,15 @@
             @click="auctionMiniActiveNow()"
           >
             {{ bid }}$
-            <div class="auctionCardViewMini">
+            <div class="auctionCardViewMini" v-if="!hiddenAuctionCard">
               <CollectorsCard
                 v-for="(card, index) in cardInAuction"
                 :card="card"
                 :key="index"
               />
+            </div>
+            <div class="auctionCardViewMini" v-if="hiddenAuctionCard">
+              <div class="hiddenAuctionCardMini"></div>
             </div>
           </div>
           <div class="winnerAuction" v-show="winnerAvailable">
@@ -957,6 +960,10 @@ export default {
             this.auctionActive = false;
             this.auctionWinner = false;
             this.biddingCards = [];
+            this.players = d.players;
+            if (this.players[this.playerId].turn == true){
+                this.nextPlayer();
+            }
           } else {
             this.winnerSelection(false);
             this.auctionPrice = 0;
@@ -966,9 +973,13 @@ export default {
             this.auctionActive = false;
             this.auctionWinner = false;
             this.cardBidTotal = 0;
+            this.players = d.players;
             console.log("22 längd" + this.biddingCards.length);
             if (this.biddingCards.length > 0) {
               this.restoreHand();
+            }
+            if (this.players[this.playerId].turn == true){
+              this.nextPlayer();
             }
           }
         } else {
@@ -978,7 +989,6 @@ export default {
           //this.bid = d.auctionPrice;
           this.cardInAuction = d.cardInAuction;
         }
-        this.players = d.players;
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -993,6 +1003,13 @@ export default {
         this.players[this.playerId].currentScore=d.currentScore;
         this.winnerAvailable = false;
         this.auctionLeaderId = null;
+      }.bind(this)
+    );
+        this.$store.state.socket.on(
+      "handRestord",
+      function(d) {
+        this.players = d.players;
+        this.biddingCards = [];
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1135,7 +1152,8 @@ export default {
     winnerSelection: function(ifWinner) {
       if (ifWinner == true) {
         this.winnerAvailable = true;
-      } else {
+      } 
+      else {
         this.loserAvailable = true;
       }
     },
@@ -1241,7 +1259,6 @@ export default {
         placementType: placementType,
         auctionPrice: this.auctionPrice,
       });
-      this.nextPlayer();
     },
     showHelp: function(label) {
       label;
@@ -2555,22 +2572,30 @@ theColor:onclick {
 }
 .auctionMini {
   display: grid;
-  margin-top: 3vw;
-  grid-column: 8;
-  grid-template-rows: 20% 60% auto;
-  grid-template-columns: auto;
-  width: 9vw;
-  height: 16vw;
-  background-color: #f5efa0;
-  border-radius: 2vw;
-  border-style: solid;
-  border-width: 0.4vw;
-  border-color: black;
-  z-index: 50;
-  color: darkgreen;
-  font-size: 3vw;
-  text-align: center;
-  cursor: pointer;
+    margin-top: 3vw;
+    grid-row: 1;
+    grid-column: 7;
+    grid-template-rows: 20% 60% auto;
+    grid-template-columns: auto;
+    width: 9vw;
+    height: 15vw;
+    background-color: #f5efa0;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    color: darkgreen;
+    font-size: 3vw;
+    text-align: center;
+    cursor: pointer;
+}
+.hiddenAuctionCardMini{
+    background-image: url(/images/back-of-card.png);
+    background-size: cover;
+    width: 4.8vw;
+    height: 6vw;
+    background-repeat: no-repeat;
 }
 .roundCounter {
   grid-column: 1;

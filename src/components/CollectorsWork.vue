@@ -323,8 +323,12 @@ export default {
   height: 3vw;
   width: 3vw;
   background-color: black;
-  border-radius: 1.5vw;
-  z-index: 60;
+  border-radius: 3vw;
+  z-index: 2;
+  border-style: ridge;
+  box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+  border-width: 0.2vw;
+  border-color: rgba(77, 58, 58, 0.658);
   position: absolute;
   background-position: center;
   background-repeat: no-repeat;

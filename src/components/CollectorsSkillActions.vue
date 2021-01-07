@@ -241,7 +241,7 @@ export default {
     height: 3vw;
     width: 3vw;
     background-color: rgb(95, 216, 253);
-    border-radius: 4vw;
+    border-radius: 3vw;
     border-style: ridge;
     box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
     border-width: 0.2vw;

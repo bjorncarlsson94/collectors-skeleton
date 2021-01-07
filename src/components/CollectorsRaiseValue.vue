@@ -230,6 +230,7 @@ export default {
   grid-template-rows: 2.5vw 2.5vw 2.5vw 2.5vw 2.5vw;
   justify-self: space-evenly;
   text-align: center;
+  text-align: -webkit-center;
   margin-bottom: 2vw;
 }
 .cardslots {

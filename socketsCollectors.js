@@ -116,6 +116,7 @@ function sockets(io, socket, data) {
       skillsOnSale: data.getSkillsOnSale(d.roomId),
       itemsOnSale: data.getItemsOnSale(d.roomId),
       auctionCards: data.getAuctionCards(d.roomId),
+      
     });
   });
   socket.on("moveCards", function (d) {

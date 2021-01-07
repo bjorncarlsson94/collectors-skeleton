@@ -968,33 +968,23 @@ Data.prototype.auctionBids = function(
     } else {
       var keys = Object.keys(room.players);
       let i = Object.keys(room.players).indexOf(playerId);
-      console.log(keys[i + 1] + " 3 är lika med " + room.auctionLeaderId);
       if (i === keys.length - 1) {
-        console.log(keys[0] + " 2 är lika med " + room.auctionLeaderId);
         if (keys[0] == room.auctionLeaderId) {
           console.log("varför1");
           room.auctionWinner = true;
-          //this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
           room.players[playerId].turn = false;
           room.players[room.auctonStarterId].turn = true;
-          //room.auctionLeaderId = null;
           room.auctonStarterId = null;
         }
       } else if (keys[i + 1] == room.auctionLeaderId) {
-        console.log("varför2 + 3");
-        console.log("ge mig den");
         room.auctionWinner = true;
-        //this.auctionWon(roomId, room.auctionLeaderId, auctionPrice);
         room.players[playerId].turn = false;
         room.players[room.auctonStarterId].turn = true;
-        //room.auctionLeaderId = null;
         room.auctonStarterId = null;
       }
     }
     room.auctionPrice = auctionPrice;
-    console.log("PirceA::" + auctionPrice);
     if (room.auctonStarterId !== null) {
-      console.log("bytspelare");
       this.nextPlayer(roomId, playerId, true);
     }
 
