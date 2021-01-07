@@ -292,6 +292,7 @@
                 @placeBottle="placeBottle('market', $event)"
                 @raiseValue="raisingValue($event)"
                 @keepWindowOpen="keepWindowOpen()"
+                @cancelBuy="removeBottle('market', $event)"
               />
             </div>
           </div>
@@ -1462,6 +1463,9 @@ export default {
       }
       if (action === "skill") {
         this.aboutToBuySkill = false;
+      }
+      if (action === "market") {
+        this.aboutToRaiseValue = false;
       }
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit("collectorsRemoveBottle", {

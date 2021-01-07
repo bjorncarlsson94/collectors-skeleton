@@ -69,8 +69,13 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
           />
         </div>
       </div>
+       <div class="buttonGrid">
+               <button class="cancelBuy" @click="hideWindow(currentPlacementAmount)">{{labels.cancelBuy}}</button>
+              </div>
     </div>
+   
   </div>
+  
 </template>
 
 <script>
@@ -198,6 +203,10 @@ export default {
       }
     },
 
+    hideWindow: function(cost){
+      
+      this.$emit('cancelBuy', cost);
+    }
   },
 };
 //
@@ -336,6 +345,11 @@ export default {
     zoom: 2;
     overflow: hidden;
 
+  }
+  .buttonGrid{
+    justify-content: center;
+    display: grid;
+    grid-column: 1/6;
   }
 
 /*

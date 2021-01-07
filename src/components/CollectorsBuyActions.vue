@@ -47,7 +47,7 @@
                 </div>
               </div>  
               <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">Avbryt köp</button>
+               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">{{labels.cancelBuy}}</button>
               </div>
           </div>
     </div>

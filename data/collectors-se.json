@@ -16,7 +16,7 @@
 	"player2": "Spelare 2",
 	"player3": "Spelare 3",
 	"player4": "Spelare 4",
-
+	"cancelBuy":"Avbryt köp",
 	"helpPlayerHand":{
 		"title":"Din hand:",
 		"itemArea":"Item Area (red):",
