@@ -26,7 +26,16 @@
             <!-- :disabled="pname == '' || players[playerId].color == null" -->
             <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
           </div>
-
+          <CollectorsBottles
+            v-if="players[playerId]"
+            :labels="labels"
+            :playerId="playerId"
+            :players="players"
+            :endRound="endRound"
+            :changeTempBottle="changeTempBottle"
+            :tempBottlePlacement="tempBottlePlacement"
+            :placeBottleOnPlayerboard="placeBottleOnPlayerboard"/>
+  
           <div class="otherplayers">
             <div
               v-for="(player, index) in players"
@@ -69,6 +78,7 @@
                       <div id="collectiontitle">Collection:</div>
                       <div class="boardcollectiongrid">
                         <div class="playercollection">
+                    <div class="playerMoney">{{ player.currentScore}}</div>
                           <div class="collectioncards">
                             <CollectorsCard
                               v-for="(card, index) in player.items"
@@ -88,7 +98,7 @@
                           <div> <img src="/images/tech.png" width="50%"> {{ player.itemValues.itechnology }}</div>
                         </div>
 
-                        <div id="totalvalue">Score: {{ player.currentScore}}
+                        <div class="totalvalue">Score: {{ player.currentScore}}
 
                         </div>
                       </div>
@@ -111,13 +121,21 @@
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
                           :card="card"
+                          :availableAction="card.available" 
                           :key="index"
                           class="otherHand"
                         />
                       </div>
                     </div>
 
-                    <div class="boardNextTurnInfo">Next turn income</div>
+                    <div class="boardNextTurnInfo">
+                <div class="bottlesGrid" v-for="(bottlePlace, index) in player.bottlesOnPlayerbord" :key="index">
+                  <div v-show="bottlePlace" class="bottles" :style="{backgroundColor: player.color}"></div>
+                </div>
+                <img src="/images/bottle-playerboard.png" class="nextturnboard">
+                <!-- playerMoney -->
+              <div class="playerMoney">{{ player.currentScore}}</div>
+              </div>
                   </div>
                 </div>
               </div>
@@ -273,6 +291,7 @@
                 :aboutToRaiseValue="aboutToRaiseValue"
                 @placeBottle="placeBottle('market', $event)"
                 @raiseValue="raisingValue($event)"
+                @keepWindowOpen="keepWindowOpen()"
               />
             </div>
           </div>
@@ -301,18 +320,23 @@
 
                 <div class="closedBoardHandBackground"></div>
 
-                <div class="totalValue">
-                  Hej
+                <div class="closedBoardInfo">
                   <!-- playerMoney -->
-                <div class="playerMoney">{{ getCurrentScore() }}
-                  <div class="itemicons">
-                    <div> <img src="/images/fastaval.png" width="150%"> {{ players[playerId].itemValues.ifastaval }}</div>
-                    <div> <img src="/images/figures.png" width="150%"> {{ players[playerId].itemValues.ifigures }}</div>
-                    <div> <img src="/images/music.png" width="150%"> {{ players[playerId].itemValues.imusic }}</div>
-                    <div> <img src="/images/movie.png" width="150%"> {{ players[playerId].itemValues.imovie }}</div>
-                    <div> <img src="/images/tech.png" width="150%"> {{ players[playerId].itemValues.itechnology }}</div>
+                <div class="scoreDisplay closed">Score: {{ players[playerId].currentScore }}</div>
+                  <div class="closedItemIcons">
+                    <div> <img src="/images/fastaval.png" width="70%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures.png" width="70%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music.png" width="70%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie.png" width="70%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech.png" width="70%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
-                </div>
+
+                <div class="countspace">
+                  <div class="moneycount"> <img src="/images/moneybag.png" width="80%"> {{ players[playerId].money }}  </div>
+                  <div class="bottlecount"> <img src="/images/player-bottle.png" width="80%"> {{ players[playerId].bottles }} </div>
+                  </div>
+
+
                 </div>
               </div>
             </div>
@@ -377,7 +401,7 @@
                     <div> <img src="/images/movie.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
                     <div> <img src="/images/tech.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
-                  <div id="totalvalue">Score: {{ players[playerId].currentScore }} </div>
+                  <div class="totalvalue">Score: {{ players[playerId].currentScore }} </div>
 
                   
                 </div>
@@ -413,14 +437,12 @@
               </div>
 
               <div class="boardNextTurnInfo">
-                Next turn income
-
-                <img
-                  src="/images/bottle-playerboard.png"
-                  class="nextturnboard"
-                />
+                <div class="bottlesGrid" v-for="(bottlePlace, index) in players[playerId].bottlesOnPlayerbord" :key="index">
+                  <div v-show="bottlePlace" class="bottles" :style="{backgroundColor: players[playerId].color}"></div>
+                </div>
+                <img src="/images/bottle-playerboard.png" class="nextturnboard">
                 <!-- playerMoney -->
-                <div class="playerMoney">{{ getCurrentScore() }}</div>
+              <div class="playerMoney">{{ players[playerId].currentScore}}</div>
               </div>
             </div>
           </div>
@@ -568,6 +590,17 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
+    <div class="winnerBox" v-if="round==1"> 
+     
+      <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
+       <h3><strong> {{item.name}}:
+        {{item.currentScore}}</strong></h3>   
+      </div>
+     <h1 class="winner">W I N N E R:
+      {{getWinner()}}
+     </h1>
+    </div>
+
 
     <footer>
       <p>
@@ -593,7 +626,9 @@ import CollectorsRaiseValue from "@/components/CollectorsRaiseValue.vue";
 import CollectorsStartAuction from "@/components/CollectorsStartAuction.vue";
 import CollectorsAuction from "@/components/CollectorsAuction.vue";
 import CollectorsWork from "@/components/CollectorsWork.vue";
+import CollectorsBottles from "@/components/CollectorsBottles";
 import HelpCollectors from "@/components/HelpCollectors.vue";
+//import func from '../../vue-temp/vue-editor-bridge';
 
 export default {
   name: "Collectors",
@@ -605,7 +640,8 @@ export default {
     CollectorsStartAuction,
     CollectorsAuction,
     CollectorsWork,
-    HelpCollectors,
+    CollectorsBottles,
+    HelpCollectors
   },
   data: function() {
     return {
@@ -678,6 +714,7 @@ export default {
       aboutToBuySkill: false,
       aboutToRaiseValue: false,
       hiddenAuctionCard: false,
+      tempBottlePlacement: [false, false, false, false, false],
       scalefactor: window.innerWidth / 8000, //  Denna är viktig för att skala om korten. Däremot beror denna på skärmstorleken på ett dumnt sätt.
       auctionCardPaymentActive: false,
       biddingCards: [],
@@ -685,6 +722,7 @@ export default {
       playerJoined: false,
       playerColor: [],
       cardBidTotal: 0,
+      endRound: false,
       //snow
       snowConf: {
         windPower: 1,
@@ -777,12 +815,28 @@ export default {
     );
 
     this.$store.state.socket.on(
-      "collectorsBottle",
-      function(d) {
+      "collectorsBottlePlaced",
+      function (d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
         this.auctionPlacement = d.auctionPlacement;
+      }.bind(this)
+    );
+     this.$store.state.socket.on(
+      "collectorsBottleRemoved",
+      function (d) {
+        this.buyPlacement = d.buyPlacement;
+        this.skillPlacement = d.skillPlacement;
+        this.marketPlacement = d.marketPlacement;
+        this.auctionPlacement = d.auctionPlacement;
+        this.players = d.players;
+      }.bind(this)
+    );
+
+    this.$store.state.socket.on(
+      "bottleOnPlayerboardPlaced",
+      function (d) {
         this.players = d.players;
       }.bind(this)
     );
@@ -814,6 +868,7 @@ export default {
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
         this.itemValues = d.itemValues;
+        this.currentScore=d.currentScore;
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -922,6 +977,10 @@ export default {
         this.marketPlacement = d.marketPlacement;
         this.auctionPlacement = d.auctionPlacement;
         this.players = d.players;
+        if (this.round < d.round && this.round > 0) {
+          console.log("slut på runda")
+          this.endRoundFunction();
+        }
         this.round = d.round;
         console.log("Det är runda: " + this.round);
       }.bind(this)
@@ -1137,6 +1196,7 @@ export default {
         placementType: placementType,
         auctionPrice: this.auctionPrice,
       });
+      this.nextPlayer();
     },
     showHelp: function(label) {
       label;
@@ -1168,13 +1228,25 @@ export default {
       }
       this.chosenPlacementCost = cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
+        players: this.players,
         roomId: this.$route.params.id,
         playerId: this.playerId,
         action: action,
         cost: cost,
       });
     },
-    drawCard: function() {
+    endRoundFunction: function(){
+      this.tempBottlePlacement = [false, false, false ,false, false]
+      console.log("inne i runda lopp"+ this.players[this.playerId].bottles)
+      for (let i = 0; i< this.players[this.playerId].bottles ; i += 1) {
+        if(i > 1){
+          break;
+        }
+        this.tempBottlePlacement[i] = true;
+      }
+      this.endRound= true;
+    },
+    drawCard: function () {
       if (!this.helpAction) {
         this.$store.state.socket.emit("collectorsDrawCard", {
           roomId: this.$route.params.id,
@@ -1216,7 +1288,8 @@ export default {
           playerId: this.playerId,
           card: card,
           cost: this.chosenPlacementCost,
-        });
+      });
+      this.nextPlayer();
     },
 
     getLastElement: function(cardArray){
@@ -1225,6 +1298,11 @@ export default {
           return cardArray[i];
         }
       }
+      return {};
+    },
+
+    keepWindowOpen: function(){
+      this.aboutToRaiseValue = true;
     },
 
     /*getRaiseItemsFromBoard: function(){
@@ -1254,8 +1332,10 @@ export default {
         cost: this.chosenPlacementCost,
       });
     },
-
-    auctionMiniActiveNow: function() {
+    changeTempBottle: function (index) {
+        this.tempBottlePlacement[index] = true;
+    },
+    auctionMiniActiveNow: function () {
       if (this.auctionMiniActive == true) {
         this.auctionMiniActive = false;
         this.auctionActive = true;
@@ -1293,11 +1373,65 @@ export default {
         currentValue: this.currentValue,
       });
     },
-    getCurrentScore: function() {
-      if (typeof this.players[this.playerId].currentScore !== "undefined") {
-        return this.players[this.playerId].currentScore;
+   getWinner: function(){
+  var currentWinner=[];
+  if (typeof room !== "undefined") {
+    console.log("room är inte undefined.");
+  if(this.players !=="undefined"){
+     console.log("players är inte undefined.");
+  for (let index = 0; index < this.players.length; index++) {
+     console.log("inne i for loopen");
+    if(index==0){
+      currentWinner[0]=this.players[index];
+       console.log("currentWinner:"+currentWinner[0]);
+
+    }else{
+      if(currentWinner[0].currentScore<this.players[index].currentScore){
+        if(currentWinner.length==1){
+        currentWinner[0]=this.players[index];
+        }else{
+          currentWinner.splice(0,currentWinner.length,this.players[index]);
+
+        }
+        
+
+      }else if(currentWinner[0].currentScore==this.players[index].currentScore){
+        currentWinner.push(this.players[index]);
+        
+
       }
-      return "";
+
+    }
+    
+  }
+  if(currentWinner.length>1){
+    var currentWinnersHand=[];
+    for (let index = 0; index < this.currentWinner.length; index++) {
+      if(index==0){
+        currentWinnersHand.push(currentWinner[index]);
+
+      }else if(currentWinner[index].hand>currentWinnersHand[0] && currentWinnersHand.length==1 ){
+        currentWinnersHand.splice(0,1,currentWinner[index]);
+
+      }else if(currentWinner[index].hand>currentWinnersHand[0] && currentWinnersHand.length>1 ){
+        currentWinnersHand.splice(0,currentWinnersHand.length,currentWinner[index]);
+
+      }else if(currentWinner[index].hand==currentWinnersHand[0]){
+        currentWinnersHand.push(currentWinner[index]);
+      }
+    }
+    return currentWinnersHand.name;
+  }else{
+    return currentWinner.name;
+  }
+  }
+  else return [];
+}return[];
+
+},
+    finalScoreUpdate: function(){
+      //this.players[this.playerId].item.push(this.players[this.playerId].hidden);
+      this.currentScore();
     },
 
     nextPlayer: function() {
@@ -1324,6 +1458,15 @@ export default {
         playerId: this.playerId,
         action: action,
         cost: cost,
+        players: this.players
+      });
+    },
+    placeBottleOnPlayerboard: function(){
+      this.endRound = false
+      this.$store.state.socket.emit("placeBottleOnPlayerboard", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        tempBottlePlacement: this.tempBottlePlacement
       });
     },
 
@@ -1948,7 +2091,65 @@ theColor:onclick {
   grid-row: 1;
   height: 5vw;
 }
+.closedBoardInfo{
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.closedItemIcons {
+  grid-row: 1/2;
+  grid-column: 1;
+  background-color: red;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  text-align: center;
+}
 
+.countspace{
+  grid-row: 1/3;
+  grid-column: 2/3;
+  display: grid;
+  grid-template-columns:1fr 1fr;
+}
+.bottlecount{
+  grid-column: 2;
+  grid-row: 1/3;
+  text-align: center;
+  align-self: center;
+  background-color: rgb(75, 10, 75);
+  border-radius: 1vw;
+  margin: 0.2vw;
+}
+.moneycount{
+  grid-column: 1;
+  grid-row: 1/3;
+  text-align: center;
+  align-self: center;
+  background-color: rgb(31, 107, 31);
+  border-radius: 1vw;
+  margin: 0.2vw;
+}
+.scoreDisplay.closed{
+  grid-row: 2;
+  grid-column: 1;
+  align-self: center;
+  align-content: center;
+}
+
+.bottles{
+   background-image: url(/images/player-bottle.png);
+    height: 3vw;
+    width: 3vw;
+    border-radius: 4vw;
+    z-index: 100;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.bottlesGrid{
+  color:black;
+}
 .cardsinhand {
   display: grid;
   grid-template-columns: repeat(9, 2vw);
@@ -1980,7 +2181,7 @@ theColor:onclick {
   padding: 0.3vw;
   z-index: 1;
 }
-#totalvalue {
+.totalvalue {
   background-color: gray;
   border-radius: 0vw 0vw 2vw 2vw;
   text-align: center;
@@ -1991,6 +2192,7 @@ theColor:onclick {
   background-color: red;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  text-align: center;
 }
 
 .boardSkills {
@@ -2019,16 +2221,22 @@ theColor:onclick {
 }
 
 .boardNextTurnInfo {
-  grid-row: 4;
-  grid-column: 3/5;
-  background-color: gray;
-  border-radius: 0 0 2vw 0;
-  padding: 1vw;
+    grid-row: 4;
+    grid-column: 3/5;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-row: 1fr 1fr;
+    background-color: gray;
+    border-radius: 0 0 2vw 0;
+    padding: 1vw;
 }
 .nextturnboard {
-  max-width: 100%;
+   width: 23vw;
+    position: absolute;
+    right: 0;
+    padding: 1vw;
+    bottom: 15%;
 }
-
 .boardclosebutton {
   grid-row: 5;
   grid-column: 4;
@@ -2054,6 +2262,7 @@ theColor:onclick {
   transform: translate(-50%, -50%);
   padding: 1vw;
 }
+
 .winnerText {
   color: black;
   grid-column: 1/4;
@@ -2510,6 +2719,63 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
     width: 90vw;
   }
 }
+.winnerBox{
+  display:grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 40px;
+  justify-content: center;
+  -webkit-animation: winnerFade 1.5s forwards;
+  -webkit-animation-delay: 0.01s;
+  animation: winnerFade 0.5s forwards;
+  animation-delay: 0.01;
+  border-radius: 5%;
+  width: 1200px;
+  height: 800px;
+  background-color: white;
+  position: absolute;
+  top:7%;
+  left:19%;
+
+}
+.winnerBoxPlayers{
+
+   border:solid;
+  border-color: black;
+  border-width: 0.5px;
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  height: 100px;
+  width: 200px;
+  border-radius: 20%;
+  position: relative;
+  background-color: yellow;
+  float:left;
+  margin: 80px;
+}
+.winner{
+  color:tomato;
+  position: absolute;
+  align-self: center;
+  right:35%;
+  font-size: 500%;
+
+}
+
+ @-webkit-keyframes winnerFade {
+     0%{opacity: 0%;}
+    
+   
+    100% { opacity:  100%; }
+    
+}
+
+@keyframes winnerFade {
+  0%{opacity: 0%;}
+    
+   
+  100% { opacity:  100%; }
+    
+}
+
 </style>
 
 /* NOTES: Here are notes from the supervision sessions

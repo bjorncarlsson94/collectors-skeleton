@@ -2,14 +2,17 @@
   <div>
     <!--<h1>{{ labels.startAuction }}</h1>-->
     <div class="start-auction auctiongrid">
-      <div class="cards" v-for="(card, index) in auctionCards" :key="index">
-        <CollectorsCard
-          :card="card"
-          :availableAction="card.available"
-          @doAction="startAuction(card)"
-        />
+      <div class="auctionColumn">
+        <div class="cards" v-for="(card, index) in auctionCards" :key="index">
+          <CollectorsCard
+            :card="card"
+            :availableAction="card.available"
+            @doAction="startAuction(card)"
+          />
+        </div>
         <!--{{ cardCost(card) }}-->
       </div>
+      <div class="auctionColumn">
         <div class="buttons" v-for="(p, index) in placement" :key="'A' + index">
           <button class="button"
             v-if="p.playerId===null"
@@ -20,6 +23,7 @@
           <div class="bottlePlace" :style="{backgroundColor: players[p.playerId].color}" v-if="p.playerId !== null">
             <!-- {{p.playerId}} -->
           </div>
+        </div>
       </div>
     </div>
 
@@ -164,7 +168,7 @@ export default {
   float: left;
   font-size: 1vw;
   justify-content: space-around;
-  margin: 1vw;
+  margin: 2.5vw;
   padding: 0.2vw;
   color: black;
   background-color: #f5ef9e;
@@ -181,7 +185,7 @@ export default {
 }
 .auctiongrid {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
   grid-template-columns: 1fr 1fr;
   padding: 1vw;
 }
@@ -282,6 +286,7 @@ export default {
 
   }
 
+
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
   margin-top: 0.5vw;
@@ -293,5 +298,10 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.auctionColumn{
+  grid-row: 1/2;
+  grid-auto-flow: row;
 }
 </style>

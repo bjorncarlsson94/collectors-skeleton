@@ -87,7 +87,7 @@
 import CollectorsCard from "@/components/CollectorsCard.vue";
 
 export default {
-  name: "CollectorsSkillActions",
+  name: "CollectorsAuction",
   components: {
     CollectorsCard,
   },

@@ -44,7 +44,8 @@
 		"titleVPSpecific":"Få en extra poäng",
 		"VPSpecific":"För varje kort i items för denna kategorien så kommer du få ett extra poäng. Det finns flera för varje kategori.",
 		"titleVPAll":"Samla alla bonus",
-		"VPAll":"Detta är den stora bonusen, Om du äger denna skill och i alla fall en av varje kategori som item så får du fem extra poäng.",
+		"VPAll":"Detta är den stora bonusen, Om du äger denna skill och i alla fall en av varje kategori som item så får du fem extra poäng."
+		
 	},
 	"itemsHelp":{
 		"title":"Info om items:",
