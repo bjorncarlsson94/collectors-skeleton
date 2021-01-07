@@ -2106,6 +2106,7 @@ theColor:onclick {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  margin-left: 1vw;
 }
 .closedItemIcons {
   grid-row: 1/2;
@@ -2121,6 +2122,8 @@ theColor:onclick {
   grid-column: 2/3;
   display: grid;
   grid-template-columns:1fr 1fr;
+  
+  border-radius: 1vw;
 }
 .bottlecount{
   grid-column: 2;
