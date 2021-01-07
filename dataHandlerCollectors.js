@@ -680,6 +680,11 @@ Data.prototype.startTurn = function(roomId) {
     // x=Math.floor(Math.random()*2)
     room.round = 1;
     var keys = Object.keys(room.players);
+    for (let j = 0; j < keys.length; j += 1){
+      this.drawCard(roomId, keys[j]);
+      this.drawCard(roomId, keys[j]);
+      this.drawCard(roomId, keys[j]);
+    }
     room.startingPlayerId = keys[Math.floor(keys.length * Math.random())];
     room.players[room.startingPlayerId].turn = true;
     return room.players, room.round;
