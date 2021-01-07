@@ -163,6 +163,7 @@ Data.prototype.createRoom = function(roomId, playerCount, lang = "en") {
     drawACardAndFirstPlayerToken: null,
     drawCardAndPassiveIncome: null,
     drawTwoCards: null,
+    quarterTile: null,
   };
   this.rooms[roomId] = room;
 };
@@ -557,6 +558,7 @@ Data.prototype.clearBottles = function(roomId) {
     room.workPlacement.drawTwoCards = null;
     room.workPlacement.drawACardAndFirstPlayerToken = null;
     room.workPlacement.drawCardAndPassiveIncome = null;
+    room.workPlacement.quarterTile = null;
   }
 };
 
@@ -1218,6 +1220,9 @@ Data.prototype.setWorkPlacementTrue = function(roomId, place, playerId) {
       case "drawCardAndPassiveIncome":
         room.workPlacement.drawCardAndPassiveIncome = playerId;
         break;
+      case "quarterTile":
+        room.workPlacement.quarterTile = playerId;
+        break;
       default:
         console.log("Shits fucked");
         break;
@@ -1234,6 +1239,17 @@ Data.prototype.addMoney = function(roomId, playerId, amount) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     room.players[playerId].money += amount;
+    return room.players;
+  } else return [];
+};
+Data.prototype.addPassiveIncome = function(roomId, playerId, amount) {
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    for (var i = 0; i < amount; i++) {
+      var card = room.deck.pop();
+      room.players[playerId].income.push(card);
+    }
+    room.players[playerId].bottles--;
     return room.players;
   } else return [];
 };
