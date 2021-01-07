@@ -329,6 +329,7 @@ Data.prototype.buySkill = function(roomId, playerId, card, cost) {
       }
     }
     if (card.skill == "bottle") {
+      this.changeBottleOnPlayerboarad(roomId, playerId, true);
       room.players[playerId].bottles ++;
       room.players[playerId].totalBottles ++;
     }
