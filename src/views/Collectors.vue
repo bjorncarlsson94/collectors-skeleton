@@ -1970,9 +1970,9 @@ theColor:onclick {
   cursor: pointer;
 }
 .otherplayer.turnhighlight{
-  filter:brightness(120%);
-  border-color: grey;
-  box-shadow: 0 0 1vw white;
+  filter:brightness(110%);
+  border-color: rgb(199, 199, 199);
+  box-shadow: 0 0 1vw rgb(199, 199, 199);
 }
 .otherPlayerClosed{
   display: grid;
@@ -2014,9 +2014,9 @@ theColor:onclick {
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .playerboard.turnhighlight{
-  filter:brightness(120%);
-  border-color: grey;
-  box-shadow: 0 0 1vw white;
+  filter:brightness(110%);
+  border-color: rgb(199, 199, 199);
+  box-shadow: 0 0 1vw rgb(199, 199, 199);
 }
 
 /* Hover över spelarområdena*/
@@ -2615,7 +2615,11 @@ theColor:onclick {
 .gridedge3 {
   grid-column: 1;
   grid-row: 1;
-  text-align:center;
+  background-color: rgb(194, 194, 194);
+  border-radius: 2vw;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .gridedge3 .collectorsIcon{
   object-fit:cover;
