@@ -988,6 +988,7 @@ export default {
         this.players = d.players;
         this.auctionPrice = 0;
         this.cardInAuction = d.cardInAuction;
+        this.players[this.playerId].currentScore=d.currentScore;
         this.winnerAvailable = false;
         this.auctionLeaderId = null;
       }.bind(this)

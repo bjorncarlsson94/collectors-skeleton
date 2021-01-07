@@ -72,7 +72,7 @@ Data.prototype.createRoom = function(roomId, playerCount, lang = "en") {
   }
   room.skillsOnSale = this.bubbleSort(room.skillsOnSale);
   room.auctionCards = room.deck.splice(0, 4);
-  room.raiseItems = room.deck.splice(0, 6);
+  room.raiseItems = room.deck.splice(0, 0);
   room.raiseValue = null;
   (room.playerColor = ["#5fd8fd", "#7e2174", "#19b3a7", "#ca9e68"]),
     (room.auctonStarterId = null);

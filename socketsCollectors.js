@@ -152,6 +152,8 @@ function sockets(io, socket, data) {
       cardInAuction: data.getCardInAuction(d.roomId),
       raiseItems: data.getRaiseItems(d.roomId),
       raiseValue: data.getCardValue(d.roomId),
+      currentScore:data.currentValue(d.roomId, d.playerId),
+      
     });
     console.log(data.getCardInAuction(d.roomId));
   });
