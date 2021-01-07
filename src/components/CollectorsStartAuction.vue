@@ -309,12 +309,30 @@ export default {
   background-repeat: no-repeat;
   background-size: contain;
 }
-.buttonGrid{
+ .buttonGrid{
+    color: inherit;
     justify-content: center;
-    display: grid;
-    grid-column: 1/6;
+    position: absolute;
+    
+    top: -3px;
+    right: -1.5px;
+    
   }
 
+
+  .cancelBuy{
+    border-top-right-radius: 30%;
+    border:solid;
+    background-color: #f5ef9e;
+    filter:brightness(105%);
+    width: 100px;
+    height: 100px;
+    font-weight: bold;
+    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+  }
+  .cancelBuy:hover{
+    background-color: #d6ce58;
+  }
 
 .auctionColumn{
   grid-row: 1/2;
