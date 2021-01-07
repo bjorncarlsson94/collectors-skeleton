@@ -91,11 +91,11 @@
                         </div>
                         <div id="hidden">Hidden:</div>
                         <div class="itemicons">
-                          <div> <img src="/images/fastaval.png" width="50%"> {{ player.itemValues.ifastaval }}</div>
-                          <div> <img src="/images/figures.png" width="50%"> {{ player.itemValues.ifigures }}</div>
-                          <div> <img src="/images/music.png" width="50%"> {{ player.itemValues.imusic }}</div>
-                          <div> <img src="/images/movie.png" width="50%"> {{ player.itemValues.imovie }}</div>
-                          <div> <img src="/images/tech.png" width="50%"> {{ player.itemValues.itechnology }}</div>
+                          <div> <img src="/images/fastaval_red.png" width="50%"> {{ player.itemValues.ifastaval }}</div>
+                          <div> <img src="/images/figures_red.png" width="50%"> {{ player.itemValues.ifigures }}</div>
+                          <div> <img src="/images/music_red.png" width="50%"> {{ player.itemValues.imusic }}</div>
+                          <div> <img src="/images/movie_red.png" width="50%"> {{ player.itemValues.imovie }}</div>
+                          <div> <img src="/images/tech_red.png" width="50%"> {{ player.itemValues.itechnology }}</div>
                         </div>
 
                         <div class="totalvalue">Score: {{ player.currentScore}}
@@ -324,17 +324,38 @@
                   <!-- playerMoney -->
                 <div class="scoreDisplay closed">Score: {{ players[playerId].currentScore }}</div>
                   <div class="closedItemIcons">
-                    <div> <img src="/images/fastaval.png" width="70%"> {{ players[playerId].itemValues.ifastaval }}</div>
-                    <div> <img src="/images/figures.png" width="70%"> {{ players[playerId].itemValues.ifigures }}</div>
-                    <div> <img src="/images/music.png" width="70%"> {{ players[playerId].itemValues.imusic }}</div>
-                    <div> <img src="/images/movie.png" width="70%"> {{ players[playerId].itemValues.imovie }}</div>
-                    <div> <img src="/images/tech.png" width="70%"> {{ players[playerId].itemValues.itechnology }}</div>
+                    <div> <img src="/images/fastaval_red.png" width="70%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures_red.png" width="70%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music_red.png" width="70%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie_red.png" width="70%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech_red.png" width="70%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
 
-                <div class="countspace">
-                  <div class="moneycount"> <img src="/images/moneybag.png" width="80%"> {{ players[playerId].money }}  </div>
-                  <div class="bottlecount"> <img src="/images/player-bottle.png" width="80%"> {{ players[playerId].bottles }} </div>
+                
+                  <div class="c moneycount"> 
+                    <div > <img src="/images/moneybag.png" width="70%">  </div> 
+                    <div class="counter m">{{ players[playerId].money }}</div> 
                   </div>
+                  
+                  <div class="c bottlecount">
+                    <div > <img src="/images/player-bottle.png" width="50%"> </div>
+                    <div class="counter b">{{ players[playerId].bottles }}</div>
+                  </div>
+
+            
+                
+                <!-- <div class="countspace">
+                  <div> 
+                    <div class="moneycount"> <img src="/images/moneybag.png" width="40%">  </div> 
+                    <div class="counter m">{{ players[playerId].money }}</div> 
+                  </div>
+                  
+                  <div>
+                    <div class="counter b">{{ players[playerId].bottles }}</div>
+                    <div class="bottlecount"> <img src="/images/player-bottle.png" width="20%"> </div>
+                  </div>
+
+                </div> -->
 
 
                 </div>
@@ -395,11 +416,11 @@
 
 
                   <div class="itemicons">
-                    <div> <img src="/images/fastaval.png" width="50%"> {{ players[playerId].itemValues.ifastaval }}</div>
-                    <div> <img src="/images/figures.png" width="50%"> {{ players[playerId].itemValues.ifigures }}</div>
-                    <div> <img src="/images/music.png" width="50%"> {{ players[playerId].itemValues.imusic }}</div>
-                    <div> <img src="/images/movie.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
-                    <div> <img src="/images/tech.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
+                    <div> <img src="/images/fastaval_red.png" width="50%"> {{ players[playerId].itemValues.ifastaval }}</div>
+                    <div> <img src="/images/figures_red.png" width="50%"> {{ players[playerId].itemValues.ifigures }}</div>
+                    <div> <img src="/images/music_red.png" width="50%"> {{ players[playerId].itemValues.imusic }}</div>
+                    <div> <img src="/images/movie_red.png" width="50%"> {{ players[playerId].itemValues.imovie }}</div>
+                    <div> <img src="/images/tech_red.png" width="50%"> {{ players[playerId].itemValues.itechnology }}</div>
                   </div>
                   <div class="totalvalue">Score: {{ players[playerId].currentScore }} </div>
 
@@ -2086,7 +2107,7 @@ theColor:onclick {
 
 .closedBoardHandBackground {
   border-radius: 2vw;
-  background-color: #eeedb8;
+  background-color: #ffffff3f;
   grid-column: 1 / span 1;
   grid-row: 1;
   height: 5vw;
@@ -2094,49 +2115,64 @@ theColor:onclick {
 .closedBoardInfo{
   grid-column: 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 1fr;
   margin-left: 1vw;
 }
 .closedItemIcons {
   grid-row: 1/2;
   grid-column: 1;
-  background-color: red;
+  background-color: rgb(255, 64, 64);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   text-align: center;
 }
 
-.countspace{
-  grid-row: 1/3;
-  grid-column: 2/3;
-  display: grid;
-  grid-template-columns:1fr 1fr;
-  
+.counter{
   border-radius: 1vw;
+  background-color: #0000004b;
+  padding: 0.2vw;
+  text-align: center;
+  width: fit-content;
+  justify-self: center;
+  align-self: center;
+  margin-left: 2.7vw;
+  margin-top: -1vw;
+  -webkit-text-stroke: thin;
+  z-index: 1;
 }
-.bottlecount{
+.counter.m{
+  position: absolute;
+}
+.counter.b{
+  position: absolute;
+}
+
+.c{
   grid-column: 2;
-  grid-row: 1/3;
+  grid-row: 2;
   text-align: center;
-  align-self: center;
-  background-color: rgb(75, 10, 75);
   border-radius: 1vw;
-  margin: 0.2vw;
+  margin-left: 2vw;
+  height: 70%;
+  overflow: hidden;
 }
-.moneycount{
-  grid-column: 1;
-  grid-row: 1/3;
-  text-align: center;
-  align-self: center;
+
+.c.bottlecount{
+  grid-column: 2;
+  grid-row: 2;
+  background-color: rgb(75, 10, 75);
+
+}
+.c.moneycount{
+  grid-column: 2;
+  grid-row: 1;
   background-color: rgb(31, 107, 31);
-  border-radius: 1vw;
-  margin: 0.2vw;
 }
 .scoreDisplay.closed{
   grid-row: 2;
   grid-column: 1;
-  align-self: center;
+  margin-top: 0.4vw;
   align-content: center;
 }
 
@@ -2192,7 +2228,7 @@ theColor:onclick {
 }
 .itemicons {
   grid-row: 2;
-  background-color: red;
+  background-color: rgb(255, 64, 64);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   text-align: center;
