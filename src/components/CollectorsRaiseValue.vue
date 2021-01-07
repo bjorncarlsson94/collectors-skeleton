@@ -214,6 +214,7 @@ export default {
 .wrapper1 {
   display: grid;
   grid-template-rows: repeat(auto-fill, 130px);
+  padding-left: 0.5vw;
 }
 .raiseValuegrid {
   display: grid;
