@@ -28,7 +28,7 @@
                 Välj ett kort från spelplanen:
               </h1>
               <div class="buyItemCardGrid">
-                <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale" :key="index">
+                <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale.slice().reverse()" :key="index">
                   <CollectorsCard 
                   :card="card" 
                   :availableAction="card.available" 
@@ -143,7 +143,7 @@ export default {
         
       }
       
-      for (let i = 0; i < this.player.hand.length; i += 1) {
+      for (let i =0; i<this.player.hand.length;  i += 1) {
         console.log(this.player.hand[i].item);
         if (this.currentValues[this.player.hand[i].item] <= this.player.money) {
           this.$set(this.player.hand[i],"available" ,true);
