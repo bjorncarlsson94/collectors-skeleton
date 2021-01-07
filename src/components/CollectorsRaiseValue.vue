@@ -214,6 +214,7 @@ export default {
 .wrapper1 {
   display: grid;
   grid-template-rows: repeat(auto-fill, 130px);
+  padding-left: 0.5vw;
 }
 .raiseValuegrid {
   display: grid;
@@ -240,8 +241,8 @@ export default {
 }
 
 .valueIcon {
-  width: 20px;
-  height: 20px;
+  width: 1vw;
+  height: 1vw;
   margin: auto;
   grid-column: 1;
 }
