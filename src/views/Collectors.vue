@@ -2486,7 +2486,8 @@ theColor:onclick {
 
 .items {
   border-radius: 2vw;
-  background-color: #f8dcce;
+  background-image: url("/images/Items_Background.png");
+  background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 2;
   position: relative;
@@ -2497,7 +2498,8 @@ theColor:onclick {
 }
 .skills {
   border-radius: 2vw;
-  background-color: #dfeccc;
+  background-image: url("/images/Skills_Background.png");
+  background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 3;
   position: relative;
@@ -2519,7 +2521,8 @@ theColor:onclick {
 }
 .raiseValue {
   border-radius: 2vw;
-  background-color: #cfdcf2;
+  background-image: url("/images/RV_Background.png");
+  background-size: contain;
   grid-column: 8;
   grid-row: 3 / span 1;
   position: relative;
@@ -2535,7 +2538,8 @@ theColor:onclick {
 }
 .auction {
   border-radius: 2vw;
-  background-color: #f5f2cc;
+  background-image: url("/images/Auction_Background.png");
+  background-size: contain;
   grid-column: 3;
   grid-row: 2 / span 2;
   position: relative;

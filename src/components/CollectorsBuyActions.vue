@@ -224,7 +224,7 @@ export default {
   .button:hover{
     background-color: #da855a;
   }
-  .cardcost {
+  .cardCost {
     font-size:250% ;
     position: relative;
     text-align: center;
