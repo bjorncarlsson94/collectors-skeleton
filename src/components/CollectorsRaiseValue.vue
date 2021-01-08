@@ -70,7 +70,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
         </div>
       </div>
        <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(currentPlacementAmount)">{{labels.cancelBuy}}</button>
+               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
               </div>
     </div>
    
@@ -90,6 +90,7 @@ export default {
     return {
       marketOrder: ["fastaval", "figures", "music", "movie", "tech"],
       currentPlacementAmount: null,
+      currentPlacement: null,
     };
   },
 
@@ -158,6 +159,7 @@ export default {
 
     placeBottle: function (p) {
       this.currentPlacementAmount = p.amountOfCards;
+      this.currentPlacement = p;
       console.log(this.currentPlacementAmount);
       this.$emit("placeBottle", p);
       this.highlightAvailableCards(p.cost);
@@ -214,9 +216,9 @@ export default {
       }
     },
 
-    hideWindow: function(cost){
+    hideWindow: function(){
       
-      this.$emit('cancelBuy', cost);
+      this.$emit('cancelBuy', this.currentPlacement);
     }
   },
 };

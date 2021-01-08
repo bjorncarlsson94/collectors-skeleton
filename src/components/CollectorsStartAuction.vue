@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(chosenPlacementCost)">{{labels.cancelBuy}}</button>
+               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
               </div>
     </div>
     <div class="secretOptionBox" v-show="secretOptionBoxAvailable">
@@ -76,6 +76,7 @@ export default {
   components: {
     CollectorsCard,
   },
+
   props: {
     labels: Object,
     player: Object,
@@ -92,6 +93,7 @@ export default {
       return {
         secretOptionBoxAvailable: false,
         secretOptionCard: Object,
+        currentPlacement: null,
      };
   },
   methods: {
@@ -107,6 +109,7 @@ export default {
       return this.marketValues[card.market];
     },
     placeBottle: function (p) {
+      this.currentPlacement = p;
       this.$emit("placeBottle", p);
       this.highlightAvailableCards(p.cost);
     },
@@ -156,7 +159,7 @@ export default {
         this.highlightAvailableCards();
       }
     },
-    hideWindow: function(cost){
+    hideWindow: function(){
       for (let i = 0; i < this.auctionCards.length; i += 1) {
         
         
@@ -167,7 +170,7 @@ export default {
         
           this.$set(this.player.hand[i], "available", false);
     }
-      this.$emit('cancelBuy', cost);
+      this.$emit('cancelBuy', this.currentPlacement);
     }
     // notYourTurn: function () {
     //   return (this.player.turn== false)
