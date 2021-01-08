@@ -1452,7 +1452,7 @@ export default {
         this.auctionActive = true;
       }
     },
-    placeBottle: function (action, cost) {
+    placeBottle: function (action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
@@ -1465,13 +1465,13 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = true;
       }
-      this.chosenPlacementCost = cost;
+      this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         players: this.players,
         roomId: this.$route.params.id,
         playerId: this.playerId,
         action: action,
-        cost: cost,
+        placement: placement,
       });
     },
     endRoundFunction: function () {
@@ -1676,7 +1676,7 @@ export default {
       });
     },
 
-    removeBottle: function (action, cost) {
+    removeBottle: function (action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = false;
       }
@@ -1689,12 +1689,12 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = false;
       }
-      this.chosenPlacementCost = cost;
+      this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsRemoveBottle", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
         action: action,
-        cost: cost,
+        placement: placement,
         players: this.players,
       });
     },

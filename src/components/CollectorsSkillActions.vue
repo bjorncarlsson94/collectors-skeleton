@@ -85,7 +85,7 @@ export default {
     },
     placeBottle: function (p) {
       
-      this.$emit('placeBottle', p.cost);
+      this.$emit('placeBottle', p);
       this.highlightAvailableCards(p.cost);
     },
     highlightAvailableCards: function (cost=100) {

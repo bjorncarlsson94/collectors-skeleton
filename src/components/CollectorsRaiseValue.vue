@@ -159,7 +159,7 @@ export default {
     placeBottle: function (p) {
       this.currentPlacementAmount = p.amountOfCards;
       console.log(this.currentPlacementAmount);
-      this.$emit("placeBottle", p.cost);
+      this.$emit("placeBottle", p);
       this.highlightAvailableCards(p.cost);
     },
 

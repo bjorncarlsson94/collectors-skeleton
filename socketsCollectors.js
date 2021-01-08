@@ -83,14 +83,14 @@ function sockets(io, socket, data) {
   });
 
   socket.on("collectorsPlaceBottle", function (d) {
-    data.placeBottle(d.roomId, d.playerId, d.action, d.cost, d.players);
+    data.placeBottle(d.roomId, d.playerId, d.action, d.placement, d.players);
     io.to(d.roomId).emit(
       "collectorsBottlePlaced",
       data.getBottlePlacements(d.roomId)
     );
   });
   socket.on("collectorsRemoveBottle", function (d) {
-    data.removeBottle(d.roomId, d.playerId, d.action, d.cost);
+    data.removeBottle(d.roomId, d.playerId, d.action, d.placement);
     io.to(d.roomId).emit(
       "collectorsBottleRemoved",
       data.getPlacements(d.roomId)
