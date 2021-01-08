@@ -2354,7 +2354,7 @@ theColor:onclick {
 }
 .skillsInfo {
   grid-column: 2;
-  background-color: #bbd892;
+  background-color: #bddf8c;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr;
