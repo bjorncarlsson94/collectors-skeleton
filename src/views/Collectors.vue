@@ -351,15 +351,10 @@
               Market share
             </button>
           </div>
-          <div class="loserAuction" v-show="loserAvailable">
-            You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
-            <button
-              class="auctionButtonLoser"
-              v-if="players[playerId]"
-              @click="loserAvailable = false"
-            >
-              OK
-            </button>
+          <div class="transparent" v-show="loserAvailable">
+            <div class="loserAuction">
+              You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
+            </div>
           </div>
           <CollectorsAuction
             v-if="players[playerId]"
@@ -1178,6 +1173,7 @@ export default {
         this.players[this.playerId].currentScore = d.currentScore;
         this.winnerAvailable = false;
         this.auctionLeaderId = null;
+        this.loserAvailable = false;
         if (this.players[this.playerId].turn == true) {
           this.nextPlayer();
         }
@@ -3110,7 +3106,17 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
 }
-
+.transparent{
+  width: 100%;
+  z-index: 50;
+  height: 100%;
+  left: 0vw;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+}
 .animate {
   animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
