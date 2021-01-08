@@ -398,10 +398,12 @@ export default {
   left: 16%;
 }
 @-webkit-keyframes fadeinout {
+  25%{opacity:1;}
   50% { opacity: 1; }
 }
 
 @keyframes fadeinout {
+  25%{opacity:1;}
   50% { opacity: 1; }
 }
 
