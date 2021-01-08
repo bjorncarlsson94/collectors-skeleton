@@ -1050,7 +1050,6 @@ export default {
       "secretPicked",
       function (d) {
         this.players = d.players;
-        this.choosingSecret = false;
       }.bind(this)
     );
 
@@ -1481,6 +1480,7 @@ export default {
     },
     pushToSecret(card){
       console.log("funkar nnnnnuuu")
+      this.choosingSecret = false;
       this.$store.state.socket.emit("pushToSecret", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
