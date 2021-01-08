@@ -258,7 +258,7 @@ export default {
   color: black;
   background-color: #94b5ee;
   margin-block-start: 1em;
-  margin-block-end: 1em;
+  margin-block-end: auto;
   border-radius: 0.5vw;
   font-size: 0.8vw;
 }
@@ -311,6 +311,7 @@ export default {
 }
 
 .valueGrid {
+  display: grid;
   grid-row: 1/2;
   grid-auto-flow: row;
 }

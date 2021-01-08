@@ -352,7 +352,8 @@ export default {
   }
 
 .auctionColumn{
-  grid-row: 1/2;
-  grid-auto-flow: row;
+    grid-row: 1/2;
+    grid-template-rows: 7vw 7vw 7vw 7vw;
+    display: grid
 }
 </style>
