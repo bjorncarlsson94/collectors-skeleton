@@ -582,9 +582,9 @@
             >
               {{ labels.showAuction }}
             </button>
-            <button @click="moveCards()" class="menuButton">
+         <!--   <button @click="moveCards()" class="menuButton">
               hola olle testa här :)
-            </button>
+            </button>-->
             <button @click="nextPlayer()" class="menuButton">
               nästa runda :)
             </button>
@@ -2901,12 +2901,13 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: pink;
   animation: winnerFade 0.5s forwards;
   animation-delay: 0.01;
-  width: 1200px;
-	height: 800px;
+  width: 62.5vw;
+	height: 41.666vw;
 	box-sizing: border-box;
-	padding: 15px;
+	padding: 0.78vw;
 	position: absolute;
 	overflow: hidden;
+  z-index: 100;
   top:7%;
   left:19%;
 
@@ -2918,25 +2919,25 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   grid-template-rows: auto auto ;
   position: relative;
   justify-content: center;
-  grid-gap: 40px;
-  height: 1000px;
+  grid-gap: 2.083vw;
+  height: 52.08vw;
   width: 100%;
  
   
 }
 .winnerPlayerGrid{
-  margin-top: 50px;
+  margin-top: 2.604vw;
   display: grid;
   grid-template-columns: auto auto auto auto;
   position: relative;
   justify-content: center;
-  grid-gap:10px;
+  grid-gap:0.52vw;
    width: auto;
   height: fit-content;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  padding-left: 80px;
-  padding-right: 60px;
+  padding-top: 2.083vw;
+  padding-bottom: 2.083vw;
+  padding-left: 4.1666vw;
+  padding-right: 3.125vw;
   background-color: #005a87;
   border:solid;
   border-color: black;
@@ -2951,15 +2952,15 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
-  height: 100px;
-  width: 200px;
+  height: 5.208vw;
+  width: 10.41vw;
   border-radius: 20%;
   background-color: yellow;
   
   
 }
 .winner{
-  margin-top:100px;
+  margin-top: 5.20833vw;
   grid-row: 1;
   grid-column: 1;
   
@@ -2967,11 +2968,11 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   position: absolute;
   align-self: center;
 
-  font-size: 500%;
+  font-size: 4vw;
   border:solid;
   border-color: black;
   border-width: 0.5px;
-  padding:10px;
+  padding:0.52vw;
   width: 63.5%;
   height: auto;
   box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
