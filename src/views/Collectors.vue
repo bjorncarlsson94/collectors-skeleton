@@ -26,7 +26,8 @@
             <!-- :disabled="pname == '' || players[playerId].color == null" -->
             <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
           </div>
-          <div class="chooseSecret" v-if="players[playerId]" v-show="choosingSecret">
+          <div class="transparent" v-if="players[playerId]" v-show="choosingSecret">
+          <div class="chooseSecret" >
             Choose one secret card:
             <div class="handToSecret">
             <CollectorsCard
@@ -34,6 +35,7 @@
               :card="card"
               :key="index"
               @doAction="pushToSecret(card)"/>
+              </div>
               </div>
           </div>
           <CollectorsBottles
@@ -2034,34 +2036,34 @@ theColor:onclick {
   border-color: white;
 }
 .chooseSecret {
-  display: grid;
-  position: absolute;
-  grid-template-rows: 1fr 5fr;
-  width: 43vw;
-  height: 25vw;
-  background-color: darkgoldenrod;
-  border-radius: 2vw;
-  border-style: solid;
-  border-width: 0.4vw;
-  border-color: black;
-  z-index: 50;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3vw;
-  text-align: center;
-  color: black;
+display: grid;
+    position: absolute;
+    grid-template-rows: 1fr 5fr;
+    width: 20.64vw;
+    height: 12vw;
+    background-color: darkgoldenrod;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.7vw;
+    text-align: center;
+    color: black;
 }
 .handToSecret {
-  zoom: 2.5;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 5.4vw);
-  padding: 0.5vw;
-  height: 80%;
-  background-color: goldenrod;
-  border-radius: 2vw;
-  grid-row: 2;
-  align-content: center;
+zoom: 1.2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 5.4vw);
+    padding: 0.5vw;
+    height: 80%;
+    background-color: goldenrod;
+    border-radius: 2vw;
+    grid-row: 2;
+    align-content: center;
 }
 .playerText {
   grid-row: 2;
@@ -2871,6 +2873,7 @@ theColor:onclick {
 .drawCardCounter {
   align-content: center;
   padding: 50%;
+  font-size: 1.6vw;
   padding-right: 150%;
   border-top-right-radius: 10%;
   border-bottom-right-radius: 10%;

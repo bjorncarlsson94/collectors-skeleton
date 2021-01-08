@@ -212,7 +212,7 @@ Data.prototype.joinGame = function(roomId, playerId) {
       console.log("Player", playerId, "joined for the first time");
       room.players[playerId] = {
         hand: [],
-        money: 3,
+        money: 2,
         bottles: 2,
         totalBottles: 2,
         bottlesOnPlayerbord: [true, true, false, false, false],
@@ -738,6 +738,21 @@ Data.prototype.startTurn = function(roomId) {
     }
     room.startingPlayerId = keys[Math.floor(keys.length * Math.random())];
     room.players[room.startingPlayerId].turn = true;
+    let k = Object.keys(room.players).indexOf(room.startingPlayerId);
+    let coisAmount = 0;
+    while (true){
+      console.log(keys[k] +"   " + k)
+      if(k == keys.length -1){
+        k = -1;
+      }
+      k ++;
+      console.log(keys[k] +"   " + k)
+      if(keys[k]== room.startingPlayerId){
+        break;
+      }
+      coisAmount ++;
+      room.players[keys[k]].money += coisAmount;
+    }
     return room.players, room.round;
   }
 };
@@ -791,16 +806,28 @@ All pools (except the market pool) should have the same number of cards after th
   let k = null;
 
   let room = this.rooms[roomId];
-
+  let cardToRaiseValue = false;
   if (typeof room !== "undefined") {
     //move skills
-    for (let i = room.skillsOnSale.length - 1; i >= 0; i -= 1) {
-      if (room.skillsOnSale[i].market) {
-        c = room.skillsOnSale.splice(i, 1, {});
-        room.raiseItems.push(...c);
-        room.raiseValue = this.cardValue(roomId);
-        //console.log("visas 1 gång. Kort försvinner.");
-        break;
+      for (let i = room.skillsOnSale.length - 1; i >= 0; i -= 1) {
+        if (room.skillsOnSale[i].market) {
+          c = room.skillsOnSale.splice(i, 1, {});
+          room.raiseItems.push(...c);
+          room.raiseValue = this.cardValue(roomId);
+          cardToRaiseValue = true;
+          //console.log("visas 1 gång. Kort försvinner.");
+          break;
+        }
+      }
+    if(cardToRaiseValue != true){
+      for (let i = room.itemsOnSale.length - 1; i >= 0; i -= 1) {
+        if (room.itemsOnSale[i].market) {
+          c = room.itemsOnSale.splice(i, 1, {});
+          room.raiseItems.push(...c);
+          room.raiseValue = this.cardValue(roomId);
+          //console.log("visas 1 gång. Kort försvinner.");
+          break;
+        }
       }
     }
     //Sort Skills
