@@ -130,6 +130,7 @@
                       <div class="cardsinhand">
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
+                          :card="card"
                           :key="index"
                           class="otherHand"
                         />
@@ -2268,6 +2269,7 @@ theColor:onclick {
   grid-column: 1;
   margin-top: 0.4vw;
   align-content: center;
+  text-align: center;
 }
 
 .bottles{
