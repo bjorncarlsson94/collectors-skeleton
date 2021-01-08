@@ -8,9 +8,7 @@
             :availableAction="card.available" 
             @doAction="buyCard(card)"/>
           
-          <div class="cardcost" v-for="(value,key) in raiseValue" :key="key">
-            <p v-if="card.item===key">{{value}}</p>
-          </div>
+          
         </div>
         <div v-for="(p, index) in placement" :key="'A' + index">
           <button class="button"
@@ -33,8 +31,11 @@
                   :card="card" 
                   :availableAction="card.available" 
                   @doAction="buyCard(card)"/>
+                   <div class="cardCost" v-if="card.market!=undefined">{{cardCost(card)}}$</div>
                 </div>
+                
               </div>
+              
                 <h1 class="buyItemHeadings">
                   Välj ett kort från handen:
                 </h1>
@@ -44,6 +45,8 @@
                   :card="card" 
                   :availableAction="card.available" 
                   @doAction="buyCard(card)"/>
+
+                  <div class="cardCost" v-if="card.market!=undefined">{{cardCost(card)}}$</div>
                 </div>
               </div>  
               <div class="buttonGrid">
@@ -101,10 +104,11 @@ export default {
       }
       return (this.player.money < minCost);
     },
+    
     cardCost: function (card) {
      
       for(const key in this.raiseValue){
-        if(key ==card.market){
+        if(key ==card.item){
           return this.currentValues[key]
 
         }
@@ -220,12 +224,19 @@ export default {
   .button:hover{
     background-color: #da855a;
   }
-  .cardcost{
+  .cardcost {
+    font-size:250% ;
+    position: relative;
     text-align: center;
     color: black;
+    
+    background-color: tomato;
+    border-radius: 20%;
     font-weight: bold;
-    font-size: 1vw;
+
   }
+  
+  
   .itemgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -240,7 +251,7 @@ export default {
   .itemsAvailable {
   display: grid;
   position: absolute;
-  grid-template-rows: 15% 30% 15% 30% auto;
+  grid-template-rows: 15% 35% 15% 35% auto;
   width: 60vw;
   height: 45vw;
   background-color: #f8dcce;
@@ -255,6 +266,7 @@ export default {
   }
 
   .buyItemCardGrid{
+    margin-top:-20px ;
     display: grid;
     align-content: center;
     grid-auto-flow: column;
@@ -285,14 +297,28 @@ export default {
 
   }
   .buttonGrid{
+    color: inherit;
     justify-content: center;
-    display: grid;
-    grid-column: 1/6;
+    position: absolute;
+    
+    top: -3px;
+    right: -1.5px;
+    
   }
 
+
   .cancelBuy{
-    width: 20vw;
+    border-top-right-radius: 30%;
+    border:solid;
+    background-color: #f8dcce;
+    filter:brightness(105%);
+    width: 100px;
+    height: 100px;
     font-weight: bold;
+    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+  }
+  .cancelBuy:hover{
+    background-color: #ca9f8a;
   }
 
 

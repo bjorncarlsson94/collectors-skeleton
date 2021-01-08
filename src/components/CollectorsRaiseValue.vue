@@ -230,6 +230,7 @@ export default {
   grid-template-rows: 2.5vw 2.5vw 2.5vw 2.5vw 2.5vw;
   justify-self: space-evenly;
   text-align: center;
+  text-align: -webkit-center;
   margin-bottom: 2vw;
 }
 .cardslots {
@@ -351,9 +352,28 @@ export default {
 
   }
   .buttonGrid{
+    color: inherit;
     justify-content: center;
-    display: grid;
-    grid-column: 1/6;
+    position: absolute;
+    
+    top: -3px;
+    right: -1.5px;
+    
+  }
+
+
+  .cancelBuy{
+    border-top-right-radius: 30%;
+    border:solid;
+    background-color: rgb(95, 216, 253);
+    filter:brightness(105%);
+    width: 100px;
+    height: 100px;
+    font-weight: bold;
+    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+  }
+  .cancelBuy:hover{
+    background-color: rgb(72, 172, 202);
   }
 
 /*
