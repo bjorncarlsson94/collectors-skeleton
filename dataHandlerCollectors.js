@@ -400,7 +400,8 @@ Data.prototype.raiseValue = function(
   roomId,
   playerId,
   card,
-  cost
+  cost,
+  firstCard
 ){
   let room = this.rooms[roomId];
 
@@ -444,10 +445,16 @@ Data.prototype.raiseValue = function(
         break;
       }
     }
-
-    room.raiseItems.push(...c);
-    room.raiseValue = this.cardValue(roomId);
-    room.players[playerId].money -= cost;
+    console.log(firstCard);
+    if(firstCard){
+      room.raiseItems.push(...c);
+      room.raiseValue = this.cardValue(roomId);
+      room.players[playerId].money -= cost;
+    }
+    else{
+      room.raiseItems.push(...c);
+      room.raiseValue = this.cardValue(roomId);
+    }
   }
 }
 

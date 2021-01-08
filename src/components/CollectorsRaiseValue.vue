@@ -146,12 +146,13 @@ export default {
 
     raiseValueNow: function(card){
       if(this.currentPlacementAmount === 2){
-        this.$emit('raiseValue', card);
+        this.$emit('raiseValueFirstCard', card);
         this.$emit('keepWindowOpen');
         this.currentPlacementAmount = 1;
       }
       else{
         this.$emit('raiseValue', card);
+        console.log(card, "kortet i raise value");
       }
     },
 

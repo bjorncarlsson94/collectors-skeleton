@@ -59,7 +59,7 @@ function sockets(io, socket, data) {
   });
 
   socket.on("collectorsRaiseValue", function (d) {
-    data.raiseValue(d.roomId, d.playerId, d.card, d.cost);
+    data.raiseValue(d.roomId, d.playerId, d.card, d.cost, d.firstCard);
     io.to(d.roomId).emit("collectorsValueRaised", {
       playerId: d.playerId,
       players: data.getPlayers(d.roomId),

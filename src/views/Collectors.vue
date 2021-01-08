@@ -315,7 +315,8 @@
                 :notYourTurn="notYourTurn"
                 :aboutToRaiseValue="aboutToRaiseValue"
                 @placeBottle="placeBottle('market', $event)"
-                @raiseValue="raisingValue($event)"
+                @raiseValueFirstCard="raisingValue($event, true)"
+                @raiseValue="raisingValue($event, false)"
                 @keepWindowOpen="keepWindowOpen()"
                 @cancelBuy="removeBottle('market', $event)"
               />
@@ -1344,15 +1345,19 @@ export default {
       this.nextPlayer();
     },
 
-    raisingValue: function(card) {
-      (this.aboutToRaiseValue = false),
+    raisingValue: function(card, firstCard) {
         this.$store.state.socket.emit("collectorsRaiseValue", {
           roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
           cost: this.chosenPlacementCost,
+          firstCard: firstCard,
       });
+      console.log(card, "i collectors")
+      if(firstCard===false){
+      this.aboutToRaiseValue = false;
       this.nextPlayer();
+      }
     },
 
     getLastElement: function(cardArray){
