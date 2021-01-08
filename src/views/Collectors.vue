@@ -2867,7 +2867,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
-  font-size: 200%;
+  font-size: 3vw;
 }
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
