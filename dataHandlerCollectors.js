@@ -334,7 +334,7 @@ Data.prototype.buySkill = function(roomId, playerId, card, cost) {
         break;
       }
     }
-    if (card.skill == "bottle") {
+    if (card.skill == "bottle" && room.players[playerId].totalBottles < 5) {
       this.changeBottleOnPlayerboarad(roomId, playerId, true);
       room.players[playerId].bottles ++;
       room.players[playerId].totalBottles ++;
@@ -345,7 +345,22 @@ Data.prototype.buySkill = function(roomId, playerId, card, cost) {
     room.players[playerId].money -= cost;
   }
 };
-
+Data.prototype.pushToSecret = function(roomId, playerId, card){
+  let room = this.rooms[roomId];
+  if (typeof room !== "undefined") {
+    let c = null;
+    for (let i = 0; i < room.players[playerId].hand.length; i += 1) {
+      if (
+        room.players[playerId].hand[i].x === card.x &&
+        room.players[playerId].hand[i].y === card.y
+      ) {
+        c = room.players[playerId].hand.splice(i, 1);
+        break;
+      }
+    }
+    room.players[playerId].secret.push(...c);
+  }
+};
 Data.prototype.startAuction = function(
   roomId,
   playerId,
@@ -471,6 +486,11 @@ Data.prototype.auctionWon = function(
       room.raiseItems.push(...c);
       room.raiseValue = this.cardValue(roomId);
     } else if (placementType == "skills") {
+      if (card.skill == "bottle" && room.players[playerId].totalBottles < 5) {
+        this.changeBottleOnPlayerboarad(roomId, playerId, true);
+        room.players[playerId].bottles ++;
+        room.players[playerId].totalBottles ++;
+      }
       room.players[playerId].skills.push(...c);
     } else if (placementType == "items") {
       room.players[playerId].items.push(...c);

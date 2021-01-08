@@ -26,6 +26,16 @@
             <!-- :disabled="pname == '' || players[playerId].color == null" -->
             <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
           </div>
+          <div class="chooseSecret" v-if="players[playerId]" v-show="choosingSecret">
+            Choose one secret card:
+            <div class="handToSecret">
+            <CollectorsCard
+              v-for="(card, index) in players[playerId].hand"  
+              :card="card"
+              :key="index"
+              @doAction="pushToSecret(card)"/>
+              </div>
+          </div>
           <CollectorsBottles
             v-if="players[playerId]"
             :labels="labels"
@@ -514,7 +524,13 @@
                       />
                     </div>
                   </div>
-                  <div id="hidden">Hidden:</div>
+                  <div id="hidden">Hidden:
+                    <CollectorsCard
+                      v-for="(card, index) in players[playerId].secret"
+                      :card="card"
+                      :key="index"
+                    />
+                  </div>
 
                   <div class="itemicons">
                     <div>
@@ -890,6 +906,7 @@ export default {
       auctionAvailable: false,
       auctionActive: false,
       auctionMiniActive: false,
+      choosingSecret: false,
       currentPlayerId: null,
       auctionPrice: 0,
       bid: 0,
@@ -1029,6 +1046,14 @@ export default {
         this.players = d.players;
       }.bind(this)
     );
+        this.$store.state.socket.on(
+      "secretPicked",
+      function (d) {
+        this.players = d.players;
+        this.choosingSecret = false;
+      }.bind(this)
+    );
+
 
     this.$store.state.socket.on(
       "collectorsPointsUpdated",
@@ -1175,6 +1200,9 @@ export default {
       "playerPicked",
       function (d) {
         console.log("spelare vald");
+        if (!this.gameStarted){
+          this.choosingSecret = true;
+        }
         this.gameStarted = true;
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
@@ -1450,6 +1478,14 @@ export default {
         this.tempBottlePlacement[i] = true;
       }
       this.endRound = true;
+    },
+    pushToSecret(card){
+      console.log("funkar nnnnnuuu")
+      this.$store.state.socket.emit("pushToSecret", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        card: card,
+      });
     },
     drawCard: function () {
       if (!this.helpAction) {
@@ -1984,6 +2020,36 @@ theColor:onclick {
   cursor: pointer;
   border-color: white;
 }
+.chooseSecret {
+  display: grid;
+  position: absolute;
+  grid-template-rows: 1fr 5fr;
+  width: 43vw;
+  height: 25vw;
+  background-color: darkgoldenrod;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3vw;
+  text-align: center;
+  color: black;
+}
+.handToSecret {
+  zoom: 2.5;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 5.4vw);
+  padding: 0.5vw;
+  height: 80%;
+  background-color: goldenrod;
+  border-radius: 2vw;
+  grid-row: 2;
+  align-content: center;
+}
 .playerText {
   grid-row: 2;
   grid-column: 1/5;
@@ -2451,7 +2517,12 @@ theColor:onclick {
   margin-top: -3vw;
   z-index: 2;
 }
+#hidden{
+  display: grid;
+  grid-template-rows: repeat(8, 2vw);
+  overflow: scroll;
 
+}
 #handTitle {
   margin-left: 10vw;
   position: absolute;

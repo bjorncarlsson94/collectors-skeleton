@@ -102,7 +102,12 @@ function sockets(io, socket, data) {
     data.getPlacements(d.roomId)
     );
   });
-
+  socket.on("pushToSecret", function (d) {
+    data.pushToSecret(d.roomId, d.playerId, d.card);
+    io.to(d.roomId).emit("secretPicked",{
+    players: data.getPlayers(d.roomId),
+  });
+  });
   socket.on("nextPlayer", function (d) {
     data.nextPlayer(d.roomId, d.playerId, d.auctionActive);
     io.to(d.roomId).emit("playerPicked", 
