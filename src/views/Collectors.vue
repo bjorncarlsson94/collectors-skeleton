@@ -2655,7 +2655,6 @@ theColor:onclick {
 .gridedge3 {
   grid-column: 1;
   grid-row: 1;
-  background-color: rgb(194, 194, 194);
   border-radius: 2vw;
   display:flex;
   align-items:center;
