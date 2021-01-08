@@ -12,7 +12,7 @@
 	"roundcounter": "It is round: ",
 	"showAuction": "Show Auction",
 	"recycleBottle": "Recycle a bottle",
-
+	"noBottles":"Too few bottles",
 	"skillsAuction":"Gain 1 money each time an auction is started",
 	"skillsExtraWorker":"Get an extra bottle",
 	"skillsVpAll":"Gain 5 Victory Points by the end of the game, if you have an item of each category",
