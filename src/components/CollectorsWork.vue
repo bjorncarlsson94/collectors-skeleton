@@ -252,7 +252,6 @@ export default {
 .work {
   text-align: center;
   border-radius: 2vw;
-  background-color: grey;
   grid-column: 2;
   grid-row: 2 / span 2;
   position: relative;

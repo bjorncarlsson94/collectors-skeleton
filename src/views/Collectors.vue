@@ -2486,7 +2486,7 @@ theColor:onclick {
 
 .items {
   border-radius: 2vw;
-  background-image: url("/images/Items_Background.png");
+  background-image: url("/images/Items_Background_arrows.png");
   background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 2;
@@ -2498,7 +2498,7 @@ theColor:onclick {
 }
 .skills {
   border-radius: 2vw;
-  background-image: url("/images/Skills_Background.png");
+  background-image: url("/images/Skills_Background_arrows.png");
   background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 3;
@@ -2511,7 +2511,8 @@ theColor:onclick {
 .work {
   text-align: center;
   border-radius: 2vw;
-  background-color: grey;
+  background-image: url("/images/Work_Background.png");
+  background-size: contain;
   grid-column: 2;
   grid-row: 2 / span 2;
   border: solid;
