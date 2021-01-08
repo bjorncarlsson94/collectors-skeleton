@@ -1052,6 +1052,13 @@ export default {
         this.players = d.players;
       }.bind(this)
     );
+        this.$store.state.socket.on(
+      "secretPicked",
+      function (d) {
+        this.players = d.players;
+      }.bind(this)
+    );
+
 
 
     this.$store.state.socket.on(
@@ -1477,6 +1484,18 @@ export default {
         this.tempBottlePlacement[i] = true;
       }
       this.endRound = true;
+<<<<<<< HEAD
+=======
+    },
+    pushToSecret(card){
+      console.log("funkar nnnnnuuu")
+      this.choosingSecret = false;
+      this.$store.state.socket.emit("pushToSecret", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        card: card,
+      });
+>>>>>>> 89717a6fae13268e4dfa93db01db288b96337e22
     },
     pushToSecret(card){
       console.log("funkar nnnnnuuu")
@@ -1952,7 +1971,10 @@ export default {
         playerId: this.playerId,
         amount: amount,
       });
+<<<<<<< HEAD
       this.nextPlayer();
+=======
+>>>>>>> 89717a6fae13268e4dfa93db01db288b96337e22
     },
     //----------------------------------------------------------
   },
