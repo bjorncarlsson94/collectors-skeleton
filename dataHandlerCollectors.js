@@ -1030,35 +1030,40 @@ Data.prototype.cardValue = function(roomId) {
   }
 };
 
-Data.prototype.getItemValue = function(roomId, playerId, card) {
+Data.prototype.getItemValue = function(roomId, playerId) {
   console.log("Hej på dig din jävla king");
-
-
   let room = this.rooms[roomId];
 
+    room.players[playerId].itemValues.ifastaval = 0;
+    room.players[playerId].itemValues.ifigures = 0;
+    room.players[playerId].itemValues.imusic = 0;
+    room.players[playerId].itemValues.imovie = 0;
+    room.players[playerId].itemValues.itechnology = 0;
+ 
   if (typeof room !== "undefined") {
-
-      if (card.item == "fastaval") {
+    for (let i = 0; i < room.players[playerId].items.length; i += 1) {
+      if (room.players[playerId].items[i].item == "fastaval") {
         room.players[playerId].itemValues.ifastaval += 1;
-        console.log("Ny fastaval");
-        // console.log(ifastaval);
-      } else if (card.item == "figures") {
+        console.log("Ny fastaval: ");
+        console.log(room.players[playerId].itemValues.ifastaval);
+      } else if (room.players[playerId].items[i].item == "figures") {
         room.players[playerId].itemValues.ifigures += 1;
-        console.log("Ny figures");
-        // console.log(ifigures);
-      } else if (card.item == "music") {
+        console.log("Ny figures: ");
+        console.log(room.players[playerId].itemValues.ifigures);
+      } else if (room.players[playerId].items[i].item == "music") {
         room.players[playerId].itemValues.imusic += 1;
-        console.log("Ny music");
-        // console.log(imusic);
-      } else if (card.item == "movie") {
+        console.log("Ny music: ");
+        console.log(room.players[playerId].itemValues.imusic);
+      } else if (room.players[playerId].items[i].item == "movie") {
         room.players[playerId].itemValues.imovie += 1;
-        console.log("Ny movie");
-        // console.log(imovie);
-      } else if (card.item == "technology") {
+        console.log("Ny movie: ");
+        console.log(room.players[playerId].itemValues.imovie);
+      } else if (room.players[playerId].items[i].item == "technology") {
         room.players[playerId].itemValues.itechnology += 1;
-        console.log("Ny tech");
-        // console.log(itechnology);
+        console.log("Ny tech: ");
+        console.log(room.players[playerId].itemValues.itechnology);
       }
+    }
     
     
     return {
