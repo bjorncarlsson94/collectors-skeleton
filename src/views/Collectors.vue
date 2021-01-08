@@ -293,6 +293,7 @@
           </div>
           <div
             class="auctionMini"
+            v-bind:class="{turnhighlight: players[playerId].turn}"
             v-show="auctionMiniActive"
             v-if="players[playerId]"
             @click="auctionMiniActiveNow()"
@@ -518,8 +519,6 @@
                       <CollectorsCard
                         v-for="(card, index) in players[playerId].items"
                         :card="card"
-                        :availableAction="card.available"
-                        @doAction="buyCard(card)"
                         :key="index"
                       />
                     </div>
@@ -681,6 +680,7 @@
               :player="players[playerId]"
               :players="players"
               :round="round"
+              :nextPlayer="nextPlayer"
               :workPlacement="workPlacement"
               @recycleBottle="recycleBottle($event)"
               @recycleBottle4thRound="recycleBottle4thRound($event)"
@@ -1137,16 +1137,15 @@ export default {
             this.cardInAuction = d.cardInAuction;
             this.auctionActive = false;
             this.auctionWinner = false;
+            this.auctionMiniActive = false;
             this.biddingCards = [];
             this.players = d.players;
-            if (this.players[this.playerId].turn == true) {
-              this.nextPlayer();
-            }
           } else {
             this.winnerSelection(false);
             this.auctionPrice = 0;
             this.bid = 0;
             this.cardInAuction = d.cardInAuction;
+            this.auctionMiniActive = false;
             this.hiddenAuctionCard = false;
             this.auctionActive = false;
             this.auctionWinner = false;
@@ -1155,9 +1154,6 @@ export default {
             console.log("22 längd" + this.biddingCards.length);
             if (this.biddingCards.length > 0) {
               this.restoreHand();
-            }
-            if (this.players[this.playerId].turn == true) {
-              this.nextPlayer();
             }
           }
         } else {
@@ -1181,6 +1177,9 @@ export default {
         this.players[this.playerId].currentScore = d.currentScore;
         this.winnerAvailable = false;
         this.auctionLeaderId = null;
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1484,20 +1483,8 @@ export default {
         this.tempBottlePlacement[i] = true;
       }
       this.endRound = true;
-<<<<<<< HEAD
-=======
     },
-    pushToSecret(card){
-      console.log("funkar nnnnnuuu")
-      this.choosingSecret = false;
-      this.$store.state.socket.emit("pushToSecret", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-        card: card,
-      });
->>>>>>> 89717a6fae13268e4dfa93db01db288b96337e22
-    },
-    pushToSecret(card){
+    pushToSecret: function(card) {
       console.log("funkar nnnnnuuu")
       this.choosingSecret = false;
       this.$store.state.socket.emit("pushToSecret", {
@@ -1971,10 +1958,7 @@ export default {
         playerId: this.playerId,
         amount: amount,
       });
-<<<<<<< HEAD
       this.nextPlayer();
-=======
->>>>>>> 89717a6fae13268e4dfa93db01db288b96337e22
     },
     //----------------------------------------------------------
   },
@@ -2837,6 +2821,11 @@ theColor:onclick {
   font-size: 3vw;
   text-align: center;
   cursor: pointer;
+}
+.auctionMini.turnhighlight {
+  filter: brightness(110%);
+  border-color: rgb(199, 199, 199);
+  box-shadow: 0 0 1vw rgb(199, 199, 199);
 }
 .hiddenAuctionCardMini {
   background-image: url(/images/back-of-card.png);
