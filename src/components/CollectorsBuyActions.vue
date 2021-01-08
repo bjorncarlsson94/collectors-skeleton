@@ -186,7 +186,16 @@ export default {
     },
 
     hideWindow: function(cost){
-      
+      for (let i = 0; i < this.itemsOnSale.length; i += 1) {
+        
+        
+          this.$set(this.itemsOnSale[i], "available", false);
+    }
+      for (let i = 0; i < this.player.hand.length; i += 1) {
+        
+        
+          this.$set(this.player.hand[i], "available", false);
+    }
       this.$emit('cancelBuy', cost);
     }
 
