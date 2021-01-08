@@ -8,16 +8,14 @@
             :availableAction="card.available" 
             @doAction="buyCard(card)"/>
           
-          <div class="cardcost" v-for="(value,key) in raiseValue" :key="key">
-            <p v-if="card.item===key">{{value}}</p>
-          </div>
+          
         </div>
         <div v-for="(p, index) in placement" :key="'A' + index">
           <button class="button"
             v-if="p.playerId===null"
             :disabled="notYourTurn() || cannotAfford(p.cost)" 
             @click="placeBottle(p)" >
-            ${{p.cost}}p
+            ${{p.cost}}
           </button>
           <div class="bottlePlace" :style="{backgroundColor: players[p.playerId].color}" v-if="p.playerId !== null">
           </div>
@@ -28,13 +26,16 @@
                 Välj ett kort från spelplanen:
               </h1>
               <div class="buyItemCardGrid">
-                <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale" :key="index">
+                <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale.slice().reverse()" :key="index">
                   <CollectorsCard 
                   :card="card" 
                   :availableAction="card.available" 
                   @doAction="buyCard(card)"/>
+                   <div class="cardCost" v-if="card.market!=undefined">{{cardCost(card)}}$</div>
                 </div>
+                
               </div>
+              
                 <h1 class="buyItemHeadings">
                   Välj ett kort från handen:
                 </h1>
@@ -44,10 +45,12 @@
                   :card="card" 
                   :availableAction="card.available" 
                   @doAction="buyCard(card)"/>
+
+                  <div class="cardCost" v-if="card.market!=undefined">{{cardCost(card)}}$</div>
                 </div>
               </div>  
               <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">Avbryt köp</button>
+               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">{{labels.cancelBuy}}</button>
               </div>
           </div>
     </div>
@@ -101,10 +104,11 @@ export default {
       }
       return (this.player.money < minCost);
     },
+    
     cardCost: function (card) {
      
       for(const key in this.raiseValue){
-        if(key ==card.market){
+        if(key ==card.item){
           return this.currentValues[key]
 
         }
@@ -143,7 +147,7 @@ export default {
         
       }
       
-      for (let i = 0; i < this.player.hand.length; i += 1) {
+      for (let i =0; i<this.player.hand.length;  i += 1) {
         console.log(this.player.hand[i].item);
         if (this.currentValues[this.player.hand[i].item] <= this.player.money) {
           this.$set(this.player.hand[i],"available" ,true);
@@ -182,7 +186,16 @@ export default {
     },
 
     hideWindow: function(cost){
-      
+      for (let i = 0; i < this.itemsOnSale.length; i += 1) {
+        
+        
+          this.$set(this.itemsOnSale[i], "available", false);
+    }
+      for (let i = 0; i < this.player.hand.length; i += 1) {
+        
+        
+          this.$set(this.player.hand[i], "available", false);
+    }
       this.$emit('cancelBuy', cost);
     }
 
@@ -220,12 +233,19 @@ export default {
   .button:hover{
     background-color: #da855a;
   }
-  .cardcost{
+  .cardCost {
+    font-size:1vw ;
+    position: relative;
     text-align: center;
     color: black;
+    border: solid;
+    background-color: #da855a;
+    border-radius: 20%;
     font-weight: bold;
-    font-size: 1vw;
+
   }
+  
+  
   .itemgrid{
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -240,7 +260,7 @@ export default {
   .itemsAvailable {
   display: grid;
   position: absolute;
-  grid-template-rows: 15% 30% 15% 30% auto;
+  grid-template-rows: 15% 35% 15% 35% auto;
   width: 60vw;
   height: 45vw;
   background-color: #f8dcce;
@@ -255,6 +275,7 @@ export default {
   }
 
   .buyItemCardGrid{
+    margin-top:-20px ;
     display: grid;
     align-content: center;
     grid-auto-flow: column;
@@ -285,24 +306,50 @@ export default {
 
   }
   .buttonGrid{
+    color: inherit;
     justify-content: center;
-    display: grid;
-    grid-column: 1/6;
+    position: absolute;
+    
+    top: -3px;
+    right: -1.5px;
+    
   }
 
+
   .cancelBuy{
-    width: 20vw;
+    border-top-right-radius: 30%;
+    border:solid;
+    background-color: #ffbe9e;
+    filter:brightness(105%);
+    width: 5.208vw;
+    height: 5.208vw;
+    font-size: 1vw;
     font-weight: bold;
+    
+    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+  }
+  .cancelBuy:hover{
+    background-color: #da855a;
+  }
+  .cancelBuy:active{
+    background-color: #da855a;
+    background-color: #da855a;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
   }
 
 
 .bottlePlace {
     background-image: url(/images/player-bottle.png);
-    margin-top: 0.5vw;
+    margin-top: 0vw;
     height: 3vw;
     width: 3vw;
     background-color: rgb(95, 216, 253);
-    border-radius: 1.5vw;
+    border-radius: 4vw;
+    border-style: ridge;
+    box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+    border-width: 0.2vw;
+    border-color: rgba(77, 58, 58, 0.658);
     z-index: 60;
     background-position: center;
     background-repeat: no-repeat;

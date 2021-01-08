@@ -13,10 +13,18 @@
 	"showAuction": "Show Auction",
 	"recycleBottle": "Recycle a bottle",
 
+	"skillsAuction":"Gain 1 money each time an auction is started",
+	"skillsExtraWorker":"Get an extra bottle",
+	"skillsVpAll":"Gain 5 Victory Points by the end of the game, if you have an item of each category",
+	"skillsVp":"Gain 1 Victory Point for each item in specified category, at the end of the game",
+	"skillsWork1":"Gain 2 money, each time you do work",
+	"skillsWork2":"Draw a card, each time you do work",
+	"cancelBuy":"Cancel Action",
 	"player2": "Player 2",
 	"player3": "Player 3",
 	"player4": "Player 4",
 	"_comment": "För att komma åt den här infon kör lables.helpPlayerHand.title exempelvis",
+	"points":"Score",
 	"helpPlayerHand":{
 		"title":"Player Hand:",
 		"itemArea":"Item Area (red):",
@@ -111,7 +119,7 @@
 		"detailedScoring2":"Each item gives their owner one point per market card in the market pool sharing the item symbol with the item. If there are no matching cards in the market pool to an item it is worth zero points.",
 		"detailedScoring3":"Every third $1 gives their owner one point.",
 		"detailedScoring4":"Some skill cards give further points, see skills ",
-		"TieTitle":"In case if tie",
+		"TieTitle":"In case of a tie",
 		"Tie":"The player with the most points is the winner of the game. In the case of a tie, the player with the most cards in their hand wins. If there’s still a tie, the victory is shared."
 
 	},

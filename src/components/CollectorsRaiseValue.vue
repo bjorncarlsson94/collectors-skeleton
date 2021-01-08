@@ -69,8 +69,13 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
           />
         </div>
       </div>
+       <div class="buttonGrid">
+               <button class="cancelBuy" @click="hideWindow(currentPlacementAmount)">{{labels.cancelBuy}}</button>
+              </div>
     </div>
+   
   </div>
+  
 </template>
 
 <script>
@@ -154,7 +159,7 @@ export default {
       this.currentPlacementAmount = p.amountOfCards;
       console.log(this.currentPlacementAmount);
       this.$emit("placeBottle", p.cost);
-      //this.highlightAvailableCards(p.cost);
+      this.highlightAvailableCards(p.cost);
     },
 
     findLastCard: function(cardArray){
@@ -176,16 +181,26 @@ export default {
     },
 
     highlightAvailableCards: function (cost=100) {
-  
-      for (let i = 0; i < this.raiseItemsFromBoard.length; i += 1) {
-        if (this.marketValues[this.raiseItemsFromBoard[i].item] <= this.player.money - cost) {
-          this.$set(this.raiseItemsFromBoard[i], "available", true);
-        }
-        else {
-          this.$set(this.raiseItemsFromBoard[i], "available", false);
-        }
+
+      if (this.marketValues[this.auctionCard.item] <= this.player.money - cost) {
+        this.$set(this.auctionCard, "available", true);
         this.chosenPlacementCost = cost; 
       }
+      else {
+        this.$set(this.auctionCard, "available", false);
+        this.chosenPlacementCost = cost; 
+      }
+      
+      if (this.marketValues[this.skillOnSale.item] <= this.player.money - cost) {
+        this.$set(this.skillOnSale, "available", true);
+        this.chosenPlacementCost = cost; 
+      }
+      else {
+        this.$set(this.skillOnSale, "available", false);
+        this.chosenPlacementCost = cost; 
+      }
+
+      
       for (let i = 0; i < this.player.hand.length; i += 1) {
         if (this.marketValues[this.player.hand[i].item] <= this.player.money - cost) {
           this.$set(this.player.hand[i], "available", true);
@@ -198,6 +213,10 @@ export default {
       }
     },
 
+    hideWindow: function(cost){
+      
+      this.$emit('cancelBuy', cost);
+    }
   },
 };
 //
@@ -214,12 +233,14 @@ export default {
 .wrapper1 {
   display: grid;
   grid-template-rows: repeat(auto-fill, 130px);
+  padding-left: 0.5vw;
 }
 .raiseValuegrid {
   display: grid;
   grid-template-rows: 2.5vw 2.5vw 2.5vw 2.5vw 2.5vw;
   justify-self: space-evenly;
   text-align: center;
+  text-align: -webkit-center;
   margin-bottom: 2vw;
 }
 .cardslots {
@@ -240,8 +261,8 @@ export default {
 }
 
 .valueIcon {
-  width: 20px;
-  height: 20px;
+  width: 1vw;
+  height: 1vw;
   margin: auto;
   grid-column: 1;
 }
@@ -257,29 +278,33 @@ export default {
   margin: 1vw;
   padding: 0.2vw;
   color: black;
-  background-color: #d2ebad;
+  background-color: rgb(130, 226, 255);
   border-radius: 1vw;
   box-shadow: 0 0.3vw #999;
 }
 .button:active {
-  background-color: #aeda6e;
+  background-color:rgb(95, 216, 253);
   box-shadow: 0 0.2vw #999;
   transform: translateY(0.1vw);
 }
 .button:hover {
-  background-color: #aeda6e;
+  background-color: rgb(95, 216, 253);
 }
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
-  margin-top: 0.5vw;
-  height: 3vw;
-  width: 3vw;
-  background-color: rgb(95, 216, 253);
-  border-radius: 1.5vw;
-  z-index: 60;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+    margin-top: 0vw;
+    height: 3vw;
+    width: 3vw;
+    background-color: rgb(95, 216, 253);
+    border-radius: 4vw;
+    border-style: ridge;
+    box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+    border-width: 0.2vw;
+    border-color: rgba(77, 58, 58, 0.658);
+    z-index: 60;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .valueGrid {
@@ -335,6 +360,31 @@ export default {
     zoom: 2;
     overflow: hidden;
 
+  }
+  .buttonGrid{
+    color: inherit;
+    justify-content: center;
+    position: absolute;
+    
+    top: -3px;
+    right: -1.5px;
+    
+  }
+
+
+  .cancelBuy{
+    border-top-right-radius: 30%;
+    border:solid;
+    background-color: rgb(95, 216, 253);
+    filter:brightness(105%);
+    width: 5.208vw;
+    height: 5.208vw;
+    font-size: 1vw;
+    font-weight: bold;
+    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+  }
+  .cancelBuy:hover{
+    background-color: rgb(72, 172, 202);
   }
 
 /*
