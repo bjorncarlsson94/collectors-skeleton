@@ -229,6 +229,11 @@ Data.prototype.joinGame = function(roomId, playerId) {
 Data.prototype.getPlayers = function(id) {
   let room = this.rooms[id];
   if (typeof room !== "undefined") {
+    for (const player in room.players) {
+        if(player.currentScore>=0){
+        player.currentScore=this.currentValue(id, player);
+      }
+    }
     return room.players;
   } else return {};
 };

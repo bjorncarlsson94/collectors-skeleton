@@ -2495,7 +2495,7 @@ theColor:onclick {
 }
 .skillsInfo {
   grid-column: 2;
-  background-color: #bbd892;
+  background-color: #bddf8c;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr;
@@ -2651,6 +2651,7 @@ theColor:onclick {
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
+
 .work {
   text-align: center;
   border-radius: 2vw;
@@ -2682,7 +2683,7 @@ theColor:onclick {
 }
 .auction {
   border-radius: 2vw;
-  background-image: url("/images/Auction_Background.png");
+  background-image: url("/images/Auction_Background_arrow.png");
   background-size: contain;
   grid-column: 3;
   grid-row: 2 / span 2;

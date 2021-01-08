@@ -159,7 +159,7 @@ export default {
       this.currentPlacementAmount = p.amountOfCards;
       console.log(this.currentPlacementAmount);
       this.$emit("placeBottle", p.cost);
-      //this.highlightAvailableCards(p.cost);
+      this.highlightAvailableCards(p.cost);
     },
 
     findLastCard: function(cardArray){
@@ -181,16 +181,26 @@ export default {
     },
 
     highlightAvailableCards: function (cost=100) {
-  
-      for (let i = 0; i < this.raiseItemsFromBoard.length; i += 1) {
-        if (this.marketValues[this.raiseItemsFromBoard[i].item] <= this.player.money - cost) {
-          this.$set(this.raiseItemsFromBoard[i], "available", true);
-        }
-        else {
-          this.$set(this.raiseItemsFromBoard[i], "available", false);
-        }
+
+      if (this.marketValues[this.auctionCard.item] <= this.player.money - cost) {
+        this.$set(this.auctionCard, "available", true);
         this.chosenPlacementCost = cost; 
       }
+      else {
+        this.$set(this.auctionCard, "available", false);
+        this.chosenPlacementCost = cost; 
+      }
+      
+      if (this.marketValues[this.skillOnSale.item] <= this.player.money - cost) {
+        this.$set(this.skillOnSale, "available", true);
+        this.chosenPlacementCost = cost; 
+      }
+      else {
+        this.$set(this.skillOnSale, "available", false);
+        this.chosenPlacementCost = cost; 
+      }
+
+      
       for (let i = 0; i < this.player.hand.length; i += 1) {
         if (this.marketValues[this.player.hand[i].item] <= this.player.money - cost) {
           this.$set(this.player.hand[i], "available", true);

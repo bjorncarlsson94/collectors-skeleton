@@ -8,19 +8,20 @@
         id="workslot5"
         :style="{ backgroundImage: 'url(' + getWorkslot5Image() + ')' }"
         v-on:click="quarterTilePressed"
-      />
-      <button class="workslot" id="workslot4" v-on:click="recycleBottle" />
-      <button class="workslot" id="workslot3" v-on:click="drawTwoCards" />
+      ><span v-if="quarterTilePressedActive" class="tooltiptext">{{labels.noBottles}}</span> </button>
+      <button class="workslot" id="workslot4" v-on:click="recycleBottle"><span v-if="recycleBottleActive" class="tooltiptext">{{labels.noBottles}}</span> </button>
+      <button class="workslot" id="workslot3" v-on:click="drawTwoCards"><span v-if="drawTwoCardsActive" class="tooltiptext">{{labels.noBottles}}</span> </button>
       <button
+      
         class="workslot"
         id="workslot2"
         v-on:click="drawACardAndFirstPlayerToken"
-      />
+      ><span v-if="drawACardAndFirstPlayerTokenActive" class="tooltiptext">{{labels.noBottles}}</span> </button>
       <button
         class="workslot"
         id="workslot1"
         v-on:click="drawCardAndPassiveIncome"
-      />
+      ><span v-if="drawCardAndPassiveIncomeActive" class="tooltiptext">{{labels.noBottles}}</span> </button>
     </div>
     <div
       class="bottlePlace"
@@ -57,6 +58,7 @@
           players[this.workPlacement.quarterTile].color,
       }"
     ></div>
+   
   </div>
 </template>
 
@@ -70,9 +72,21 @@ export default {
     players: Object,
     round: Number,
     workPlacement: Object, //Finns en flaska här? true/false
+    
     //drawTwoCards = 0
     //drawACardAndFirstPlayerToken = 0
     //drawCardAndPassiveIncome = 0
+  },
+  data:function(){
+    return{
+      popUpTestActiveBol:false,
+      drawCardAndPassiveIncomeActive:false,
+      drawACardAndFirstPlayerTokenActive:false,
+      drawTwoCardsActive:false,
+      recycleBottleActive:false,
+      quarterTilePressedActive:false,
+    }
+
   },
   methods: {
     //  (this.workPlacement[0] === false) detta är en fuling quick fix tänk silvertejp. Det funkar det är det viktigaste än så länge.
@@ -86,11 +100,14 @@ export default {
         this.$emit("addMoney", 1);
         this.placeWorker("drawTwoCards");
       } else {
-        alert("Antingen för få flaskor eller så är platsen upptagen");
+         this.drawTwoCardsActive=!this.drawTwoCardsActive;
+        
       }
     },
     //Lägg en flaska här och dra ett kort samt ta First Player Token
     drawACardAndFirstPlayerToken: function() {
+      
+      
       if (
         this.workPlacement.drawACardAndFirstPlayerToken === null &&
         this.player.bottles > 0 &&
@@ -100,7 +117,8 @@ export default {
         this.$emit("drawACardAndFirstPlayerToken");
         this.placeWorker("drawACardAndFirstPlayerToken");
       } else {
-        alert("Antingen för få flaskor eller så är platsen upptagen");
+         this.drawACardAndFirstPlayerTokenActive=!this.drawACardAndFirstPlayerTokenActive;
+        
       }
     },
     //Lägg en flaska här och dra ett kort samt ett kort som passiv inkomst
@@ -116,7 +134,9 @@ export default {
         this.$emit("drawCardAndPassiveIncome");
         this.placeWorker("drawCardAndPassiveIncome");
       } else {
-        alert("Antingen för få flaskor eller så är platsen upptagen");
+        
+         this.drawCardAndPassiveIncomeActive=!this.drawCardAndPassiveIncomeActive;
+         
       }
     },
     //Panta en flaska så får du en peng, går att gö hur många gånger som helst
@@ -125,6 +145,7 @@ export default {
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks");
       if (this.round === 4) {
+         this.popUpTestActive();
         alert("Round 4 use special action!");
         return;
       }
@@ -132,11 +153,19 @@ export default {
         console.log("player bottles > 0");
         this.$emit("recycleBottle");
       } else {
-        alert("Too few bottles :^(");
+        
+        this.recycleBottleActive=!this.recycleBottleActive;
+        
       }
     },
     //På fjärde omgången kan du panta en flaska och få 3 pengar ist
     quarterTilePressed: function() {
+      
+      if(this.player.bottles==0){
+        
+        this.quarterTilePressedActive=!this.quarterTilePressedActive;
+
+      }
       switch (this.round) {
         case 0:
           break;
@@ -205,6 +234,12 @@ export default {
           return "/images/Work5_png.png";
       }
     },
+    popUpTestActive:function(){
+      
+      console.log("kom hit");
+      this.popUpTestActiveBol=true;
+
+    }
     /*showPopup: function(typeOfAlert){
       if(typeOfAlert=="aaa"){
 
@@ -333,6 +368,19 @@ export default {
   background-repeat: no-repeat;
   background-size: contain;
 }
+.tooltiptext {
+  -webkit-animation: fadeinout 3s linear forwards;
+    animation: fadeinout 3s linear forwards;
+    opacity: 0;
+  width: 120px;
+  background-color: rgba(66, 57, 57, 0.897);
+  color: #fff;
+  position: absolute;
+  border-radius: 6px;
+  right: -50%;
+  padding: 5px 0;
+  float:right;
+}
 #workBottle0 {
   top: 43%;
   left: 16%;
@@ -349,4 +397,14 @@ export default {
   top: 7%;
   left: 16%;
 }
+@-webkit-keyframes fadeinout {
+  25%{opacity:1;}
+  50% { opacity: 1; }
+}
+
+@keyframes fadeinout {
+  25%{opacity:1;}
+  50% { opacity: 1; }
+}
+
 </style>
