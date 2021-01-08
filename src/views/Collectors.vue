@@ -214,12 +214,15 @@
             @click="auctionMiniActiveNow()"
           >
             {{ bid }}$
-            <div class="auctionCardViewMini">
+            <div class="auctionCardViewMini" v-if="!hiddenAuctionCard">
               <CollectorsCard
                 v-for="(card, index) in cardInAuction"
                 :card="card"
                 :key="index"
               />
+            </div>
+            <div class="auctionCardViewMini" v-if="hiddenAuctionCard">
+              <div class="hiddenAuctionCardMini"></div>
             </div>
           </div>
           <div class="winnerAuction" v-show="winnerAvailable">
@@ -440,12 +443,12 @@
                   />
                 </div>
                 <div class="skillsInfo">
-                  <div class="tooltip"><img src="/images/Skills_auction.png" width="70%"> <span class="tooltiptext">Gain 1 money each time an auction is started</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_extraWorker.png" width="70%"> <span class="tooltiptext">Get an extra bottle</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_VP_all.png" width="70%"> <span class="tooltiptext"> Gain 5 Victory Points by the end of the game, if you have an item of each category</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_VP.png" width="70%"> <span class="tooltiptext">Gain 1 Victory Point for each item in specified category, at the end of the game</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_work1.png" width="70%"> <span class="tooltiptext">Gain 2 money, each time you do work</span> </div>
-                  <div class="tooltip"><img src="/images/Skills_work2.png" width="70%"> <span class="tooltiptext">Draw a card, each time you do work</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_auction.png" width="70%"> <span class="tooltiptext">{{labels.skillsAuction}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_extraWorker.png" width="70%"> <span class="tooltiptext">{{labels.skillsExtraWorker}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_VP_all.png" width="70%"> <span class="tooltiptext"> {{labels.skillsVpAll}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_VP.png" width="70%"> <span class="tooltiptext">{{labels.skillsVp}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_work1.png" width="70%"> <span class="tooltiptext">{{labels.skillsWork1}}</span> </div>
+                  <div class="tooltip"><img src="/images/Skills_work2.png" width="70%"> <span class="tooltiptext">{{labels.skillsWork2}}</span> </div>
                 </div>
               </div>
               <div class="boardHand">
@@ -534,6 +537,7 @@
               @placeWorker="placeWorker($event)"
               @drawCard="drawCard($event)"
               @addMoney="addMoney($event)"
+              @addPassiveIncome="addPassiveIncome($event)"
             />
           </div>
 
@@ -579,9 +583,9 @@
             >
               {{ labels.showAuction }}
             </button>
-            <button @click="moveCards()" class="menuButton">
+         <!--   <button @click="moveCards()" class="menuButton">
               hola olle testa här :)
-            </button>
+            </button>-->
             <button @click="nextPlayer()" class="menuButton">
               nästa runda :)
             </button>
@@ -625,7 +629,7 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round==5"> 
+    <div class="winnerBox" v-if="round>=5"> 
       <div class="winnerBoxContent">
         <div class="winnerPlayerGrid" >
         <div class="winnerBoxPlayers" :style="{backgroundColor: item.color}"  v-for="(item,index) in players" :key="index">
@@ -709,6 +713,7 @@ export default {
         drawACardAndFirstPlayerToken: null,
         drawCardAndPassiveIncome: null,
         drawTwoCards: null,
+        quarterTile: null,
       },
       chosenPlacementCost: null,
       marketValues: {
@@ -956,6 +961,10 @@ export default {
             this.auctionActive = false;
             this.auctionWinner = false;
             this.biddingCards = [];
+            this.players = d.players;
+            if (this.players[this.playerId].turn == true){
+                this.nextPlayer();
+            }
           } else {
             this.winnerSelection(false);
             this.auctionPrice = 0;
@@ -965,9 +974,13 @@ export default {
             this.auctionActive = false;
             this.auctionWinner = false;
             this.cardBidTotal = 0;
+            this.players = d.players;
             console.log("22 längd" + this.biddingCards.length);
             if (this.biddingCards.length > 0) {
               this.restoreHand();
+            }
+            if (this.players[this.playerId].turn == true){
+              this.nextPlayer();
             }
           }
         } else {
@@ -977,7 +990,6 @@ export default {
           //this.bid = d.auctionPrice;
           this.cardInAuction = d.cardInAuction;
         }
-        this.players = d.players;
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -989,8 +1001,16 @@ export default {
         this.players = d.players;
         this.auctionPrice = 0;
         this.cardInAuction = d.cardInAuction;
+        this.players[this.playerId].currentScore=d.currentScore;
         this.winnerAvailable = false;
         this.auctionLeaderId = null;
+      }.bind(this)
+    );
+        this.$store.state.socket.on(
+      "handRestord",
+      function(d) {
+        this.players = d.players;
+        this.biddingCards = [];
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1085,6 +1105,11 @@ export default {
       "moneyAdded", 
       (d) => (this.players = d)
     );
+
+    this.$store.state.socket.on(
+      "passiveIncomeAdded",
+      (d) => (this.players = d)
+    );
     //------------------------------
 
     this.$store.state.socket.emit("collectorsGetDeckLength", {
@@ -1128,7 +1153,8 @@ export default {
     winnerSelection: function(ifWinner) {
       if (ifWinner == true) {
         this.winnerAvailable = true;
-      } else {
+      } 
+      else {
         this.loserAvailable = true;
       }
     },
@@ -1234,7 +1260,6 @@ export default {
         placementType: placementType,
         auctionPrice: this.auctionPrice,
       });
-      this.nextPlayer();
     },
     showHelp: function(label) {
       label;
@@ -1743,6 +1768,14 @@ export default {
         amount: amount,
       });
     },
+    addPassiveIncome: function(amount) {
+      this.$store.state.socket.emit(
+        "addPassiveIncome", {
+          roomId: this.$route.params.id,
+          playerId: this.playerId,
+          amount: amount,
+        });
+    },
     //----------------------------------------------------------
   },
 };
@@ -1970,9 +2003,9 @@ theColor:onclick {
   cursor: pointer;
 }
 .otherplayer.turnhighlight{
-  filter:brightness(120%);
-  border-color: grey;
-  box-shadow: 0 0 1vw white;
+  filter:brightness(110%);
+  border-color: rgb(199, 199, 199);
+  box-shadow: 0 0 1vw rgb(199, 199, 199);
 }
 .otherPlayerClosed{
   display: grid;
@@ -2014,9 +2047,9 @@ theColor:onclick {
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .playerboard.turnhighlight{
-  filter:brightness(120%);
-  border-color: grey;
-  box-shadow: 0 0 1vw white;
+  filter:brightness(110%);
+  border-color: rgb(199, 199, 199);
+  box-shadow: 0 0 1vw rgb(199, 199, 199);
 }
 
 /* Hover över spelarområdena*/
@@ -2455,7 +2488,8 @@ theColor:onclick {
 
 .items {
   border-radius: 2vw;
-  background-color: #f8dcce;
+  background-image: url("/images/Items_Background_arrows.png");
+  background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 2;
   position: relative;
@@ -2466,7 +2500,8 @@ theColor:onclick {
 }
 .skills {
   border-radius: 2vw;
-  background-color: #dfeccc;
+  background-image: url("/images/Skills_Background_arrows.png");
+  background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 3;
   position: relative;
@@ -2478,7 +2513,8 @@ theColor:onclick {
 .work {
   text-align: center;
   border-radius: 2vw;
-  background-color: grey;
+  background-image: url("/images/Work_Background.png");
+  background-size: contain;
   grid-column: 2;
   grid-row: 2 / span 2;
   border: solid;
@@ -2488,7 +2524,8 @@ theColor:onclick {
 }
 .raiseValue {
   border-radius: 2vw;
-  background-color: #cfdcf2;
+  background-image: url("/images/RV_Background.png");
+  background-size: contain;
   grid-column: 8;
   grid-row: 3 / span 1;
   position: relative;
@@ -2504,7 +2541,8 @@ theColor:onclick {
 }
 .auction {
   border-radius: 2vw;
-  background-color: #f5f2cc;
+  background-image: url("/images/Auction_Background.png");
+  background-size: contain;
   grid-column: 3;
   grid-row: 2 / span 2;
   position: relative;
@@ -2541,22 +2579,30 @@ theColor:onclick {
 }
 .auctionMini {
   display: grid;
-  margin-top: 3vw;
-  grid-column: 8;
-  grid-template-rows: 20% 60% auto;
-  grid-template-columns: auto;
-  width: 9vw;
-  height: 16vw;
-  background-color: #f5efa0;
-  border-radius: 2vw;
-  border-style: solid;
-  border-width: 0.4vw;
-  border-color: black;
-  z-index: 50;
-  color: darkgreen;
-  font-size: 3vw;
-  text-align: center;
-  cursor: pointer;
+    margin-top: 3vw;
+    grid-row: 1;
+    grid-column: 7;
+    grid-template-rows: 20% 60% auto;
+    grid-template-columns: auto;
+    width: 9vw;
+    height: 15vw;
+    background-color: #f5efa0;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    color: darkgreen;
+    font-size: 3vw;
+    text-align: center;
+    cursor: pointer;
+}
+.hiddenAuctionCardMini{
+    background-image: url(/images/back-of-card.png);
+    background-size: cover;
+    width: 4.8vw;
+    height: 6vw;
+    background-repeat: no-repeat;
 }
 .roundCounter {
   grid-column: 1;
@@ -2616,7 +2662,10 @@ theColor:onclick {
 .gridedge3 {
   grid-column: 1;
   grid-row: 1;
-  text-align:center;
+  border-radius: 2vw;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .gridedge3 .collectorsIcon{
   object-fit:cover;
@@ -2821,7 +2870,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
-  font-size: 200%;
+  font-size: 3vw;
 }
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
@@ -2859,12 +2908,13 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: pink;
   animation: winnerFade 0.5s forwards;
   animation-delay: 0.01;
-  width: 1200px;
-	height: 800px;
+  width: 62.5vw;
+	height: 41.666vw;
 	box-sizing: border-box;
-	padding: 15px;
+	padding: 0.78vw;
 	position: absolute;
 	overflow: hidden;
+  z-index: 100;
   top:7%;
   left:19%;
 
@@ -2876,25 +2926,25 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   grid-template-rows: auto auto ;
   position: relative;
   justify-content: center;
-  grid-gap: 40px;
-  height: 1000px;
+  grid-gap: 2.083vw;
+  height: 52.08vw;
   width: 100%;
  
   
 }
 .winnerPlayerGrid{
-  margin-top: 50px;
+  margin-top: 2.604vw;
   display: grid;
   grid-template-columns: auto auto auto auto;
   position: relative;
   justify-content: center;
-  grid-gap:10px;
+  grid-gap:0.52vw;
    width: auto;
   height: fit-content;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  padding-left: 80px;
-  padding-right: 60px;
+  padding-top: 2.083vw;
+  padding-bottom: 2.083vw;
+  padding-left: 4.1666vw;
+  padding-right: 3.125vw;
   background-color: #005a87;
   border:solid;
   border-color: black;
@@ -2909,15 +2959,15 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   border-color: black;
   border-width: 0.5px;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
-  height: 100px;
-  width: 200px;
+  height: 5.208vw;
+  width: 10.41vw;
   border-radius: 20%;
   background-color: yellow;
   
   
 }
 .winner{
-  margin-top:100px;
+  margin-top: 5.20833vw;
   grid-row: 1;
   grid-column: 1;
   
@@ -2925,11 +2975,11 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   position: absolute;
   align-self: center;
 
-  font-size: 500%;
+  font-size: 4vw;
   border:solid;
   border-color: black;
   border-width: 0.5px;
-  padding:10px;
+  padding:0.52vw;
   width: 63.5%;
   height: auto;
   box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);

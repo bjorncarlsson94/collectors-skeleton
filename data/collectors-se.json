@@ -12,10 +12,16 @@
 	"roundcounter": "Det är rund: ",
 	"showAuction": "Visa auktion",
 	"recycleBottle": "Återvinn flaska",
-	"points":"Poäng",
+	"points":"Victory Points",
 	"player2": "Spelare 2",
 	"player3": "Spelare 3",
 	"player4": "Spelare 4",
+	"skillsAuction":"Få 1 dollar varje gång en auktion startas",
+	"skillsExtraWorker":"Få en extra bottle",
+	"skillsVpAll":"Få 5 Victory Points i slutet av spelet, om du har minst ett item av varje kategori",
+	"skillsVp":"Få 1 Victory Point för varje item du äger för en specifik kategori",
+	"skillsWork1":"Få 2 dollar, varje gång du placerar en flaska i work",
+	"skillsWork2":"Dra ett kort, varje gång du placerar en flaska i work",
 	"cancelBuy":"Avbryt köp",
 	"helpPlayerHand":{
 		"title":"Din hand:",
@@ -80,5 +86,48 @@
 		"endOfRound":"Slutet på rundan:",
 		"EORexp1":"Vid slutet av varje runda kommer korten rotera runt. Det sista kortet från Skills och Auction flyttas in i marknaden. Skills och Auction fylls sen på på nytt.",
 		"EORexp2":"Håll noga koll på vilka kort som hamnar i marknaden, så du kan planera din strategi därefter"
+	},
+	"deckHelp":{
+		"title":"Information om korten:",
+		"intro":"Korten är spelets primära resurs. Korten gör olika saker beroende på var dem är placerade eller används. Den röda delen betyder att kortet är ett Item. Den gröna delen indikerar att kortet representerar en Skill. Den blåa delen visar kortets marknadskategori.",
+		"cardAsItemsTitle":"Item:",
+		"cardAsItems":"Den röda delen av kortet visar vad för typ av Item krotet är. Värdet för kortet kan du se genom att kolla på motsvarande symbol i marknaden. Kortet är värt lika många poäng som kortet är värt i marknaden.",
+		"cardAsSkillsTitle":"Skill:",
+		"cardAsSkills":"Det gröna området indikerar en Skill. Det finns flera olika skills, dessa kan du läsa om på ditt spelarbräde genom att hålla över skillsymbolerna.",
+		"cardAsMarketTitle":"Marknadsvärde:",
+		"cardAsMarket":"Det blåa området indikerar vilken kategori kortet tillhör i marknaden. Genom att lägga till kort i en specifik kategori i marknaden kan du höja värdet på den kategorin. Till exempel: Musik => Musik +1 => Musikitems ökar sitt värde med 1."
+
+	},
+	"menuSpaceHelp":{
+		"title":"Information om spelet:",
+		"intro":"Collectors är ett 20-40 minuter långt spel för 2 till 4 spelare där varje val spelar roll. Vinnaren av spelet är den med den mest värdefulla samlingen vid spelets slut (efter runda 4). Det finns ett begränsat antal actions och rundor så se till att göra dina val noga.",
+		"gameBoardTitle":"Spelbrädet:",
+		"gameBoard":"Spelbrädet är uppdelat i 5 sektioner, där varje del representerar en typ av action. Dessa är: köp item, få en skill, starta en auktion, arbete, och öka värde. Du kan läsa mer om dessa om du klickar på hjälp och respektive fält.",
+		"BottlesTitle":"Bottles:",
+		"Bottles":"Bottles är en spelares action-markörer. Ju fler bottles en spelare har, desto fler actions kan spelaren ta varje runda.",
+		"playerBoardTitle":"Spelarbrädet:",
+		"playerBoard":"Varje spelare har sitt egna spelarbräde för att hålla koll på deras items, bottles, skills och inkomst. Ta en titt genom att öppna ditt spelarbräde och om du behöver hjälp, klicka på frågetecknet. ",
+		"roundsTitle":"Rundor och kvarter:",
+		"rounds":"Spelet är uppdelat i 4 kvarter, eller rundor. Under en runda spenderar alla spelare alla sina bottles/actions, när ingen spelare har några bottles kvar kan nästa runda börja. Vid slutet av runda 4 räknas poängen för varje spelare ihop och en vinnare utses.",
+		"winTitle":"Hur man vinner:",
+		"win":"Spelare köper items och lär sig skills under spelets gång. Vid spelets slut är varje item värt lika mycket som dess kategori är värt i marknaden, en poäng för varje motsvarande kort i marknaden. Utöver detta så kan vissa skills ge extra poäng, läs mer om detta på skillsen på ditt spelarbräde. ",
+		"eachRound":"Varje ny runda får varje spelare en passiv inkomst, spelarnas bottles kommer tillbaka och korten på spelbrädet roterar och fylls på. Detta representerar att tiden går och samlarobjekt ökar i värde.",
+		"detailedScoringTitle":"Poängbeskrivning i detalj",
+		"detailedScoring1":"Vid spelets slut räknas alla dina poäng ihop, däribland dina hemliga kort som inte räknas med under spelets gång.", 
+		"detailedScoring2":"Varje item ger 1 poäng för varje kort med motsvarande symbol i marknaden. Om det inte finns något motsvarande kort i marknaden är ditt itemkort värt 0 poäng.",
+		"detailedScoring3":"Var 3:e $ är värt 1 poäng vid spelets slut.",
+		"detailedScoring4":"Vissa skills ger extra poäng, beroende på dina items. Kolla specifikt på dessa skills på ditt spelarbräde.",
+		"TieTitle":"Om det blir oavgjort",
+		"Tie":"Om 2 eller fler spelare har lika många poäng vid spelets slut så är det spelaren med flest kort på handen som vinner. Om det trots det fortfarande är lika så delar spelarna på vinsten."
+	},
+	"auctionHelp":{
+		"title":"Information om auction:",
+		"intro":"Auctionsområdet är det gula området. Spelare kan starta en auction genom att klicka på en av knapparna i detta området.",
+		"areaInfoTitle":"Hur auktionen funkar:",
+		"areaInfo1":"När en spelare startar en auktion väljer denna ett av de fyra korten i auktionsområdet eller från spelarens hand. Om kortet spelades från handen kan man välja att placera det som ett gömt kort. Auktionen fortlöper som vanligt förutom att ingen annan spelare vet vad det är för kort.",
+		"areaInfo2":"När man bjuder och betalar för ett kort kan man använda kort från sin hand som valuta utöver sina $. Kort kan vara värt antingen $1 eller $2, detta står på respektiva kort. Kort kan endast användas som valuta under en auktion.",
+		"areaInfo3":"Om auktionskortet är ett gömt kort så kan vinnaren välja att placera kortet i sin hemliga hög.",
+		"areaInfo4":"Annars kan vinnaren av auktionen välja att placera kortet på följande ställen: som ett item på sitt spelarbräde, för att höja värdet i marknaden, eller som en skill."
+
 	}
 }

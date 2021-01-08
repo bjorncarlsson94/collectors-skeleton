@@ -39,7 +39,7 @@
       <button
         class="auctionButtonMini"
         v-if="players[playerId]"
-        v-show="!hiddenAuctionCard"
+        v-show="hiddenAuctionCard"
         @click="auctionMiniActiveNow()"
       ></button>
       <button

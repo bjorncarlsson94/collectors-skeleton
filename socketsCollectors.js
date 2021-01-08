@@ -116,6 +116,7 @@ function sockets(io, socket, data) {
       skillsOnSale: data.getSkillsOnSale(d.roomId),
       itemsOnSale: data.getItemsOnSale(d.roomId),
       auctionCards: data.getAuctionCards(d.roomId),
+      
     });
   });
   socket.on("moveCards", function (d) {
@@ -152,6 +153,8 @@ function sockets(io, socket, data) {
       cardInAuction: data.getCardInAuction(d.roomId),
       raiseItems: data.getRaiseItems(d.roomId),
       raiseValue: data.getCardValue(d.roomId),
+      currentScore:data.currentValue(d.roomId, d.playerId),
+      
     });
     console.log(data.getCardInAuction(d.roomId));
   });
@@ -233,6 +236,12 @@ socket.on('nameAndColor', function (d) {
     io.to(d.roomId).emit(
       "moneyAdded",
       data.addMoney(d.roomId, d.playerId, d.amount)
+    );
+  });
+  socket.on("addPassiveIncome", function (d) {
+    io.to(d.roomId).emit(
+      "passiveIncomeAdded",
+      data.addPassiveIncome(d.roomId, d.playerId, d.amount)
     );
   });
   //---------------------------------------------------
