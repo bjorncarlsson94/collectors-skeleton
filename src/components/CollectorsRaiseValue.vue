@@ -367,8 +367,9 @@ export default {
     border:solid;
     background-color: rgb(95, 216, 253);
     filter:brightness(105%);
-    width: 100px;
-    height: 100px;
+    width: 5.208vw;
+    height: 5.208vw;
+    font-size: 1vw;
     font-weight: bold;
     box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
   }

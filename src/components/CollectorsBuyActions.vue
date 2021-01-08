@@ -224,13 +224,13 @@ export default {
   .button:hover{
     background-color: #da855a;
   }
-  .cardcost {
-    font-size:250% ;
+  .cardCost {
+    font-size:1vw ;
     position: relative;
     text-align: center;
     color: black;
-    
-    background-color: tomato;
+    border: solid;
+    background-color: #da855a;
     border-radius: 20%;
     font-weight: bold;
 
@@ -310,15 +310,23 @@ export default {
   .cancelBuy{
     border-top-right-radius: 30%;
     border:solid;
-    background-color: #f8dcce;
+    background-color: #ffbe9e;
     filter:brightness(105%);
-    width: 100px;
-    height: 100px;
+    width: 5.208vw;
+    height: 5.208vw;
+    font-size: 1vw;
     font-weight: bold;
+    
     box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
   }
   .cancelBuy:hover{
-    background-color: #ca9f8a;
+    background-color: #da855a;
+  }
+  .cancelBuy:active{
+    background-color: #da855a;
+    background-color: #da855a;
+    box-shadow: 0 0.2vw #999;
+    transform: translateY(0.1vw);
   }
 
 
