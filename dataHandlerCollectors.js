@@ -1175,7 +1175,7 @@ Data.prototype.takeFirstPlayerToken = function(roomId, playerId) {
   console.log(playerId, "got scammed :^(");
   room.players[playerId].bottles--;
   room.startingPlayerId = playerId;
-  room.players[playerId].firstPlayerToken = true;
+  room.players[playerId].firstPlayerToken = true; //Behövs??
 
   return room.players;
 };
@@ -1203,15 +1203,19 @@ Data.prototype.setWorkPlacementTrue = function(roomId, place, playerId) {
     switch (place) {
       case "drawTwoCards":
         room.workPlacement.drawTwoCards = playerId;
+        this.changeBottleOnPlayerboarad(roomId, playerId, false);
         break;
       case "drawACardAndFirstPlayerToken":
         room.workPlacement.drawACardAndFirstPlayerToken = playerId;
+        this.changeBottleOnPlayerboarad(roomId, playerId, false);
         break;
       case "drawCardAndPassiveIncome":
         room.workPlacement.drawCardAndPassiveIncome = playerId;
+        this.changeBottleOnPlayerboarad(roomId, playerId, false);
         break;
       case "quarterTile":
         room.workPlacement.quarterTile = playerId;
+        this.changeBottleOnPlayerboarad(roomId, playerId, false);
         break;
       default:
         console.log("Shits fucked");
