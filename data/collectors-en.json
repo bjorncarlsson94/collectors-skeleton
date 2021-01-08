@@ -119,7 +119,7 @@
 		"detailedScoring2":"Each item gives their owner one point per market card in the market pool sharing the item symbol with the item. If there are no matching cards in the market pool to an item it is worth zero points.",
 		"detailedScoring3":"Every third $1 gives their owner one point.",
 		"detailedScoring4":"Some skill cards give further points, see skills ",
-		"TieTitle":"In case if tie",
+		"TieTitle":"In case of a tie",
 		"Tie":"The player with the most points is the winner of the game. In the case of a tie, the player with the most cards in their hand wins. If there’s still a tie, the victory is shared."
 
 	},
