@@ -43,7 +43,7 @@ function sockets(io, socket, data) {
       playerId: d.playerId,
       players: data.getPlayers(d.roomId),
       itemsOnSale: data.getItemsOnSale(d.roomId),
-      itemValues: data.getItemValue(d.roomId, d.playerId, d.card),
+      itemValues: data.getItemValue(d.roomId, d.playerId),
        
     });
   });
@@ -102,7 +102,12 @@ function sockets(io, socket, data) {
     data.getPlacements(d.roomId)
     );
   });
-
+  socket.on("pushToSecret", function (d) {
+    data.pushToSecret(d.roomId, d.playerId, d.card);
+    io.to(d.roomId).emit("secretPicked",{
+    players: data.getPlayers(d.roomId),
+  });
+  });
   socket.on("nextPlayer", function (d) {
     data.nextPlayer(d.roomId, d.playerId, d.auctionActive);
     io.to(d.roomId).emit("playerPicked", 
@@ -147,6 +152,7 @@ function sockets(io, socket, data) {
 
   socket.on("auctionOver", function (d) {
     data.auctionWon(d.roomId, d.playerId, d.placementType, d.auctionPrice);
+    data.getItemValue(d.roomId, d.playerId);
     io.to(d.roomId).emit("auctionFin", {
       players: data.getPlayers(d.roomId),
       auctionPrice: data.getAuctionPrice(d.roomId),
@@ -154,7 +160,6 @@ function sockets(io, socket, data) {
       raiseItems: data.getRaiseItems(d.roomId),
       raiseValue: data.getCardValue(d.roomId),
       currentScore:data.currentValue(d.roomId, d.playerId),
-      
     });
     console.log(data.getCardInAuction(d.roomId));
   });
