@@ -1,8 +1,10 @@
 <template>
+<!--Sound from Zapsplat.com-->
   <div class="bodytest">
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
-      <section id="wrapper">
+      <section id="wrapper" >
+        
         <div id="grid">
           <div class="helpBoard" @click="showHelpOptions">
             <p><strong>?</strong></p>
@@ -26,17 +28,22 @@
             <!-- :disabled="pname == '' || players[playerId].color == null" -->
             <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
           </div>
-          <div class="transparent" v-if="players[playerId]" v-show="choosingSecret">
-          <div class="chooseSecret" >
-            {{labels.chooseSecretCard}}
-            <div class="handToSecret">
-            <CollectorsCard
-              v-for="(card, index) in players[playerId].hand"  
-              :card="card"
-              :key="index"
-              @doAction="pushToSecret(card)"/>
+          <div
+            class="transparent"
+            v-if="players[playerId]"
+            v-show="choosingSecret"
+          >
+            <div class="chooseSecret">
+              {{ labels.chooseSecretCard }}
+              <div class="handToSecret">
+                <CollectorsCard
+                  v-for="(card, index) in players[playerId].hand"
+                  :card="card"
+                  :key="index"
+                  @doAction="pushToSecret(card)"
+                />
               </div>
-              </div>
+            </div>
           </div>
           <CollectorsBottles
             v-if="players[playerId]"
@@ -107,11 +114,11 @@
                     class="playerBoardGrid"
                     v-if="player.playerIsActive === true"
                   >
-                  <div id="collectiontitle" class="divtitle">Collection:</div>
-                  <div id="skills" class="divtitle"> Skills: </div>
-                  <div id="secret" class="divtitle"> Secret: </div>
+                    <div id="collectiontitle" class="divtitle">Collection:</div>
+                    <div id="skills" class="divtitle">Skills:</div>
+                    <div id="secret" class="divtitle">Secret:</div>
 
-                    <div class="boardCollection"> 
+                    <div class="boardCollection">
                       <div class="boardcollectiongrid">
                         <div class="playercollection">
                           <div class="collectioncards">
@@ -122,13 +129,13 @@
                             />
                           </div>
                         </div>
-                        
-                        <div class="secretcards"> 
+
+                        <div class="secretcards">
                           <CollectorsCard
-                          v-for="(card, index) in player.secret"
-                          :card="card"
-                          :key="index"
-                          class="otherHand"
+                            v-for="(card, index) in player.secret"
+                            :card="card"
+                            :key="index"
+                            class="otherHand"
                           />
                         </div>
                         <div class="itemicons">
@@ -155,7 +162,7 @@
                         </div>
 
                         <div class="totalvalue">
-                          {{labels.victoryPoints}}: {{ player.currentScore }}
+                          {{ labels.victoryPoints }}: {{ player.currentScore }}
                         </div>
                       </div>
                     </div>
@@ -210,7 +217,6 @@
 
                     <div id="handTitle" class="divtitle">Hand:</div>
                     <div class="boardHand">
-                      
                       <div class="cardsinhand">
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
@@ -222,15 +228,13 @@
                     </div>
 
                     <div class="boardNextTurnInfo">
-                      <div id="resources" class="divtitle"> Resources: </div>
+                      <div id="resources" class="divtitle">Resources:</div>
                       <div
                         class="bottlesGrid"
-                        v-for="(
-                          bottlePlace, index
-                        ) in player.bottlesOnPlayerbord"
+                        v-for="(bottlePlace,
+                        index) in player.bottlesOnPlayerbord"
                         :key="index"
                       >
-                     
                         <div
                           v-show="bottlePlace"
                           class="bottles"
@@ -249,7 +253,9 @@
                           <img src="/images/moneybag.png" width="80%" />
                         </div>
                         <div class="counter m">{{ player.money }}</div>
-                        <div class="counter income">+{{ player.income.length }}</div>
+                        <div class="counter income">
+                          +{{ player.income.length }}
+                        </div>
                       </div>
 
                       <div class="b bottlecount">
@@ -271,7 +277,7 @@
             @click="skillsHelp()"
           >
             <div class="skillsgrid">
-              <img class="gain-skill" src="/images/gain-skill.png"/>
+              <img class="gain-skill" src="/images/gain-skill.png" />
               <CollectorsSkillActions
                 v-if="players[playerId]"
                 :labels="labels"
@@ -293,7 +299,7 @@
             @click="auctionHelp()"
           >
             <div class="auctiongrid">
-              <img class="start-auction" src="/images/start-auction.png"/>
+              <img class="start-auction" src="/images/start-auction.png" />
               <CollectorsStartAuction
                 v-if="players[playerId]"
                 :labels="labels"
@@ -314,7 +320,7 @@
           </div>
           <div
             class="auctionMini"
-            v-bind:class="{turnhighlight: players[playerId].turn}"
+            v-bind:class="{ turnhighlight: players[playerId].turn }"
             v-show="auctionMiniActive"
             v-if="players[playerId]"
             @click="auctionMiniActiveNow()"
@@ -333,8 +339,7 @@
           </div>
           <div class="winnerAuction" v-show="winnerAvailable">
             <div class="winnerText">
-              {{labels.wonAuction}}
-              
+              {{ labels.wonAuction }}
             </div>
             <div class="auctionCardViewFin">
               <CollectorsCard
@@ -375,7 +380,8 @@
           </div>
           <div class="transparent" v-show="loserAvailable">
             <div class="loserAuction">
-              {{labels.youLost}}{{ playerName(auctionLeaderId) }} {{labels.wonTheAuction}}
+              {{ labels.youLost }}{{ playerName(auctionLeaderId) }}
+              {{ labels.wonTheAuction }}
             </div>
           </div>
           <CollectorsAuction
@@ -453,7 +459,8 @@
                 <div class="closedBoardInfo">
                   <!-- Score -->
                   <div class="scoreDisplay closed">
-                    {{labels.victoryPoints}}: {{ players[playerId].currentScore }}
+                    {{ labels.victoryPoints }}:
+                    {{ players[playerId].currentScore }}
                   </div>
                   <div class="closedItemIcons">
                     <div>
@@ -481,7 +488,9 @@
                   <div class="c moneycount">
                     <div><img src="/images/moneybag.png" width="70%" /></div>
                     <div class="counter m">{{ players[playerId].money }}</div>
-                    <div class="counter income">+{{ players[playerId].income.length }}</div>
+                    <div class="counter income">
+                      +{{ players[playerId].income.length }}
+                    </div>
                   </div>
 
                   <div class="c bottlecount">
@@ -496,8 +505,9 @@
 
             <!-- Visas när handen är öppen-->
             <div class="playerBoardGrid" v-if="isActive">
-              <div class="help" id="helpHandPos" @click="helpPlayerHandHover">
+              <div class="help" id="helpHandPos"  @click="helpPlayerHandHover" >
                 ?
+               
                 <div id="playerHelp" v-show="helpPlayerHandActive">
                   <h3>
                     <strong>{{ labels.helpPlayerHand.title }}</strong>
@@ -517,7 +527,8 @@
                   <div>
                     <h3>
                       <strong>{{ labels.helpPlayerHand.handArea }}</strong>
-                    </h3>c
+                    </h3>
+                    c
                     <p>{{ labels.helpPlayerHand.handAreaText }}</p>
                   </div>
                   <div>
@@ -529,9 +540,11 @@
                 </div>
               </div>
 
-              <div id="collectiontitle" class="divtitle">{{labels.collection}}:</div>
-              <div id="secret" class="divtitle"> Secret: </div>
-              <div id="skills" class="divtitle"> Skills: </div>
+              <div id="collectiontitle" class="divtitle">
+                {{ labels.collection }}:
+              </div>
+              <div id="secret" class="divtitle">Secret:</div>
+              <div id="skills" class="divtitle">Skills:</div>
               <div class="boardCollection">
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
@@ -543,7 +556,7 @@
                       />
                     </div>
                   </div>
-                  
+
                   <div class="secretcards">
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].secret"
@@ -575,7 +588,8 @@
                     </div>
                   </div>
                   <div class="totalvalue">
-                    {{labels.victoryPoints}}: {{ players[playerId].currentScore }}
+                    {{ labels.victoryPoints }}:
+                    {{ players[playerId].currentScore }}
                   </div>
                 </div>
               </div>
@@ -617,8 +631,8 @@
                 </div>
               </div>
 
-<div id="handTitle" class="divtitle">Hand:</div>
-              <div class="boardHand"> 
+              <div id="handTitle" class="divtitle">Hand:</div>
+              <div class="boardHand">
                 <div class="cardsinhand">
                   <CollectorsCard
                     v-for="(card, index) in players[playerId].hand"
@@ -629,7 +643,7 @@
               </div>
 
               <div class="boardNextTurnInfo">
-                <div id="resources" class="divtitle"> Resources: </div>
+                <div id="resources" class="divtitle">Resources:</div>
                 <div
                   class="bottlesGrid"
                   v-for="(bottlePlace, index) in players[playerId]
@@ -652,13 +666,15 @@
                 <div class="b moneycount">
                   <div><img src="/images/moneybag.png" width="80%" /></div>
                   <div class="counter m">{{ players[playerId].money }}</div>
-                  <div class="counter income">+{{ players[playerId].income.length }}</div>
+                  <div class="counter income">
+                    +{{ players[playerId].income.length }}
+                  </div>
                   <!-- ÄNDRA TILL RÄTT income -->
                 </div>
 
                 <div class="b bottlecount">
                   <div><img src="/images/player-bottle.png" width="60%" /></div>
-                  <div class="counter b"> {{ players[playerId].bottles }}</div>
+                  <div class="counter b">{{ players[playerId].bottles }}</div>
                 </div>
               </div>
             </div>
@@ -680,7 +696,7 @@
 
           <div :class="['items', { animate: helpAction }]" @click="itemsHelp()">
             <div class="itemgrid">
-              <img class="buy-item" src="/images/buy-item.png"/>
+              <img class="buy-item" src="/images/buy-item.png" />
               <CollectorsBuyActions
                 v-if="players[playerId]"
                 :labels="labels"
@@ -723,9 +739,9 @@
           </div>
 
           <div class="roundCounter">
-            <p>{{ labels.roundcounter }} {{ round }} </p>
-            
-            <p> {{labels.itIs}}<br>{{ currentPlayer() }} </p>
+            <p>{{ labels.roundcounter }} {{ round }}</p>
+
+            <p>{{ labels.itIs }}<br />{{ currentPlayer() }}</p>
           </div>
 
           <div class="drawCardSpace">
@@ -756,6 +772,7 @@
               @click="startTurn()"
               class="menuButton"
             >
+           
               {{ labels.randomplayer }}
             </button>
             <!-- <button
@@ -811,7 +828,7 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round>= 5">
+    <div class="winnerBox" v-if="round >= 5">
       <div class="winnerBoxContent">
         <div class="winnerPlayerGrid">
           <div
@@ -826,7 +843,7 @@
           </div>
         </div>
         <h1 class="winner">
-          {{labels.winnerSpace}}<br />
+          {{ labels.winnerSpace }}<br />
           {{ getWinner()[2] }} <br />
           {{ labels.victoryPoints }}: {{ getWinner()[0] }}
         </h1>
@@ -874,7 +891,7 @@ export default {
     CollectorsBottles,
     HelpCollectors,
   },
-  data: function () {
+  data: function() {
     return {
       gameStarted: false,
       isActive: false,
@@ -986,7 +1003,7 @@ export default {
   },
   props: {},
   computed: {
-    playerId: function () {
+    playerId: function() {
       return this.$store.state.playerId;
     },
   },
@@ -997,7 +1014,7 @@ export default {
     });
   },
   watch: {
-    players: function (newP, oldP) {
+    players: function(newP, oldP) {
       console.log(newP, oldP);
       for (let p in this.players) {
         for (let c = 0; c < this.players[p].hand.length; c += 1) {
@@ -1007,7 +1024,7 @@ export default {
       }
     },
   },
-  created: function () {
+  created: function() {
     this.$store.commit("SET_PLAYER_ID", this.$route.query.id);
     //TODO! Fix this ugly hack
     //background: https://github.com/quasarframework/quasar/issues/5672
@@ -1022,7 +1039,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsInitialize",
-      function (d) {
+      function(d) {
         this.labels = d.labels;
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
@@ -1054,6 +1071,7 @@ export default {
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
         this.auctionPlacement = d.auctionPlacement;
+        
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1073,20 +1091,18 @@ export default {
         this.players = d.players;
       }.bind(this)
     );
-        this.$store.state.socket.on(
+    this.$store.state.socket.on(
       "secretPicked",
-      function (d) {
+      function(d) {
         this.players = d.players;
       }.bind(this)
     );
-        this.$store.state.socket.on(
+    this.$store.state.socket.on(
       "secretPicked",
-      function (d) {
+      function(d) {
         this.players = d.players;
       }.bind(this)
     );
-
-
 
     this.$store.state.socket.on(
       "collectorsPointsUpdated",
@@ -1100,7 +1116,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsCardDrawn",
-      function (d) {
+      function(d) {
         //this has been refactored to not single out one player's cards
         //better to update the state of all cards
         console.log(d.playerId, "drew a card");
@@ -1110,26 +1126,28 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsCardBought",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "bought a card");
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
         this.itemValues = d.itemValues;
         this.currentScore = d.currentScore;
+         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsSkillBought",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "bought a skill");
         this.players = d.players;
         this.skillsOnSale = d.skillsOnSale;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
 
     this.$store.state.socket.on(
       "collectorsAuctionStarted",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "started auction " + this.cardInAuction);
         this.players = d.players;
         this.auctionCards = d.auctionCards;
@@ -1137,12 +1155,13 @@ export default {
         this.cardInAuction = d.cardInAuction;
         this.auctionActive = true;
         this.auctionPrice = 0;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
 
     this.$store.state.socket.on(
       "collectorsValueRaised",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "raised value");
         this.players = d.players;
         this.raiseItems = d.raiseItems;
@@ -1150,12 +1169,13 @@ export default {
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
         this.itemsOnSale = d.itemsOnSale;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
 
     this.$store.state.socket.on(
       "auctionRound",
-      function (d) {
+      function(d) {
         console.log("är det en vinnare?" + d.auctionWinner);
         if (d.auctionWinner == true) {
           if (this.playerId == d.auctionLeaderId) {
@@ -1194,7 +1214,7 @@ export default {
     );
     this.$store.state.socket.on(
       "auctionFin",
-      function (d) {
+      function(d) {
         this.hiddenAuctionCard = false;
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
@@ -1212,28 +1232,29 @@ export default {
     );
     this.$store.state.socket.on(
       "handRestord",
-      function (d) {
+      function(d) {
         this.players = d.players;
         this.biddingCards = [];
       }.bind(this)
     );
     this.$store.state.socket.on(
       "cardsMoved",
-      function (d) {
+      function(d) {
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
         this.skillsOnSale = d.skillsOnSale;
         this.itemsOnSale = d.itemsOnSale;
         this.auctionCards = d.auctionCards;
         this.players = d.players;
+        this.workPlacement = d.workPlacement;
       }.bind(this)
     );
 
     this.$store.state.socket.on(
       "playerPicked",
-      function (d) {
+      function(d) {
         console.log("spelare vald");
-        if (!this.gameStarted){
+        if (!this.gameStarted) {
           this.choosingSecret = true;
         }
         this.gameStarted = true;
@@ -1253,7 +1274,7 @@ export default {
 
     this.$store.state.socket.on(
       "nameAndColorSeleced",
-      function (d) {
+      function(d) {
         this.players = d.players;
         this.playerColor = d.playerColor;
       }.bind(this)
@@ -1262,57 +1283,66 @@ export default {
     //--------WORK--------------
     this.$store.state.socket.on(
       "collectorsBottleRecycled",
-      function (d) {
-        console.log("Flaska pantad");
+      function(d) {
         this.players = d;
-        console.log("Det krashar inte i flaska pantad");
+        this.nextPlayer();
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsBottleRecycled4thRound",
-      function (d) {
-        console.log("Flaska pantad på fjärde omgången");
+      function(d) {
         this.players = d;
-        console.log("Det krashar inte i flaska pantad");
+        this.nextPlayer();
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsWorkCardDrawn",
-      function (d) {
-        console.log("2 kort dragna");
+      function(d) {
         this.players = d;
+        this.nextPlayer();
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsCardAndTokenDrawn",
-      function (d) {
-        console.log("Kort samt spela först token (work)");
+      function(d) {
         this.players = d;
+        this.nextPlayer();
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsCardAndPassiveIncomeDrawn",
-      function (d) {
+      function(d) {
         this.players = d;
+        this.nextPlayer();
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
       "currentScores",
-      function (d) {
+      function(d) {
         this.players[this.playerId].currentScore = d;
       }.bind(this)
     );
 
     this.$store.state.socket.on(
       "workerPlaced",
-      (d) => (this.workPlacement = d)
+      function(d) {
+        this.workPlacement = d;
+      }.bind(this)
     );
 
     this.$store.state.socket.on("moneyAdded", (d) => (this.players = d));
 
     this.$store.state.socket.on(
       "passiveIncomeAdded",
-      (d) => (this.players = d)
+      function(d) {
+        this.players = d;
+        this.nextPlayer();
+      }.bind(this)
     );
     //------------------------------
 
@@ -1322,10 +1352,16 @@ export default {
   },
 
   methods: {
+    playSound (sound) {
+      if(sound) {
+        var audio = new Audio(sound);
+        audio.play();
+      }
+    },
     playerJoinedFn: function () {
       this.playerJoined = true;
     },
-    playerInfo: function () {
+    playerInfo: function() {
       this.playerJoined = false;
       this.$store.state.socket.emit("nameAndColor", {
         roomId: this.$route.params.id,
@@ -1334,34 +1370,34 @@ export default {
         name: this.pname,
       });
     },
-    selectAll: function (n) {
+    selectAll: function(n) {
       n.target.select();
     },
-    addBid: function () {
+    addBid: function() {
       this.bid += 1;
     },
-    subBid: function () {
+    subBid: function() {
       this.bid -= 1;
     },
 
-    playerName: function (pId) {
+    playerName: function(pId) {
       if (pId !== null) {
         return this.players[pId].name;
       } else {
         return "";
       }
     },
-    addNumber: function (add) {
+    addNumber: function(add) {
       this.cardBidTotal += add;
     },
-    winnerSelection: function (ifWinner) {
+    winnerSelection: function(ifWinner) {
       if (ifWinner == true) {
         this.winnerAvailable = true;
       } else {
         this.loserAvailable = true;
       }
     },
-    currentPlayer: function () {
+    currentPlayer: function() {
       var keys = Object.keys(this.players);
 
       for (var i = 0; i < keys.length; i++) {
@@ -1371,43 +1407,42 @@ export default {
         }
       }
     },
-    hiddenAuctionCardFN: function () {
+    hiddenAuctionCardFN: function() {
       if (!this.hiddenAuctionCard) {
         this.hiddenAuctionCard = true;
       } else {
         this.hiddenAuctionCard = false;
       }
     },
-    checkAmountOfRaiseValue: function(){
-      let cardCounter = 0
+    checkAmountOfRaiseValue: function() {
+      let cardCounter = 0;
       for (let i = 0; i < this.skillsOnSale.length; i += 1) {
-        if(this.skillsOnSale[i].market != undefined){
-          cardCounter ++;
+        if (this.skillsOnSale[i].market != undefined) {
+          cardCounter++;
         }
       }
       for (let i = 0; i < this.auctionCards.length; i += 1) {
-        if(this.auctionCards[i].market != undefined){
-          cardCounter ++;
+        if (this.auctionCards[i].market != undefined) {
+          cardCounter++;
         }
       }
       for (let i = 0; i < this.skillsOnSale; i += 1) {
-        if(this.players[this.playerId].card[i].market != undefined){
-          cardCounter ++;
+        if (this.players[this.playerId].card[i].market != undefined) {
+          cardCounter++;
         }
       }
-      if(cardCounter < 2){
+      if (cardCounter < 2) {
         return false;
-      }
-      else{
-        return true
+      } else {
+        return true;
       }
     },
-    auctionBoard: function () {
+    auctionBoard: function() {
       console.log("auction rutaa");
       this.auctionActive = !this.auctionActive;
       console.log("status: " + this.auctionActive);
     },
-    expandPlayerBoard: function () {
+    expandPlayerBoard: function() {
       console.log("Player click");
 
       // returnerar ifall den redan är öppen
@@ -1425,19 +1460,19 @@ export default {
 
       console.log("Status: " + this.isActive);
     },
-    expandOtherPlayer: function (player) {
+    expandOtherPlayer: function(player) {
       console.log("klicky macdicky");
       player.playerIsActive = !player.playerIsActive;
 
       console.log(player.name + " has opened " + player.playerIsActive);
     },
-    openBoard: function () {
+    openBoard: function() {
       console.log("Open board");
       // Sätter till true för att öppna brädet
       this.isActive = true;
       console.log("Status: " + this.isActive);
     },
-    closeBoard: function () {
+    closeBoard: function() {
       console.log("Close BUTTON!");
 
       // Sätter till false för att stänga brädet
@@ -1445,7 +1480,7 @@ export default {
       this.playerHandHelpIsActive = false;
       console.log("Status: " + this.isActive);
     },
-    expandLeftBoard: function () {
+    expandLeftBoard: function() {
       console.log("Left click");
       this.leftIsActive = !this.leftIsActive;
 
@@ -1456,7 +1491,7 @@ export default {
 
       console.log("status: " + this.leftIsActive);
     },
-    expandRightBoard: function () {
+    expandRightBoard: function() {
       console.log("Right click");
       this.rightIsActive = !this.rightIsActive;
 
@@ -1466,7 +1501,7 @@ export default {
       this.isActive = false;
       console.log("status: " + this.rightIsActive);
     },
-    expandTopBoard: function () {
+    expandTopBoard: function() {
       console.log("Top click");
       this.topIsActive = !this.topIsActive;
 
@@ -1477,7 +1512,7 @@ export default {
 
       console.log("status: " + this.topIsActive);
     },
-    auctionOver: function (placementType) {
+    auctionOver: function(placementType) {
       this.auctionPrice -= this.cardBidTotal;
       this.cardBidTotal = 0;
       console.log(placementType);
@@ -1488,13 +1523,13 @@ export default {
         auctionPrice: this.auctionPrice,
       });
     },
-    showHelp: function (label) {
+    showHelp: function(label) {
       label;
       //do stuff
     },
-    playerHandHelpIsActive: function () {},
+    playerHandHelpIsActive: function() {},
 
-    openCloseBuyWithCard: function () {
+    openCloseBuyWithCard: function() {
       if (this.auctionCardPaymentActive == false) {
         this.auctionCardPaymentActive = true;
         this.auctionActive = false;
@@ -1503,7 +1538,7 @@ export default {
         this.auctionActive = true;
       }
     },
-    placeBottle: function (action, placement) {
+    placeBottle: function(action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
@@ -1516,6 +1551,7 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = true;
       }
+      
       this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         players: this.players,
@@ -1524,8 +1560,10 @@ export default {
         action: action,
         placement: placement,
       });
+      
     },
     endRoundFunction: function () {
+      this.playSound('/images/sport_badminton_racket_fast_movement_swoosh_001.mp3');
       this.tempBottlePlacement = [false, false, false, false, false];
       console.log("inne i runda lopp" + this.players[this.playerId].bottles);
       for (let i = 0; i < this.players[this.playerId].bottles; i += 1) {
@@ -1537,7 +1575,7 @@ export default {
       this.endRound = true;
     },
     pushToSecret: function(card) {
-      console.log("funkar nnnnnuuu")
+      console.log("funkar nnnnnuuu");
       this.choosingSecret = false;
       this.$store.state.socket.emit("pushToSecret", {
         roomId: this.$route.params.id,
@@ -1556,7 +1594,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    buyCard: function (card) {
+    buyCard: function(card) {
       console.log("buyCard", card);
       this.aboutToBuyItem = false;
       this.$store.state.socket.emit("collectorsBuyCard", {
@@ -1568,7 +1606,7 @@ export default {
 
       this.nextPlayer();
     },
-    buySkill: function (card) {
+    buySkill: function(card) {
       console.log("buySkill", card);
       this.aboutToBuySkill = false;
       this.$store.state.socket.emit("collectorsBuySkill", {
@@ -1581,23 +1619,23 @@ export default {
     },
 
     raisingValue: function(card, firstCard) {
-        this.$store.state.socket.emit("collectorsRaiseValue", {
-          roomId: this.$route.params.id,
-          playerId: this.playerId,
-          card: card,
-          cost: this.chosenPlacementCost,
-          firstCard: firstCard,
+      this.$store.state.socket.emit("collectorsRaiseValue", {
+        roomId: this.$route.params.id,
+        playerId: this.playerId,
+        card: card,
+        cost: this.chosenPlacementCost,
+        firstCard: firstCard,
       });
-      
-      console.log(card, "i collectors")
-      if(firstCard===false){
+
+      console.log(card, "i collectors");
+      if (firstCard === false) {
         this.aboutToRaiseValue = false;
         this.nextPlayer();
       }
     },
 
-    getLastElement: function (cardArray) {
-      for (let i = cardArray.length - 1; i >= 1; i--) {
+    getLastElement: function(cardArray) {
+      for (let i = cardArray.length - 1; i >= 0; i--) {
         if (cardArray[i].market) {
           return cardArray[i];
         }
@@ -1605,7 +1643,7 @@ export default {
       return {};
     },
 
-    notYourTurn: function () {
+    notYourTurn: function() {
       if (this.players[this.playerId].turn == false) {
         return true;
       } else if (this.auctionActive || this.auctionMiniActive) {
@@ -1614,7 +1652,7 @@ export default {
         return false;
       }
     },
-    startAuction: function (card) {
+    startAuction: function(card) {
       this.auctionAvailable = false;
       this.aboutToStartAuction = false;
       this.$store.state.socket.emit("collectorsStartAuction", {
@@ -1625,7 +1663,7 @@ export default {
         cost: this.chosenPlacementCost,
       });
     },
-    changeTempBottle: function (index) {
+    changeTempBottle: function(index) {
       this.tempBottlePlacement[index] = true;
     },
     auctionMiniActiveNow: function() {
@@ -1647,32 +1685,33 @@ export default {
       });
     },
     startTurn: function () {
+      this.playSound('/images/zapsplat_leisure_playing_card_dealing_table_single_001_20443.mp3');
       console.log("hola");
 
       this.$store.state.socket.emit("startTurn", {
         roomId: this.$route.params.id,
       });
     },
-    moveCards: function () {
+    moveCards: function() {
       this.$store.state.socket.emit("moveCards", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
-    currentScore: function () {
+    currentScore: function() {
       this.$store.state.socket.emit("currentValue", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
         currentValue: this.currentValue,
       });
     },
-    getWinner: function () {
+    getWinner: function() {
       var currentWinner = -10;
       var tie = false;
       var winnerName;
       var biggestHand = -10;
       if (this.players !== "undefined") {
-        console.log("players är inte undefined.");
+        
 
         for (const player in this.players) {
           if (this.players[player].currentScore > currentWinner) {
@@ -1705,12 +1744,12 @@ export default {
       }
       return [currentWinner, tie, winnerName];
     },
-    finalScoreUpdate: function () {
+    finalScoreUpdate: function() {
       //this.players[this.playerId].item.push(this.players[this.playerId].hidden);
       this.currentScore();
     },
 
-    nextPlayer: function () {
+    nextPlayer: function() {
       this.$store.state.socket.emit("nextPlayer", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1718,7 +1757,7 @@ export default {
       });
     },
 
-    removeBottle: function (action, placement) {
+    removeBottle: function(action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = false;
       }
@@ -1740,7 +1779,7 @@ export default {
         players: this.players,
       });
     },
-    placeBottleOnPlayerboard: function () {
+    placeBottleOnPlayerboard: function() {
       this.endRound = false;
       this.$store.state.socket.emit("placeBottleOnPlayerboard", {
         roomId: this.$route.params.id,
@@ -1750,12 +1789,16 @@ export default {
     },
 
     //playerHandShow
-    helpPlayerHandHover: function () {
+    helpPlayerHandHover: function() {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
+      if(this.helpPlayerHandActive){
+         this.playSound('/images/zapsplat_leisure_glow_band_snap_003_43005.mp3');
+
+      }
     },
-    showHelpOptions: function () {
+    showHelpOptions: function() {
       console.log("hej");
-      var otherPlayersTurn=false;
+      var otherPlayersTurn = false;
       if (this.helpAction) {
         console.log("inte här");
         this.skillsHelpActive = false;
@@ -1765,31 +1808,30 @@ export default {
         this.workHelpActive = false;
         this.itemsHelpActive = false;
         this.raiseValueHelpActive = false;
-        
+
         console.log("kommer hit");
         for (const player in this.players) {
-          
-          if(this.players[player].turn==true){
-            
-            otherPlayersTurn=true;
+          if (this.players[player].turn == true) {
+            otherPlayersTurn = true;
             break;
           }
         }
-        }
+      }
       this.helpAction = !this.helpAction;
-      console.log(this.helpAction);
-      if(!otherPlayersTurn && !this.helpAction){
-          this.players[this.playerId].turn=true;
-
-        }
-        
-      if(this.players[this.playerId].turn==true && this.helpAction){
-        this.players[this.playerId].turn=false;
-
+      if (this.players[this.playerId].turn == true && this.helpAction) {
+        this.players[this.playerId].turn = false;
       }
       console.log(this.helpAction);
-      
+      if (!otherPlayersTurn && !this.helpAction) {
+        this.players[this.playerId].turn = true;
+      }
 
+      if (this.players[this.playerId].turn == true && this.helpAction) {
+        this.players[this.playerId].turn = false;
+      }
+      if(this.helpAction){
+        this.playSound('/images/zapsplat_leisure_glow_band_snap_003_43005.mp3');
+      }
       /* if(this.helpAuctionActive){
         console.log("hejhej");
         tempElement.setAttribute("id", "");
@@ -1806,7 +1848,7 @@ export default {
     helpSkillsAreaHover();
     */
     },
-    skillsHelp: function () {
+    skillsHelp: function() {
       if (this.helpAction) {
         if (
           this.auctionHelpActive ||
@@ -1826,7 +1868,7 @@ export default {
         this.skillsHelpActive = !this.skillsHelpActive;
       }
     },
-    auctionHelp: function () {
+    auctionHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1846,7 +1888,7 @@ export default {
         this.auctionHelpActive = !this.auctionHelpActive;
       }
     },
-    menuSpaceHelp: function () {
+    menuSpaceHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1866,7 +1908,7 @@ export default {
         this.menuSpaceActive = !this.menuSpaceActive;
       }
     },
-    buttonsHelp: function () {
+    buttonsHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1886,7 +1928,7 @@ export default {
         this.buttonsHelpActive = !this.buttonsHelpActive;
       }
     },
-    workHelp: function () {
+    workHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1906,7 +1948,7 @@ export default {
         this.workHelpActive = !this.workHelpActive;
       }
     },
-    itemsHelp: function () {
+    itemsHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1927,7 +1969,7 @@ export default {
       }
     },
 
-    raiseValueHelp: function () {
+    raiseValueHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1949,7 +1991,7 @@ export default {
     },
 
     //---------------------------WORK metoder-------------------
-    recycleBottle: function () {
+    recycleBottle: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
@@ -1958,9 +2000,8 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
-      this.nextPlayer();
     },
-    recycleBottle4thRound: function () {
+    recycleBottle4thRound: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
@@ -1969,9 +2010,8 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
-      this.nextPlayer();
     },
-    workDrawTwoCards: function () {
+    workDrawTwoCards: function() {
       this.$store.state.socket.emit("collectorsWorkDrawTwoCards", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1979,9 +2019,8 @@ export default {
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
       });
-      this.nextPlayer();
     },
-    drawACardAndFirstPlayerToken: function () {
+    drawACardAndFirstPlayerToken: function() {
       console.log("draw card and first player token");
       this.$store.state.socket.emit("collectorsDrawACardAndToken", {
         roomId: this.$route.params.id,
@@ -1990,9 +2029,8 @@ export default {
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
       });
-      this.nextPlayer();
     },
-    drawCardAndPassiveIncome: function () {
+    drawCardAndPassiveIncome: function() {
       console.log("Draw passive income i Collectors.vue");
       this.$store.state.socket.emit("collectorsDrawACardAndPassiveIncome", {
         roomId: this.$route.params.id,
@@ -2001,9 +2039,8 @@ export default {
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
       });
-      this.nextPlayer();
     },
-    placeWorker: function (where) {
+    placeWorker: function(where) {
       console.log("placeWorker!");
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
@@ -2014,7 +2051,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    addMoney: function (amount) {
+    addMoney: function(amount) {
       console.log("addMoney i Collectors.vue körs");
       this.$store.state.socket.emit("addMoney", {
         roomId: this.$route.params.id,
@@ -2022,13 +2059,12 @@ export default {
         amount: amount,
       });
     },
-    addPassiveIncome: function (amount) {
+    addPassiveIncome: function(amount) {
       this.$store.state.socket.emit("addPassiveIncome", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
         amount: amount,
       });
-      this.nextPlayer();
     },
     //----------------------------------------------------------
   },
@@ -2036,7 +2072,7 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Goldman&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Goldman&display=swap");
 header {
   user-select: none;
   position: fixed;
@@ -2104,34 +2140,34 @@ theColor:onclick {
   border-color: white;
 }
 .chooseSecret {
-display: grid;
-    position: absolute;
-    grid-template-rows: 1fr 5fr;
-    width: 20.64vw;
-    height: 12vw;
-    background-color: darkgoldenrod;
-    border-radius: 2vw;
-    border-style: solid;
-    border-width: 0.4vw;
-    border-color: black;
-    z-index: 50;
-    top: 85%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.7vw;
-    text-align: center;
-    color: black;
+  display: grid;
+  position: absolute;
+  grid-template-rows: 1fr 5fr;
+  width: 20.64vw;
+  height: 12vw;
+  background-color: darkgoldenrod;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.7vw;
+  text-align: center;
+  color: black;
 }
 .handToSecret {
-zoom: 1.2;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 5.4vw);
-    padding: 0.5vw;
-    height: 80%;
-    background-color: goldenrod;
-    border-radius: 2vw;
-    grid-row: 2;
-    align-content: center;
+  zoom: 1.2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 5.4vw);
+  padding: 0.5vw;
+  height: 80%;
+  background-color: goldenrod;
+  border-radius: 2vw;
+  grid-row: 2;
+  align-content: center;
 }
 .playerText {
   grid-row: 2;
@@ -2245,9 +2281,7 @@ zoom: 1.2;
   Här nedan är CSS specifika för player rutorna
   */
 
-
-
-.divtitle{
+.divtitle {
   position: absolute;
   border-radius: 0.5vw;
   background-color: rgba(0, 0, 0, 0.377);
@@ -2255,31 +2289,30 @@ zoom: 1.2;
   padding: 0.1vw;
 }
 
-#collectiontitle.divtitle{
+#collectiontitle.divtitle {
   grid-row: 1;
   grid-column: 2;
   margin-left: -3vw;
 }
-#secret.divtitle{
+#secret.divtitle {
   grid-column: 2;
   margin-left: 7vw;
 }
 #handTitle.divtitle {
- grid-row: 4;
- grid-column: 2;
- margin-left: -2vw;
+  grid-row: 4;
+  grid-column: 2;
+  margin-left: -2vw;
 }
 #resources.divtitle {
- grid-row: 4;
- grid-column: 4;
- margin-left: -2.6vw;
+  grid-row: 4;
+  grid-column: 4;
+  margin-left: -2.6vw;
 }
-#skills.divtitle{
+#skills.divtitle {
   grid-row: 1;
   grid-column: 4;
   margin-left: -1vw;
 }
-
 
 .player {
   border-radius: 2vw;
@@ -2311,7 +2344,7 @@ zoom: 1.2;
 .otherplayer.open {
   position: absolute;
   margin-left: -20vw;
-  margin-top: -2.5vw;
+  margin-top: -1vw;
   width: 50vw;
   height: 25vw;
   align-self: end;
@@ -2344,7 +2377,7 @@ zoom: 1.2;
   justify-self: self-start;
 }
 .otherHand.otherClosed.card {
-  zoom: 0.10 !important;
+  zoom: 0.1 !important;
 }
 
 .scoreDisplay {
@@ -2520,7 +2553,7 @@ zoom: 1.2;
   margin-left: 2.7vw;
   margin-top: -1vw;
 }
-.counter.income{
+.counter.income {
   position: absolute;
   margin-left: 2.7vw;
   margin-top: -3vw;
@@ -2646,11 +2679,11 @@ zoom: 1.2;
   margin-top: -3vw;
   z-index: 2;
 }
-.secretcards{
+.secretcards {
   display: grid;
   grid-template-rows: repeat(8, 3vw);
   overflow: scroll;
-  margin:auto;
+  margin: auto;
   margin-top: 2vw;
   background-color: rgba(255, 255, 255, 0.356);
   border-radius: 0.1vw;
@@ -2694,7 +2727,7 @@ zoom: 1.2;
   border-radius: 2vw;
   background-color: #cde0b2;
   grid-column: 1;
-  overflow:hidden;
+  overflow: hidden;
 }
 .skillsInfo {
   grid-column: 2;
@@ -2840,7 +2873,8 @@ zoom: 1.2;
   grid-column: 4 / span 3;
   grid-row: 2;
   position: relative;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 .skills {
   border-radius: 1vw;
@@ -2852,7 +2886,8 @@ zoom: 1.2;
   grid-column: 4 / span 3;
   grid-row: 3;
   position: relative;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 
 .work {
@@ -2864,8 +2899,9 @@ zoom: 1.2;
   grid-row: 2 / span 2;
   border: solid;
   border-color: black;
-  border-width:  0.02604vw;;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValue {
   border-radius: 1vw;
@@ -2877,10 +2913,11 @@ zoom: 1.2;
   grid-column: 8;
   grid-row: 3 / span 1;
   position: relative;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValuegrid div {
-  font-size: 1vw;
+  font-size: 0.5vw;
   font-weight: bold;
   color: black;
 }
@@ -2894,7 +2931,8 @@ zoom: 1.2;
   grid-column: 3;
   grid-row: 2 / span 2;
   position: relative;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 .auctionCardViewMini {
   zoom: 1.65;
@@ -2955,20 +2993,21 @@ zoom: 1.2;
   background-repeat: no-repeat;
 }
 .roundCounter {
-font-family: 'Goldman', cursive;
-    color: black;
-    grid-column: 1;
-    grid-row: 2;
-    background-color: rgb(194, 194, 194);
-    border-radius: 1vw;
-    border-style: double;
-    border-width: 0.2vw;
-    border-color: rgba(0, 0, 0, 0.295);
-    padding: 1vw;
-    text-align: center;
-    font-size: 1.5vw;
-    position: relative;
-    box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
+  font-family: "Goldman", cursive;
+  color: black;
+  grid-column: 1;
+  grid-row: 2;
+  background-color: rgb(194, 194, 194);
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
+  padding: 1vw;
+  text-align: center;
+  font-size: 1.5vw;
+  position: relative;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 
 .drawCardSpace {
@@ -3052,13 +3091,14 @@ font-family: 'Goldman', cursive;
   zoom: 0.8;
   border: solid;
   border-color: black;
-  border-width:  0.02604vw;;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 .help {
   width: 2.0833vw;
   height: 2.0833vw;
-  border-radius: 1.3020vw;
+  border-radius: 1.302vw;
   position: absolute;
   right: 0%;
   display: flex;
@@ -3068,33 +3108,32 @@ font-family: 'Goldman', cursive;
   cursor: pointer;
   border: solid;
   border-color: black;
-  border-width:  0.02604vw;;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 .help:hover {
   background-color: rgb(61, 61, 255);
 }
 
 .buy-item {
-width: 5vw;
-    position: absolute;
-    right: -1vw;
-    top: -0.2vw;
-
+  width: 5vw;
+  position: absolute;
+  right: -1vw;
+  top: -0.2vw;
 }
 .gain-skill {
-    width: 3vw;
-    position: absolute;
-    right: -0.2vw;
-    top: -0.1vw;
+  width: 3vw;
+  position: absolute;
+  right: -0.2vw;
+  top: -0.1vw;
 }
 .start-auction {
-    width: 3.3vw;
-    position: absolute;
-    right: -0.5vw;
-    top: 0.2vw;
-    z-index: 4;
-
+  width: 3.3vw;
+  position: absolute;
+  right: -0.5vw;
+  top: 0.2vw;
+  z-index: 4;
 }
 .menuSpace {
   grid-column: 1;
@@ -3106,7 +3145,8 @@ width: 5vw;
   position: relative;
   padding: 1vw;
   display: grid;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 .buttons {
   display: inline-block;
@@ -3114,7 +3154,6 @@ width: 5vw;
   background-color: rgb(83, 83, 83);
   border-radius: 1vw;
   box-shadow: 0 0.3vw #999;
-  
 }
 .buttons:active {
   background-color: coral;
@@ -3130,20 +3169,20 @@ width: 5vw;
 }
 
 .menuButton {
-font-family: 'Goldman', cursive;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: #b92828;
-    overflow: hidden;
-    color: transparent;
-    border-radius: 1vw;
-    box-shadow: 0.4vw 0.4vw #999;
-    font-size: 1.5vw;
-    background-position: center;
-    background-size: cover;
-    cursor: pointer;
-    background-image: url(https://i.pinimg.com/originals/24/ea/b4/24eab460d2f094474e47fb01565c8e28.gif);
+  font-family: "Goldman", cursive;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #b92828;
+  overflow: hidden;
+  color: transparent;
+  border-radius: 1vw;
+  box-shadow: 0.4vw 0.4vw #999;
+  font-size: 1.5vw;
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+  background-image: url(https://i.pinimg.com/originals/24/ea/b4/24eab460d2f094474e47fb01565c8e28.gif);
 }
 
 .menuButton:disabled {
@@ -3188,7 +3227,7 @@ font-family: 'Goldman', cursive;
   max-height: 43.833333333333332vw;
   overflow-y: auto;
   position: absolute;
-  
+
   word-wrap: break-word;
   display: inline;
   font-size: 1vw;
@@ -3200,7 +3239,7 @@ font-family: 'Goldman', cursive;
   padding: 0.55vw;
 
   border: solid;
-  border-width: 0.0.104166vw;
+  border-width: 0.104166vw;
   border-color: black;
 }
 #playerHelp p {
@@ -3209,7 +3248,7 @@ font-family: 'Goldman', cursive;
   margin-top: -0.52vw;
   padding: 0.55vw;
   border: solid;
-  border-width: 0.0.104166vw;
+  border-width: 0.104166vw;
   border-color: black;
 }
 #playerHelp div {
@@ -3218,7 +3257,7 @@ font-family: 'Goldman', cursive;
   padding: 0.2604vw;
   margin-bottom: 0.104166vw;
   border: solid;
-  border-width: 0.0.104166vw;
+  border-width: 0.104166vw;
   border-color: black;
 }
 
@@ -3258,14 +3297,15 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   justify-self: flex-end;
   border: solid;
   border-color: black;
-  border-width:  0.02604vw;;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
   font-size: 3vw;
 }
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
 }
-.transparent{
+.transparent {
   width: 100%;
   z-index: 50;
   height: 100%;
@@ -3279,7 +3319,8 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .animate {
   animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
-  box-shadow: 0px 0px 10px .05208vw rgb(116, 116, 9), 0 0 0.2604vw rgb(116, 116, 9);
+  box-shadow: 0px 0px 10px 0.05208vw rgb(116, 116, 9),
+    0 0 0.2604vw rgb(116, 116, 9);
 }
 
 @keyframes jiggles {
@@ -3343,15 +3384,17 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   border: solid;
   border-color: black;
   border-width: 0.02604vw;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(1, 1, 1, 0.466), 0 0.05208vw  0.20833vw rgba(1, 1, 1, 0.24);
+  box-shadow: 0 0.2604vw 0.3125vw rgba(1, 1, 1, 0.466),
+    0 0.05208vw 0.20833vw rgba(1, 1, 1, 0.24);
 }
 .winnerBoxPlayers {
   grid-column-start: auto;
   grid-column-end: auto;
   border: solid;
   border-color: black;
-  border-width:  0.02604vw;;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
   height: 5.208vw;
   width: 10.41vw;
   border-radius: 20%;
@@ -3359,7 +3402,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 }
 .winner {
   margin-top: 5.20833vw;
- 
+
   color: #872d00;
   position: relative;
   align-self: center;
@@ -3371,10 +3414,12 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   padding: 0.52vw;
   width: 20vw;
   height: 15vw;
-  
-  box-shadow: 0 0.2604vw 0.3125vw rgba(1, 1, 1, 0.466), 0 0.05208vw  0.20833vw rgba(1, 1, 1, 0.24);
+
+  box-shadow: 0 0.2604vw 0.3125vw rgba(1, 1, 1, 0.466),
+    0 0.05208vw 0.20833vw rgba(1, 1, 1, 0.24);
   font: bold "Lucida Grande";
-  text-shadow: 0.05208vw 0.05208vw 0.05208vw rgb(59, 58, 58), 0.104166vw 0.104166vw 0.05208vw rgb(59, 58, 58);
+  text-shadow: 0.05208vw 0.05208vw 0.05208vw rgb(59, 58, 58),
+    0.104166vw 0.104166vw 0.05208vw rgb(59, 58, 58);
   background-color: #005a87;
 }
 
@@ -3386,7 +3431,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: #f0ead6;
   flex-direction: column;
   box-sizing: border-box;
-  padding:  1.5625vw;
+  padding: 1.5625vw;
   text-align: center;
   font-family: sans-serif;
   z-index: 2;

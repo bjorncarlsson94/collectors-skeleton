@@ -16,7 +16,7 @@
 	"skillsAuction":"Gain 1 money each time an auction is started",
 	"skillsExtraWorker":"Get an extra bottle",
 	"skillsVpAll":"By the end of the game, gain 5 Victory Points , if you have an item of each category",
-	"skillsVp":"By the end fo the game, gain 1 Victory Point for each item in specified category",
+	"skillsVp":"By the end of the game, gain 1 Victory Point for each item in specified category",
 	"skillsWork1":"Gain 2 money, each time you do work",
 	"skillsWork2":"Draw a card, each time you do work",
 	"cancelBuy":"Cancel Action",
@@ -45,7 +45,7 @@
 	"pickFromSkills":"Pick card from skill pool",
 	"pickFromHand":"Pick a card from your hand:",
 	"endRoundBox1":"End of round ",
-	"endRoundBox2":"Now place your remaining bottles on the tiles, the non covered tiles will be your income to the coming round.",
+	"endRoundBox2":"Now place your remaining bottles on the tiles, the non-covered tiles will be your income for the coming round.",
 	"points":"Score",
 	"chooseSecretCard":"Choose one secret card:",
 	"helpPlayerHand":{

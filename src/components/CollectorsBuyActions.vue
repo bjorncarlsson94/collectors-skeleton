@@ -173,7 +173,7 @@ export default {
         if(this.player.hand[i].available==true ){
           
           cardFromHandAvailable=true;
-          
+         
           console.log("kom in i buyCard loopen");
           break;
 

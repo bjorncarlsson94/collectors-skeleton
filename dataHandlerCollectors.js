@@ -231,8 +231,9 @@ Data.prototype.joinGame = function(roomId, playerId) {
           imovie: 0,
           itechnology: 0,
           ifigures: 0,
-          imusic: 0},
-        currentScore:0,
+          imusic: 0,
+        },
+        currentScore: 0,
       };
     }
     return true;
@@ -244,15 +245,13 @@ Data.prototype.getPlayers = function(id) {
   let room = this.rooms[id];
   if (typeof room !== "undefined") {
     for (const player in room.players) {
-        if(player.currentScore>=0){
-        player.currentScore=this.currentValue(id, player);
+      if (player.currentScore >= 0) {
+        player.currentScore = this.currentValue(id, player);
       }
     }
     return room.players;
   } else return {};
 };
-
-
 
 Data.prototype.updatePoints = function(roomId, player, points) {
   let room = this.rooms[roomId];
@@ -350,16 +349,15 @@ Data.prototype.buySkill = function(roomId, playerId, card, cost) {
     }
     if (card.skill == "bottle" && room.players[playerId].totalBottles < 5) {
       this.changeBottleOnPlayerboarad(roomId, playerId, true);
-      room.players[playerId].bottles ++;
-      room.players[playerId].totalBottles ++;
+      room.players[playerId].bottles++;
+      room.players[playerId].totalBottles++;
     }
-
 
     room.players[playerId].skills.push(...c);
     room.players[playerId].money -= cost;
   }
 };
-Data.prototype.pushToSecret = function(roomId, playerId, card){
+Data.prototype.pushToSecret = function(roomId, playerId, card) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     let c = null;
@@ -443,8 +441,8 @@ Data.prototype.raiseValue = function(
     let c = null;
     /// check first if the card is among the items on sale
     for (let i = 0; i < room.skillsOnSale.length; i += 1) {
-       //since card comes from the client, it is NOT the same object (reference)
-       //so we need to compare properties for determining equality
+      //since card comes from the client, it is NOT the same object (reference)
+      //so we need to compare properties for determining equality
       if (
         room.skillsOnSale[i].x === card.x &&
         room.skillsOnSale[i].y === card.y
@@ -458,15 +456,15 @@ Data.prototype.raiseValue = function(
     for (let i = 0; i < room.auctionCards.length; i += 1) {
       //since card comes from the client, it is NOT the same object (reference)
       //so we need to compare properties for determining equality
-     if (
-       room.auctionCards[i].x === card.x &&
-       room.auctionCards[i].y === card.y
-     ) {
-       c = room.auctionCards.splice(i, 1, {});
+      if (
+        room.auctionCards[i].x === card.x &&
+        room.auctionCards[i].y === card.y
+      ) {
+        c = room.auctionCards.splice(i, 1, {});
 
-       break;
-     }
-   }
+        break;
+      }
+    }
     // ...then check if it is in the hand. It cannot be in both so it's safe
     for (let i = 0; i < room.players[playerId].hand.length; i += 1) {
       // since card comes from the client, it is NOT the same object (reference)
@@ -490,7 +488,7 @@ Data.prototype.raiseValue = function(
       room.raiseValue = this.cardValue(roomId);
     }
   }
-}
+};
 
 Data.prototype.auctionWon = function(
   roomId,
@@ -509,8 +507,8 @@ Data.prototype.auctionWon = function(
     } else if (placementType == "skills") {
       if (card.skill == "bottle" && room.players[playerId].totalBottles < 5) {
         this.changeBottleOnPlayerboarad(roomId, playerId, true);
-        room.players[playerId].bottles ++;
-        room.players[playerId].totalBottles ++;
+        room.players[playerId].bottles++;
+        room.players[playerId].totalBottles++;
       }
       room.players[playerId].skills.push(...c);
     } else if (placementType == "items") {
@@ -533,7 +531,7 @@ Data.prototype.auctionWon = function(
 Data.prototype.placeBottle = function(roomId, playerId, action, placement, players) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
-    room.players = players
+    room.players = players;
     let activePlacement = [];
     if (action === "buy") {
       activePlacement = room.buyPlacement;
@@ -556,7 +554,7 @@ Data.prototype.placeBottle = function(roomId, playerId, action, placement, playe
         break;
       }
     }
-    this.currentValue(roomId,playerId);
+    this.currentValue(roomId, playerId);
   }
 };
 
@@ -607,34 +605,40 @@ Data.prototype.clearBottles = function(roomId) {
     room.workPlacement.drawACardAndFirstPlayerToken = null;
     room.workPlacement.drawCardAndPassiveIncome = null;
     room.workPlacement.quarterTile = null;
+    console.log(room.workPlacement);
+    console.log("Bottles Cleared");
   }
 };
 
-Data.prototype.placeBottleOnPlayerboard = function(roomId, playerId, tempBottlePlacement) {
+Data.prototype.placeBottleOnPlayerboard = function(
+  roomId,
+  playerId,
+  tempBottlePlacement
+) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     room.players[playerId].bottlesOnPlayerbord = tempBottlePlacement;
-    if(tempBottlePlacement[0] == false){
-      room.players[playerId].bottles ++;
-      room.players[playerId].totalBottles ++;
+    if (tempBottlePlacement[0] == false) {
+      room.players[playerId].bottles++;
+      room.players[playerId].totalBottles++;
       room.players[playerId].bottlesOnPlayerbord[0] = true;
     }
-    if(tempBottlePlacement[1] == false){
-      room.players[playerId].bottles ++;
-      room.players[playerId].totalBottles ++;
+    if (tempBottlePlacement[1] == false) {
+      room.players[playerId].bottles++;
+      room.players[playerId].totalBottles++;
       room.players[playerId].bottlesOnPlayerbord[1] = true;
     }
-    if(tempBottlePlacement[2] == false){
+    if (tempBottlePlacement[2] == false) {
       this.drawCard(roomId, playerId);
     }
-    }
-    if(tempBottlePlacement[3] == false){
-      room.players[playerId].money ++;
-    }
-    if(tempBottlePlacement[4] == false){
-      room.players[playerId].money ++;
-      room.players[playerId].money ++;
-    }
+  }
+  if (tempBottlePlacement[3] == false) {
+    room.players[playerId].money++;
+  }
+  if (tempBottlePlacement[4] == false) {
+    room.players[playerId].money++;
+    room.players[playerId].money++;
+  }
 };
 
 Data.prototype.getCardInAuction = function(roomId) {
@@ -661,8 +665,8 @@ Data.prototype.getBottlePlacements = function(roomId) {
       skillPlacement: room.skillPlacement,
       auctionPlacement: room.auctionPlacement,
       marketPlacement: room.marketPlacement,
-      round: room.round, 
-      players: room.players
+      round: room.round,
+      players: room.players,
     };
   } else return {};
 };
@@ -675,7 +679,7 @@ Data.prototype.getPlacements = function(roomId) {
       auctionPlacement: room.auctionPlacement,
       marketPlacement: room.marketPlacement,
       players: room.players,
-      round: room.round
+      round: room.round,
     };
   } else return {};
 };
@@ -731,7 +735,7 @@ Data.prototype.startTurn = function(roomId) {
     // x=Math.floor(Math.random()*2)
     room.round = 1;
     var keys = Object.keys(room.players);
-    for (let j = 0; j < keys.length; j += 1){
+    for (let j = 0; j < keys.length; j += 1) {
       this.drawCard(roomId, keys[j]);
       this.drawCard(roomId, keys[j]);
       this.drawCard(roomId, keys[j]);
@@ -801,7 +805,6 @@ Data.prototype.moveCards = function(roomId) {
 Now refill all pools (except the market pool) from the deck.
 All pools (except the market pool) should have the same number of cards after this step as after setup. */
 
-
   let c = null;
   let k = null;
   
@@ -826,6 +829,22 @@ All pools (except the market pool) should have the same number of cards after th
       room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
       //fill Items
     
+      room.itemsOnSale = this.fillPool(roomId, "items", room.itemsOnSale);
+      for (let i = room.itemsOnSale.length - 1; i >= 0; i -= 1) {
+        if (room.itemsOnSale[i].market) {
+          c = room.itemsOnSale.splice(i, 1, {});
+          room.raiseItems.push(...c);
+          room.raiseValue = this.cardValue(roomId);
+          //console.log("visas 1 gång. Kort försvinner.");
+          break;
+        }
+      }
+    }
+
+    if (cardToRaiseValue != true) {
+      room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
+      //fill Items
+
       room.itemsOnSale = this.fillPool(roomId, "items", room.itemsOnSale);
       for (let i = room.itemsOnSale.length - 1; i >= 0; i -= 1) {
         if (room.itemsOnSale[i].market) {
@@ -916,12 +935,10 @@ All pools (except the market pool) should have the same number of cards after th
 
     //fill pools
 
-
     room.itemsOnSale = this.fillPool(roomId, "items", room.itemsOnSale);
     room.auctionCards = this.fillPool(roomId, "auction", room.auctionCards);
     room.auctionCards = this.bubbleSort(room.auctionCards);
     room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
-
   } else return [];
 };
 
@@ -975,74 +992,105 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
     let i = Object.keys(room.players).indexOf(playerId);
     room.players[keys[i]].turn = false;
     //while()
-    if(auctionActive){
+    if (auctionActive) {
       if (i === keys.length - 1) {
         i = -1;
       }
       room.players[keys[i + 1]].turn = true;
-    }
-    else {
+    } else {
       let j = i;
-      this.currentValue(roomId, playerId)
+      this.currentValue(roomId, playerId);
+<<<<<<< HEAD
+      while (playerWithBottle == false) {
+=======
       while (playerWithBottle == false){
+>>>>>>> 3ae54a361fa76f07b0da9fd3af88d436d106844f
         if (j === keys.length - 1) {
           j = -1;
         }
-        j ++;
-        if(j == i){
-          if(room.players[keys[j]].bottles > 0){
+        j++;
+        if (j == i) {
+          if (room.players[keys[j]].bottles > 0) {
             room.players[keys[j]].turn = true;
             playerWithBottle = true;
-          }
-          else {
+          } else {
             room.round += 1;
             room.players[room.startingPlayerId].turn = true;
-            
+
+            //Spelaren får sin inkomst
+            for (var player in room.players) {
+              if (room.players[player].income.length > 0) {
+                for (var card in room.players[player].income) {
+                  try {
+                    room.players[player].money += card.value;
+                    console.log("money added to: " + player);
+                  } catch {
+                    console.log("non player looped (nothing wrong)");
+                  }
+                }
+              }
+            }
+
             this.moveCards(roomId);
-            if(room.round<5){
-              this.clearBottles(roomId)
-              this.fillBottles(roomId); 
-            }   
-            
+            if (room.round < 5) {
+              this.clearBottles(roomId);
+              this.fillBottles(roomId);
+            }
+
             playerWithBottle = true;
             for (const player in room.players) {
-              
               this.currentValue(roomId, player);
             }
           }
-        }
-        else {
-          if(room.players[keys[j]].bottles > 0){
+        } else {
+          if (room.players[keys[j]].bottles > 0) {
             room.players[keys[j]].turn = true;
             playerWithBottle = true;
           }
         }
       }
-      if(room.round==5){
+      if (room.round == 5) {
         console.log("yo Olle å hugo");
         for (const player in room.players) {
-          if(player.secret){
-          player.items.splice(0,0,player.secret);
+<<<<<<< HEAD
+          if (player.secret) {
+            player.items.splice(0, 0, player.secret);
+            this.currentValue(roomId, player);
+          }
+=======
+         
+          if(room.players[player].secret.length>0){
+            room.players[player].items.splice(0,0,room.players[player].secret);
+         
           this.currentValue(roomId, player);
+          console.log("");
+>>>>>>> 3ae54a361fa76f07b0da9fd3af88d436d106844f
         }
       }
-    }
     }
     return room.players, room.round;
   }
 };
 
-Data.prototype.changeBottleOnPlayerboarad = function(roomId, playerId, addBottle) {
+Data.prototype.changeBottleOnPlayerboarad = function(
+  roomId,
+  playerId,
+  addBottle
+) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
-    for (let i = 0; i < room.players[playerId].bottlesOnPlayerbord.length; i += 1) {
-      if(room.players[playerId].bottlesOnPlayerbord[i] != addBottle){
+    for (
+      let i = 0;
+      i < room.players[playerId].bottlesOnPlayerbord.length;
+      i += 1
+    ) {
+      if (room.players[playerId].bottlesOnPlayerbord[i] != addBottle) {
         room.players[playerId].bottlesOnPlayerbord[i] = addBottle;
         break;
       }
-    }   
-  }  
-}
+    }
+  }
+};
 Data.prototype.fillBottles = function(roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
@@ -1051,7 +1099,7 @@ Data.prototype.fillBottles = function(roomId) {
       room.players[keys[i]].bottles = room.players[keys[i]].totalBottles;
     }
   }
-}
+};
 
 //budgivning vid auction
 Data.prototype.auctionBids = function(
@@ -1098,7 +1146,6 @@ Data.prototype.auctionBids = function(
   }
 };
 
-
 //I cardvalue så sätts alla värden på korten. Om det ligger 1 kort med market=fastaval så kommer fastaval ökas med 1.
 Data.prototype.cardValue = function(roomId) {
   var fastaval = 0;
@@ -1140,12 +1187,12 @@ Data.prototype.getItemValue = function(roomId, playerId) {
   console.log("Hej på dig din jävla king");
   let room = this.rooms[roomId];
 
-    room.players[playerId].itemValues.ifastaval = 0;
-    room.players[playerId].itemValues.ifigures = 0;
-    room.players[playerId].itemValues.imusic = 0;
-    room.players[playerId].itemValues.imovie = 0;
-    room.players[playerId].itemValues.itechnology = 0;
- 
+  room.players[playerId].itemValues.ifastaval = 0;
+  room.players[playerId].itemValues.ifigures = 0;
+  room.players[playerId].itemValues.imusic = 0;
+  room.players[playerId].itemValues.imovie = 0;
+  room.players[playerId].itemValues.itechnology = 0;
+
   if (typeof room !== "undefined") {
     for (let i = 0; i < room.players[playerId].items.length; i += 1) {
       if (room.players[playerId].items[i].item == "fastaval") {
@@ -1170,17 +1217,12 @@ Data.prototype.getItemValue = function(roomId, playerId) {
         console.log(room.players[playerId].itemValues.itechnology);
       }
     }
-    
-    
-    return {
-      
-    };
+
+    return {};
   } else {
     return [];
   }
- 
 };
-
 
 Data.prototype.bubbleSort = function(cardArray = 10) {
   var swapp;
@@ -1261,6 +1303,7 @@ Data.prototype.workDrawCardTwoCards = function(roomId, playerId) {
     //room.workPlacement[0] = true;
     //console.log(room.workPlacement[0])
     room.players[playerId].bottles--;
+    this.changeBottleOnPlayerboarad(roomId, playerId, false);
     return room.players;
   } else return [];
 };
@@ -1288,6 +1331,8 @@ Data.prototype.takeFirstPlayerToken = function(roomId, playerId) {
   room.startingPlayerId = playerId;
   room.players[playerId].firstPlayerToken = true; //Behövs??
 
+  this.changeBottleOnPlayerboarad(roomId, playerId, false);
+
   return room.players;
 };
 Data.prototype.drawPassiveIncome = function(roomId, playerId) {
@@ -1297,6 +1342,7 @@ Data.prototype.drawPassiveIncome = function(roomId, playerId) {
     let card = room.deck.pop();
     room.players[playerId].income.push(card);
 
+    this.changeBottleOnPlayerboarad(roomId, playerId, false);
     room.players[playerId].bottles--;
     return room.players;
   } else return [];
@@ -1332,7 +1378,7 @@ Data.prototype.setWorkPlacementTrue = function(roomId, place, playerId) {
         console.log("Shits fucked");
         break;
     }
-    
+
     console.log("workPlacement:");
     console.log(room.workPlacement);
     console.log("---------------");
@@ -1359,84 +1405,119 @@ Data.prototype.addPassiveIncome = function(roomId, playerId, amount) {
   } else return [];
 };
 
-Data.prototype.currentValue = function(roomId,playerId) {
+Data.prototype.currentValue = function(roomId, playerId) {
   let room = this.rooms[roomId];
   var fastaval = 0;
   var figures = 0;
   var music = 0;
   var movie = 0;
   var technology = 0;
-  var extraValue=0;
+  var extraValue = 0;
 
   if (typeof room !== "undefined") {
     console.log("gick in hit");
     for (let index = 0; index < room.players[playerId].items.length; index++) {
-      if(room.players[playerId].items[index].item=="fastaval"){
-        fastaval+=1;
-      }
-      else if(room.players[playerId].items[index].item=="movie"){
-        movie+=1;
-      }
-      else if(room.players[playerId].items[index].item=="technology"){
-        technology+=1;
-      }
-      else if(room.players[playerId].items[index].item=="figures"){
-        figures+=1;
-      }
-      else if(room.players[playerId].items[index].item=="music"){
-        music+=1;
+      if (room.players[playerId].items[index].item == "fastaval") {
+        fastaval += 1;
+      } else if (room.players[playerId].items[index].item == "movie") {
+        movie += 1;
+      } else if (room.players[playerId].items[index].item == "technology") {
+        technology += 1;
+      } else if (room.players[playerId].items[index].item == "figures") {
+        figures += 1;
+      } else if (room.players[playerId].items[index].item == "music") {
+        music += 1;
       }
     }
     for (let index = 0; index < room.players[playerId].skills.length; index++) {
+<<<<<<< HEAD
+      if (
+        room.players[playerId].skills[index].skill == "VP-all" &&
+        fastaval > 0 &&
+        figures > 0 &&
+        music > 0 &&
+        movie > 0 &&
+        technology > 0
+      ) {
+        extraValue += 5;
+      } else if (
+        room.players[playerId].skills[index].skill == "VP-fastaval" &&
+        fastaval > 0
+      ) {
+        extraValue += fastaval;
+      } else if (
+        room.players[playerId].skills[index].skill == "VP-figures" &&
+        figures > 0
+      ) {
+        extraValue += figures;
+      } else if (
+        room.players[playerId].skills[index].skill == "VP-music" &&
+        music > 0
+      ) {
+        extraValue += music;
+      } else if (
+        room.players[playerId].skills[index].skill == "VP-movie" &&
+        movie > 0
+      ) {
+        extraValue += movie;
+      } else if (
+        room.players[playerId].skills[index].skill == "VP-technology" &&
+        technology > 0
+      ) {
+        extraValue += technology;
+      }
+    }
+
+    fastaval = fastaval * room.raiseValue.fastaval;
+    figures = figures * room.raiseValue.figures;
+    music = music * room.raiseValue.music;
+    movie = movie * room.raiseValue.movie;
+    technology = technology * room.raiseValue.technology;
+=======
       if(room.players[playerId].skills[index].skill=="VP-all" && fastaval>0 && figures>0 && music>0 && movie>0 && technology>0){
         extraValue+=5;
-
+        console.log("VP-all"+extraValue)
       }
       else if(room.players[playerId].skills[index].skill=="VP-fastaval" && fastaval>0){
+        console.log("VP-fastaval:"+extraValue);
         extraValue+=fastaval;
 
       }
       else if(room.players[playerId].skills[index].skill=="VP-figures" && figures>0){
+        console.log("VP-figures:"+extraValue);
         extraValue+=figures;
 
       }
       else if(room.players[playerId].skills[index].skill=="VP-music" && music>0){
+        console.log("VP-music:"+extraValue);
         extraValue+=music;
 
       }
       else if(room.players[playerId].skills[index].skill=="VP-movie" && movie>0){
+        console.log("VP-movie:"+extraValue);
         extraValue+=movie;
 
       }
       else if(room.players[playerId].skills[index].skill=="VP-technology" && technology>0){
+        console.log("VP-technology:"+extraValue);
         extraValue+=technology;
 
       }
+      console.log("extraValue:"+extraValue);
+>>>>>>> 3ae54a361fa76f07b0da9fd3af88d436d106844f
 
+    if (room.round == 5) {
+      extraValue += Math.floor(room.players[playerId].money / 3);
     }
-  
-    fastaval=fastaval*room.raiseValue.fastaval;
-    figures=figures*room.raiseValue.figures;
-    music=music*room.raiseValue.music;
-    movie=movie*room.raiseValue.movie;
-    technology=technology*room.raiseValue.technology;
-    
-    if(room.round==5){
-    extraValue+=Math.floor(room.players[playerId].money/3);
 
-  }
-   
-    if(extraValue<0){
-      extraValue=0;
-
+    if (extraValue < 0) {
+      extraValue = 0;
     }
-    extraValue=extraValue+fastaval+figures+music+movie+technology;
-    
-    room.players[playerId].currentScore=extraValue;
-    
+    extraValue = extraValue + fastaval + figures + music + movie + technology;
+
+    room.players[playerId].currentScore = extraValue;
+
     return room.players[playerId].currentScore;
-
-
   } else return [];
 };
 //------------------------------------------------------
