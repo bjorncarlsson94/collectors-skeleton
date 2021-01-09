@@ -2311,7 +2311,7 @@ zoom: 1.2;
 .otherplayer.open {
   position: absolute;
   margin-left: -20vw;
-  margin-top: -2.5vw;
+  margin-top: -1vw;
   width: 50vw;
   height: 25vw;
   align-self: end;
