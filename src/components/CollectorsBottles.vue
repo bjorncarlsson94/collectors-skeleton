@@ -153,6 +153,7 @@ background-image: url(/images/player-bottle.png);
 .bottlesText{
   grid-column: 2/5;
   color: black;
+  font-size: 1.5vw;
   margin-right: 3.7vw;
 }
 .bottlesLeft{
