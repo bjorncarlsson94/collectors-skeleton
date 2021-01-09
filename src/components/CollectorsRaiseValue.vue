@@ -370,9 +370,8 @@ export default {
     justify-content: center;
     position: absolute;
     
-    top: -3px;
-    right: -1.5px;
-    
+    top: -0.15625vw;
+    right: -0.078125vw;
   }
 
 
@@ -385,7 +384,7 @@ export default {
     height: 5.208vw;
     font-size: 1vw;
     font-weight: bold;
-    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
   }
   .cancelBuy:hover{
     background-color: rgb(72, 172, 202);
