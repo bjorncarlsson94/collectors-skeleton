@@ -26,7 +26,8 @@
             <!-- :disabled="pname == '' || players[playerId].color == null" -->
             <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
           </div>
-          <div class="chooseSecret" v-if="players[playerId]" v-show="choosingSecret">
+          <div class="transparent" v-if="players[playerId]" v-show="choosingSecret">
+          <div class="chooseSecret" >
             Choose one secret card:
             <div class="handToSecret">
             <CollectorsCard
@@ -34,6 +35,7 @@
               :card="card"
               :key="index"
               @doAction="pushToSecret(card)"/>
+              </div>
               </div>
           </div>
           <CollectorsBottles
@@ -116,7 +118,14 @@
                             />
                           </div>
                         </div>
-                        <div id="hidden">Hidden:</div>
+                        <div class="hidden"> 
+                          <CollectorsCard
+                          v-for="(card, index) in player.secret"
+                          :card="card"
+                          :key="index"
+                          class="otherHand"
+                          />
+                        </div>
                         <div class="itemicons">
                           <div>
                             <img src="/images/fastaval_red.png" width="50%" />
@@ -293,6 +302,7 @@
           </div>
           <div
             class="auctionMini"
+            v-bind:class="{turnhighlight: players[playerId].turn}"
             v-show="auctionMiniActive"
             v-if="players[playerId]"
             @click="auctionMiniActiveNow()"
@@ -350,15 +360,10 @@
               Market share
             </button>
           </div>
-          <div class="loserAuction" v-show="loserAvailable">
-            You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
-            <button
-              class="auctionButtonLoser"
-              v-if="players[playerId]"
-              @click="loserAvailable = false"
-            >
-              OK
-            </button>
+          <div class="transparent" v-show="loserAvailable">
+            <div class="loserAuction">
+              You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
+            </div>
           </div>
           <CollectorsAuction
             v-if="players[playerId]"
@@ -399,8 +404,8 @@
                 :notYourTurn="notYourTurn"
                 :aboutToRaiseValue="aboutToRaiseValue"
                 @placeBottle="placeBottle('market', $event)"
-                @raiseValue="raisingValue($event)"
-                @keepWindowOpen="keepWindowOpen()"
+                @raiseValueFirstCard="raisingValue($event, true)"
+                @raiseValue="raisingValue($event, false)"
                 @cancelBuy="removeBottle('market', $event)"
               />
             </div>
@@ -518,13 +523,11 @@
                       <CollectorsCard
                         v-for="(card, index) in players[playerId].items"
                         :card="card"
-                        :availableAction="card.available"
-                        @doAction="buyCard(card)"
                         :key="index"
                       />
                     </div>
                   </div>
-                  <div id="hidden">Hidden:
+                  <div class="hidden">
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].secret"
                       :card="card"
@@ -681,6 +684,7 @@
               :player="players[playerId]"
               :players="players"
               :round="round"
+              :nextPlayer="nextPlayer"
               :workPlacement="workPlacement"
               @recycleBottle="recycleBottle($event)"
               @recycleBottle4thRound="recycleBottle4thRound($event)"
@@ -784,7 +788,7 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round >= 5">
+    <div class="winnerBox" v-if="round>= 5">
       <div class="winnerBoxContent">
         <div class="winnerPlayerGrid">
           <div
@@ -1137,16 +1141,15 @@ export default {
             this.cardInAuction = d.cardInAuction;
             this.auctionActive = false;
             this.auctionWinner = false;
+            this.auctionMiniActive = false;
             this.biddingCards = [];
             this.players = d.players;
-            if (this.players[this.playerId].turn == true) {
-              this.nextPlayer();
-            }
           } else {
             this.winnerSelection(false);
             this.auctionPrice = 0;
             this.bid = 0;
             this.cardInAuction = d.cardInAuction;
+            this.auctionMiniActive = false;
             this.hiddenAuctionCard = false;
             this.auctionActive = false;
             this.auctionWinner = false;
@@ -1155,9 +1158,6 @@ export default {
             console.log("22 längd" + this.biddingCards.length);
             if (this.biddingCards.length > 0) {
               this.restoreHand();
-            }
-            if (this.players[this.playerId].turn == true) {
-              this.nextPlayer();
             }
           }
         } else {
@@ -1181,6 +1181,10 @@ export default {
         this.players[this.playerId].currentScore = d.currentScore;
         this.winnerAvailable = false;
         this.auctionLeaderId = null;
+        this.loserAvailable = false;
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1452,7 +1456,7 @@ export default {
         this.auctionActive = true;
       }
     },
-    placeBottle: function (action, cost) {
+    placeBottle: function (action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
@@ -1465,13 +1469,13 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = true;
       }
-      this.chosenPlacementCost = cost;
+      this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         players: this.players,
         roomId: this.$route.params.id,
         playerId: this.playerId,
         action: action,
-        cost: cost,
+        placement: placement,
       });
     },
     endRoundFunction: function () {
@@ -1484,20 +1488,8 @@ export default {
         this.tempBottlePlacement[i] = true;
       }
       this.endRound = true;
-<<<<<<< HEAD
-=======
     },
-    pushToSecret(card){
-      console.log("funkar nnnnnuuu")
-      this.choosingSecret = false;
-      this.$store.state.socket.emit("pushToSecret", {
-        roomId: this.$route.params.id,
-        playerId: this.playerId,
-        card: card,
-      });
->>>>>>> 89717a6fae13268e4dfa93db01db288b96337e22
-    },
-    pushToSecret(card){
+    pushToSecret: function(card) {
       console.log("funkar nnnnnuuu")
       this.choosingSecret = false;
       this.$store.state.socket.emit("pushToSecret", {
@@ -1541,15 +1533,20 @@ export default {
       this.nextPlayer();
     },
 
-    raisingValue: function (card) {
-      (this.aboutToRaiseValue = false),
+    raisingValue: function(card, firstCard) {
         this.$store.state.socket.emit("collectorsRaiseValue", {
           roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
           cost: this.chosenPlacementCost,
-        });
-      this.nextPlayer();
+          firstCard: firstCard,
+      });
+      
+      console.log(card, "i collectors")
+      if(firstCard===false){
+        this.aboutToRaiseValue = false;
+        this.nextPlayer();
+      }
     },
 
     getLastElement: function (cardArray) {
@@ -1560,16 +1557,6 @@ export default {
       }
       return {};
     },
-
-    keepWindowOpen: function () {
-      this.aboutToRaiseValue = true;
-    },
-
-    /*getRaiseItemsFromBoard: function(){
-      this.raiseItemsFromBoard.push(this.skillsOnSale[this.skillsOnSale.length - 1]);
-      this.raiseItemsFromBoard.push(this.auctionCards[this.auctionCards.length - 1]);
-      return this.raiseItemsFromBoard;
-    },*/
 
     notYourTurn: function () {
       if (this.players[this.playerId].turn == false) {
@@ -1684,7 +1671,7 @@ export default {
       });
     },
 
-    removeBottle: function (action, cost) {
+    removeBottle: function (action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = false;
       }
@@ -1697,12 +1684,12 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = false;
       }
-      this.chosenPlacementCost = cost;
+      this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsRemoveBottle", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
         action: action,
-        cost: cost,
+        placement: placement,
         players: this.players,
       });
     },
@@ -1720,6 +1707,7 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
     showHelpOptions: function () {
+      var otherPlayersTurn=false;
       if (this.helpAction) {
         this.skillsHelpActive = false;
         this.auctionHelpActive = false;
@@ -1728,8 +1716,22 @@ export default {
         this.workHelpActive = false;
         this.itemsHelpActive = false;
         this.raiseValueHelpActive = false;
-      }
+        for (const player in this.players) {
+          if(player.turn==true){
+            otherPlayersTurn=true;
+            break;
+          }
+        }
+        if(!otherPlayersTurn){
+          this.players[this.playerId].turn=true;
+
+        }
+        }
       this.helpAction = !this.helpAction;
+      if(this.players[this.playerId].turn==true && this.helpAction){
+        this.players[this.playerId].turn=false;
+
+      }
       console.log(this.helpAction);
       console.log(document.getElementById("test1").className);
 
@@ -1971,10 +1973,7 @@ export default {
         playerId: this.playerId,
         amount: amount,
       });
-<<<<<<< HEAD
       this.nextPlayer();
-=======
->>>>>>> 89717a6fae13268e4dfa93db01db288b96337e22
     },
     //----------------------------------------------------------
   },
@@ -1996,7 +1995,7 @@ footer {
 }
 footer a {
   text-decoration: none;
-  border-bottom: 2px dotted ivory;
+  border-bottom: 0.104166vw dotted ivory;
 }
 footer a:visited {
   color: ivory;
@@ -2049,34 +2048,34 @@ theColor:onclick {
   border-color: white;
 }
 .chooseSecret {
-  display: grid;
-  position: absolute;
-  grid-template-rows: 1fr 5fr;
-  width: 43vw;
-  height: 25vw;
-  background-color: darkgoldenrod;
-  border-radius: 2vw;
-  border-style: solid;
-  border-width: 0.4vw;
-  border-color: black;
-  z-index: 50;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3vw;
-  text-align: center;
-  color: black;
+display: grid;
+    position: absolute;
+    grid-template-rows: 1fr 5fr;
+    width: 20.64vw;
+    height: 12vw;
+    background-color: darkgoldenrod;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.7vw;
+    text-align: center;
+    color: black;
 }
 .handToSecret {
-  zoom: 2.5;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 5.4vw);
-  padding: 0.5vw;
-  height: 80%;
-  background-color: goldenrod;
-  border-radius: 2vw;
-  grid-row: 2;
-  align-content: center;
+zoom: 1.2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 5.4vw);
+    padding: 0.5vw;
+    height: 80%;
+    background-color: goldenrod;
+    border-radius: 2vw;
+    grid-row: 2;
+    align-content: center;
 }
 .playerText {
   grid-row: 2;
@@ -2113,8 +2112,8 @@ theColor:onclick {
 }
 .card {
   position: relative;
-  -webkit-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
-  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0.15625vw 0.15625vw 7px rgba(0, 0, 0, 0.3);
+  box-shadow: 0.15625vw 0.15625vw 7px rgba(0, 0, 0, 0.3);
 }
 .otherHand.card {
   background-image: url("/images/back-of-card.png");
@@ -2273,8 +2272,8 @@ theColor:onclick {
   cursor: pointer;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .playerboard.turnhighlight {
   filter: brightness(110%);
@@ -2346,6 +2345,9 @@ theColor:onclick {
 }
 
 .playercollection::-webkit-scrollbar {
+  display: none;
+}
+.hidden::-webkit-scrollbar {
   display: none;
 }
 
@@ -2545,10 +2547,14 @@ theColor:onclick {
   margin-top: -3vw;
   z-index: 2;
 }
-#hidden{
+.hidden{
   display: grid;
   grid-template-rows: repeat(8, 2vw);
   overflow: scroll;
+  margin:auto;
+  background-color: rgba(255, 255, 255, 0.356);
+  border-radius: 0.1vw;
+  height: 70%;
 
 }
 #handTitle {
@@ -2608,8 +2614,8 @@ theColor:onclick {
   background-color: rgba(0, 0, 0, 0.61);
   color: #fff;
   text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
+  border-radius: 0.3125vw;
+  padding: 0.2604vw 0;
 
   /* Position the tooltip */
   position: absolute;
@@ -2735,8 +2741,8 @@ theColor:onclick {
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .skills {
   border-radius: 2vw;
@@ -2747,8 +2753,8 @@ theColor:onclick {
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 
 .work {
@@ -2760,8 +2766,8 @@ theColor:onclick {
   grid-row: 2 / span 2;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValue {
   border-radius: 2vw;
@@ -2772,8 +2778,8 @@ theColor:onclick {
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValuegrid div {
   font-size: 1vw;
@@ -2789,8 +2795,8 @@ theColor:onclick {
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .auctionCardViewMini {
   zoom: 1.65;
@@ -2838,6 +2844,11 @@ theColor:onclick {
   text-align: center;
   cursor: pointer;
 }
+.auctionMini.turnhighlight {
+  filter: brightness(110%);
+  border-color: rgb(199, 199, 199);
+  box-shadow: 0 0 1vw rgb(199, 199, 199);
+}
 .hiddenAuctionCardMini {
   background-image: url(/images/back-of-card.png);
   background-size: cover;
@@ -2855,8 +2866,8 @@ theColor:onclick {
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .drawCardSpace {
   grid-column: 8;
@@ -2881,6 +2892,7 @@ theColor:onclick {
 .drawCardCounter {
   align-content: center;
   padding: 50%;
+  font-size: 1.6vw;
   padding-right: 150%;
   border-top-right-radius: 10%;
   border-bottom-right-radius: 10%;
@@ -2925,7 +2937,7 @@ theColor:onclick {
   border: solid;
   border-color: black;
   border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 5px 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .gridedge3 p {
   text-align:center;
@@ -2938,13 +2950,13 @@ theColor:onclick {
   zoom: 0.8;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .help {
-  width: 40px;
-  height: 40px;
-  border-radius: 25px;
+  width: 2.0833vw;
+  height: 2.0833vw;
+  border-radius: 1.3020vw;
   position: absolute;
   right: 0;
   display: flex;
@@ -2954,8 +2966,8 @@ theColor:onclick {
   cursor: pointer;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .help:hover {
   background-color: rgb(61, 61, 255);
@@ -2974,8 +2986,8 @@ theColor:onclick {
   align-content: center;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .buttons {
   display: inline-block;
@@ -3018,7 +3030,7 @@ theColor:onclick {
 
   background-color: #0066ff;
   border: solid;
-  border-width: 1px;
+  border-width: 0.05208vw;
   border-color: black;
   font-size: 150%;
 }
@@ -3030,8 +3042,8 @@ theColor:onclick {
   right: -22.791666666666668vw;
   top: -17.2604166666666667vw;
   border-radius: 1vw;
-  -webkit-box-shadow: 0px 0px 3px 2px rgba(102, 163, 255, 0.59);
-  box-shadow: 0px 0px 3px 2px rgba(102, 163, 255, 0.59);
+  -webkit-box-shadow: 0px 0px 0.15625vw 0.104166vw rgba(102, 163, 255, 0.59);
+  box-shadow: 0px 0px 0.15625vw 0.104166vw rgba(102, 163, 255, 0.59);
   background-color: inherit;
   padding: 1vw;
   float: right;
@@ -3051,7 +3063,7 @@ theColor:onclick {
   padding: 0.55vw;
 
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.0.104166vw;
   border-color: black;
 }
 #playerHelp p {
@@ -3060,16 +3072,16 @@ theColor:onclick {
   margin-top: -0.52vw;
   padding: 0.55vw;
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.0.104166vw;
   border-color: black;
 }
 #playerHelp div {
   border-radius: 0.5vw;
   background-color: #94b5ee;
-  padding: 5px;
-  margin-bottom: 2px;
+  padding: 0.2604vw;
+  margin-bottom: 0.104166vw;
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.0.104166vw;
   border-color: black;
 }
 
@@ -3078,20 +3090,20 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 */
 
 #playerHelp::-webkit-scrollbar {
-  width: 11px;
-  height: 5px;
+  width: 10.05208vw;
+  height: 0.2604vw;
 }
 
 #playerHelp::-webkit-scrollbar-track {
   background: var(--scrollbarBG);
   margin: 10px;
-  padding: 2px;
+  padding: 0.104166vw;
 }
 #playerHelp::-webkit-scrollbar-thumb {
   background-color: var(--thumbBG);
-  border-radius: 6px;
+  border-radius: 0.3125vw;
   height: 30px;
-  border: 3px solid var(--scrollbarBG);
+  border: 0.15625vw solid var(--scrollbarBG);
 }
 .helpBoard {
   top: 1vw;
@@ -3109,18 +3121,28 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   justify-self: flex-end;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
   font-size: 3vw;
 }
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
 }
-
+.transparent{
+  width: 100%;
+  z-index: 50;
+  height: 100%;
+  left: 0vw;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+}
 .animate {
   animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
-  box-shadow: 0px 0px 10px 11px rgb(116, 116, 9), 0 0 5px rgb(116, 116, 9);
+  box-shadow: 0px 0px 10px 10.05208vw rgb(116, 116, 9), 0 0 0.2604vw rgb(116, 116, 9);
 }
 
 @keyframes jiggles {
@@ -3183,16 +3205,16 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: #005a87;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(1, 1, 1, 0.466), 0 0.05208vw  0.20833vw rgba(1, 1, 1, 0.24);
 }
 .winnerBoxPlayers {
   grid-column-start: auto;
   grid-column-end: auto;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
   height: 5.208vw;
   width: 10.41vw;
   border-radius: 20%;
@@ -3200,23 +3222,22 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 }
 .winner {
   margin-top: 5.20833vw;
-  grid-row: 1;
-  grid-column: 1;
-
+ 
   color: #872d00;
-  position: absolute;
+  position: relative;
   align-self: center;
-
-  font-size: 4vw;
+  margin-bottom: 5vw;
+  font-size: 3vw;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
+  border-width: 0.02604vw;
   padding: 0.52vw;
-  width: 63.5%;
-  height: auto;
-  box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
-  font: bold 330%/100% "Lucida Grande";
-  text-shadow: 1px 1px 1px rgb(59, 58, 58), 2px 2px 1px rgb(59, 58, 58);
+  width: 20vw;
+  height: 15vw;
+  
+  box-shadow: 0 0.2604vw 0.3125vw rgba(1, 1, 1, 0.466), 0 0.05208vw  0.20833vw rgba(1, 1, 1, 0.24);
+  font: bold "Lucida Grande";
+  text-shadow: 0.05208vw 0.05208vw 0.05208vw rgb(59, 58, 58), 0.104166vw 0.104166vw 0.05208vw rgb(59, 58, 58);
   background-color: #005a87;
 }
 
@@ -3228,13 +3249,13 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: #f0ead6;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 30px;
+  padding:  1.5625vw;
   text-align: center;
   font-family: sans-serif;
   z-index: 2;
-  box-shadow: 0 0 2px deeppink, 0 0 5px rgba(0, 0, 0, 1),
-    inset 0 0 5px rgba(0, 0, 0, 1);
-  border-radius: 10px;
+  box-shadow: 0 0 0.104166vw deeppink, 0 0 0.2604vw rgba(0, 0, 0, 1),
+    inset 0 0 0.2604vw rgba(0, 0, 0, 1);
+  border-radius: 0.520833vw;
 }
 .winnerBox:before {
   content: "";
@@ -3262,7 +3283,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   }
 
   to {
-    background-position: 0 1000px;
+    background-position: 0 52.083333333333336vw;
   }
 }
 

@@ -59,13 +59,8 @@
       :style="{
         backgroundColor: players[this.workPlacement.quarterTile].color,
       }"
-<<<<<<< HEAD
     />
     <div v-else />
-=======
-    ></div>
-   
->>>>>>> 89717a6fae13268e4dfa93db01db288b96337e22
   </div>
 </template>
 
@@ -74,6 +69,7 @@ export default {
   name: "CollectorsWork",
   components: {},
   props: {
+    nextPlayer: Function,
     labels: Object,
     player: Object,
     players: Object,
@@ -115,14 +111,9 @@ export default {
     },
     //Lägg en flaska här och dra ett kort samt ta First Player Token
     drawACardAndFirstPlayerToken: function() {
-<<<<<<< HEAD
       if (!this.player.turn) {
         return;
       }
-=======
-      
-      
->>>>>>> 89717a6fae13268e4dfa93db01db288b96337e22
       if (
         this.workPlacement.drawACardAndFirstPlayerToken === null &&
         this.player.bottles > 0 &&

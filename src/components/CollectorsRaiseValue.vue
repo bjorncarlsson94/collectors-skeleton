@@ -43,16 +43,26 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
       <h1 class="raiseValueHeadings">Välj ett kort från spelplanen:</h1>
       <div class="raiseValueCardGrid">
         <div class="cardsFromBoard">
-          <CollectorsCard
-            :card="auctionCard"
-            :availableAction="auctionCard.available"
-            @doAction="raiseValueNow(auctionCard)"
-          />
-          <CollectorsCard
-            :card="skillOnSale"
-            :availableAction="skillOnSale.available"
-            @doAction="raiseValueNow(skillOnSale)"
-          />
+          <div class="auctionCard">
+            <h6 class="auctionOrSkill" v-if="auctionCard.market!=undefined">Välj kort från auktionspool</h6>
+            <div class="card">
+              <CollectorsCard
+                :card="auctionCard"
+                :availableAction="auctionCard.available"
+                @doAction="raiseValueNow(auctionCard)"
+              />
+            </div>
+          </div>
+          <div class="skillCard">
+            <h6 class="auctionOrSkill" v-if="skillOnSale.market!=undefined">Välj kort från skillpool</h6>
+            <div class="card">
+              <CollectorsCard
+                :card="skillOnSale"
+                :availableAction="skillOnSale.available"
+                @doAction="raiseValueNow(skillOnSale)"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <h1 class="raiseValueHeadings">Välj ett kort från handen:</h1>
@@ -70,7 +80,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
         </div>
       </div>
        <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(currentPlacementAmount)">{{labels.cancelBuy}}</button>
+               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
               </div>
     </div>
    
@@ -90,6 +100,7 @@ export default {
     return {
       marketOrder: ["fastaval", "figures", "music", "movie", "tech"],
       currentPlacementAmount: null,
+      currentPlacement: null,
     };
   },
 
@@ -146,19 +157,20 @@ export default {
 
     raiseValueNow: function(card){
       if(this.currentPlacementAmount === 2){
-        this.$emit('raiseValue', card);
-        this.$emit('keepWindowOpen');
+        this.$emit('raiseValueFirstCard', card);
         this.currentPlacementAmount = 1;
       }
       else{
         this.$emit('raiseValue', card);
+        console.log(card, "kortet i raise value");
       }
     },
 
     placeBottle: function (p) {
       this.currentPlacementAmount = p.amountOfCards;
+      this.currentPlacement = p;
       console.log(this.currentPlacementAmount);
-      this.$emit("placeBottle", p.cost);
+      this.$emit("placeBottle", p);
       this.highlightAvailableCards(p.cost);
     },
 
@@ -213,9 +225,9 @@ export default {
       }
     },
 
-    hideWindow: function(cost){
+    hideWindow: function(){
       
-      this.$emit('cancelBuy', cost);
+      this.$emit('cancelBuy', this.currentPlacement);
     }
   },
 };
@@ -255,7 +267,7 @@ export default {
   color: black;
   background-color: #94b5ee;
   margin-block-start: 1em;
-  margin-block-end: 1em;
+  margin-block-end: auto;
   border-radius: 0.5vw;
   font-size: 0.8vw;
 }
@@ -308,15 +320,25 @@ export default {
 }
 
 .valueGrid {
+  display: grid;
   grid-row: 1/2;
   grid-auto-flow: row;
+}
+
+.auctionOrSkill{
+  display: contents;
+}
+
+.card{
+  display: grid;
+  justify-content: center;
 }
 
 /*Nedan är all css för rutan man får upp vid kortköp*/
   .raiseCardsAvailable {
   display: grid;
   position: absolute;
-  grid-template-rows: 15% 35% 15% auto;
+  grid-template-rows: 10% 45% 10% auto;
   width: 60vw;
   height: 40vw;
   background-color: #cfdcf2;
@@ -366,9 +388,8 @@ export default {
     justify-content: center;
     position: absolute;
     
-    top: -3px;
-    right: -1.5px;
-    
+    top: -0.15625vw;
+    right: -0.078125vw;
   }
 
 
@@ -381,7 +402,7 @@ export default {
     height: 5.208vw;
     font-size: 1vw;
     font-weight: bold;
-    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
   }
   .cancelBuy:hover{
     background-color: rgb(72, 172, 202);

@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="upforAuction" v-show="auctionActive" v-if="players[playerId]">
+    <div class="upforAuction" v-show="auctionActive" v-bind:class="{turnhighlight: players[playerId].turn}" v-if="players[playerId]">
       <div
         class="hiddenAuctionCard"
         v-show="hiddenAuctionCard"
@@ -39,7 +39,6 @@
       <button
         class="auctionButtonMini"
         v-if="players[playerId]"
-        v-show="hiddenAuctionCard"
         @click="auctionMiniActiveNow()"
       ></button>
       <button
@@ -286,7 +285,11 @@ export default {
   grid-row: 2;
   align-content: center;
 }
-
+.upforAuction.turnhighlight {
+  filter: brightness(110%);
+  border-color: rgb(199, 199, 199);
+  box-shadow: 0 0 1vw rgb(199, 199, 199);
+}
 .auctionButtons {
   margin: 1vw;
   border: 1vw;

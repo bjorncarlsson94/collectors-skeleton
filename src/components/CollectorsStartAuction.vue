@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(chosenPlacementCost)">{{labels.cancelBuy}}</button>
+               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
               </div>
     </div>
     <div class="secretOptionBox" v-show="secretOptionBoxAvailable">
@@ -76,6 +76,7 @@ export default {
   components: {
     CollectorsCard,
   },
+
   props: {
     labels: Object,
     player: Object,
@@ -92,6 +93,7 @@ export default {
       return {
         secretOptionBoxAvailable: false,
         secretOptionCard: Object,
+        currentPlacement: null,
      };
   },
   methods: {
@@ -107,7 +109,8 @@ export default {
       return this.marketValues[card.market];
     },
     placeBottle: function (p) {
-      this.$emit("placeBottle", p.cost);
+      this.currentPlacement = p;
+      this.$emit("placeBottle", p);
       this.highlightAvailableCards(p.cost);
     },
     highlightAvailableCards: function (cost = 100) {
@@ -156,7 +159,7 @@ export default {
         this.highlightAvailableCards();
       }
     },
-    hideWindow: function(cost){
+    hideWindow: function(){
       for (let i = 0; i < this.auctionCards.length; i += 1) {
         
         
@@ -167,7 +170,7 @@ export default {
         
           this.$set(this.player.hand[i], "available", false);
     }
-      this.$emit('cancelBuy', cost);
+      this.$emit('cancelBuy', this.currentPlacement);
     }
     // notYourTurn: function () {
     //   return (this.player.turn== false)
@@ -327,8 +330,8 @@ export default {
     justify-content: center;
     position: absolute;
     
-    top: -3px;
-    right: -1.5px;
+     top: -0.15625vw;
+    right: -0.078125vw;
     
   }
 
@@ -342,14 +345,15 @@ export default {
     height: 5.208vw;
     font-size: 1vw;
     font-weight: bold;
-    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
   }
   .cancelBuy:hover{
     background-color: #d6ce58;
   }
 
 .auctionColumn{
-  grid-row: 1/2;
-  grid-auto-flow: row;
+    grid-row: 1/2;
+    grid-template-rows: 7vw 7vw 7vw 7vw;
+    display: grid
 }
 </style>

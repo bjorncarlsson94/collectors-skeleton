@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="placeBottlesPlayer" v-show="endRound">
-        <button class="bottleButtonFin" :disabled="ifBottlesCanBePlaced()" @click="placeBottlePlayerbord()">Klar</button>
+        <button class="bottlebuttons" :disabled="ifBottlesCanBePlaced()" @click="placeBottlePlayerbord()">Done</button>
+        <div class="bottlesText">lorem ipsum</div>
+        <div class="bottlesLeft" v-if="players[playerId].totalBottles > 2">{{amountOfBottlesThatCanBePlaced()}}x</div>
+        <div class="bottles L"></div>
       <img src="/images/bottle-playerboard.png" class="bottleOptions">
       <!-- <div class="bottlesGrid" v-for="(bottlePlace, index) in tempBottlePlacement" :key="index">
           <div class="bottleButton A"  @click="changeTempBottle(0) && ifBottlesCanBePlaced()">
@@ -51,6 +54,7 @@ export default {
          tempBottlePlacement1: false,
          tempBottlePlacement2: false,
          tempBottlePlacement3: false,
+         bottlePlaced: 0,
      };
    },
 
@@ -69,6 +73,15 @@ export default {
         }
         this.ifBottlesCanBePlaced();
       }
+    },
+    amountOfBottlesThatCanBePlaced() {
+      let amount = 0;
+      for (let i = 0; i < this.tempBottlePlacement.length; i += 1) {
+        if (this.tempBottlePlacement[i] == true){
+          amount++;
+        }
+      }
+      return this.players[this.playerId].bottles - amount
     },
     ifBottlesCanBePlaced: function() {
       let amount = 0;
@@ -126,10 +139,39 @@ background-image: url(/images/player-bottle.png);
     background-color: rgb(95, 216, 253);
     border-radius: 4vw;
     z-index: 60;
+    border-style: ridge;
+    box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+    border-width: 0.2vw;
+    border-color: rgba(77, 58, 58, 0.658);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
     margin-left: 0.8vw;
+}
+.bottlesText{
+  color:black;
+}
+.bottlesLeft{
+  color: black;
+    grid-row: 1;
+    grid-column: 4;
+    text-align: right;
+    font-size: 3.5vw;
+    margin-top: 2.5vw
+}
+.bottlebuttons:disabled {
+  background-color: grey;
+  cursor: default;
+}
+.bottlebuttons {
+  cursor: pointer;
+    display: inline-block;
+    color: black;
+    font-size: 1.5vw;
+    margin: 1.4vw;
+    background-color: lawngreen;
+    border-radius: 2vw;
+    box-shadow: 0.2vw 0.3vw #999;
 }
 .bottlesGrid{
   color: black; 
@@ -161,5 +203,9 @@ background-image: url(/images/player-bottle.png);
 }
 .E{
   grid-column: 5;
+}
+.L{
+  grid-column: 5;
+  grid-row: 1;
 }
 </style>

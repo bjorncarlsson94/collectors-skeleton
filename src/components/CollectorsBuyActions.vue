@@ -50,7 +50,7 @@
                 </div>
               </div>  
               <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">{{labels.cancelBuy}}</button>
+               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
               </div>
           </div>
     </div>
@@ -73,7 +73,8 @@ export default {
          technology: this.raiseValue.technology,
          figures: this.raiseValue.figures,
          music: this.raiseValue.music,
-         currentPlacementCost: null}
+         currentPlacementCost: null,
+         currentPlacement: null}
        
        
 
@@ -129,8 +130,9 @@ export default {
     
     placeBottle: function (p) {
       this.currentPlacementCost = p.cost;
+      this.currentPlacement = p;
       this.cardCostUppdate(p.cost);
-      this.$emit('placeBottle', p.cost);
+      this.$emit('placeBottle', p);
       
       this.highlightAvailableCards(p.cost);
     },
@@ -185,7 +187,7 @@ export default {
      
     },
 
-    hideWindow: function(cost){
+    hideWindow: function(){
       for (let i = 0; i < this.itemsOnSale.length; i += 1) {
         
         
@@ -196,7 +198,7 @@ export default {
         
           this.$set(this.player.hand[i], "available", false);
     }
-      this.$emit('cancelBuy', cost);
+      this.$emit('cancelBuy', this.currentPlacement);
     }
 
 
@@ -275,7 +277,7 @@ export default {
   }
 
   .buyItemCardGrid{
-    margin-top:-20px ;
+    margin-top:-1.0416vw ;
     display: grid;
     align-content: center;
     grid-auto-flow: column;
@@ -310,8 +312,8 @@ export default {
     justify-content: center;
     position: absolute;
     
-    top: -3px;
-    right: -1.5px;
+    top: -0.15625vw;
+    right: -0.078125vw;
     
   }
 
@@ -326,7 +328,7 @@ export default {
     font-size: 1vw;
     font-weight: bold;
     
-    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
   }
   .cancelBuy:hover{
     background-color: #da855a;
