@@ -739,20 +739,22 @@
             >
               {{ labels.randomplayer }}
             </button>
-            <button
+            <!-- <button
               v-if="players[playerId]"
               @click="auctionBoard()"
               class="menuButton"
             >
               {{ labels.showAuction }}
             </button>
-            <!--   <button @click="moveCards()" class="menuButton">
+            <button @click="moveCards()" class="menuButton">
               hola olle testa här :)
-            </button>-->
+            </button>
             <button @click="nextPlayer()" class="menuButton">
               nästa runda :)
             </button>
-           
+            <button @click="hiddenAuctionCard = true" class="menuButton">
+              hidden auction card
+            </button> -->
 
             <!--
               Lägg till current value i spelaren. Så att varje spelare har koll på sin egna currentValue. 
@@ -1983,6 +1985,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Goldman&display=swap');
 header {
   user-select: none;
   position: fixed;
@@ -2859,18 +2862,21 @@ zoom: 1.2;
   background-repeat: no-repeat;
 }
 .roundCounter {
-  grid-column: 1;
-  grid-row: 2;
-  background-color: rgb(194, 194, 194);
-  border-radius: 2vw;
-  padding: 2vw;
-  font-size: 1vw;
-  position: relative;
-  border: solid;
-  border-color: black;
-  border-width:  0.02604vw;;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+font-family: 'Goldman', cursive;
+    grid-column: 1;
+    grid-row: 2;
+    background-color: rgb(194, 194, 194);
+    color: black;
+    border-radius: 2vw;
+    padding: 1vw;
+    font-size: 1.3vw;
+    position: relative;
+    border: solid;
+    border-color: black;
+    border-width: 0.02604vw;
+    box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
+
 .drawCardSpace {
   grid-column: 8;
   grid-row: 2;
@@ -3035,11 +3041,20 @@ width: 5vw;
 }
 
 .menuButton {
-  background-color: #bbb;
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  font-size: auto;
+    font-family: 'Goldman', cursive; 
+    display: block;
+    width: 100%;
+    height: 500%;
+    background-color: #b92828;
+    overflow: hidden;
+    border-radius: 2vw;
+    box-shadow: 0.4vw 0.4vw #999;
+     font-size: 2vw;
+     cursor: pointer;
+}
+.menuButton:disabled {
+  background-color: grey;
+  cursor: default;
 }
 
 .help {
