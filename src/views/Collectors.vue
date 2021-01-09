@@ -1351,7 +1351,9 @@ export default {
       "passiveIncomeAdded",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
       }.bind(this)
     );
     //------------------------------
