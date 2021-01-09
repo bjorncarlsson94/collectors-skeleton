@@ -399,7 +399,6 @@
                 @placeBottle="placeBottle('market', $event)"
                 @raiseValueFirstCard="raisingValue($event, true)"
                 @raiseValue="raisingValue($event, false)"
-                @keepWindowOpen="keepWindowOpen()"
                 @cancelBuy="removeBottle('market', $event)"
               />
             </div>
@@ -1535,10 +1534,11 @@ export default {
           cost: this.chosenPlacementCost,
           firstCard: firstCard,
       });
+      
       console.log(card, "i collectors")
       if(firstCard===false){
-      this.aboutToRaiseValue = false;
-      this.nextPlayer();
+        this.aboutToRaiseValue = false;
+        this.nextPlayer();
       }
     },
 
@@ -1550,16 +1550,6 @@ export default {
       }
       return {};
     },
-
-    keepWindowOpen: function () {
-      this.aboutToRaiseValue = true;
-    },
-
-    /*getRaiseItemsFromBoard: function(){
-      this.raiseItemsFromBoard.push(this.skillsOnSale[this.skillsOnSale.length - 1]);
-      this.raiseItemsFromBoard.push(this.auctionCards[this.auctionCards.length - 1]);
-      return this.raiseItemsFromBoard;
-    },*/
 
     notYourTurn: function () {
       if (this.players[this.playerId].turn == false) {
