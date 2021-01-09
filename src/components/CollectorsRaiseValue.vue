@@ -286,7 +286,7 @@ export default {
 }
 .button {
   float: left;
-  font-size: 1vw;
+  font-size: 0.7vw;
   justify-content: space-around;
   margin: 1vw;
   padding: 0.2vw;

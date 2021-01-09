@@ -2910,7 +2910,7 @@ zoom: 1.2;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValuegrid div {
-  font-size: 1vw;
+  font-size: 0.5vw;
   font-weight: bold;
   color: black;
 }
