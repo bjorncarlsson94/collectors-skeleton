@@ -607,6 +607,8 @@ Data.prototype.clearBottles = function(roomId) {
     room.workPlacement.drawACardAndFirstPlayerToken = null;
     room.workPlacement.drawCardAndPassiveIncome = null;
     room.workPlacement.quarterTile = null;
+    console.log(room.workPlacement);
+    console.log("Bottles Cleared");
   }
 };
 
@@ -1261,6 +1263,7 @@ Data.prototype.workDrawCardTwoCards = function(roomId, playerId) {
     //room.workPlacement[0] = true;
     //console.log(room.workPlacement[0])
     room.players[playerId].bottles--;
+    this.changeBottleOnPlayerboarad(roomId, playerId, false);
     return room.players;
   } else return [];
 };
@@ -1288,6 +1291,8 @@ Data.prototype.takeFirstPlayerToken = function(roomId, playerId) {
   room.startingPlayerId = playerId;
   room.players[playerId].firstPlayerToken = true; //Behövs??
 
+  this.changeBottleOnPlayerboarad(roomId, playerId, false);
+
   return room.players;
 };
 Data.prototype.drawPassiveIncome = function(roomId, playerId) {
@@ -1297,6 +1302,7 @@ Data.prototype.drawPassiveIncome = function(roomId, playerId) {
     let card = room.deck.pop();
     room.players[playerId].income.push(card);
 
+    this.changeBottleOnPlayerboarad(roomId, playerId, false);
     room.players[playerId].bottles--;
     return room.players;
   } else return [];
