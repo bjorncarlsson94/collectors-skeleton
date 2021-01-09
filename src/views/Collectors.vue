@@ -318,7 +318,7 @@
             v-if="players[playerId]"
             @click="auctionMiniActiveNow()"
           >
-            {{ bid }}$
+            {{ auctionPrice }}$
             <div class="auctionCardViewMini" v-if="!hiddenAuctionCard">
               <CollectorsCard
                 v-for="(card, index) in cardInAuction"
@@ -722,8 +722,9 @@
           </div>
 
           <div class="roundCounter">
-            <p>{{ labels.roundcounter }} {{ round }}</p>
-            <p>{{labels.itIs}}{{ currentPlayer() }} </p>
+            <p>{{ labels.roundcounter }} {{ round }} </p>
+            
+            <p> {{labels.itIs}}<br>{{ currentPlayer() }} </p>
           </div>
 
           <div class="drawCardSpace">
@@ -1728,8 +1729,10 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
     showHelpOptions: function () {
+      console.log("hej");
       var otherPlayersTurn=false;
       if (this.helpAction) {
+        console.log("inte här");
         this.skillsHelpActive = false;
         this.auctionHelpActive = false;
         this.menuSpaceActive = false;
@@ -1737,24 +1740,30 @@ export default {
         this.workHelpActive = false;
         this.itemsHelpActive = false;
         this.raiseValueHelpActive = false;
+        
+        console.log("kommer hit");
         for (const player in this.players) {
-          if(player.turn==true){
+          
+          if(this.players[player].turn==true){
+            
             otherPlayersTurn=true;
             break;
           }
         }
-        if(!otherPlayersTurn){
+        }
+      this.helpAction = !this.helpAction;
+      console.log(this.helpAction);
+      if(!otherPlayersTurn && !this.helpAction){
           this.players[this.playerId].turn=true;
 
         }
-        }
-      this.helpAction = !this.helpAction;
+        
       if(this.players[this.playerId].turn==true && this.helpAction){
         this.players[this.playerId].turn=false;
 
       }
       console.log(this.helpAction);
-      console.log(document.getElementById("test1").className);
+      
 
       /* if(this.helpAuctionActive){
         console.log("hejhej");
@@ -3067,18 +3076,14 @@ width: 5vw;
 }
 .menuSpace {
   grid-column: 1;
-  grid-row: 3;
   background-color: rgb(194, 194, 194);
   border-radius: 1vw;
   border-style: double;
   border-width: 0.2vw;
-  border-color: rgba(0, 0, 0, 0.295);
   padding: 2vw;
   position: relative;
   padding: 1vw;
   display: grid;
-  grid-template-rows: repeat(auto-fill, 3.5vh);
-  align-content: center;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .buttons {
@@ -3087,6 +3092,7 @@ width: 5vw;
   background-color: rgb(83, 83, 83);
   border-radius: 1vw;
   box-shadow: 0 0.3vw #999;
+  
 }
 .buttons:active {
   background-color: coral;
@@ -3102,19 +3108,26 @@ width: 5vw;
 }
 
 .menuButton {
-    font-family: 'Goldman', cursive; 
+font-family: 'Goldman', cursive;
     display: block;
     width: 100%;
-    height: 500%;
+    height: 100%;
     background-color: #b92828;
     overflow: hidden;
+    color: transparent;
     border-radius: 1vw;
     box-shadow: 0.4vw 0.4vw #999;
-     font-size: 2vw;
-     cursor: pointer;
+    font-size: 1.5vw;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+    background-image: url(https://i.pinimg.com/originals/24/ea/b4/24eab460d2f094474e47fb01565c8e28.gif);
 }
+
 .menuButton:disabled {
+  color: black;
   background-color: grey;
+  background-image: none;
   cursor: default;
 }
 
