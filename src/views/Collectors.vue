@@ -4,7 +4,7 @@
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
       <section id="wrapper" >
-        <button  @click.prevent="playSound('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')">Klicka här Olle</button>
+        
         <div id="grid">
           <div class="helpBoard" @click="showHelpOptions">
             <p><strong>?</strong></p>
