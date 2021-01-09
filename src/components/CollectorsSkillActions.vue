@@ -24,7 +24,7 @@
       </div>
                 <div class="skillsAvailable" v-show="aboutToBuySkill" v-if="player">
               <h1 class = "buySkillHeadings">
-                Välj ett kort från spelplanen:
+                {{labels.chooseCardFromPlayerBoard}}:
               </h1>
               <div class="buySkillCardGrid">
                 <div class="skillsFromBoard" v-for="(card, index) in skillsOnSale" :key="index">
@@ -35,7 +35,7 @@
                 </div>
               </div>
                 <h1 class="buySkillHeadings">
-                  Välj ett kort från handen:
+                  {{labels.chooseCardFromPlayerHand}}:
                 </h1>
               <div class= "buySkillCardGrid">
                 <div class="skillsFromHand" v-for="(card,index) in player.hand" :key="'A'+index">
@@ -231,8 +231,8 @@ export default {
     justify-content: center;
     position: absolute;
     
-    top: -3px;
-    right: -1.5px;
+ top: -0.15625vw;
+    right: -0.078125vw;
     
   }
 
@@ -246,7 +246,7 @@ export default {
     height: 5.208vw;
     font-size: 1vw;
     font-weight: bold;
-    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
   }
   .cancelBuy:hover{
     background-color: #aeda6e;
@@ -255,9 +255,9 @@ export default {
 
   .bottlePlace {
     background-image: url(/images/player-bottle.png);
-    margin-top: 0vw;
-    height: 3vw;
-    width: 3vw;
+margin-top: 0.6vw;
+    height: 2.5vw;
+    width: 2.5vw;
     background-color: rgb(95, 216, 253);
     border-radius: 3vw;
     border-style: ridge;

@@ -29,7 +29,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             @click="placeBottle(p)"
           >
             ${{ p.cost }}
-            {{ p.amountOfCards + "cards" }}
+            {{ p.amountOfCards + labels.card }}
           </button>
           <div
             class="bottlePlace"
@@ -40,22 +40,32 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
       </div>
     </div>
     <div class="raiseCardsAvailable" v-show="aboutToRaiseValue" v-if="player">
-      <h1 class="raiseValueHeadings">Välj ett kort från spelplanen:</h1>
+      <h1 class="raiseValueHeadings">{{labels.pickFromPlayerBoard}}</h1>
       <div class="raiseValueCardGrid">
         <div class="cardsFromBoard">
-          <CollectorsCard
-            :card="auctionCard"
-            :availableAction="auctionCard.available"
-            @doAction="raiseValueNow(auctionCard)"
-          />
-          <CollectorsCard
-            :card="skillOnSale"
-            :availableAction="skillOnSale.available"
-            @doAction="raiseValueNow(skillOnSale)"
-          />
+          <div class="auctionCard">
+            <h6 class="auctionOrSkill" v-if="auctionCard.market!=undefined">{{labels.pickFromAuction}}</h6>
+            <div class="card">
+              <CollectorsCard
+                :card="auctionCard"
+                :availableAction="auctionCard.available"
+                @doAction="raiseValueNow(auctionCard)"
+              />
+            </div>
+          </div>
+          <div class="skillCard">
+            <h6 class="auctionOrSkill" v-if="skillOnSale.market!=undefined">{{labels.pickFromSkills}}</h6>
+            <div class="card">
+              <CollectorsCard
+                :card="skillOnSale"
+                :availableAction="skillOnSale.available"
+                @doAction="raiseValueNow(skillOnSale)"
+              />
+            </div>
+          </div>
         </div>
       </div>
-      <h1 class="raiseValueHeadings">Välj ett kort från handen:</h1>
+      <h1 class="raiseValueHeadings">{{labels.pickFromHand}}</h1>
       <div class="raiseValueCardGrid">
         <div
           class="cardsFromHand"
@@ -148,7 +158,6 @@ export default {
     raiseValueNow: function(card){
       if(this.currentPlacementAmount === 2){
         this.$emit('raiseValueFirstCard', card);
-        this.$emit('keepWindowOpen');
         this.currentPlacementAmount = 1;
       }
       else{
@@ -295,9 +304,9 @@ export default {
 }
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
-    margin-top: 0vw;
-    height: 3vw;
-    width: 3vw;
+    height: 2.5vw;
+    margin-top: 1vw;
+    width: 2.5vw;
     background-color: rgb(95, 216, 253);
     border-radius: 4vw;
     border-style: ridge;
@@ -316,11 +325,20 @@ export default {
   grid-auto-flow: row;
 }
 
+.auctionOrSkill{
+  display: contents;
+}
+
+.card{
+  display: grid;
+  justify-content: center;
+}
+
 /*Nedan är all css för rutan man får upp vid kortköp*/
   .raiseCardsAvailable {
   display: grid;
   position: absolute;
-  grid-template-rows: 15% 35% 15% auto;
+  grid-template-rows: 10% 45% 10% auto;
   width: 60vw;
   height: 40vw;
   background-color: #cfdcf2;
@@ -346,6 +364,7 @@ export default {
     text-align: center;
     color: black;
     grid-column: 1/6;
+    font-size: large;
   }
 
   .cardsFromBoard{
@@ -370,9 +389,8 @@ export default {
     justify-content: center;
     position: absolute;
     
-    top: -3px;
-    right: -1.5px;
-    
+    top: -0.15625vw;
+    right: -0.078125vw;
   }
 
 
@@ -385,7 +403,7 @@ export default {
     height: 5.208vw;
     font-size: 1vw;
     font-weight: bold;
-    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
   }
   .cancelBuy:hover{
     background-color: rgb(72, 172, 202);

@@ -23,7 +23,7 @@
       </div>
           <div class="itemsAvailable" v-show="aboutToBuyItem" v-if="player">
               <h1 class = "buyItemHeadings">
-                Välj ett kort från spelplanen:
+                {{labels.chooseCardFromPlayerBoard}}:
               </h1>
               <div class="buyItemCardGrid">
                 <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale.slice().reverse()" :key="index">
@@ -37,7 +37,8 @@
               </div>
               
                 <h1 class="buyItemHeadings">
-                  Välj ett kort från handen:
+                  {{labels.chooseCardFromPlayerHand}}:
+                 
                 </h1>
               <div class= "buyItemCardGrid">
                 <div class="itemsFromHand" v-for="(card,index) in player.hand" :key="'A'+index">
@@ -277,7 +278,7 @@ export default {
   }
 
   .buyItemCardGrid{
-    margin-top:-20px ;
+    margin-top:-1.0416vw ;
     display: grid;
     align-content: center;
     grid-auto-flow: column;
@@ -312,8 +313,8 @@ export default {
     justify-content: center;
     position: absolute;
     
-    top: -3px;
-    right: -1.5px;
+    top: -0.15625vw;
+    right: -0.078125vw;
     
   }
 
@@ -328,13 +329,12 @@ export default {
     font-size: 1vw;
     font-weight: bold;
     
-    box-shadow: 1px 5px 6px rgba(0, 0, 10, 2), 0 1px 4px rgba(0, 0, 10, 0.24);
+    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
   }
   .cancelBuy:hover{
     background-color: #da855a;
   }
   .cancelBuy:active{
-    background-color: #da855a;
     background-color: #da855a;
     box-shadow: 0 0.2vw #999;
     transform: translateY(0.1vw);
@@ -343,9 +343,9 @@ export default {
 
 .bottlePlace {
     background-image: url(/images/player-bottle.png);
-    margin-top: 0vw;
-    height: 3vw;
-    width: 3vw;
+    margin-top: 0.6vw;
+    height: 2.5vw;
+    width: 2.5vw;
     background-color: rgb(95, 216, 253);
     border-radius: 4vw;
     border-style: ridge;
