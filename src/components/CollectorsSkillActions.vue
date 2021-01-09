@@ -171,6 +171,7 @@ export default {
   }
   .skillsgrid{
     display:grid;
+    grid-template-rows: 6.4vw;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding: 1vw;
     margin: 1vw;

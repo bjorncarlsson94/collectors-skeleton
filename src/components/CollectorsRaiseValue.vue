@@ -80,7 +80,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
         </div>
       </div>
        <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
+               <button class="cancelBuy" :disabled="cantCancel" @click="hideWindow()">{{labels.cancelBuy}}</button>
               </div>
     </div>
    
@@ -101,6 +101,7 @@ export default {
       marketOrder: ["fastaval", "figures", "music", "movie", "tech"],
       currentPlacementAmount: null,
       currentPlacement: null,
+      cantCancel: false,
     };
   },
 
@@ -116,6 +117,7 @@ export default {
     marketValues: Object,
     notYourTurn: Function,
     aboutToRaiseValue: Boolean,
+    checkAmountOfRaiseValue: Function,
   },
   methods: {
     log() {
@@ -158,30 +160,27 @@ export default {
     raiseValueNow: function(card){
       if(this.currentPlacementAmount === 2){
         this.$emit('raiseValueFirstCard', card);
+        this.cantCancel = true;
         this.currentPlacementAmount = 1;
       }
       else{
         this.$emit('raiseValue', card);
+        this.cantCancel = false;
         console.log(card, "kortet i raise value");
       }
     },
 
     placeBottle: function (p) {
       this.currentPlacementAmount = p.amountOfCards;
+      if(!this.checkAmountOfRaiseValue()){
+        this.currentPlacementAmount = 1;
+      }
       this.currentPlacement = p;
       console.log(this.currentPlacementAmount);
       this.$emit("placeBottle", p);
       this.highlightAvailableCards(p.cost);
     },
 
-    findLastCard: function(cardArray){
-      for(let i = cardArray.length-1; i>=0; i--){
-        if (cardArray[i].length !== 0){
-          //console.log(cardArray[i]);
-          return cardArray[i];
-        }
-      }
-    },
 
     cannotAfford: function (cost) {
       let minCost = 100;
@@ -191,6 +190,7 @@ export default {
       }
       return this.player.money < minCost;
     },
+
 
     highlightAvailableCards: function (cost=100) {
 

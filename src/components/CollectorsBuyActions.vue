@@ -254,6 +254,7 @@ export default {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding: 1vw;
     margin: 1vw;
+    grid-template-rows: 6.4vw;
     justify-items: center;
     border-color: grey;
     border-radius: 2vw;

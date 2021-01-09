@@ -41,6 +41,7 @@
           <CollectorsBottles
             v-if="players[playerId]"
             :labels="labels"
+            :round="round"
             :playerId="playerId"
             :players="players"
             :endRound="endRound"
@@ -412,6 +413,7 @@
                 :skillOnSale="getLastElement(skillsOnSale)"
                 :auctionCard="getLastElement(auctionCards)"
                 :placement="marketPlacement"
+                :checkAmountOfRaiseValue="checkAmountOfRaiseValue"
                 :marketValues="marketValues"
                 :notYourTurn="notYourTurn"
                 :aboutToRaiseValue="aboutToRaiseValue"
@@ -1374,6 +1376,30 @@ export default {
         this.hiddenAuctionCard = true;
       } else {
         this.hiddenAuctionCard = false;
+      }
+    },
+    checkAmountOfRaiseValue: function(){
+      let cardCounter = 0
+      for (let i = 0; i < this.skillsOnSale.length; i += 1) {
+        if(this.skillsOnSale[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      for (let i = 0; i < this.auctionCards.length; i += 1) {
+        if(this.auctionCards[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      for (let i = 0; i < this.skillsOnSale; i += 1) {
+        if(this.players[this.playerId].card[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      if(cardCounter < 2){
+        return false;
+      }
+      else{
+        return true
       }
     },
     auctionBoard: function () {

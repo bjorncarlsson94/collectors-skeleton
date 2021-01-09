@@ -44,7 +44,8 @@
 	"pickFromAuction":"Pick card from auction pool",
 	"pickFromSkills":"Pick card from skill pool",
 	"pickFromHand":"Pick a card from your hand:",
-	
+	"endRoundBox1":"End of round ",
+	"endRoundBox2":"Now place your remaining bottles on the tiles, the non covered tiles will be your income to the coming round.",
 	"points":"Score",
 	"chooseSecretCard":"Choose one secret card:",
 	"helpPlayerHand":{
