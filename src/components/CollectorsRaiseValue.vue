@@ -70,7 +70,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
         </div>
       </div>
        <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(currentPlacementAmount)">{{labels.cancelBuy}}</button>
+               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
               </div>
     </div>
    
@@ -90,6 +90,7 @@ export default {
     return {
       marketOrder: ["fastaval", "figures", "music", "movie", "tech"],
       currentPlacementAmount: null,
+      currentPlacement: null,
     };
   },
 
@@ -146,19 +147,21 @@ export default {
 
     raiseValueNow: function(card){
       if(this.currentPlacementAmount === 2){
-        this.$emit('raiseValue', card);
+        this.$emit('raiseValueFirstCard', card);
         this.$emit('keepWindowOpen');
         this.currentPlacementAmount = 1;
       }
       else{
         this.$emit('raiseValue', card);
+        console.log(card, "kortet i raise value");
       }
     },
 
     placeBottle: function (p) {
       this.currentPlacementAmount = p.amountOfCards;
+      this.currentPlacement = p;
       console.log(this.currentPlacementAmount);
-      this.$emit("placeBottle", p.cost);
+      this.$emit("placeBottle", p);
       this.highlightAvailableCards(p.cost);
     },
 
@@ -213,9 +216,9 @@ export default {
       }
     },
 
-    hideWindow: function(cost){
+    hideWindow: function(){
       
-      this.$emit('cancelBuy', cost);
+      this.$emit('cancelBuy', this.currentPlacement);
     }
   },
 };
@@ -255,7 +258,7 @@ export default {
   color: black;
   background-color: #94b5ee;
   margin-block-start: 1em;
-  margin-block-end: 1em;
+  margin-block-end: auto;
   border-radius: 0.5vw;
   font-size: 0.8vw;
 }
@@ -308,6 +311,7 @@ export default {
 }
 
 .valueGrid {
+  display: grid;
   grid-row: 1/2;
   grid-auto-flow: row;
 }

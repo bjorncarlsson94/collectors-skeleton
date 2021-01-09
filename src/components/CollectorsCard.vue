@@ -2,10 +2,6 @@
 
     <div v-if="card.x>0" :class="['card', {'available-to-choose': availableAction}]" 
       :style="{'zoom':scalefactor,'background-position': (-(card.x-1)*250)+'px ' + (-(card.y-1)*317)+'px'}" @click="doAction"> 
-
-      {{card.item}} 
-      {{card.skill}}
-      {{card.market}}
     </div>
 </template>
 

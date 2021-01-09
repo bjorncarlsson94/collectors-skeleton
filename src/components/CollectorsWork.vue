@@ -30,7 +30,8 @@
       :style="{
         backgroundColor: players[this.workPlacement.drawTwoCards].color,
       }"
-    ></div>
+    />
+    <div v-else />
     <div
       class="bottlePlace"
       id="workBottle1"
@@ -39,7 +40,8 @@
         backgroundColor:
           players[this.workPlacement.drawACardAndFirstPlayerToken].color,
       }"
-    ></div>
+    />
+    <div v-else />
     <div
       class="bottlePlace"
       id="workBottle2"
@@ -48,17 +50,17 @@
         backgroundColor:
           players[this.workPlacement.drawCardAndPassiveIncome].color,
       }"
-    ></div>
+    />
+    <div v-else />
     <div
       class="bottlePlace"
       id="workBottle5"
       v-if="this.workPlacement.quarterTile !== null"
       :style="{
-        backgroundColor:
-          players[this.workPlacement.quarterTile].color,
+        backgroundColor: players[this.workPlacement.quarterTile].color,
       }"
-    ></div>
-   
+    />
+    <div v-else />
   </div>
 </template>
 
@@ -67,6 +69,7 @@ export default {
   name: "CollectorsWork",
   components: {},
   props: {
+    nextPlayer: Function,
     labels: Object,
     player: Object,
     players: Object,
@@ -93,7 +96,9 @@ export default {
     helpButtonPressed: function() {},
     //Lägg en flaska här och dra 2st kort
     drawTwoCards: function() {
-      console.log(this.workPlacement);
+      if (!this.player.turn) {
+        return;
+      }
       if (this.workPlacement.drawTwoCards === null && this.player.bottles > 0) {
         this.applySkills();
         this.$emit("workDrawTwoCards");
@@ -106,8 +111,9 @@ export default {
     },
     //Lägg en flaska här och dra ett kort samt ta First Player Token
     drawACardAndFirstPlayerToken: function() {
-      
-      
+      if (!this.player.turn) {
+        return;
+      }
       if (
         this.workPlacement.drawACardAndFirstPlayerToken === null &&
         this.player.bottles > 0 &&
@@ -123,9 +129,9 @@ export default {
     },
     //Lägg en flaska här och dra ett kort samt ett kort som passiv inkomst
     drawCardAndPassiveIncome: function() {
-      console.log("workPlacement:");
-      console.log(this.workPlacement);
-      console.log("----------------");
+      if (!this.player.turn) {
+        return;
+      }
       if (
         this.workPlacement.drawCardAndPassiveIncome === null &&
         this.player.bottles > 0
@@ -141,9 +147,9 @@ export default {
     },
     //Panta en flaska så får du en peng, går att gö hur många gånger som helst
     recycleBottle: function() {
-      //Här ska en flaska växlas för pengar
-      //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
-      console.log("pant knappen trycks");
+      if (!this.player.turn) {
+        return;
+      }
       if (this.round === 4) {
          this.popUpTestActive();
         alert("Round 4 use special action!");
@@ -170,28 +176,53 @@ export default {
         case 0:
           break;
         case 1:
-          if (this.player.bottles > 0 && this.workPlacement.quarterTile === null) {
+          if (!this.player.turn) {
+            return;
+          }
+          if (
+            this.player.bottles > 0 &&
+            this.workPlacement.quarterTile === null
+          ) {
             this.$emit("addPassiveIncome", 2);
             this.placeWorker("quarterTile");
+            this.nextPlayer();
           }
           break;
         case 2:
-          if (this.player.bottles > 0 && this.workPlacement.quarterTile === null) {
+          if (!this.player.turn) {
+            return;
+          }
+          if (
+            this.player.bottles > 0 &&
+            this.workPlacement.quarterTile === null
+          ) {
             this.$emit("addPassiveIncome", 2);
             this.$emit("addMoney", 1);
             this.placeWorker("quarterTile");
+            this.nextPlayer();
           }
           break;
         case 3:
-          if (this.player.bottles > 0 && this.workPlacement.quarterTile === null) {
+          if (!this.player.turn) {
+            return;
+          }
+          if (
+            this.player.bottles > 0 &&
+            this.workPlacement.quarterTile === null
+          ) {
             this.$emit("addPassiveIncome", 2);
             this.$emit("addMoney", 2);
             this.placeWorker("quarterTile");
+            this.nextPlayer();
           }
           break;
         case 4:
+          if (!this.player.turn) {
+            return;
+          }
           if (this.player.bottles > 0) {
             this.$emit("recycleBottle4thRound");
+            this.nextPlayer();
           }
           break;
       }

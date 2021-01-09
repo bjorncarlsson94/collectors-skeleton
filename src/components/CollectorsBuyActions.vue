@@ -50,7 +50,7 @@
                 </div>
               </div>  
               <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow(currentPlacementCost)">{{labels.cancelBuy}}</button>
+               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
               </div>
           </div>
     </div>
@@ -73,7 +73,8 @@ export default {
          technology: this.raiseValue.technology,
          figures: this.raiseValue.figures,
          music: this.raiseValue.music,
-         currentPlacementCost: null}
+         currentPlacementCost: null,
+         currentPlacement: null}
        
        
 
@@ -129,8 +130,9 @@ export default {
     
     placeBottle: function (p) {
       this.currentPlacementCost = p.cost;
+      this.currentPlacement = p;
       this.cardCostUppdate(p.cost);
-      this.$emit('placeBottle', p.cost);
+      this.$emit('placeBottle', p);
       
       this.highlightAvailableCards(p.cost);
     },
@@ -185,7 +187,7 @@ export default {
      
     },
 
-    hideWindow: function(cost){
+    hideWindow: function(){
       for (let i = 0; i < this.itemsOnSale.length; i += 1) {
         
         
@@ -196,7 +198,7 @@ export default {
         
           this.$set(this.player.hand[i], "available", false);
     }
-      this.$emit('cancelBuy', cost);
+      this.$emit('cancelBuy', this.currentPlacement);
     }
 
 

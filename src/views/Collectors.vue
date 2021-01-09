@@ -26,7 +26,8 @@
             <!-- :disabled="pname == '' || players[playerId].color == null" -->
             <button class="enterPlayerInfo" @click="playerInfo()">Enter</button>
           </div>
-          <div class="chooseSecret" v-if="players[playerId]" v-show="choosingSecret">
+          <div class="transparent" v-if="players[playerId]" v-show="choosingSecret">
+          <div class="chooseSecret" >
             Choose one secret card:
             <div class="handToSecret">
             <CollectorsCard
@@ -34,6 +35,7 @@
               :card="card"
               :key="index"
               @doAction="pushToSecret(card)"/>
+              </div>
               </div>
           </div>
           <CollectorsBottles
@@ -300,6 +302,7 @@
           </div>
           <div
             class="auctionMini"
+            v-bind:class="{turnhighlight: players[playerId].turn}"
             v-show="auctionMiniActive"
             v-if="players[playerId]"
             @click="auctionMiniActiveNow()"
@@ -357,15 +360,10 @@
               Market share
             </button>
           </div>
-          <div class="loserAuction" v-show="loserAvailable">
-            You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
-            <button
-              class="auctionButtonLoser"
-              v-if="players[playerId]"
-              @click="loserAvailable = false"
-            >
-              OK
-            </button>
+          <div class="transparent" v-show="loserAvailable">
+            <div class="loserAuction">
+              You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
+            </div>
           </div>
           <CollectorsAuction
             v-if="players[playerId]"
@@ -406,7 +404,8 @@
                 :notYourTurn="notYourTurn"
                 :aboutToRaiseValue="aboutToRaiseValue"
                 @placeBottle="placeBottle('market', $event)"
-                @raiseValue="raisingValue($event)"
+                @raiseValueFirstCard="raisingValue($event, true)"
+                @raiseValue="raisingValue($event, false)"
                 @keepWindowOpen="keepWindowOpen()"
                 @cancelBuy="removeBottle('market', $event)"
               />
@@ -525,8 +524,6 @@
                       <CollectorsCard
                         v-for="(card, index) in players[playerId].items"
                         :card="card"
-                        :availableAction="card.available"
-                        @doAction="buyCard(card)"
                         :key="index"
                       />
                     </div>
@@ -688,6 +685,7 @@
               :player="players[playerId]"
               :players="players"
               :round="round"
+              :nextPlayer="nextPlayer"
               :workPlacement="workPlacement"
               @recycleBottle="recycleBottle($event)"
               @recycleBottle4thRound="recycleBottle4thRound($event)"
@@ -791,7 +789,7 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round >= 5">
+    <div class="winnerBox" v-if="round>= 5">
       <div class="winnerBoxContent">
         <div class="winnerPlayerGrid">
           <div
@@ -1029,7 +1027,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsBottlePlaced",
-      function (d) {
+      function(d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
@@ -1038,7 +1036,7 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsBottleRemoved",
-      function (d) {
+      function(d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
@@ -1049,6 +1047,12 @@ export default {
 
     this.$store.state.socket.on(
       "bottleOnPlayerboardPlaced",
+      function(d) {
+        this.players = d.players;
+      }.bind(this)
+    );
+        this.$store.state.socket.on(
+      "secretPicked",
       function (d) {
         this.players = d.players;
       }.bind(this)
@@ -1059,6 +1063,7 @@ export default {
         this.players = d.players;
       }.bind(this)
     );
+
 
 
     this.$store.state.socket.on(
@@ -1137,16 +1142,15 @@ export default {
             this.cardInAuction = d.cardInAuction;
             this.auctionActive = false;
             this.auctionWinner = false;
+            this.auctionMiniActive = false;
             this.biddingCards = [];
             this.players = d.players;
-            if (this.players[this.playerId].turn == true) {
-              this.nextPlayer();
-            }
           } else {
             this.winnerSelection(false);
             this.auctionPrice = 0;
             this.bid = 0;
             this.cardInAuction = d.cardInAuction;
+            this.auctionMiniActive = false;
             this.hiddenAuctionCard = false;
             this.auctionActive = false;
             this.auctionWinner = false;
@@ -1155,9 +1159,6 @@ export default {
             console.log("22 längd" + this.biddingCards.length);
             if (this.biddingCards.length > 0) {
               this.restoreHand();
-            }
-            if (this.players[this.playerId].turn == true) {
-              this.nextPlayer();
             }
           }
         } else {
@@ -1181,6 +1182,10 @@ export default {
         this.players[this.playerId].currentScore = d.currentScore;
         this.winnerAvailable = false;
         this.auctionLeaderId = null;
+        this.loserAvailable = false;
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1452,7 +1457,7 @@ export default {
         this.auctionActive = true;
       }
     },
-    placeBottle: function (action, cost) {
+    placeBottle: function (action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
@@ -1465,13 +1470,13 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = true;
       }
-      this.chosenPlacementCost = cost;
+      this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         players: this.players,
         roomId: this.$route.params.id,
         playerId: this.playerId,
         action: action,
-        cost: cost,
+        placement: placement,
       });
     },
     endRoundFunction: function () {
@@ -1485,7 +1490,7 @@ export default {
       }
       this.endRound = true;
     },
-    pushToSecret(card){
+    pushToSecret: function(card) {
       console.log("funkar nnnnnuuu")
       this.choosingSecret = false;
       this.$store.state.socket.emit("pushToSecret", {
@@ -1494,7 +1499,7 @@ export default {
         card: card,
       });
     },
-    drawCard: function () {
+    drawCard: function() {
       if (!this.helpAction) {
         this.$store.state.socket.emit("collectorsDrawCard", {
           roomId: this.$route.params.id,
@@ -1529,15 +1534,19 @@ export default {
       this.nextPlayer();
     },
 
-    raisingValue: function (card) {
-      (this.aboutToRaiseValue = false),
+    raisingValue: function(card, firstCard) {
         this.$store.state.socket.emit("collectorsRaiseValue", {
           roomId: this.$route.params.id,
           playerId: this.playerId,
           card: card,
           cost: this.chosenPlacementCost,
-        });
+          firstCard: firstCard,
+      });
+      console.log(card, "i collectors")
+      if(firstCard===false){
+      this.aboutToRaiseValue = false;
       this.nextPlayer();
+      }
     },
 
     getLastElement: function (cardArray) {
@@ -1582,7 +1591,7 @@ export default {
     changeTempBottle: function (index) {
       this.tempBottlePlacement[index] = true;
     },
-    auctionMiniActiveNow: function () {
+    auctionMiniActiveNow: function() {
       if (this.auctionMiniActive == true) {
         this.auctionMiniActive = false;
         this.auctionActive = true;
@@ -1592,7 +1601,7 @@ export default {
       }
     },
 
-    restoreHand: function () {
+    restoreHand: function() {
       this.$store.state.socket.emit("restoreHand", {
         roomId: this.$route.params.id,
         biddingCards: this.biddingCards,
@@ -1672,7 +1681,7 @@ export default {
       });
     },
 
-    removeBottle: function (action, cost) {
+    removeBottle: function (action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = false;
       }
@@ -1685,12 +1694,12 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = false;
       }
-      this.chosenPlacementCost = cost;
+      this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsRemoveBottle", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
         action: action,
-        cost: cost,
+        placement: placement,
         players: this.players,
       });
     },
@@ -1889,6 +1898,7 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
+      this.nextPlayer();
     },
     recycleBottle4thRound: function () {
       //Här ska en flaska växlas för pengar
@@ -1899,6 +1909,7 @@ export default {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
+      this.nextPlayer();
     },
     workDrawTwoCards: function () {
       this.$store.state.socket.emit("collectorsWorkDrawTwoCards", {
@@ -1908,6 +1919,7 @@ export default {
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
       });
+      this.nextPlayer();
     },
     drawACardAndFirstPlayerToken: function () {
       console.log("draw card and first player token");
@@ -1918,6 +1930,7 @@ export default {
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
       });
+      this.nextPlayer();
     },
     drawCardAndPassiveIncome: function () {
       console.log("Draw passive income i Collectors.vue");
@@ -1928,6 +1941,7 @@ export default {
       this.$store.state.socket.emit("collectorsGetDeckLength", {
         roomId: this.$route.params.id,
       });
+      this.nextPlayer();
     },
     placeWorker: function (where) {
       console.log("placeWorker!");
@@ -1954,6 +1968,7 @@ export default {
         playerId: this.playerId,
         amount: amount,
       });
+      this.nextPlayer();
     },
     //----------------------------------------------------------
   },
@@ -2028,34 +2043,34 @@ theColor:onclick {
   border-color: white;
 }
 .chooseSecret {
-  display: grid;
-  position: absolute;
-  grid-template-rows: 1fr 5fr;
-  width: 43vw;
-  height: 25vw;
-  background-color: darkgoldenrod;
-  border-radius: 2vw;
-  border-style: solid;
-  border-width: 0.4vw;
-  border-color: black;
-  z-index: 50;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3vw;
-  text-align: center;
-  color: black;
+display: grid;
+    position: absolute;
+    grid-template-rows: 1fr 5fr;
+    width: 20.64vw;
+    height: 12vw;
+    background-color: darkgoldenrod;
+    border-radius: 2vw;
+    border-style: solid;
+    border-width: 0.4vw;
+    border-color: black;
+    z-index: 50;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.7vw;
+    text-align: center;
+    color: black;
 }
 .handToSecret {
-  zoom: 2.5;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 5.4vw);
-  padding: 0.5vw;
-  height: 80%;
-  background-color: goldenrod;
-  border-radius: 2vw;
-  grid-row: 2;
-  align-content: center;
+zoom: 1.2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 5.4vw);
+    padding: 0.5vw;
+    height: 80%;
+    background-color: goldenrod;
+    border-radius: 2vw;
+    grid-row: 2;
+    align-content: center;
 }
 .playerText {
   grid-row: 2;
@@ -2824,6 +2839,11 @@ theColor:onclick {
   text-align: center;
   cursor: pointer;
 }
+.auctionMini.turnhighlight {
+  filter: brightness(110%);
+  border-color: rgb(199, 199, 199);
+  box-shadow: 0 0 1vw rgb(199, 199, 199);
+}
 .hiddenAuctionCardMini {
   background-image: url(/images/back-of-card.png);
   background-size: cover;
@@ -2867,6 +2887,7 @@ theColor:onclick {
 .drawCardCounter {
   align-content: center;
   padding: 50%;
+  font-size: 1.6vw;
   padding-right: 150%;
   border-top-right-radius: 10%;
   border-bottom-right-radius: 10%;
@@ -3102,7 +3123,17 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .helpBoard:hover {
   background-color: rgb(61, 61, 255);
 }
-
+.transparent{
+  width: 100%;
+  z-index: 50;
+  height: 100%;
+  left: 0vw;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+}
 .animate {
   animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
