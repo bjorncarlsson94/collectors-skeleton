@@ -84,62 +84,76 @@ Data.prototype.createRoom = function(roomId, playerCount, lang = "en") {
     {
       cost: 1,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 1,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 2,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 2,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 3,
       playerId: null,
+      amountOfCards: 1,
     },
   ];
   room.skillPlacement = [
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 1,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 1,
       playerId: null,
+      amountOfCards: 1,
     },
   ];
   room.auctionPlacement = [
     {
       cost: -2,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: -1,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 1,
     },
     {
       cost: 0,
       playerId: null,
+      amountOfCards: 1,
     },
   ];
   room.marketPlacement = [
@@ -420,7 +434,8 @@ Data.prototype.raiseValue = function(
   roomId,
   playerId,
   card,
-  cost
+  cost,
+  firstCard
 ){
   let room = this.rooms[roomId];
 
@@ -464,10 +479,16 @@ Data.prototype.raiseValue = function(
         break;
       }
     }
-
-    room.raiseItems.push(...c);
-    room.raiseValue = this.cardValue(roomId);
-    room.players[playerId].money -= cost;
+    console.log(firstCard);
+    if(firstCard){
+      room.raiseItems.push(...c);
+      room.raiseValue = this.cardValue(roomId);
+      room.players[playerId].money -= cost;
+    }
+    else{
+      room.raiseItems.push(...c);
+      room.raiseValue = this.cardValue(roomId);
+    }
   }
 }
 
@@ -509,7 +530,7 @@ Data.prototype.auctionWon = function(
 };
 // ...then check if it is in the hand. It cannot be in both so it's safe
 
-Data.prototype.placeBottle = function(roomId, playerId, action, cost, players) {
+Data.prototype.placeBottle = function(roomId, playerId, action, placement, players) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     room.players = players
@@ -527,7 +548,8 @@ Data.prototype.placeBottle = function(roomId, playerId, action, cost, players) {
     this.changeBottleOnPlayerboarad(roomId, playerId, false);
     for (let i = 0; i < activePlacement.length; i += 1) {
       if (
-        activePlacement[i].cost === cost &&
+        activePlacement[i].cost === placement.cost &&
+        activePlacement[i].amountOfCards === placement.amountOfCards &&
         activePlacement[i].playerId === null
       ) {
         activePlacement[i].playerId = playerId;
@@ -538,7 +560,7 @@ Data.prototype.placeBottle = function(roomId, playerId, action, cost, players) {
   }
 };
 
-Data.prototype.removeBottle = function(roomId, playerId, action, cost) {
+Data.prototype.removeBottle = function(roomId, playerId, action, placement) {
   let room = this.rooms[roomId];
   if (typeof room !== "undefined") {
     let activePlacement = [];
@@ -555,7 +577,8 @@ Data.prototype.removeBottle = function(roomId, playerId, action, cost) {
     this.changeBottleOnPlayerboarad(roomId, playerId, true);
     for (let i = 0; i < activePlacement.length; i += 1) {
       if (
-        activePlacement[i].cost === cost &&
+        activePlacement[i].cost === placement.cost &&
+        activePlacement[i].amountOfCards === placement.amountOfCards &&
         activePlacement[i].playerId === playerId
       ) {
         activePlacement[i].playerId = null;
@@ -1205,7 +1228,7 @@ Data.prototype.takeFirstPlayerToken = function(roomId, playerId) {
   console.log(playerId, "got scammed :^(");
   room.players[playerId].bottles--;
   room.startingPlayerId = playerId;
-  room.players[playerId].firstPlayerToken = true;
+  room.players[playerId].firstPlayerToken = true; //Behövs??
 
   return room.players;
 };
@@ -1233,15 +1256,19 @@ Data.prototype.setWorkPlacementTrue = function(roomId, place, playerId) {
     switch (place) {
       case "drawTwoCards":
         room.workPlacement.drawTwoCards = playerId;
+        this.changeBottleOnPlayerboarad(roomId, playerId, false);
         break;
       case "drawACardAndFirstPlayerToken":
         room.workPlacement.drawACardAndFirstPlayerToken = playerId;
+        this.changeBottleOnPlayerboarad(roomId, playerId, false);
         break;
       case "drawCardAndPassiveIncome":
         room.workPlacement.drawCardAndPassiveIncome = playerId;
+        this.changeBottleOnPlayerboarad(roomId, playerId, false);
         break;
       case "quarterTile":
         room.workPlacement.quarterTile = playerId;
+        this.changeBottleOnPlayerboarad(roomId, playerId, false);
         break;
       default:
         console.log("Shits fucked");
