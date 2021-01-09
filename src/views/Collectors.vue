@@ -784,7 +784,7 @@
       :itemsHelpActive="this.itemsHelpActive"
       :raiseValueHelpActive="this.raiseValueHelpActive"
     />
-    <div class="winnerBox" v-if="round >= 5">
+    <div class="winnerBox" v-if="round>= 5">
       <div class="winnerBoxContent">
         <div class="winnerPlayerGrid">
           <div
