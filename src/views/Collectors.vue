@@ -118,7 +118,14 @@
                             />
                           </div>
                         </div>
-                        <div id="hidden">Hidden:</div>
+                        <div class="hidden"> 
+                          <CollectorsCard
+                          v-for="(card, index) in player.secret"
+                          :card="card"
+                          :key="index"
+                          class="otherHand"
+                          />
+                        </div>
                         <div class="itemicons">
                           <div>
                             <img src="/images/fastaval_red.png" width="50%" />
@@ -520,7 +527,7 @@
                       />
                     </div>
                   </div>
-                  <div id="hidden">Hidden:
+                  <div class="hidden">
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].secret"
                       :card="card"
@@ -1700,6 +1707,7 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
     showHelpOptions: function () {
+      var otherPlayersTurn=false;
       if (this.helpAction) {
         this.skillsHelpActive = false;
         this.auctionHelpActive = false;
@@ -1708,8 +1716,22 @@ export default {
         this.workHelpActive = false;
         this.itemsHelpActive = false;
         this.raiseValueHelpActive = false;
-      }
+        for (const player in this.players) {
+          if(player.turn==true){
+            otherPlayersTurn=true;
+            break;
+          }
+        }
+        if(!otherPlayersTurn){
+          this.players[this.playerId].turn=true;
+
+        }
+        }
       this.helpAction = !this.helpAction;
+      if(this.players[this.playerId].turn==true && this.helpAction){
+        this.players[this.playerId].turn=false;
+
+      }
       console.log(this.helpAction);
       console.log(document.getElementById("test1").className);
 
@@ -1973,7 +1995,7 @@ footer {
 }
 footer a {
   text-decoration: none;
-  border-bottom: 2px dotted ivory;
+  border-bottom: 0.104166vw dotted ivory;
 }
 footer a:visited {
   color: ivory;
@@ -2090,8 +2112,8 @@ zoom: 1.2;
 }
 .card {
   position: relative;
-  -webkit-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
-  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0.15625vw 0.15625vw 7px rgba(0, 0, 0, 0.3);
+  box-shadow: 0.15625vw 0.15625vw 7px rgba(0, 0, 0, 0.3);
 }
 .otherHand.card {
   background-image: url("/images/back-of-card.png");
@@ -2250,8 +2272,8 @@ zoom: 1.2;
   cursor: pointer;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .playerboard.turnhighlight {
   filter: brightness(110%);
@@ -2323,6 +2345,9 @@ zoom: 1.2;
 }
 
 .playercollection::-webkit-scrollbar {
+  display: none;
+}
+.hidden::-webkit-scrollbar {
   display: none;
 }
 
@@ -2522,10 +2547,14 @@ zoom: 1.2;
   margin-top: -3vw;
   z-index: 2;
 }
-#hidden{
+.hidden{
   display: grid;
   grid-template-rows: repeat(8, 2vw);
   overflow: scroll;
+  margin:auto;
+  background-color: rgba(255, 255, 255, 0.356);
+  border-radius: 0.1vw;
+  height: 70%;
 
 }
 #handTitle {
@@ -2585,8 +2614,8 @@ zoom: 1.2;
   background-color: rgba(0, 0, 0, 0.61);
   color: #fff;
   text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
+  border-radius: 0.3125vw;
+  padding: 0.2604vw 0;
 
   /* Position the tooltip */
   position: absolute;
@@ -2712,8 +2741,8 @@ zoom: 1.2;
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .skills {
   border-radius: 2vw;
@@ -2724,8 +2753,8 @@ zoom: 1.2;
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 
 .work {
@@ -2737,8 +2766,8 @@ zoom: 1.2;
   grid-row: 2 / span 2;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValue {
   border-radius: 2vw;
@@ -2749,8 +2778,8 @@ zoom: 1.2;
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValuegrid div {
   font-size: 1vw;
@@ -2766,8 +2795,8 @@ zoom: 1.2;
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .auctionCardViewMini {
   zoom: 1.65;
@@ -2837,8 +2866,8 @@ zoom: 1.2;
   position: relative;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .drawCardSpace {
   grid-column: 8;
@@ -2908,7 +2937,7 @@ zoom: 1.2;
   border: solid;
   border-color: black;
   border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 5px 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .gridedge3 p {
   text-align:center;
@@ -2921,13 +2950,13 @@ zoom: 1.2;
   zoom: 0.8;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .help {
-  width: 40px;
-  height: 40px;
-  border-radius: 25px;
+  width: 2.0833vw;
+  height: 2.0833vw;
+  border-radius: 1.3020vw;
   position: absolute;
   right: 0;
   display: flex;
@@ -2937,8 +2966,8 @@ zoom: 1.2;
   cursor: pointer;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .help:hover {
   background-color: rgb(61, 61, 255);
@@ -2957,8 +2986,8 @@ zoom: 1.2;
   align-content: center;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .buttons {
   display: inline-block;
@@ -3001,7 +3030,7 @@ zoom: 1.2;
 
   background-color: #0066ff;
   border: solid;
-  border-width: 1px;
+  border-width: 0.05208vw;
   border-color: black;
   font-size: 150%;
 }
@@ -3013,8 +3042,8 @@ zoom: 1.2;
   right: -22.791666666666668vw;
   top: -17.2604166666666667vw;
   border-radius: 1vw;
-  -webkit-box-shadow: 0px 0px 3px 2px rgba(102, 163, 255, 0.59);
-  box-shadow: 0px 0px 3px 2px rgba(102, 163, 255, 0.59);
+  -webkit-box-shadow: 0px 0px 0.15625vw 0.104166vw rgba(102, 163, 255, 0.59);
+  box-shadow: 0px 0px 0.15625vw 0.104166vw rgba(102, 163, 255, 0.59);
   background-color: inherit;
   padding: 1vw;
   float: right;
@@ -3034,7 +3063,7 @@ zoom: 1.2;
   padding: 0.55vw;
 
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.0.104166vw;
   border-color: black;
 }
 #playerHelp p {
@@ -3043,16 +3072,16 @@ zoom: 1.2;
   margin-top: -0.52vw;
   padding: 0.55vw;
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.0.104166vw;
   border-color: black;
 }
 #playerHelp div {
   border-radius: 0.5vw;
   background-color: #94b5ee;
-  padding: 5px;
-  margin-bottom: 2px;
+  padding: 0.2604vw;
+  margin-bottom: 0.104166vw;
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.0.104166vw;
   border-color: black;
 }
 
@@ -3061,20 +3090,20 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 */
 
 #playerHelp::-webkit-scrollbar {
-  width: 11px;
-  height: 5px;
+  width: 10.05208vw;
+  height: 0.2604vw;
 }
 
 #playerHelp::-webkit-scrollbar-track {
   background: var(--scrollbarBG);
   margin: 10px;
-  padding: 2px;
+  padding: 0.104166vw;
 }
 #playerHelp::-webkit-scrollbar-thumb {
   background-color: var(--thumbBG);
-  border-radius: 6px;
+  border-radius: 0.3125vw;
   height: 30px;
-  border: 3px solid var(--scrollbarBG);
+  border: 0.15625vw solid var(--scrollbarBG);
 }
 .helpBoard {
   top: 1vw;
@@ -3092,8 +3121,8 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   justify-self: flex-end;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
   font-size: 3vw;
 }
 .helpBoard:hover {
@@ -3113,7 +3142,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .animate {
   animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
-  box-shadow: 0px 0px 10px 11px rgb(116, 116, 9), 0 0 5px rgb(116, 116, 9);
+  box-shadow: 0px 0px 10px 10.05208vw rgb(116, 116, 9), 0 0 0.2604vw rgb(116, 116, 9);
 }
 
 @keyframes jiggles {
@@ -3176,16 +3205,16 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: #005a87;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(1, 1, 1, 0.466), 0 0.05208vw  0.20833vw rgba(1, 1, 1, 0.24);
 }
 .winnerBoxPlayers {
   grid-column-start: auto;
   grid-column-end: auto;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
-  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
   height: 5.208vw;
   width: 10.41vw;
   border-radius: 20%;
@@ -3193,23 +3222,22 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 }
 .winner {
   margin-top: 5.20833vw;
-  grid-row: 1;
-  grid-column: 1;
-
+ 
   color: #872d00;
-  position: absolute;
+  position: relative;
   align-self: center;
-
-  font-size: 4vw;
+  margin-bottom: 5vw;
+  font-size: 3vw;
   border: solid;
   border-color: black;
-  border-width: 0.5px;
+  border-width: 0.02604vw;
   padding: 0.52vw;
-  width: 63.5%;
-  height: auto;
-  box-shadow: 0 5px 6px rgba(1, 1, 1, 0.466), 0 1px 4px rgba(1, 1, 1, 0.24);
-  font: bold 330%/100% "Lucida Grande";
-  text-shadow: 1px 1px 1px rgb(59, 58, 58), 2px 2px 1px rgb(59, 58, 58);
+  width: 20vw;
+  height: 15vw;
+  
+  box-shadow: 0 0.2604vw 0.3125vw rgba(1, 1, 1, 0.466), 0 0.05208vw  0.20833vw rgba(1, 1, 1, 0.24);
+  font: bold "Lucida Grande";
+  text-shadow: 0.05208vw 0.05208vw 0.05208vw rgb(59, 58, 58), 0.104166vw 0.104166vw 0.05208vw rgb(59, 58, 58);
   background-color: #005a87;
 }
 
@@ -3221,13 +3249,13 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   background-color: #f0ead6;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 30px;
+  padding:  1.5625vw;
   text-align: center;
   font-family: sans-serif;
   z-index: 2;
-  box-shadow: 0 0 2px deeppink, 0 0 5px rgba(0, 0, 0, 1),
-    inset 0 0 5px rgba(0, 0, 0, 1);
-  border-radius: 10px;
+  box-shadow: 0 0 0.104166vw deeppink, 0 0 0.2604vw rgba(0, 0, 0, 1),
+    inset 0 0 0.2604vw rgba(0, 0, 0, 1);
+  border-radius: 0.520833vw;
 }
 .winnerBox:before {
   content: "";
@@ -3255,7 +3283,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   }
 
   to {
-    background-position: 0 1000px;
+    background-position: 0 52.083333333333336vw;
   }
 }
 
