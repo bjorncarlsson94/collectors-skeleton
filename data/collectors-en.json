@@ -39,6 +39,11 @@
 	"auctionHow":"How do you wanna auction this card",
 	"faceUp":"Face up",
 	"faceDown":"Face down",
+	"card":" cards",
+	"pickFromPlayerBoard":"Pick a card from player board:",
+	"pickFromAuction":"Pick card from auction pool",
+	"pickFromSkills":"Pick card from skill pool",
+	"pickFromHand":"Pick a card from your hand:",
 	
 	"points":"Score",
 	"chooseSecretCard":"Choose one secret card:",
