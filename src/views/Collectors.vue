@@ -1724,8 +1724,10 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
     showHelpOptions: function () {
+      console.log("hej");
       var otherPlayersTurn=false;
       if (this.helpAction) {
+        console.log("inte här");
         this.skillsHelpActive = false;
         this.auctionHelpActive = false;
         this.menuSpaceActive = false;
@@ -1733,24 +1735,30 @@ export default {
         this.workHelpActive = false;
         this.itemsHelpActive = false;
         this.raiseValueHelpActive = false;
+        
+        console.log("kommer hit");
         for (const player in this.players) {
-          if(player.turn==true){
+          
+          if(this.players[player].turn==true){
+            
             otherPlayersTurn=true;
             break;
           }
         }
-        if(!otherPlayersTurn){
+        }
+      this.helpAction = !this.helpAction;
+      console.log(this.helpAction);
+      if(!otherPlayersTurn && !this.helpAction){
           this.players[this.playerId].turn=true;
 
         }
-        }
-      this.helpAction = !this.helpAction;
+        
       if(this.players[this.playerId].turn==true && this.helpAction){
         this.players[this.playerId].turn=false;
 
       }
       console.log(this.helpAction);
-      console.log(document.getElementById("test1").className);
+      
 
       /* if(this.helpAuctionActive){
         console.log("hejhej");
