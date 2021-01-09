@@ -106,8 +106,11 @@
                     class="playerBoardGrid"
                     v-if="player.playerIsActive === true"
                   >
-                    <div class="boardCollection">
-                      <div id="collectiontitle">Collection:</div>
+                  <div id="collectiontitle" class="divtitle">Collection:</div>
+                  <div id="skills" class="divtitle"> Skills: </div>
+                  <div id="secret" class="divtitle"> Secret: </div>
+
+                    <div class="boardCollection"> 
                       <div class="boardcollectiongrid">
                         <div class="playercollection">
                           <div class="collectioncards">
@@ -118,7 +121,8 @@
                             />
                           </div>
                         </div>
-                        <div class="hidden"> 
+                        
+                        <div class="secretcards"> 
                           <CollectorsCard
                           v-for="(card, index) in player.secret"
                           :card="card"
@@ -202,8 +206,10 @@
                         </div>
                       </div>
                     </div>
+
+                    <div id="handTitle" class="divtitle">Hand:</div>
                     <div class="boardHand">
-                      <div id="handTitle">Hand:</div>
+                      
                       <div class="cardsinhand">
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
@@ -215,6 +221,7 @@
                     </div>
 
                     <div class="boardNextTurnInfo">
+                      <div id="resources" class="divtitle"> Resources: </div>
                       <div
                         class="bottlesGrid"
                         v-for="(
@@ -222,6 +229,7 @@
                         ) in player.bottlesOnPlayerbord"
                         :key="index"
                       >
+                     
                         <div
                           v-show="bottlePlace"
                           class="bottles"
@@ -517,9 +525,11 @@
                   <div id="collectiontitle">{{labels.collection}}:</div>
                 </div>
               </div>
-              <div class="boardCollection">
-                <div id="collectiontitle">{{labels.collection}}:</div>
 
+              <div id="collectiontitle" class="divtitle">{{labels.collection}}:</div>
+              <div id="secret" class="divtitle"> Secret: </div>
+              <div id="skills" class="divtitle"> Skills: </div>
+              <div class="boardCollection">
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -530,7 +540,8 @@
                       />
                     </div>
                   </div>
-                  <div class="hidden">
+                  
+                  <div class="secretcards">
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].secret"
                       :card="card"
@@ -602,8 +613,9 @@
                   </div>
                 </div>
               </div>
-              <div class="boardHand">
-                <div id="handTitle">Hand:</div>
+
+<div id="handTitle" class="divtitle">Hand:</div>
+              <div class="boardHand"> 
                 <div class="cardsinhand">
                   <CollectorsCard
                     v-for="(card, index) in players[playerId].hand"
@@ -614,6 +626,7 @@
               </div>
 
               <div class="boardNextTurnInfo">
+                <div id="resources" class="divtitle"> Resources: </div>
                 <div
                   class="bottlesGrid"
                   v-for="(bottlePlace, index) in players[playerId]
@@ -2194,6 +2207,42 @@ zoom: 1.2;
   Här nedan är CSS specifika för player rutorna
   */
 
+
+
+.divtitle{
+  position: absolute;
+  border-radius: 0.5vw;
+  background-color: rgba(0, 0, 0, 0.377);
+  z-index: 2;
+  padding: 0.1vw;
+}
+
+#collectiontitle.divtitle{
+  grid-row: 1;
+  grid-column: 2;
+  margin-left: -3vw;
+}
+#secret.divtitle{
+  grid-column: 2;
+  margin-left: 7vw;
+}
+#handTitle.divtitle {
+ grid-row: 4;
+ grid-column: 2;
+ margin-left: -2vw;
+}
+#resources.divtitle {
+ grid-row: 4;
+ grid-column: 4;
+ margin-left: -2.6vw;
+}
+#skills.divtitle{
+  grid-row: 1;
+  grid-column: 4;
+  margin-left: -1vw;
+}
+
+
 .player {
   border-radius: 2vw;
   height: 2vw;
@@ -2212,7 +2261,7 @@ zoom: 1.2;
   align-content: space-evenly;
 }
 .otherplayer {
-  border-radius: 1vw;
+  border-radius: 2vw;
   border-style: ridge;
   border-color: currentColor;
   padding: 1vw;
@@ -2250,14 +2299,14 @@ zoom: 1.2;
   grid-column: 2;
   grid-row: 1/3;
   display: grid;
-  grid-template-columns: repeat(5, 0.6vw);
+  grid-template-columns: repeat(8, 0.6vw);
   grid-template-rows: repeat(auto-fill, 0.3vw);
   height: 80%;
-  margin-top: -1.5vw;
+  margin-top: -0.8vw;
   justify-self: self-start;
 }
 .otherHand.otherClosed.card {
-  zoom: 0.15 !important;
+  zoom: 0.10 !important;
 }
 
 .scoreDisplay {
@@ -2275,10 +2324,10 @@ zoom: 1.2;
   padding: 1vw;
   font-size: 1vw;
   cursor: pointer;
-  border: solid;
-  border-color: black;
-  border-width: 0.02604vw;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 .playerboard.turnhighlight {
   filter: brightness(110%);
@@ -2352,7 +2401,7 @@ zoom: 1.2;
 .playercollection::-webkit-scrollbar {
   display: none;
 }
-.hidden::-webkit-scrollbar {
+.secretcards::-webkit-scrollbar {
   display: none;
 }
 
@@ -2552,24 +2601,23 @@ zoom: 1.2;
   margin-top: -3vw;
   z-index: 2;
 }
-.hidden{
+.secretcards{
   display: grid;
-  grid-template-rows: repeat(8, 2vw);
+  grid-template-rows: repeat(8, 3vw);
   overflow: scroll;
   margin:auto;
+  margin-top: 2vw;
   background-color: rgba(255, 255, 255, 0.356);
   border-radius: 0.1vw;
   height: 70%;
+}
+.secretcards > .card:hover {
+  filter: brightness(110%);
+  cursor: pointer;
+  margin-top: -1vw;
+  z-index: 2;
+}
 
-}
-#handTitle {
-  margin-left: 10vw;
-  position: absolute;
-  background-color: gray;
-  border-radius: 2vw;
-  padding: 0.3vw;
-  z-index: 1;
-}
 .totalvalue {
   background-color: gray;
   border-radius: 0vw 0vw 2vw 2vw;
@@ -2738,33 +2786,33 @@ zoom: 1.2;
   */
 
 .items {
-  border-radius: 2vw;
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
   background-image: url("/images/Items_Background_arrows2.png");
   background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 2;
   position: relative;
-  border: solid;
-  border-color: black;
-  border-width:  0.02604vw;;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .skills {
-  border-radius: 2vw;
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
   background-image: url("/images/Skills_Background_arrows2.png");
   background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 3;
   position: relative;
-  border: solid;
-  border-color: black;
-  border-width:  0.02604vw;;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 
 .work {
   text-align: center;
-  border-radius: 2vw;
+  border-radius: 1vw;
   background-image: url("/images/Work_Background.png");
   background-size: contain;
   grid-column: 2;
@@ -2775,15 +2823,15 @@ zoom: 1.2;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValue {
-  border-radius: 2vw;
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
   background-image: url("/images/RV_Background.png");
   background-size: contain;
   grid-column: 8;
   grid-row: 3 / span 1;
   position: relative;
-  border: solid;
-  border-color: black;
-  border-width:  0.02604vw;;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValuegrid div {
@@ -2792,15 +2840,15 @@ zoom: 1.2;
   color: black;
 }
 .auction {
-  border-radius: 2vw;
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
   background-image: url("/images/Auction_Background_arrow.png");
   background-size: contain;
   grid-column: 3;
   grid-row: 2 / span 2;
   position: relative;
-  border: solid;
-  border-color: black;
-  border-width:  0.02604vw;;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .auctionCardViewMini {
@@ -2863,17 +2911,18 @@ zoom: 1.2;
 }
 .roundCounter {
 font-family: 'Goldman', cursive;
+    color: black;
     grid-column: 1;
     grid-row: 2;
     background-color: rgb(194, 194, 194);
-    color: black;
-    border-radius: 2vw;
+    border-radius: 1vw;
+    border-style: double;
+    border-width: 0.2vw;
+    border-color: rgba(0, 0, 0, 0.295);
     padding: 1vw;
-    font-size: 1.3vw;
+    text-align: center;
+    font-size: 1.5vw;
     position: relative;
-    border: solid;
-    border-color: black;
-    border-width: 0.02604vw;
     box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
 
@@ -3008,16 +3057,16 @@ width: 5vw;
   grid-column: 1;
   grid-row: 3;
   background-color: rgb(194, 194, 194);
-  border-radius: 2vw;
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
   padding: 2vw;
   position: relative;
   padding: 1vw;
   display: grid;
   grid-template-rows: repeat(auto-fill, 3.5vh);
   align-content: center;
-  border: solid;
-  border-color: black;
-  border-width:  0.02604vw;;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .buttons {
@@ -3047,7 +3096,7 @@ width: 5vw;
     height: 500%;
     background-color: #b92828;
     overflow: hidden;
-    border-radius: 2vw;
+    border-radius: 1vw;
     box-shadow: 0.4vw 0.4vw #999;
      font-size: 2vw;
      cursor: pointer;
