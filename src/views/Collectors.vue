@@ -116,7 +116,14 @@
                             />
                           </div>
                         </div>
-                        <div id="hidden">Hidden:</div>
+                        <div class="hidden"> 
+                          <CollectorsCard
+                          v-for="(card, index) in player.secret"
+                          :card="card"
+                          :key="index"
+                          class="otherHand"
+                          />
+                        </div>
                         <div class="itemicons">
                           <div>
                             <img src="/images/fastaval_red.png" width="50%" />
@@ -524,7 +531,7 @@
                       />
                     </div>
                   </div>
-                  <div id="hidden">Hidden:
+                  <div class="hidden">
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].secret"
                       :card="card"
@@ -2320,6 +2327,9 @@ theColor:onclick {
 .playercollection::-webkit-scrollbar {
   display: none;
 }
+.hidden::-webkit-scrollbar {
+  display: none;
+}
 
 .collectioncards {
   display: grid;
@@ -2517,10 +2527,14 @@ theColor:onclick {
   margin-top: -3vw;
   z-index: 2;
 }
-#hidden{
+.hidden{
   display: grid;
   grid-template-rows: repeat(8, 2vw);
   overflow: scroll;
+  margin:auto;
+  background-color: rgba(255, 255, 255, 0.356);
+  border-radius: 0.1vw;
+  height: 70%;
 
 }
 #handTitle {
