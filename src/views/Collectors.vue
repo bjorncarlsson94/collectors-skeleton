@@ -43,6 +43,7 @@
           <CollectorsBottles
             v-if="players[playerId]"
             :labels="labels"
+            :round="round"
             :playerId="playerId"
             :players="players"
             :endRound="endRound"
@@ -250,6 +251,7 @@
                           <img src="/images/moneybag.png" width="80%" />
                         </div>
                         <div class="counter m">{{ player.money }}</div>
+                        <div class="counter income">+{{ player.income.length }}</div>
                       </div>
 
                       <div class="b bottlecount">
@@ -413,6 +415,7 @@
                 :skillOnSale="getLastElement(skillsOnSale)"
                 :auctionCard="getLastElement(auctionCards)"
                 :placement="marketPlacement"
+                :checkAmountOfRaiseValue="checkAmountOfRaiseValue"
                 :marketValues="marketValues"
                 :notYourTurn="notYourTurn"
                 :aboutToRaiseValue="aboutToRaiseValue"
@@ -480,6 +483,7 @@
                   <div class="c moneycount">
                     <div><img src="/images/moneybag.png" width="70%" /></div>
                     <div class="counter m">{{ players[playerId].money }}</div>
+                    <div class="counter income">+{{ players[playerId].income.length }}</div>
                   </div>
 
                   <div class="c bottlecount">
@@ -525,7 +529,6 @@
                     </h3>
                     <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
                   </div>
-                  <div id="collectiontitle">{{labels.collection}}:</div>
                 </div>
               </div>
 
@@ -652,11 +655,13 @@
                 <div class="b moneycount">
                   <div><img src="/images/moneybag.png" width="80%" /></div>
                   <div class="counter m">{{ players[playerId].money }}</div>
+                  <div class="counter income">+{{ players[playerId].income.length }}</div>
+                  <!-- ÄNDRA TILL RÄTT income -->
                 </div>
 
                 <div class="b bottlecount">
                   <div><img src="/images/player-bottle.png" width="60%" /></div>
-                  <div class="counter b">{{ players[playerId].bottles }}</div>
+                  <div class="counter b"> {{ players[playerId].bottles }}</div>
                 </div>
               </div>
             </div>
@@ -1395,6 +1400,30 @@ export default {
         this.hiddenAuctionCard = false;
       }
     },
+    checkAmountOfRaiseValue: function(){
+      let cardCounter = 0
+      for (let i = 0; i < this.skillsOnSale.length; i += 1) {
+        if(this.skillsOnSale[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      for (let i = 0; i < this.auctionCards.length; i += 1) {
+        if(this.auctionCards[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      for (let i = 0; i < this.skillsOnSale; i += 1) {
+        if(this.players[this.playerId].card[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      if(cardCounter < 2){
+        return false;
+      }
+      else{
+        return true
+      }
+    },
     auctionBoard: function () {
       console.log("auction rutaa");
       this.auctionActive = !this.auctionActive;
@@ -1593,7 +1622,7 @@ export default {
     },
 
     getLastElement: function (cardArray) {
-      for (let i = cardArray.length - 1; i >= 1; i--) {
+      for (let i = cardArray.length - 1; i >= 0; i--) {
         if (cardArray[i].market) {
           return cardArray[i];
         }
@@ -2312,7 +2341,7 @@ zoom: 1.2;
 .otherplayer.open {
   position: absolute;
   margin-left: -20vw;
-  margin-top: -2.5vw;
+  margin-top: -1vw;
   width: 50vw;
   height: 25vw;
   align-self: end;
@@ -2486,7 +2515,7 @@ zoom: 1.2;
   background-color: #ffffff3f;
   grid-column: 1 / span 1;
   grid-row: 1;
-  height: 5vw;
+  height: 75%;
 }
 .closedBoardInfo {
   grid-column: 2;
@@ -2507,7 +2536,7 @@ zoom: 1.2;
 
 .counter {
   border-radius: 1vw;
-  background-color: #0000004b;
+  background-color: #0000003a;
   padding: 0.2vw;
   text-align: center;
   width: fit-content;
@@ -2521,6 +2550,13 @@ zoom: 1.2;
   margin-left: 2.7vw;
   margin-top: -1vw;
 }
+.counter.income{
+  position: absolute;
+  margin-left: 2.7vw;
+  margin-top: -3vw;
+  color: rgb(117, 255, 117);
+}
+
 .counter.b {
   position: absolute;
   margin-left: 2.7vw;
@@ -2711,7 +2747,7 @@ zoom: 1.2;
 
   /* Position the tooltip */
   position: absolute;
-  z-index: 1;
+  z-index: 5;
 }
 
 .tooltip:hover .tooltiptext {
@@ -3081,8 +3117,6 @@ width: 5vw;
     position: absolute;
     right: -0.2vw;
     top: -0.1vw;
-    z-index: 4;
-
 }
 .start-auction {
     width: 3.3vw;
@@ -3188,6 +3222,7 @@ font-family: 'Goldman', cursive;
   word-wrap: break-word;
   display: inline;
   font-size: 1vw;
+  z-index: 1;
 }
 #playerHelp h3 {
   background-color: rgb(3, 69, 155);

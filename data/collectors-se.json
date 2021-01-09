@@ -45,6 +45,8 @@
 	"pickFromAuction":"Välj kort från auction pool",
 	"pickFromSkills":"Välj kort från skill pool",
 	"pickFromHand":"Välj ett kort från din hand:",
+	"endRoundBox1":"Slut på runda ",
+	"endRoundBox2":"Placera nu de resterande flaskorna på brickorna, de brickorna som inte är täckta kommer vara din inkomst till kommande runda.",
 	"helpPlayerHand":{
 		"title":"Din hand:",
 		"itemArea":"Item Area (red):",

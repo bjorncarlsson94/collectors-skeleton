@@ -2,7 +2,7 @@
   <div>
     <div class="placeBottlesPlayer" v-show="endRound">
         <button class="bottlebuttons" :disabled="ifBottlesCanBePlaced()" @click="placeBottlePlayerbord()">Done</button>
-        <div class="bottlesText">lorem ipsum</div>
+        <div class="bottlesText">{{labels.endRoundBox1}}{{round-1}}! {{labels.endRoundBox2}}</div>
         <div class="bottlesLeft" v-if="players[playerId].totalBottles > 2">{{amountOfBottlesThatCanBePlaced()}}x</div>
         <div class="bottlesLeft" v-if="players[playerId].totalBottles <= 2">0x</div>
         <div class="bottles L" :style="{backgroundColor: players[playerId].color}"></div>
@@ -42,6 +42,7 @@
 export default {
   name: "CollectorsBottles",
   props: {
+    round: Number,
     endRound: Boolean,
     players: Object,
     labels: Object,
@@ -150,15 +151,19 @@ background-image: url(/images/player-bottle.png);
     margin-left: 0.8vw;
 }
 .bottlesText{
-  color:black;
+  grid-column: 2/5;
+  color: black;
+  margin-right: 3.7vw;
 }
 .bottlesLeft{
   color: black;
     grid-row: 1;
+    right: 9vw;
+    position: absolute;
     grid-column: 4;
     text-align: right;
     font-size: 3.5vw;
-    margin-top: 2.5vw
+    margin-top: 2.5vw;
 }
 .bottlebuttons:disabled {
   background-color: grey;
