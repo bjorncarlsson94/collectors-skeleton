@@ -24,7 +24,7 @@
       </div>
                 <div class="skillsAvailable" v-show="aboutToBuySkill" v-if="player">
               <h1 class = "buySkillHeadings">
-                Välj ett kort från spelplanen:
+                {{labels.chooseCardFromPlayerBoard}}:
               </h1>
               <div class="buySkillCardGrid">
                 <div class="skillsFromBoard" v-for="(card, index) in skillsOnSale" :key="index">
@@ -35,7 +35,7 @@
                 </div>
               </div>
                 <h1 class="buySkillHeadings">
-                  Välj ett kort från handen:
+                  {{labels.chooseCardFromPlayerHand}}:
                 </h1>
               <div class= "buySkillCardGrid">
                 <div class="skillsFromHand" v-for="(card,index) in player.hand" :key="'A'+index">
@@ -171,6 +171,7 @@ export default {
   }
   .skillsgrid{
     display:grid;
+    grid-template-rows: 6.4vw;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding: 1vw;
     margin: 1vw;
@@ -255,9 +256,9 @@ export default {
 
   .bottlePlace {
     background-image: url(/images/player-bottle.png);
-    margin-top: 0vw;
-    height: 3vw;
-    width: 3vw;
+margin-top: 0.6vw;
+    height: 2.5vw;
+    width: 2.5vw;
     background-color: rgb(95, 216, 253);
     border-radius: 3vw;
     border-style: ridge;

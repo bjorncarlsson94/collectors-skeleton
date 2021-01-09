@@ -133,7 +133,7 @@
       <p>{{labels.auctionHelp.areaInfo4}}</p>
       </div>
       
-    ¨
+    
   
      </div>
  </div>
@@ -174,8 +174,8 @@ export default {
   scrollbar-color: var(--thumbBG) var(--scrollbarBG);
   
   border-radius: 1vw;
-  -webkit-box-shadow: 0px 0px 3px 2px rgba(102, 163, 255, 0.59);
-  box-shadow: 0px 0px 3px 2px rgba(102, 163, 255, 0.59);
+  -webkit-box-shadow: 0 0 0.15625vw 0.1041666 rgba(102, 163, 255, 0.59);
+  box-shadow: 0 0 0.15625vw 0.1041666 rgba(102, 163, 255, 0.59);
   background-color: inherit;
   padding: 1vw;
   
@@ -188,7 +188,7 @@ export default {
   word-wrap: break-word;
   display: inline;
   font-size: 1vw;
-  left: -100px;
+  left: -5.208333333333333vw;
   width: 5.208vvw;
   height: 30vw;
   background: #b1c592;
@@ -200,7 +200,7 @@ export default {
   padding: 0.55vw;
 
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.01041666vw;
   border-color: black;
 }
 .InfoBox p {
@@ -209,43 +209,44 @@ export default {
   margin-top: -0.52vw;
   padding: 0.55vw;
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.01041666vw;
   border-color: black;
 }
 .InfoBox div {
   border-radius: 0.5vw;
   background-color: #767e6b;
-  padding: 5px;
-  margin-bottom: 2px;
+  padding: 0.2604166vw;
+  margin-bottom: 0.1041666vw;
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.01041666vw;
   border-color: black;
 }
 .InfoBox img {
   border-radius:0.5vw;
-  padding: 1px;
-  height: 100px;
-  width: 100px;
+  padding: 0.05208vw;
+  height: 5.2083vw;
+  width: 5.2083vw;
   border: solid;
-  border-width: 0.2px;
+  border-width: 0.01041666vw;
   border-color: black;
 }
 
 
 .InfoBox::-webkit-scrollbar {
-  width: 11px;
-  height: 10px;
+  width: 0.572916vw;
+  height: 0.52083vw;
 }
 
 .InfoBox::-webkit-scrollbar-track {
   background: var(--scrollbarBG);
-  margin: 20px;
+  margin:  1.041666vw;
  
 }
 .InfoBox::-webkit-scrollbar-thumb {
   background-color: var(--thumbBG);
-  border-radius: 6px;
-  border: 3px solid var(--scrollbarBG);
+  border-radius:  0.3125vw;
+  border: 0.15625vw solid var(--scrollbarBG);
+  
 }
 #skillsHelp{
  -webkit-animation: skillSlide 1.5s forwards;
@@ -257,9 +258,9 @@ export default {
 #skillsHelp img{
  float:right;
  
- margin-top: -15px;
- width: 50px;
- height: 50px;
+ margin-top: -0.78125vw;
+ width: 2.60416vw;
+ height: 2.60416vw;
 }
 
 #workHelp{
@@ -389,20 +390,20 @@ export default {
   animation-delay: 0.01;
   background-color: #fafbf0;
     --scrollbarBG: #fafbf0;
-  --thumbBG: #755c5b;
+  --thumbBG: rgb(194, 194, 194);
 }
 #buttonsHelp div{
 
-  background-color: #250b2e;
+  background-color: rgb(194, 194, 194);
 
 }
 #buttonsHelp h3{
 
-  background-color: #5f2741a4;
+  background-color: #62aecca4;
 
 }
 #buttonsHelp p{
-  background-color: #5f2741a4;
+  background-color: #62aecca4;
 
 }
 

@@ -28,7 +28,11 @@
           </div>
           <div class="transparent" v-if="players[playerId]" v-show="choosingSecret">
           <div class="chooseSecret" >
+<<<<<<< HEAD
             Choose one secret card:
+=======
+            {{labels.chooseSecretCard}}
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
             <div class="handToSecret">
             <CollectorsCard
               v-for="(card, index) in players[playerId].hand"  
@@ -41,6 +45,7 @@
           <CollectorsBottles
             v-if="players[playerId]"
             :labels="labels"
+            :round="round"
             :playerId="playerId"
             :players="players"
             :endRound="endRound"
@@ -106,8 +111,11 @@
                     class="playerBoardGrid"
                     v-if="player.playerIsActive === true"
                   >
-                    <div class="boardCollection">
-                      <div id="collectiontitle">Collection:</div>
+                  <div id="collectiontitle" class="divtitle">Collection:</div>
+                  <div id="skills" class="divtitle"> Skills: </div>
+                  <div id="secret" class="divtitle"> Secret: </div>
+
+                    <div class="boardCollection"> 
                       <div class="boardcollectiongrid">
                         <div class="playercollection">
                           <div class="collectioncards">
@@ -118,7 +126,12 @@
                             />
                           </div>
                         </div>
+<<<<<<< HEAD
                         <div class="hidden"> 
+=======
+                        
+                        <div class="secretcards"> 
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
                           <CollectorsCard
                           v-for="(card, index) in player.secret"
                           :card="card"
@@ -150,7 +163,7 @@
                         </div>
 
                         <div class="totalvalue">
-                          Victory Points: {{ player.currentScore }}
+                          {{labels.victoryPoints}}: {{ player.currentScore }}
                         </div>
                       </div>
                     </div>
@@ -202,8 +215,10 @@
                         </div>
                       </div>
                     </div>
+
+                    <div id="handTitle" class="divtitle">Hand:</div>
                     <div class="boardHand">
-                      <div id="handTitle">Hand:</div>
+                      
                       <div class="cardsinhand">
                         <CollectorsCard
                           v-for="(card, index) in player.hand"
@@ -215,6 +230,7 @@
                     </div>
 
                     <div class="boardNextTurnInfo">
+                      <div id="resources" class="divtitle"> Resources: </div>
                       <div
                         class="bottlesGrid"
                         v-for="(
@@ -222,6 +238,7 @@
                         ) in player.bottlesOnPlayerbord"
                         :key="index"
                       >
+                     
                         <div
                           v-show="bottlePlace"
                           class="bottles"
@@ -240,6 +257,7 @@
                           <img src="/images/moneybag.png" width="80%" />
                         </div>
                         <div class="counter m">{{ player.money }}</div>
+                        <div class="counter income">+{{ player.income.length }}</div>
                       </div>
 
                       <div class="b bottlecount">
@@ -261,6 +279,7 @@
             @click="skillsHelp()"
           >
             <div class="skillsgrid">
+              <img class="gain-skill" src="/images/gain-skill.png"/>
               <CollectorsSkillActions
                 v-if="players[playerId]"
                 :labels="labels"
@@ -282,6 +301,7 @@
             @click="auctionHelp()"
           >
             <div class="auctiongrid">
+              <img class="start-auction" src="/images/start-auction.png"/>
               <CollectorsStartAuction
                 v-if="players[playerId]"
                 :labels="labels"
@@ -307,7 +327,7 @@
             v-if="players[playerId]"
             @click="auctionMiniActiveNow()"
           >
-            {{ bid }}$
+            {{ auctionPrice }}$
             <div class="auctionCardViewMini" v-if="!hiddenAuctionCard">
               <CollectorsCard
                 v-for="(card, index) in cardInAuction"
@@ -321,7 +341,8 @@
           </div>
           <div class="winnerAuction" v-show="winnerAvailable">
             <div class="winnerText">
-              You won the auction!!! Where do you want to place your card?
+              {{labels.wonAuction}}
+              
             </div>
             <div class="auctionCardViewFin">
               <CollectorsCard
@@ -362,7 +383,11 @@
           </div>
           <div class="transparent" v-show="loserAvailable">
             <div class="loserAuction">
+<<<<<<< HEAD
               You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
+=======
+              {{labels.youLost}}{{ playerName(auctionLeaderId) }} {{labels.wonTheAuction}}
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
             </div>
           </div>
           <CollectorsAuction
@@ -400,6 +425,7 @@
                 :skillOnSale="getLastElement(skillsOnSale)"
                 :auctionCard="getLastElement(auctionCards)"
                 :placement="marketPlacement"
+                :checkAmountOfRaiseValue="checkAmountOfRaiseValue"
                 :marketValues="marketValues"
                 :notYourTurn="notYourTurn"
                 :aboutToRaiseValue="aboutToRaiseValue"
@@ -439,7 +465,7 @@
                 <div class="closedBoardInfo">
                   <!-- Score -->
                   <div class="scoreDisplay closed">
-                    Victory Points: {{ players[playerId].currentScore }}
+                    {{labels.victoryPoints}}: {{ players[playerId].currentScore }}
                   </div>
                   <div class="closedItemIcons">
                     <div>
@@ -467,6 +493,7 @@
                   <div class="c moneycount">
                     <div><img src="/images/moneybag.png" width="70%" /></div>
                     <div class="counter m">{{ players[playerId].money }}</div>
+                    <div class="counter income">+{{ players[playerId].income.length }}</div>
                   </div>
 
                   <div class="c bottlecount">
@@ -481,7 +508,7 @@
 
             <!-- Visas när handen är öppen-->
             <div class="playerBoardGrid" v-if="isActive">
-              <div class="help" @click="helpPlayerHandHover">
+              <div class="help" id="helpHandPos" @click="helpPlayerHandHover">
                 ?
                 <div id="playerHelp" v-show="helpPlayerHandActive">
                   <h3>
@@ -502,7 +529,7 @@
                   <div>
                     <h3>
                       <strong>{{ labels.helpPlayerHand.handArea }}</strong>
-                    </h3>
+                    </h3>c
                     <p>{{ labels.helpPlayerHand.handAreaText }}</p>
                   </div>
                   <div>
@@ -511,12 +538,13 @@
                     </h3>
                     <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
                   </div>
-                  <div id="collectiontitle">Collection:</div>
                 </div>
               </div>
-              <div class="boardCollection">
-                <div id="collectiontitle">Collection:</div>
 
+              <div id="collectiontitle" class="divtitle">{{labels.collection}}:</div>
+              <div id="secret" class="divtitle"> Secret: </div>
+              <div id="skills" class="divtitle"> Skills: </div>
+              <div class="boardCollection">
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
                     <div class="collectioncards">
@@ -527,7 +555,12 @@
                       />
                     </div>
                   </div>
+<<<<<<< HEAD
                   <div class="hidden">
+=======
+                  
+                  <div class="secretcards">
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
                     <CollectorsCard
                       v-for="(card, index) in players[playerId].secret"
                       :card="card"
@@ -558,7 +591,7 @@
                     </div>
                   </div>
                   <div class="totalvalue">
-                    Victory Points: {{ players[playerId].currentScore }}
+                    {{labels.victoryPoints}}: {{ players[playerId].currentScore }}
                   </div>
                 </div>
               </div>
@@ -599,8 +632,9 @@
                   </div>
                 </div>
               </div>
-              <div class="boardHand">
-                <div id="handTitle">Hand:</div>
+
+<div id="handTitle" class="divtitle">Hand:</div>
+              <div class="boardHand"> 
                 <div class="cardsinhand">
                   <CollectorsCard
                     v-for="(card, index) in players[playerId].hand"
@@ -611,6 +645,7 @@
               </div>
 
               <div class="boardNextTurnInfo">
+                <div id="resources" class="divtitle"> Resources: </div>
                 <div
                   class="bottlesGrid"
                   v-for="(bottlePlace, index) in players[playerId]
@@ -633,11 +668,13 @@
                 <div class="b moneycount">
                   <div><img src="/images/moneybag.png" width="80%" /></div>
                   <div class="counter m">{{ players[playerId].money }}</div>
+                  <div class="counter income">+{{ players[playerId].income.length }}</div>
+                  <!-- ÄNDRA TILL RÄTT income -->
                 </div>
 
                 <div class="b bottlecount">
                   <div><img src="/images/player-bottle.png" width="60%" /></div>
-                  <div class="counter b">{{ players[playerId].bottles }}</div>
+                  <div class="counter b"> {{ players[playerId].bottles }}</div>
                 </div>
               </div>
             </div>
@@ -659,6 +696,7 @@
 
           <div :class="['items', { animate: helpAction }]" @click="itemsHelp()">
             <div class="itemgrid">
+              <img class="buy-item" src="/images/buy-item.png"/>
               <CollectorsBuyActions
                 v-if="players[playerId]"
                 :labels="labels"
@@ -701,8 +739,9 @@
           </div>
 
           <div class="roundCounter">
-            <p>{{ labels.roundcounter }} {{ round }}</p>
-            <p>Det är {{ currentPlayer() }} tur att spela!</p>
+            <p>{{ labels.roundcounter }} {{ round }} </p>
+            
+            <p> {{labels.itIs}}<br>{{ currentPlayer() }} </p>
           </div>
 
           <div class="drawCardSpace">
@@ -735,22 +774,22 @@
             >
               {{ labels.randomplayer }}
             </button>
-            <button
+            <!-- <button
               v-if="players[playerId]"
               @click="auctionBoard()"
               class="menuButton"
             >
               {{ labels.showAuction }}
             </button>
-            <!--   <button @click="moveCards()" class="menuButton">
+            <button @click="moveCards()" class="menuButton">
               hola olle testa här :)
-            </button>-->
+            </button>
             <button @click="nextPlayer()" class="menuButton">
               nästa runda :)
             </button>
             <button @click="hiddenAuctionCard = true" class="menuButton">
               hidden auction card
-            </button>
+            </button> -->
 
             <!--
               Lägg till current value i spelaren. Så att varje spelare har koll på sin egna currentValue. 
@@ -803,9 +842,9 @@
           </div>
         </div>
         <h1 class="winner">
-          W I N N E R: <br />
+          {{labels.winnerSpace}}<br />
           {{ getWinner()[2] }} <br />
-          {{ labels.points }}: {{ getWinner()[0] }}
+          {{ labels.victoryPoints }}: {{ getWinner()[0] }}
         </h1>
       </div>
     </div>
@@ -1355,6 +1394,30 @@ export default {
         this.hiddenAuctionCard = false;
       }
     },
+    checkAmountOfRaiseValue: function(){
+      let cardCounter = 0
+      for (let i = 0; i < this.skillsOnSale.length; i += 1) {
+        if(this.skillsOnSale[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      for (let i = 0; i < this.auctionCards.length; i += 1) {
+        if(this.auctionCards[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      for (let i = 0; i < this.skillsOnSale; i += 1) {
+        if(this.players[this.playerId].card[i].market != undefined){
+          cardCounter ++;
+        }
+      }
+      if(cardCounter < 2){
+        return false;
+      }
+      else{
+        return true
+      }
+    },
     auctionBoard: function () {
       console.log("auction rutaa");
       this.auctionActive = !this.auctionActive;
@@ -1550,7 +1613,7 @@ export default {
     },
 
     getLastElement: function (cardArray) {
-      for (let i = cardArray.length - 1; i >= 1; i--) {
+      for (let i = cardArray.length - 1; i >= 0; i--) {
         if (cardArray[i].market) {
           return cardArray[i];
         }
@@ -1707,8 +1770,13 @@ export default {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
     },
     showHelpOptions: function () {
+<<<<<<< HEAD
+=======
+      console.log("hej");
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
       var otherPlayersTurn=false;
       if (this.helpAction) {
+        console.log("inte här");
         this.skillsHelpActive = false;
         this.auctionHelpActive = false;
         this.menuSpaceActive = false;
@@ -1716,16 +1784,28 @@ export default {
         this.workHelpActive = false;
         this.itemsHelpActive = false;
         this.raiseValueHelpActive = false;
+<<<<<<< HEAD
         for (const player in this.players) {
           if(player.turn==true){
+=======
+        
+        console.log("kommer hit");
+        for (const player in this.players) {
+          
+          if(this.players[player].turn==true){
+            
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
             otherPlayersTurn=true;
             break;
           }
         }
+<<<<<<< HEAD
         if(!otherPlayersTurn){
           this.players[this.playerId].turn=true;
 
         }
+=======
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
         }
       this.helpAction = !this.helpAction;
       if(this.players[this.playerId].turn==true && this.helpAction){
@@ -1733,7 +1813,17 @@ export default {
 
       }
       console.log(this.helpAction);
-      console.log(document.getElementById("test1").className);
+      if(!otherPlayersTurn && !this.helpAction){
+          this.players[this.playerId].turn=true;
+
+        }
+        
+      if(this.players[this.playerId].turn==true && this.helpAction){
+        this.players[this.playerId].turn=false;
+
+      }
+      console.log(this.helpAction);
+      
 
       /* if(this.helpAuctionActive){
         console.log("hejhej");
@@ -1981,6 +2071,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Goldman&display=swap');
 header {
   user-select: none;
   position: fixed;
@@ -2189,6 +2280,42 @@ zoom: 1.2;
   Här nedan är CSS specifika för player rutorna
   */
 
+
+
+.divtitle{
+  position: absolute;
+  border-radius: 0.5vw;
+  background-color: rgba(0, 0, 0, 0.377);
+  z-index: 2;
+  padding: 0.1vw;
+}
+
+#collectiontitle.divtitle{
+  grid-row: 1;
+  grid-column: 2;
+  margin-left: -3vw;
+}
+#secret.divtitle{
+  grid-column: 2;
+  margin-left: 7vw;
+}
+#handTitle.divtitle {
+ grid-row: 4;
+ grid-column: 2;
+ margin-left: -2vw;
+}
+#resources.divtitle {
+ grid-row: 4;
+ grid-column: 4;
+ margin-left: -2.6vw;
+}
+#skills.divtitle{
+  grid-row: 1;
+  grid-column: 4;
+  margin-left: -1vw;
+}
+
+
 .player {
   border-radius: 2vw;
   height: 2vw;
@@ -2207,7 +2334,7 @@ zoom: 1.2;
   align-content: space-evenly;
 }
 .otherplayer {
-  border-radius: 1vw;
+  border-radius: 2vw;
   border-style: ridge;
   border-color: currentColor;
   padding: 1vw;
@@ -2245,14 +2372,14 @@ zoom: 1.2;
   grid-column: 2;
   grid-row: 1/3;
   display: grid;
-  grid-template-columns: repeat(5, 0.6vw);
+  grid-template-columns: repeat(8, 0.6vw);
   grid-template-rows: repeat(auto-fill, 0.3vw);
   height: 80%;
-  margin-top: -1.5vw;
+  margin-top: -0.8vw;
   justify-self: self-start;
 }
 .otherHand.otherClosed.card {
-  zoom: 0.15 !important;
+  zoom: 0.10 !important;
 }
 
 .scoreDisplay {
@@ -2270,10 +2397,17 @@ zoom: 1.2;
   padding: 1vw;
   font-size: 1vw;
   cursor: pointer;
+<<<<<<< HEAD
   border: solid;
   border-color: black;
   border-width: 0.02604vw;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+=======
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.466), 0 1px 4px rgba(0, 0, 0, 0.24);
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
 }
 .playerboard.turnhighlight {
   filter: brightness(110%);
@@ -2347,7 +2481,11 @@ zoom: 1.2;
 .playercollection::-webkit-scrollbar {
   display: none;
 }
+<<<<<<< HEAD
 .hidden::-webkit-scrollbar {
+=======
+.secretcards::-webkit-scrollbar {
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
   display: none;
 }
 
@@ -2393,7 +2531,7 @@ zoom: 1.2;
   background-color: #ffffff3f;
   grid-column: 1 / span 1;
   grid-row: 1;
-  height: 5vw;
+  height: 75%;
 }
 .closedBoardInfo {
   grid-column: 2;
@@ -2414,7 +2552,7 @@ zoom: 1.2;
 
 .counter {
   border-radius: 1vw;
-  background-color: #0000004b;
+  background-color: #0000003a;
   padding: 0.2vw;
   text-align: center;
   width: fit-content;
@@ -2428,6 +2566,13 @@ zoom: 1.2;
   margin-left: 2.7vw;
   margin-top: -1vw;
 }
+.counter.income{
+  position: absolute;
+  margin-left: 2.7vw;
+  margin-top: -3vw;
+  color: rgb(117, 255, 117);
+}
+
 .counter.b {
   position: absolute;
   margin-left: 2.7vw;
@@ -2547,24 +2692,34 @@ zoom: 1.2;
   margin-top: -3vw;
   z-index: 2;
 }
+<<<<<<< HEAD
 .hidden{
+=======
+.secretcards{
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
   display: grid;
-  grid-template-rows: repeat(8, 2vw);
+  grid-template-rows: repeat(8, 3vw);
   overflow: scroll;
   margin:auto;
+<<<<<<< HEAD
   background-color: rgba(255, 255, 255, 0.356);
   border-radius: 0.1vw;
   height: 70%;
 
+=======
+  margin-top: 2vw;
+  background-color: rgba(255, 255, 255, 0.356);
+  border-radius: 0.1vw;
+  height: 70%;
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
 }
-#handTitle {
-  margin-left: 10vw;
-  position: absolute;
-  background-color: gray;
-  border-radius: 2vw;
-  padding: 0.3vw;
-  z-index: 1;
+.secretcards > .card:hover {
+  filter: brightness(110%);
+  cursor: pointer;
+  margin-top: -1vw;
+  z-index: 2;
 }
+
 .totalvalue {
   background-color: gray;
   border-radius: 0vw 0vw 2vw 2vw;
@@ -2619,7 +2774,7 @@ zoom: 1.2;
 
   /* Position the tooltip */
   position: absolute;
-  z-index: 1;
+  z-index: 5;
 }
 
 .tooltip:hover .tooltiptext {
@@ -2733,33 +2888,45 @@ zoom: 1.2;
   */
 
 .items {
-  border-radius: 2vw;
-  background-image: url("/images/Items_Background_arrows.png");
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
+  background-image: url("/images/Items_Background_arrows2.png");
   background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 2;
   position: relative;
+<<<<<<< HEAD
   border: solid;
   border-color: black;
   border-width:  0.02604vw;;
+=======
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .skills {
-  border-radius: 2vw;
-  background-image: url("/images/Skills_Background_arrows.png");
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
+  background-image: url("/images/Skills_Background_arrows2.png");
   background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 3;
   position: relative;
+<<<<<<< HEAD
   border: solid;
   border-color: black;
   border-width:  0.02604vw;;
+=======
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 
 .work {
   text-align: center;
-  border-radius: 2vw;
+  border-radius: 1vw;
   background-image: url("/images/Work_Background.png");
   background-size: contain;
   grid-column: 2;
@@ -2770,15 +2937,21 @@ zoom: 1.2;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValue {
-  border-radius: 2vw;
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
   background-image: url("/images/RV_Background.png");
   background-size: contain;
   grid-column: 8;
   grid-row: 3 / span 1;
   position: relative;
+<<<<<<< HEAD
   border: solid;
   border-color: black;
   border-width:  0.02604vw;;
+=======
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .raiseValuegrid div {
@@ -2787,15 +2960,21 @@ zoom: 1.2;
   color: black;
 }
 .auction {
-  border-radius: 2vw;
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
+  border-color: rgba(0, 0, 0, 0.295);
   background-image: url("/images/Auction_Background_arrow.png");
   background-size: contain;
   grid-column: 3;
   grid-row: 2 / span 2;
   position: relative;
+<<<<<<< HEAD
   border: solid;
   border-color: black;
   border-width:  0.02604vw;;
+=======
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .auctionCardViewMini {
@@ -2857,6 +3036,7 @@ zoom: 1.2;
   background-repeat: no-repeat;
 }
 .roundCounter {
+<<<<<<< HEAD
   grid-column: 1;
   grid-row: 2;
   background-color: rgb(194, 194, 194);
@@ -2868,7 +3048,24 @@ zoom: 1.2;
   border-color: black;
   border-width:  0.02604vw;;
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+=======
+font-family: 'Goldman', cursive;
+    color: black;
+    grid-column: 1;
+    grid-row: 2;
+    background-color: rgb(194, 194, 194);
+    border-radius: 1vw;
+    border-style: double;
+    border-width: 0.2vw;
+    border-color: rgba(0, 0, 0, 0.295);
+    padding: 1vw;
+    text-align: center;
+    font-size: 1.5vw;
+    position: relative;
+    box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
 }
+
 .drawCardSpace {
   grid-column: 8;
   grid-row: 2;
@@ -2958,7 +3155,7 @@ zoom: 1.2;
   height: 2.0833vw;
   border-radius: 1.3020vw;
   position: absolute;
-  right: 0;
+  right: 0%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2973,20 +3170,45 @@ zoom: 1.2;
   background-color: rgb(61, 61, 255);
 }
 
+.buy-item {
+width: 5vw;
+    position: absolute;
+    right: -1vw;
+    top: -0.2vw;
+
+}
+.gain-skill {
+    width: 3vw;
+    position: absolute;
+    right: -0.2vw;
+    top: -0.1vw;
+}
+.start-auction {
+    width: 3.3vw;
+    position: absolute;
+    right: -0.5vw;
+    top: 0.2vw;
+    z-index: 4;
+
+}
 .menuSpace {
   grid-column: 1;
-  grid-row: 3;
   background-color: rgb(194, 194, 194);
-  border-radius: 2vw;
+  border-radius: 1vw;
+  border-style: double;
+  border-width: 0.2vw;
   padding: 2vw;
   position: relative;
   padding: 1vw;
   display: grid;
+<<<<<<< HEAD
   grid-template-rows: repeat(auto-fill, 3.5vh);
   align-content: center;
   border: solid;
   border-color: black;
   border-width:  0.02604vw;;
+=======
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
   box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
 }
 .buttons {
@@ -2995,6 +3217,7 @@ zoom: 1.2;
   background-color: rgb(83, 83, 83);
   border-radius: 1vw;
   box-shadow: 0 0.3vw #999;
+  
 }
 .buttons:active {
   background-color: coral;
@@ -3010,11 +3233,27 @@ zoom: 1.2;
 }
 
 .menuButton {
-  background-color: #bbb;
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  font-size: auto;
+font-family: 'Goldman', cursive;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #b92828;
+    overflow: hidden;
+    color: transparent;
+    border-radius: 1vw;
+    box-shadow: 0.4vw 0.4vw #999;
+    font-size: 1.5vw;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+    background-image: url(https://i.pinimg.com/originals/24/ea/b4/24eab460d2f094474e47fb01565c8e28.gif);
+}
+
+.menuButton:disabled {
+  color: black;
+  background-color: grey;
+  background-image: none;
+  cursor: default;
 }
 
 .help {
@@ -3052,10 +3291,11 @@ zoom: 1.2;
   max-height: 43.833333333333332vw;
   overflow-y: auto;
   position: absolute;
-  z-index: 6;
+  
   word-wrap: break-word;
   display: inline;
   font-size: 1vw;
+  z-index: 1;
 }
 #playerHelp h3 {
   background-color: rgb(3, 69, 155);
@@ -3090,7 +3330,11 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 */
 
 #playerHelp::-webkit-scrollbar {
+<<<<<<< HEAD
   width: 10.05208vw;
+=======
+  width: 0.908vw;
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
   height: 0.2604vw;
 }
 
@@ -3142,7 +3386,11 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .animate {
   animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
+<<<<<<< HEAD
   box-shadow: 0px 0px 10px 10.05208vw rgb(116, 116, 9), 0 0 0.2604vw rgb(116, 116, 9);
+=======
+  box-shadow: 0px 0px 10px .05208vw rgb(116, 116, 9), 0 0 0.2604vw rgb(116, 116, 9);
+>>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
 }
 
 @keyframes jiggles {

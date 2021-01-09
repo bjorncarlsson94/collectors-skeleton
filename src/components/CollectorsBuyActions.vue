@@ -23,7 +23,7 @@
       </div>
           <div class="itemsAvailable" v-show="aboutToBuyItem" v-if="player">
               <h1 class = "buyItemHeadings">
-                Välj ett kort från spelplanen:
+                {{labels.chooseCardFromPlayerBoard}}:
               </h1>
               <div class="buyItemCardGrid">
                 <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale.slice().reverse()" :key="index">
@@ -37,7 +37,8 @@
               </div>
               
                 <h1 class="buyItemHeadings">
-                  Välj ett kort från handen:
+                  {{labels.chooseCardFromPlayerHand}}:
+                 
                 </h1>
               <div class= "buyItemCardGrid">
                 <div class="itemsFromHand" v-for="(card,index) in player.hand" :key="'A'+index">
@@ -253,6 +254,7 @@ export default {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding: 1vw;
     margin: 1vw;
+    grid-template-rows: 6.4vw;
     justify-items: center;
     border-color: grey;
     border-radius: 2vw;
@@ -335,7 +337,6 @@ export default {
   }
   .cancelBuy:active{
     background-color: #da855a;
-    background-color: #da855a;
     box-shadow: 0 0.2vw #999;
     transform: translateY(0.1vw);
   }
@@ -343,9 +344,9 @@ export default {
 
 .bottlePlace {
     background-image: url(/images/player-bottle.png);
-    margin-top: 0vw;
-    height: 3vw;
-    width: 3vw;
+    margin-top: 0.6vw;
+    height: 2.5vw;
+    width: 2.5vw;
     background-color: rgb(95, 216, 253);
     border-radius: 4vw;
     border-style: ridge;
