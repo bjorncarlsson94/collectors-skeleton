@@ -40,6 +40,11 @@
 	"auctionHow":"Hur vill du auktionera kortet",
 	"faceUp":"Uppvänt",
 	"faceDown":"Nervänt",
+	"card":" kort",
+	"pickFromPlayerBoard":"Välj ett kort från spelplanen:",
+	"pickFromAuction":"Välj kort från auction pool",
+	"pickFromSkills":"Välj kort från skill pool",
+	"pickFromHand":"Välj ett kort från din hand:",
 	"helpPlayerHand":{
 		"title":"Din hand:",
 		"itemArea":"Item Area (red):",

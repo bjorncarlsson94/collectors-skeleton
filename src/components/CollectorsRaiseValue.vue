@@ -29,7 +29,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             @click="placeBottle(p)"
           >
             ${{ p.cost }}
-            {{ p.amountOfCards + "cards" }}
+            {{ p.amountOfCards + labels.card }}
           </button>
           <div
             class="bottlePlace"
@@ -40,11 +40,11 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
       </div>
     </div>
     <div class="raiseCardsAvailable" v-show="aboutToRaiseValue" v-if="player">
-      <h1 class="raiseValueHeadings">Välj ett kort från spelplanen:</h1>
+      <h1 class="raiseValueHeadings">{{labels.pickFromPlayerBoard}}</h1>
       <div class="raiseValueCardGrid">
         <div class="cardsFromBoard">
           <div class="auctionCard">
-            <h6 class="auctionOrSkill" v-if="auctionCard.market!=undefined">Välj kort från auktionspool</h6>
+            <h6 class="auctionOrSkill" v-if="auctionCard.market!=undefined">{{labels.pickFromAuction}}</h6>
             <div class="card">
               <CollectorsCard
                 :card="auctionCard"
@@ -54,7 +54,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             </div>
           </div>
           <div class="skillCard">
-            <h6 class="auctionOrSkill" v-if="skillOnSale.market!=undefined">Välj kort från skillpool</h6>
+            <h6 class="auctionOrSkill" v-if="skillOnSale.market!=undefined">{{labels.pickFromSkills}}</h6>
             <div class="card">
               <CollectorsCard
                 :card="skillOnSale"
@@ -65,7 +65,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
           </div>
         </div>
       </div>
-      <h1 class="raiseValueHeadings">Välj ett kort från handen:</h1>
+      <h1 class="raiseValueHeadings">{{labels.pickFromHand}}</h1>
       <div class="raiseValueCardGrid">
         <div
           class="cardsFromHand"
