@@ -200,7 +200,7 @@ export default {
   padding: 0.55vw;
 
   border: solid;
-  border-width: 0.0.1041666;
+  border-width: 0.01041666vw;
   border-color: black;
 }
 .InfoBox p {
@@ -209,16 +209,16 @@ export default {
   margin-top: -0.52vw;
   padding: 0.55vw;
   border: solid;
-  border-width: 0.0.1041666;
+  border-width: 0.01041666vw;
   border-color: black;
 }
 .InfoBox div {
   border-radius: 0.5vw;
   background-color: #767e6b;
   padding: 0.2604166vw;
-  margin-bottom: 0.1041666;
+  margin-bottom: 0.1041666vw;
   border: solid;
-  border-width: 0.0.1041666;
+  border-width: 0.01041666vw;
   border-color: black;
 }
 .InfoBox img {
@@ -227,7 +227,7 @@ export default {
   height: 5.2083vw;
   width: 5.2083vw;
   border: solid;
-  border-width: 0.0.1041666;
+  border-width: 0.01041666vw;
   border-color: black;
 }
 
@@ -390,20 +390,20 @@ export default {
   animation-delay: 0.01;
   background-color: #fafbf0;
     --scrollbarBG: #fafbf0;
-  --thumbBG: #755c5b;
+  --thumbBG: rgb(194, 194, 194);
 }
 #buttonsHelp div{
 
-  background-color: #250b2e;
+  background-color: rgb(194, 194, 194);
 
 }
 #buttonsHelp h3{
 
-  background-color: #5f2741a4;
+  background-color: #62aecca4;
 
 }
 #buttonsHelp p{
-  background-color: #5f2741a4;
+  background-color: #62aecca4;
 
 }
 

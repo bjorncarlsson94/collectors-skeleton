@@ -718,8 +718,9 @@
           </div>
 
           <div class="roundCounter">
-            <p>{{ labels.roundcounter }} {{ round }}</p>
-            <p>{{labels.itIs}}{{ currentPlayer() }} </p>
+            <p>{{ labels.roundcounter }} {{ round }} </p>
+            
+            <p> {{labels.itIs}}<br>{{ currentPlayer() }} </p>
           </div>
 
           <div class="drawCardSpace">
