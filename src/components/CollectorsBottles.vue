@@ -4,7 +4,8 @@
         <button class="bottlebuttons" :disabled="ifBottlesCanBePlaced()" @click="placeBottlePlayerbord()">Done</button>
         <div class="bottlesText">lorem ipsum</div>
         <div class="bottlesLeft" v-if="players[playerId].totalBottles > 2">{{amountOfBottlesThatCanBePlaced()}}x</div>
-        <div class="bottles L"></div>
+        <div class="bottlesLeft" v-if="players[playerId].totalBottles <= 2">0x</div>
+        <div class="bottles L" :style="{backgroundColor: players[playerId].color}"></div>
       <img src="/images/bottle-playerboard.png" class="bottleOptions">
       <!-- <div class="bottlesGrid" v-for="(bottlePlace, index) in tempBottlePlacement" :key="index">
           <div class="bottleButton A"  @click="changeTempBottle(0) && ifBottlesCanBePlaced()">

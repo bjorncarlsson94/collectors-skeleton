@@ -43,16 +43,26 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
       <h1 class="raiseValueHeadings">Välj ett kort från spelplanen:</h1>
       <div class="raiseValueCardGrid">
         <div class="cardsFromBoard">
-          <CollectorsCard
-            :card="auctionCard"
-            :availableAction="auctionCard.available"
-            @doAction="raiseValueNow(auctionCard)"
-          />
-          <CollectorsCard
-            :card="skillOnSale"
-            :availableAction="skillOnSale.available"
-            @doAction="raiseValueNow(skillOnSale)"
-          />
+          <div class="auctionCard">
+            <h6 class="auctionOrSkill" v-if="auctionCard.market!=undefined">Välj kort från auktionspool</h6>
+            <div class="card">
+              <CollectorsCard
+                :card="auctionCard"
+                :availableAction="auctionCard.available"
+                @doAction="raiseValueNow(auctionCard)"
+              />
+            </div>
+          </div>
+          <div class="skillCard">
+            <h6 class="auctionOrSkill" v-if="skillOnSale.market!=undefined">Välj kort från skillpool</h6>
+            <div class="card">
+              <CollectorsCard
+                :card="skillOnSale"
+                :availableAction="skillOnSale.available"
+                @doAction="raiseValueNow(skillOnSale)"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <h1 class="raiseValueHeadings">Välj ett kort från handen:</h1>
@@ -148,7 +158,6 @@ export default {
     raiseValueNow: function(card){
       if(this.currentPlacementAmount === 2){
         this.$emit('raiseValueFirstCard', card);
-        this.$emit('keepWindowOpen');
         this.currentPlacementAmount = 1;
       }
       else{
@@ -295,9 +304,9 @@ export default {
 }
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
-    margin-top: 0vw;
-    height: 3vw;
-    width: 3vw;
+    height: 2.5vw;
+    margin-top: 1vw;
+    width: 2.5vw;
     background-color: rgb(95, 216, 253);
     border-radius: 4vw;
     border-style: ridge;
@@ -316,11 +325,20 @@ export default {
   grid-auto-flow: row;
 }
 
+.auctionOrSkill{
+  display: contents;
+}
+
+.card{
+  display: grid;
+  justify-content: center;
+}
+
 /*Nedan är all css för rutan man får upp vid kortköp*/
   .raiseCardsAvailable {
   display: grid;
   position: absolute;
-  grid-template-rows: 15% 35% 15% auto;
+  grid-template-rows: 10% 45% 10% auto;
   width: 60vw;
   height: 40vw;
   background-color: #cfdcf2;
@@ -346,6 +364,7 @@ export default {
     text-align: center;
     color: black;
     grid-column: 1/6;
+    font-size: large;
   }
 
   .cardsFromBoard{

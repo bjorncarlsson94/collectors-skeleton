@@ -261,6 +261,7 @@
             @click="skillsHelp()"
           >
             <div class="skillsgrid">
+              <img class="gain-skill" src="/images/gain-skill.png"/>
               <CollectorsSkillActions
                 v-if="players[playerId]"
                 :labels="labels"
@@ -282,6 +283,7 @@
             @click="auctionHelp()"
           >
             <div class="auctiongrid">
+              <img class="start-auction" src="/images/start-auction.png"/>
               <CollectorsStartAuction
                 v-if="players[playerId]"
                 :labels="labels"
@@ -407,7 +409,6 @@
                 @placeBottle="placeBottle('market', $event)"
                 @raiseValueFirstCard="raisingValue($event, true)"
                 @raiseValue="raisingValue($event, false)"
-                @keepWindowOpen="keepWindowOpen()"
                 @cancelBuy="removeBottle('market', $event)"
               />
             </div>
@@ -661,6 +662,7 @@
 
           <div :class="['items', { animate: helpAction }]" @click="itemsHelp()">
             <div class="itemgrid">
+              <img class="buy-item" src="/images/buy-item.png"/>
               <CollectorsBuyActions
                 v-if="players[playerId]"
                 :labels="labels"
@@ -1541,10 +1543,11 @@ export default {
           cost: this.chosenPlacementCost,
           firstCard: firstCard,
       });
+      
       console.log(card, "i collectors")
       if(firstCard===false){
-      this.aboutToRaiseValue = false;
-      this.nextPlayer();
+        this.aboutToRaiseValue = false;
+        this.nextPlayer();
       }
     },
 
@@ -1556,16 +1559,6 @@ export default {
       }
       return {};
     },
-
-    keepWindowOpen: function () {
-      this.aboutToRaiseValue = true;
-    },
-
-    /*getRaiseItemsFromBoard: function(){
-      this.raiseItemsFromBoard.push(this.skillsOnSale[this.skillsOnSale.length - 1]);
-      this.raiseItemsFromBoard.push(this.auctionCards[this.auctionCards.length - 1]);
-      return this.raiseItemsFromBoard;
-    },*/
 
     notYourTurn: function () {
       if (this.players[this.playerId].turn == false) {
@@ -2743,7 +2736,7 @@ zoom: 1.2;
 
 .items {
   border-radius: 2vw;
-  background-image: url("/images/Items_Background_arrows.png");
+  background-image: url("/images/Items_Background_arrows2.png");
   background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 2;
@@ -2755,7 +2748,7 @@ zoom: 1.2;
 }
 .skills {
   border-radius: 2vw;
-  background-image: url("/images/Skills_Background_arrows.png");
+  background-image: url("/images/Skills_Background_arrows2.png");
   background-size: contain;
   grid-column: 4 / span 3;
   grid-row: 3;
@@ -2981,7 +2974,29 @@ zoom: 1.2;
 .help:hover {
   background-color: rgb(61, 61, 255);
 }
+.buy-item {
+width: 5vw;
+    position: absolute;
+    right: -1vw;
+    top: -0.2vw;
 
+}
+.gain-skill {
+    width: 3vw;
+    position: absolute;
+    right: -0.2vw;
+    top: -0.1vw;
+    z-index: 4;
+
+}
+.start-auction {
+    width: 3.3vw;
+    position: absolute;
+    right: -0.5vw;
+    top: 0.2vw;
+    z-index: 4;
+
+}
 .menuSpace {
   grid-column: 1;
   grid-row: 3;
