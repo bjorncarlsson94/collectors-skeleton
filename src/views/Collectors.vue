@@ -524,7 +524,6 @@
                     </h3>
                     <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
                   </div>
-                  <div id="collectiontitle">{{labels.collection}}:</div>
                 </div>
               </div>
 
@@ -2500,7 +2499,6 @@ zoom: 1.2;
   margin-left: 2.7vw;
   margin-top: -3vw;
   color: rgb(117, 255, 117);
-  background-color: transparent;
 }
 
 .counter.b {
@@ -3063,8 +3061,6 @@ width: 5vw;
     position: absolute;
     right: -0.2vw;
     top: -0.1vw;
-    z-index: 4;
-
 }
 .start-auction {
     width: 3.3vw;
@@ -3170,6 +3166,7 @@ font-family: 'Goldman', cursive;
   word-wrap: break-word;
   display: inline;
   font-size: 1vw;
+  z-index: 1;
 }
 #playerHelp h3 {
   background-color: rgb(3, 69, 155);
