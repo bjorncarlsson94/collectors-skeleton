@@ -304,9 +304,9 @@ export default {
 }
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
-    margin-top: 0vw;
-    height: 3vw;
-    width: 3vw;
+    height: 2.5vw;
+    margin-top: 1vw;
+    width: 2.5vw;
     background-color: rgb(95, 216, 253);
     border-radius: 4vw;
     border-style: ridge;

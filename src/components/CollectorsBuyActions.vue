@@ -335,7 +335,6 @@ export default {
   }
   .cancelBuy:active{
     background-color: #da855a;
-    background-color: #da855a;
     box-shadow: 0 0.2vw #999;
     transform: translateY(0.1vw);
   }
@@ -343,9 +342,9 @@ export default {
 
 .bottlePlace {
     background-image: url(/images/player-bottle.png);
-    margin-top: 0vw;
-    height: 3vw;
-    width: 3vw;
+    margin-top: 0.6vw;
+    height: 2.5vw;
+    width: 2.5vw;
     background-color: rgb(95, 216, 253);
     border-radius: 4vw;
     border-style: ridge;
