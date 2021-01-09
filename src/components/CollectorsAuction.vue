@@ -25,7 +25,7 @@
         v-show="hiddenAuctionCard"
         v-if="players[playerId]"
       ></div>
-      <div class="help" @click="auctionHelpHover">
+      <div class="help1" @click="auctionHelpHover">
                 ?</div>
       <h2 class="auctionHeader">{{labels.auction}}</h2>
       <div class="auctionLeader">Leader: {{auctionLeaderName(auctionLeaderId)}}</div>
@@ -383,7 +383,7 @@ export default {
     position: absolute;
     cursor: pointer;
 }
-.help {
+.help1 {
   width: 3.0833vw;
   height: 3.0833vw;
   border-radius: 50%;

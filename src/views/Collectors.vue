@@ -484,7 +484,7 @@
 
             <!-- Visas när handen är öppen-->
             <div class="playerBoardGrid" v-if="isActive">
-              <div class="help" @click="helpPlayerHandHover">
+              <div class="help" id="helpHandPos" @click="helpPlayerHandHover">
                 ?
                 <div id="playerHelp" v-show="helpPlayerHandActive">
                   <h3>
@@ -2960,7 +2960,7 @@ zoom: 1.2;
   height: 2.0833vw;
   border-radius: 1.3020vw;
   position: absolute;
-  right: 0;
+  right: 0%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2974,6 +2974,7 @@ zoom: 1.2;
 .help:hover {
   background-color: rgb(61, 61, 255);
 }
+
 .buy-item {
 width: 5vw;
     position: absolute;
@@ -3076,7 +3077,7 @@ width: 5vw;
   max-height: 43.833333333333332vw;
   overflow-y: auto;
   position: absolute;
-  z-index: 6;
+  
   word-wrap: break-word;
   display: inline;
   font-size: 1vw;
@@ -3114,7 +3115,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 */
 
 #playerHelp::-webkit-scrollbar {
-  width: 10.05208vw;
+  width: 0.908vw;
   height: 0.2604vw;
 }
 
