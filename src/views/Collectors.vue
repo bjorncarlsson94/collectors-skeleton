@@ -1285,7 +1285,9 @@ export default {
       "collectorsBottleRecycled",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1293,7 +1295,9 @@ export default {
       "collectorsBottleRecycled4thRound",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1301,7 +1305,9 @@ export default {
       "collectorsWorkCardDrawn",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1309,7 +1315,9 @@ export default {
       "collectorsCardAndTokenDrawn",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1317,7 +1325,9 @@ export default {
       "collectorsCardAndPassiveIncomeDrawn",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
