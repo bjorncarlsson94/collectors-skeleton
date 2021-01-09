@@ -44,11 +44,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
       <div class="raiseValueCardGrid">
         <div class="cardsFromBoard">
           <div class="auctionCard">
-<<<<<<< HEAD
-            <h6 class="auctionOrSkill" v-if="auctionCard.market!=undefined">Välj kort från auktionspool</h6>
-=======
             <h6 class="auctionOrSkill" v-if="auctionCard.market!=undefined">{{labels.pickFromAuction}}</h6>
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
             <div class="card">
               <CollectorsCard
                 :card="auctionCard"
@@ -58,11 +54,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             </div>
           </div>
           <div class="skillCard">
-<<<<<<< HEAD
-            <h6 class="auctionOrSkill" v-if="skillOnSale.market!=undefined">Välj kort från skillpool</h6>
-=======
             <h6 class="auctionOrSkill" v-if="skillOnSale.market!=undefined">{{labels.pickFromSkills}}</h6>
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
             <div class="card">
               <CollectorsCard
                 :card="skillOnSale"
@@ -88,11 +80,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
         </div>
       </div>
        <div class="buttonGrid">
-<<<<<<< HEAD
-               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
-=======
                <button class="cancelBuy" :disabled="cantCancel" @click="hideWindow()">{{labels.cancelBuy}}</button>
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
               </div>
     </div>
    
@@ -113,10 +101,7 @@ export default {
       marketOrder: ["fastaval", "figures", "music", "movie", "tech"],
       currentPlacementAmount: null,
       currentPlacement: null,
-<<<<<<< HEAD
-=======
       cantCancel: false,
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
     };
   },
 
@@ -175,30 +160,21 @@ export default {
     raiseValueNow: function(card){
       if(this.currentPlacementAmount === 2){
         this.$emit('raiseValueFirstCard', card);
-<<<<<<< HEAD
-=======
         this.cantCancel = true;
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
         this.currentPlacementAmount = 1;
       }
       else{
         this.$emit('raiseValue', card);
-<<<<<<< HEAD
-=======
         this.cantCancel = false;
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
         console.log(card, "kortet i raise value");
       }
     },
 
     placeBottle: function (p) {
       this.currentPlacementAmount = p.amountOfCards;
-<<<<<<< HEAD
-=======
       if(!this.checkAmountOfRaiseValue()){
         this.currentPlacementAmount = 1;
       }
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
       this.currentPlacement = p;
       console.log(this.currentPlacementAmount);
       this.$emit("placeBottle", p);

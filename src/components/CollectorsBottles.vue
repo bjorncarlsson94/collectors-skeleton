@@ -2,16 +2,10 @@
   <div>
     <div class="placeBottlesPlayer" v-show="endRound">
         <button class="bottlebuttons" :disabled="ifBottlesCanBePlaced()" @click="placeBottlePlayerbord()">Done</button>
-<<<<<<< HEAD
-        <div class="bottlesText">lorem ipsum</div>
-        <div class="bottlesLeft" v-if="players[playerId].totalBottles > 2">{{amountOfBottlesThatCanBePlaced()}}x</div>
-        <div class="bottles L"></div>
-=======
         <div class="bottlesText">{{labels.endRoundBox1}}{{round-1}}! {{labels.endRoundBox2}}</div>
         <div class="bottlesLeft" v-if="players[playerId].totalBottles > 2">{{amountOfBottlesThatCanBePlaced()}}x</div>
         <div class="bottlesLeft" v-if="players[playerId].totalBottles <= 2">0x</div>
         <div class="bottles L" :style="{backgroundColor: players[playerId].color}"></div>
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
       <img src="/images/bottle-playerboard.png" class="bottleOptions">
       <!-- <div class="bottlesGrid" v-for="(bottlePlace, index) in tempBottlePlacement" :key="index">
           <div class="bottleButton A"  @click="changeTempBottle(0) && ifBottlesCanBePlaced()">
@@ -157,30 +151,19 @@ background-image: url(/images/player-bottle.png);
     margin-left: 0.8vw;
 }
 .bottlesText{
-<<<<<<< HEAD
-  color:black;
-=======
   grid-column: 2/5;
   color: black;
   margin-right: 3.7vw;
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
 }
 .bottlesLeft{
   color: black;
     grid-row: 1;
-<<<<<<< HEAD
-    grid-column: 4;
-    text-align: right;
-    font-size: 3.5vw;
-    margin-top: 2.5vw
-=======
     right: 9vw;
     position: absolute;
     grid-column: 4;
     text-align: right;
     font-size: 3.5vw;
     margin-top: 2.5vw;
->>>>>>> cbb5fa7162202c4bea2d4d8e87a56a6315903050
 }
 .bottlebuttons:disabled {
   background-color: grey;
