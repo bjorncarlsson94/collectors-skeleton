@@ -29,6 +29,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             @click="placeBottle(p)"
           >
             ${{ p.cost }}
+            <br>
             {{ p.amountOfCards + labels.card }}
           </button>
           <div

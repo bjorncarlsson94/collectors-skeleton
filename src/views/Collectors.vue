@@ -1,8 +1,10 @@
 <template>
+<!--Sound from Zapsplat.com-->
   <div class="bodytest">
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
-      <section id="wrapper">
+      <section id="wrapper" >
+        <button  @click.prevent="playSound('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')">Klicka här Olle</button>
         <div id="grid">
           <div class="helpBoard" @click="showHelpOptions">
             <p><strong>?</strong></p>
@@ -492,8 +494,9 @@
 
             <!-- Visas när handen är öppen-->
             <div class="playerBoardGrid" v-if="isActive">
-              <div class="help" id="helpHandPos" @click="helpPlayerHandHover">
+              <div class="help" id="helpHandPos"  @click="helpPlayerHandHover" >
                 ?
+               
                 <div id="playerHelp" v-show="helpPlayerHandActive">
                   <h3>
                     <strong>{{ labels.helpPlayerHand.title }}</strong>
@@ -751,6 +754,7 @@
               @click="startTurn()"
               class="menuButton"
             >
+           
               {{ labels.randomplayer }}
             </button>
             <!-- <button
@@ -1049,6 +1053,7 @@ export default {
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
         this.auctionPlacement = d.auctionPlacement;
+        
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1111,6 +1116,7 @@ export default {
         this.itemsOnSale = d.itemsOnSale;
         this.itemValues = d.itemValues;
         this.currentScore = d.currentScore;
+         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1119,6 +1125,7 @@ export default {
         console.log(d.playerId, "bought a skill");
         this.players = d.players;
         this.skillsOnSale = d.skillsOnSale;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
 
@@ -1132,6 +1139,7 @@ export default {
         this.cardInAuction = d.cardInAuction;
         this.auctionActive = true;
         this.auctionPrice = 0;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
 
@@ -1145,6 +1153,7 @@ export default {
         this.skillsOnSale = d.skillsOnSale;
         this.auctionCards = d.auctionCards;
         this.itemsOnSale = d.itemsOnSale;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
 
@@ -1261,6 +1270,7 @@ export default {
         console.log("Flaska pantad");
         this.players = d;
         console.log("Det krashar inte i flaska pantad");
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1269,6 +1279,7 @@ export default {
         console.log("Flaska pantad på fjärde omgången");
         this.players = d;
         console.log("Det krashar inte i flaska pantad");
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1276,6 +1287,7 @@ export default {
       function (d) {
         console.log("2 kort dragna");
         this.players = d;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1283,12 +1295,14 @@ export default {
       function (d) {
         console.log("Kort samt spela först token (work)");
         this.players = d;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsCardAndPassiveIncomeDrawn",
       function (d) {
         this.players = d;
+        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
@@ -1300,7 +1314,9 @@ export default {
 
     this.$store.state.socket.on(
       "workerPlaced",
-      (d) => (this.workPlacement = d)
+      
+      (d) => (this.workPlacement = d),
+    
     );
 
     this.$store.state.socket.on("moneyAdded", (d) => (this.players = d));
@@ -1317,6 +1333,12 @@ export default {
   },
 
   methods: {
+    playSound (sound) {
+      if(sound) {
+        var audio = new Audio(sound);
+        audio.play();
+      }
+    },
     playerJoinedFn: function () {
       this.playerJoined = true;
     },
@@ -1487,6 +1509,7 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = true;
       }
+      
       this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         players: this.players,
@@ -1495,8 +1518,10 @@ export default {
         action: action,
         placement: placement,
       });
+      
     },
     endRoundFunction: function () {
+      this.playSound('/images/sport_badminton_racket_fast_movement_swoosh_001.mp3');
       this.tempBottlePlacement = [false, false, false, false, false];
       console.log("inne i runda lopp" + this.players[this.playerId].bottles);
       for (let i = 0; i < this.players[this.playerId].bottles; i += 1) {
@@ -1618,6 +1643,7 @@ export default {
       });
     },
     startTurn: function () {
+      this.playSound('/images/zapsplat_leisure_playing_card_dealing_table_single_001_20443.mp3');
       console.log("hola");
 
       this.$store.state.socket.emit("startTurn", {
@@ -1643,7 +1669,7 @@ export default {
       var winnerName;
       var biggestHand = -10;
       if (this.players !== "undefined") {
-        console.log("players är inte undefined.");
+        
 
         for (const player in this.players) {
           if (this.players[player].currentScore > currentWinner) {
@@ -1723,6 +1749,10 @@ export default {
     //playerHandShow
     helpPlayerHandHover: function () {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
+      if(this.helpPlayerHandActive){
+         this.playSound('/images/zapsplat_leisure_glow_band_snap_003_43005.mp3');
+
+      }
     },
     showHelpOptions: function () {
       console.log("hej");
@@ -1758,9 +1788,9 @@ export default {
         this.players[this.playerId].turn=false;
 
       }
-      console.log(this.helpAction);
-      
-
+      if(this.helpAction){
+        this.playSound('/images/zapsplat_leisure_glow_band_snap_003_43005.mp3');
+      }
       /* if(this.helpAuctionActive){
         console.log("hejhej");
         tempElement.setAttribute("id", "");

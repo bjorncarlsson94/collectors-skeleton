@@ -983,7 +983,7 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
     }
     else {
       let j = i;
-      this.currentValue(roomId, playerId)
+      this.currentValue(roomId, playerId);
       while (playerWithBottle == false){
         if (j === keys.length - 1) {
           j = -1;
@@ -1021,9 +1021,12 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
       if(room.round==5){
         console.log("yo Olle å hugo");
         for (const player in room.players) {
-          if(player.secret){
-          player.items.splice(0,0,player.secret);
+         
+          if(room.players[player].secret.length>0){
+            room.players[player].items.splice(0,0,room.players[player].secret);
+         
           this.currentValue(roomId, player);
+          console.log("");
         }
       }
     }
@@ -1390,28 +1393,34 @@ Data.prototype.currentValue = function(roomId,playerId) {
     for (let index = 0; index < room.players[playerId].skills.length; index++) {
       if(room.players[playerId].skills[index].skill=="VP-all" && fastaval>0 && figures>0 && music>0 && movie>0 && technology>0){
         extraValue+=5;
-
+        console.log("VP-all"+extraValue)
       }
       else if(room.players[playerId].skills[index].skill=="VP-fastaval" && fastaval>0){
+        console.log("VP-fastaval:"+extraValue);
         extraValue+=fastaval;
 
       }
       else if(room.players[playerId].skills[index].skill=="VP-figures" && figures>0){
+        console.log("VP-figures:"+extraValue);
         extraValue+=figures;
 
       }
       else if(room.players[playerId].skills[index].skill=="VP-music" && music>0){
+        console.log("VP-music:"+extraValue);
         extraValue+=music;
 
       }
       else if(room.players[playerId].skills[index].skill=="VP-movie" && movie>0){
+        console.log("VP-movie:"+extraValue);
         extraValue+=movie;
 
       }
       else if(room.players[playerId].skills[index].skill=="VP-technology" && technology>0){
+        console.log("VP-technology:"+extraValue);
         extraValue+=technology;
 
       }
+      console.log("extraValue:"+extraValue);
 
     }
   
