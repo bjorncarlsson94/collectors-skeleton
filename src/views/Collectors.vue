@@ -248,6 +248,7 @@
                           <img src="/images/moneybag.png" width="80%" />
                         </div>
                         <div class="counter m">{{ player.money }}</div>
+                        <div class="counter income">+{{ player.income.length }}</div>
                       </div>
 
                       <div class="b bottlecount">
@@ -478,6 +479,7 @@
                   <div class="c moneycount">
                     <div><img src="/images/moneybag.png" width="70%" /></div>
                     <div class="counter m">{{ players[playerId].money }}</div>
+                    <div class="counter income">+{{ players[playerId].income.length }}</div>
                   </div>
 
                   <div class="c bottlecount">
@@ -649,11 +651,13 @@
                 <div class="b moneycount">
                   <div><img src="/images/moneybag.png" width="80%" /></div>
                   <div class="counter m">{{ players[playerId].money }}</div>
+                  <div class="counter income">+{{ players[playerId].income.length }}</div>
+                  <!-- ÄNDRA TILL RÄTT income -->
                 </div>
 
                 <div class="b bottlecount">
                   <div><img src="/images/player-bottle.png" width="60%" /></div>
-                  <div class="counter b">{{ players[playerId].bottles }}</div>
+                  <div class="counter b"> {{ players[playerId].bottles }}</div>
                 </div>
               </div>
             </div>
@@ -2447,7 +2451,7 @@ zoom: 1.2;
   background-color: #ffffff3f;
   grid-column: 1 / span 1;
   grid-row: 1;
-  height: 5vw;
+  height: 75%;
 }
 .closedBoardInfo {
   grid-column: 2;
@@ -2468,7 +2472,7 @@ zoom: 1.2;
 
 .counter {
   border-radius: 1vw;
-  background-color: #0000004b;
+  background-color: #0000003a;
   padding: 0.2vw;
   text-align: center;
   width: fit-content;
@@ -2482,6 +2486,14 @@ zoom: 1.2;
   margin-left: 2.7vw;
   margin-top: -1vw;
 }
+.counter.income{
+  position: absolute;
+  margin-left: 2.7vw;
+  margin-top: -3vw;
+  color: rgb(117, 255, 117);
+  background-color: transparent;
+}
+
 .counter.b {
   position: absolute;
   margin-left: 2.7vw;
@@ -2672,7 +2684,7 @@ zoom: 1.2;
 
   /* Position the tooltip */
   position: absolute;
-  z-index: 1;
+  z-index: 5;
 }
 
 .tooltip:hover .tooltiptext {
