@@ -804,11 +804,13 @@ All pools (except the market pool) should have the same number of cards after th
 
   let c = null;
   let k = null;
+  
 
   let room = this.rooms[roomId];
   let cardToRaiseValue = false;
   if (typeof room !== "undefined") {
     //move skills
+    room.skillsOnSale = this.bubbleSort(room.skillsOnSale);
       for (let i = room.skillsOnSale.length - 1; i >= 0; i -= 1) {
         if (room.skillsOnSale[i].market) {
           c = room.skillsOnSale.splice(i, 1, {});
@@ -819,7 +821,12 @@ All pools (except the market pool) should have the same number of cards after th
           break;
         }
       }
+
     if(cardToRaiseValue != true){
+      room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
+      //fill Items
+    
+      room.itemsOnSale = this.fillPool(roomId, "items", room.itemsOnSale);
       for (let i = room.itemsOnSale.length - 1; i >= 0; i -= 1) {
         if (room.itemsOnSale[i].market) {
           c = room.itemsOnSale.splice(i, 1, {});
@@ -835,30 +842,53 @@ All pools (except the market pool) should have the same number of cards after th
     //move items
     var counter = 0;
     for (let i = room.skillsOnSale.length - 1; i >= 0; i -= 1) {
-      if (typeof room.skillsOnSale[i].market == "undefined") {
+      if (!room.skillsOnSale[i].market) {
         
         counter++;
       }
     }
-    //console.log("counter:"+counter);
-    //sort Items
     room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
     //fill Items
+  
     room.itemsOnSale = this.fillPool(roomId, "items", room.itemsOnSale);
-    var cardCounter=5-counter;
+    room.itemsOnSale = this.bubbleSort(room.itemsOnSale);
+    var theCounter=0;
+    for (let i = room.itemsOnSale.length - 1; i >= 0; i -= 1) {
+      if (!room.itemsOnSale[i].market) {
+        
+        theCounter++;
+      }
+    }
+  //  console.log("items 4"+room.itemsOnSale[4].market);
+    //console.log("items 3"+room.itemsOnSale[3].market);
+    //console.log("items 2"+room.itemsOnSale[2].market);
+    //console.log("items 1"+room.itemsOnSale[1].market);
+    //console.log("items 0"+room.itemsOnSale[0].market);
+    //console.log("theCounter"+theCounter);
 
+    //console.log("counter:"+counter);
+    //sort Items
+    
+    //console.log("counter"+counter);
+    var cardCounter=5-counter;
+    var numberOfCards=room.playerCount+1;
 
     var j=room.itemsOnSale.length-1;
+    //console.log("j:"+j);
       for (let i = counter-1; i >= 0; i -= 1) {
-        if(cardCounter<room.playerCount+1){
-            if(room.itemsOnSale.market !="undefined"){
+        //console.log("cardCounter"+cardCounter);
+        //console.log("room.cards"+numberOfCards);
+        if(numberOfCards>cardCounter){
+        //   console.log("hej:"+room.itemsOnSale[j].market);
+            if(room.itemsOnSale[j].market){
+           //   console.log("inne här plats i ska fyllas:"+i);
               //console.log("itemsonsale:"+room.itemsOnSale[j].market);
               k = room.itemsOnSale.splice(j, 1, {});
               
               room.skillsOnSale.splice(i, 1, ...k);
              // console.log("skillsOnSale:"+room.skillsOnSale[i].market);
               //console.log("plats:"+i);
-              cardCounter+=1;
+              
               //console.log("vi gick in hit");
               j-=1;
              
@@ -866,6 +896,7 @@ All pools (except the market pool) should have the same number of cards after th
         
           
         }
+        cardCounter+=1;
       }
     }
     //sort items
