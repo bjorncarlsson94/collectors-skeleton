@@ -1597,7 +1597,7 @@ export default {
     },
 
     getLastElement: function (cardArray) {
-      for (let i = cardArray.length - 1; i >= 1; i--) {
+      for (let i = cardArray.length - 1; i >= 0; i--) {
         if (cardArray[i].market) {
           return cardArray[i];
         }
