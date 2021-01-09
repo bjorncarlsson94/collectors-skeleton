@@ -28,7 +28,7 @@
     </div>
 
     <div class="auctionCardsAvailable" v-show="aboutToStartAuction" v-if="player">
-      <h1 class="startAuctionHeadings">Välj ett kort från spelplanen:</h1>
+      <h1 class="startAuctionHeadings">{{labels.chooseCardFromPlayerBoard}}:</h1>
       <div class="startAuctionCardGrid">
         <div
           class="cardsFromBoard"
@@ -42,7 +42,7 @@
           />
         </div>
       </div>
-      <h1 class="startAuctionHeadings">Välj ett kort från handen:</h1>
+      <h1 class="startAuctionHeadings">{{labels.chooseCardFromPlayerHand}}:</h1>
       <div class="startAuctionCardGrid">
         <div
           class="cardsFromHand"
@@ -61,9 +61,9 @@
               </div>
     </div>
     <div class="secretOptionBox" v-show="secretOptionBoxAvailable">
-      <div class="secretOptionText">How do you wanna auction this card?</div>
-      <button class="secretOptionBoxButton A" @click="secretChoice(false)" >Face up</button>
-      <button class="secretOptionBoxButton B" @click="secretChoice(true)" >Face down</button>
+      <div class="secretOptionText">{{labels.auctionHow}}?</div>
+      <button class="secretOptionBoxButton A" @click="secretChoice(false)" >{{labels.faceUp}}</button>
+      <button class="secretOptionBoxButton B" @click="secretChoice(true)" >{{labels.faceDown}}</button>
     </div>
   </div>
 </template>

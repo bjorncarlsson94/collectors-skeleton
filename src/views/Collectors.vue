@@ -28,7 +28,7 @@
           </div>
           <div class="transparent" v-if="players[playerId]" v-show="choosingSecret">
           <div class="chooseSecret" >
-            Choose one secret card:
+            {{labels.chooseSecretCard}}
             <div class="handToSecret">
             <CollectorsCard
               v-for="(card, index) in players[playerId].hand"  
@@ -150,7 +150,7 @@
                         </div>
 
                         <div class="totalvalue">
-                          Victory Points: {{ player.currentScore }}
+                          {{labels.victoryPoints}}: {{ player.currentScore }}
                         </div>
                       </div>
                     </div>
@@ -321,7 +321,8 @@
           </div>
           <div class="winnerAuction" v-show="winnerAvailable">
             <div class="winnerText">
-              You won the auction!!! Where do you want to place your card?
+              {{labels.wonAuction}}
+              
             </div>
             <div class="auctionCardViewFin">
               <CollectorsCard
@@ -362,7 +363,7 @@
           </div>
           <div class="transparent" v-show="loserAvailable">
             <div class="loserAuction">
-              You Lost.. {{ playerName(auctionLeaderId) }} won the auction!
+              {{labels.youLost}}{{ playerName(auctionLeaderId) }} {{labels.wonTheAuction}}
             </div>
           </div>
           <CollectorsAuction
@@ -440,7 +441,7 @@
                 <div class="closedBoardInfo">
                   <!-- Score -->
                   <div class="scoreDisplay closed">
-                    Victory Points: {{ players[playerId].currentScore }}
+                    {{labels.victoryPoints}}: {{ players[playerId].currentScore }}
                   </div>
                   <div class="closedItemIcons">
                     <div>
@@ -503,7 +504,7 @@
                   <div>
                     <h3>
                       <strong>{{ labels.helpPlayerHand.handArea }}</strong>
-                    </h3>
+                    </h3>c
                     <p>{{ labels.helpPlayerHand.handAreaText }}</p>
                   </div>
                   <div>
@@ -512,11 +513,11 @@
                     </h3>
                     <p>{{ labels.helpPlayerHand.nextTurnText }}</p>
                   </div>
-                  <div id="collectiontitle">Collection:</div>
+                  <div id="collectiontitle">{{labels.collection}}:</div>
                 </div>
               </div>
               <div class="boardCollection">
-                <div id="collectiontitle">Collection:</div>
+                <div id="collectiontitle">{{labels.collection}}:</div>
 
                 <div class="boardcollectiongrid">
                   <div class="playercollection">
@@ -559,7 +560,7 @@
                     </div>
                   </div>
                   <div class="totalvalue">
-                    Victory Points: {{ players[playerId].currentScore }}
+                    {{labels.victoryPoints}}: {{ players[playerId].currentScore }}
                   </div>
                 </div>
               </div>
@@ -703,7 +704,7 @@
 
           <div class="roundCounter">
             <p>{{ labels.roundcounter }} {{ round }}</p>
-            <p>Det är {{ currentPlayer() }} tur att spela!</p>
+            <p>{{labels.itIs}}{{ currentPlayer() }} </p>
           </div>
 
           <div class="drawCardSpace">
@@ -749,9 +750,7 @@
             <button @click="nextPlayer()" class="menuButton">
               nästa runda :)
             </button>
-            <button @click="hiddenAuctionCard = true" class="menuButton">
-              hidden auction card
-            </button>
+           
 
             <!--
               Lägg till current value i spelaren. Så att varje spelare har koll på sin egna currentValue. 
@@ -804,9 +803,9 @@
           </div>
         </div>
         <h1 class="winner">
-          W I N N E R: <br />
+          {{labels.winnerSpace}}<br />
           {{ getWinner()[2] }} <br />
-          {{ labels.points }}: {{ getWinner()[0] }}
+          {{ labels.victoryPoints }}: {{ getWinner()[0] }}
         </h1>
       </div>
     </div>
@@ -3152,7 +3151,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 .animate {
   animation: jiggles 1.5s ease-in-out;
   animation-iteration-count: infinite;
-  box-shadow: 0px 0px 10px 10.05208vw rgb(116, 116, 9), 0 0 0.2604vw rgb(116, 116, 9);
+  box-shadow: 0px 0px 10px .05208vw rgb(116, 116, 9), 0 0 0.2604vw rgb(116, 116, 9);
 }
 
 @keyframes jiggles {

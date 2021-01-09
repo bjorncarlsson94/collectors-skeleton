@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="auctionCardPayment" v-show="auctionCardPaymentActive">
+      
       Cards to pay with:
       <button
         class="handPaymentButton"
@@ -24,7 +25,9 @@
         v-show="hiddenAuctionCard"
         v-if="players[playerId]"
       ></div>
-      <h2 class="auctionHeader">AUCTION</h2>
+      <div class="help" @click="auctionHelpHover">
+                ?</div>
+      <h2 class="auctionHeader">{{labels.auction}}</h2>
       <div class="auctionLeader">Leader: {{auctionLeaderName(auctionLeaderId)}}</div>
       <div class="auctionBid" v-show="bid > auctionPrice">{{bid}}$</div>
       <div class="auctionBidLess" v-show="bid <= auctionPrice">{{(bid)}}$</div>
@@ -61,7 +64,7 @@
         :disabled="bid < auctionPrice + 1 || !players[playerId].turn || !(players[playerId].money+cardBidTotal > auctionPrice)"
         @click="placeBid()"
       >
-        Place bid
+        {{labels.placeBid}}
       </button>
       <button
         class="auctionButtons"
@@ -80,6 +83,17 @@
         +
       </button>
     </div>
+    <div class=auctionPlaceBidHelp v-if="this.auctionHelpShow">
+      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
+      <p>{{labels.auctionHelp.intro}}</p>
+      </div>
+      <div><h3><strong>{{labels.auctionHelp.areaInfoTitle}}</strong></h3>
+      <p> {{labels.auctionHelp.areaInfo1}}</p>
+      <p>{{labels.auctionHelp.areaInfo2}}</p>
+      <p>{{labels.auctionHelp.areaInfo3}}</p>
+      <p>{{labels.auctionHelp.areaInfo4}}</p>
+      </div>
+      </div>
   </div>
 </template>
 <script>
@@ -108,6 +122,12 @@ export default {
     biddingCards: Array,
     cardBidTotal: Number,
     addNumber: Function
+  },
+   data:function(){
+    return{
+      auctionHelpShow:false,
+    }
+
   },
   // data: function () {
   //    return {
@@ -169,6 +189,11 @@ export default {
         auctionPrice: this.auctionPrice,
       });
     },
+    auctionHelpHover:function(){
+      this.auctionHelpShow=!this.auctionHelpShow;
+
+    }
+    
   },
 };
 </script>
@@ -357,5 +382,98 @@ export default {
     align-self: right;
     position: absolute;
     cursor: pointer;
+}
+.help {
+  width: 3.0833vw;
+  height: 3.0833vw;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: blue;
+  cursor: pointer;
+  border: solid;
+  border-color: black;
+  border-width:  0.02604vw;;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+}
+.auctionPlaceBidHelp{
+ -webkit-animation: auctionSlide 1.5s forwards;
+  -webkit-animation-delay: 0.01s;
+  animation: auctionSlide 0.5s forwards;
+  animation-delay: 0.01;
+  background-color: #90917b;
+    --scrollbarBG: #90917b;
+  --thumbBG: #f5ef9e;
+   scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+  
+  border-radius: 1vw;
+  -webkit-box-shadow: 0px 0px 0.3125vw 0.3125vw rgba(102, 163, 255, 0.59);
+  box-shadow: 0px 0px 0.3125vw 0.3125vw rgba(102, 163, 255, 0.59);
+  background-color: inherit;
+  padding: 1vw;
+  
+  max-width: 19.791666666666668vw;
+  min-width: 14vw;
+  max-height: 43.833333333333332vw;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 51;
+  word-wrap: break-word;
+  display: inline;
+  font-size: 1vw;
+  left: -5.2083vw;
+  width: 5.208vvw;
+  height: 30vw;
+  background: #b1c592;
+}
+.auctionPlaceBidHelp div{
+
+  background-color: #f5ef9e;
+  padding: 0.26041vw;
+  margin-bottom: 0.10416vw;
+  border: solid;
+  border-width: 0.0104166vw;
+  border-color: black;
+  border-radius: 0.5vw;
+}
+.auctionPlaceBidHelp h3{
+  border-radius: 0.5vw;
+  padding: 0.55vw;
+
+  border: solid;
+  border-width: 0.0104166vw;
+  border-color: black;
+  background-color: #90917b;
+
+}
+.auctionPlaceBidHelp p{
+  background-color: #90917b;
+   border-radius: 0.5vw;
+  margin-top: -0.52vw;
+  padding: 0.55vw;
+  border: solid;
+  border-width: 0.0104166vw;
+  border-color: black;
+
+}
+ @-webkit-keyframes auctionSlide {
+    0%{left: 0%;}
+    0%{top: 13%;}
+    
+    100% { left: 4%; }
+    100% { top: 13%; }
+}
+
+@keyframes auctionSlide {
+  0%{left: 0%;}
+    0%{top:13%}
+   
+    100% { left: 4%; }
+    100% { top: 13%; }
 }
 </style>

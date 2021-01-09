@@ -24,7 +24,7 @@
       </div>
                 <div class="skillsAvailable" v-show="aboutToBuySkill" v-if="player">
               <h1 class = "buySkillHeadings">
-                Välj ett kort från spelplanen:
+                {{labels.chooseCardFromPlayerBoard}}:
               </h1>
               <div class="buySkillCardGrid">
                 <div class="skillsFromBoard" v-for="(card, index) in skillsOnSale" :key="index">
@@ -35,7 +35,7 @@
                 </div>
               </div>
                 <h1 class="buySkillHeadings">
-                  Välj ett kort från handen:
+                  {{labels.chooseCardFromPlayerHand}}:
                 </h1>
               <div class= "buySkillCardGrid">
                 <div class="skillsFromHand" v-for="(card,index) in player.hand" :key="'A'+index">

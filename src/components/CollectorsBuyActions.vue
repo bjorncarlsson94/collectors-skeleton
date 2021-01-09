@@ -23,7 +23,7 @@
       </div>
           <div class="itemsAvailable" v-show="aboutToBuyItem" v-if="player">
               <h1 class = "buyItemHeadings">
-                Välj ett kort från spelplanen:
+                {{labels.chooseCardFromPlayerBoard}}:
               </h1>
               <div class="buyItemCardGrid">
                 <div class="itemsFromBoard" v-for="(card, index) in itemsOnSale.slice().reverse()" :key="index">
@@ -37,7 +37,8 @@
               </div>
               
                 <h1 class="buyItemHeadings">
-                  Välj ett kort från handen:
+                  {{labels.chooseCardFromPlayerHand}}:
+                 
                 </h1>
               <div class= "buyItemCardGrid">
                 <div class="itemsFromHand" v-for="(card,index) in player.hand" :key="'A'+index">
