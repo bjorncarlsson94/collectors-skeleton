@@ -364,6 +364,7 @@ export default {
     text-align: center;
     color: black;
     grid-column: 1/6;
+    font-size: large;
   }
 
   .cardsFromBoard{
