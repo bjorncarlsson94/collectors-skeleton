@@ -9,7 +9,7 @@
 	"raiseValue":"Höj värdet",
 	"startAuction": "Starta en auktion",
 	"randomplayer": "Spelet har startat",
-	"roundcounter": "Det är rund: ",
+	"roundcounter": "Det är runda: ",
 	"showAuction": "Visa auction",
 	"recycleBottle": "Återvinn flaska",
 	"noBottles":"För få flaskor",
@@ -49,14 +49,14 @@
 	"endRoundBox2":"Placera nu de resterande flaskorna på brickorna, de brickorna som inte är täckta kommer vara din inkomst till kommande runda.",
 	"helpPlayerHand":{
 		"title":"Din hand:",
-		"itemArea":"Item Area (red):",
-		"skillsArea":"Skills Area (green):",
-		"handArea":"Hand Area Yellow:",
+		"itemArea":"Item Area (röd):",
+		"skillsArea":"Skills Area (grön):",
+		"handArea":"Hand Area (gul):",
 		"nextTurn":"Info om nästa runda:",
 		"itemAreaText":"Items är de kort som räknas in till din poäng, Den röda symbolen motsvarar poäng till samma symbol i market area",
 		"skillsAreaText":"I det gröna fältet visas dina skills. De ger bonusar till exempelvcis work och auction. För mer info klicka det stora frågetecknet i det högra hörnet och klicka sedan på skills area.",
 		"handAreaText":"Detta är korten du har på handen. Du kan spendera flaskor för att placera dessa kort som items, skills eller i market pool. De kan även användas som valuta i auktioner",
-		"nextTurnText":"Det gråa området visar information om ditt läge i spelet, Hur din inkomst kommer se ut nästa runda och hur många kort / flaskor du kommer ha"
+		"nextTurnText":"Det gråa området visar information om ditt läge i spelet, hur din inkomst kommer se ut nästa runda och hur många kort / flaskor du kommer ha"
 	},
 	"skillsHelp":{
 		"title":"Info om skills:",

@@ -28,8 +28,9 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             :disabled="notYourTurn() || cannotAfford(p.cost)"
             @click="placeBottle(p)"
           >
-            ${{ p.cost }}
-            {{ p.amountOfCards + labels.card }}
+             ${{ p.cost }}
+            {{ p.amountOfCards+labels.card }}
+           
           </button>
           <div
             class="bottlePlace"
@@ -285,10 +286,11 @@ export default {
 }
 .button {
   float: left;
-  font-size: 1vw;
-  justify-content: space-around;
+  font-size: 0.7vw;
   margin: 1vw;
   padding: 0.2vw;
+  
+  
   color: black;
   background-color: rgb(130, 226, 255);
   border-radius: 1vw;

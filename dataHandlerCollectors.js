@@ -1000,7 +1000,11 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
     } else {
       let j = i;
       this.currentValue(roomId, playerId);
+<<<<<<< HEAD
       while (playerWithBottle == false) {
+=======
+      while (playerWithBottle == false){
+>>>>>>> 3ae54a361fa76f07b0da9fd3af88d436d106844f
         if (j === keys.length - 1) {
           j = -1;
         }
@@ -1048,10 +1052,19 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
       if (room.round == 5) {
         console.log("yo Olle å hugo");
         for (const player in room.players) {
+<<<<<<< HEAD
           if (player.secret) {
             player.items.splice(0, 0, player.secret);
             this.currentValue(roomId, player);
           }
+=======
+         
+          if(room.players[player].secret.length>0){
+            room.players[player].items.splice(0,0,room.players[player].secret);
+         
+          this.currentValue(roomId, player);
+          console.log("");
+>>>>>>> 3ae54a361fa76f07b0da9fd3af88d436d106844f
         }
       }
     }
@@ -1417,6 +1430,7 @@ Data.prototype.currentValue = function(roomId, playerId) {
       }
     }
     for (let index = 0; index < room.players[playerId].skills.length; index++) {
+<<<<<<< HEAD
       if (
         room.players[playerId].skills[index].skill == "VP-all" &&
         fastaval > 0 &&
@@ -1459,6 +1473,38 @@ Data.prototype.currentValue = function(roomId, playerId) {
     music = music * room.raiseValue.music;
     movie = movie * room.raiseValue.movie;
     technology = technology * room.raiseValue.technology;
+=======
+      if(room.players[playerId].skills[index].skill=="VP-all" && fastaval>0 && figures>0 && music>0 && movie>0 && technology>0){
+        extraValue+=5;
+        console.log("VP-all"+extraValue)
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-fastaval" && fastaval>0){
+        console.log("VP-fastaval:"+extraValue);
+        extraValue+=fastaval;
+
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-figures" && figures>0){
+        console.log("VP-figures:"+extraValue);
+        extraValue+=figures;
+
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-music" && music>0){
+        console.log("VP-music:"+extraValue);
+        extraValue+=music;
+
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-movie" && movie>0){
+        console.log("VP-movie:"+extraValue);
+        extraValue+=movie;
+
+      }
+      else if(room.players[playerId].skills[index].skill=="VP-technology" && technology>0){
+        console.log("VP-technology:"+extraValue);
+        extraValue+=technology;
+
+      }
+      console.log("extraValue:"+extraValue);
+>>>>>>> 3ae54a361fa76f07b0da9fd3af88d436d106844f
 
     if (room.round == 5) {
       extraValue += Math.floor(room.players[playerId].money / 3);
