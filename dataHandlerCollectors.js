@@ -1051,9 +1051,17 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
         for (const player in room.players) {
          
           if(room.players[player].secret.length>0){
-            room.players[player].items.splice(0,0,room.players[player].secret);
+            console.log("olle Å hugo");
+            console.log("items length"+room.players[player].items.length);
+            for (let index = 0; index < room.players[player].secret.length; index++) {
+              console.log("items length"+room.players[player].items.length);
+              room.players[player].items.push(room.players[player].secret[index]);
+              console.log("items length"+room.players[player].items.length);
+              
+            }
+           
          
-          this.currentValue(roomId, player);
+            this.currentValue(roomId, player);
           console.log("");
         }
       }
