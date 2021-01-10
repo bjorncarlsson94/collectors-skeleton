@@ -1051,9 +1051,17 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
         for (const player in room.players) {
          
           if(room.players[player].secret.length>0){
-            room.players[player].items.splice(0,0,room.players[player].secret);
+            console.log("olle Å hugo");
+            console.log("items length"+room.players[player].items.length);
+            for (let index = 0; index < room.players[player].secret.length; index++) {
+              console.log("items length"+room.players[player].items.length);
+              room.players[player].items.push(room.players[player].secret[index]);
+              console.log("items length"+room.players[player].items.length);
+              
+            }
+           
          
-          this.currentValue(roomId, player);
+            this.currentValue(roomId, player);
           console.log("");
         }
       }
@@ -1447,13 +1455,19 @@ Data.prototype.currentValue = function(roomId, playerId) {
       }
       console.log("extraValue:"+extraValue);
     }
-    if (room.round == 5) {
+    if (room.round == 5 && Math.floor(room.players[playerId].money / 3) >0) {
       extraValue += Math.floor(room.players[playerId].money / 3);
     }
 
     if (extraValue < 0) {
       extraValue = 0;
     }
+    fastaval=fastaval*room.raiseValue.fastaval;
+    figures=figures*room.raiseValue.figures;
+    music=music*room.raiseValue.music;
+    movie=movie*room.raiseValue.movie;
+    technology=technology*room.raiseValue.technology;
+
     extraValue = extraValue + fastaval + figures + music + movie + technology;
 
     room.players[playerId].currentScore = extraValue;
