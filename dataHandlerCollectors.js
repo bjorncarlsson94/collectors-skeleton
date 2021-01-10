@@ -1458,6 +1458,12 @@ Data.prototype.currentValue = function(roomId, playerId) {
     if (extraValue < 0) {
       extraValue = 0;
     }
+    fastaval=fastaval*room.raiseValue.fastaval;
+    figures=figures*room.raiseValue.figures;
+    music=music*room.raiseValue.music;
+    movie=movie*room.raiseValue.movie;
+    technology=technology*room.raiseValue.technology;
+
     extraValue = extraValue + fastaval + figures + music + movie + technology;
 
     room.players[playerId].currentScore = extraValue;
