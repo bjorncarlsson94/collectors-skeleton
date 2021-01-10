@@ -1459,7 +1459,7 @@ Data.prototype.currentValue = function(roomId, playerId) {
       }
       console.log("extraValue:"+extraValue);
     }
-    if (room.round == 5) {
+    if (room.round == 5 && Math.floor(room.players[playerId].money / 3) >0) {
       extraValue += Math.floor(room.players[playerId].money / 3);
     }
 
