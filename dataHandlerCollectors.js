@@ -1011,14 +1011,14 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
             playerWithBottle = true;
           } else {
             room.round += 1;
-            room.players[room.startingPlayerId].turn = true;
+            room.players[room.startingPlayerId].turn = true
 
             //Spelaren får sin inkomst
-            for (var player in room.players) {
+            for (const player in room.players) {
               if (room.players[player].income.length > 0) {
-                for (var card in room.players[player].income) {
+                for (const card in room.players[player].income) {
                   try {
-                    room.players[player].money += card.value;
+                    room.players[player].money += 1;
                     console.log("money added to: " + player);
                   } catch {
                     console.log("non player looped (nothing wrong)");
@@ -1045,14 +1045,23 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
           }
         }
       }
+    }
       if (room.round == 5) {
         console.log("yo Olle å hugo");
         for (const player in room.players) {
          
           if(room.players[player].secret.length>0){
-            room.players[player].items.splice(0,0,room.players[player].secret);
+            console.log("olle Å hugo");
+            console.log("items length"+room.players[player].items.length);
+            for (let index = 0; index < room.players[player].secret.length; index++) {
+              console.log("items length"+room.players[player].items.length);
+              room.players[player].items.push(room.players[player].secret[index]);
+              console.log("items length"+room.players[player].items.length);
+              
+            }
+           
          
-          this.currentValue(roomId, player);
+            this.currentValue(roomId, player);
           console.log("");
         }
       }
@@ -1449,14 +1458,25 @@ Data.prototype.currentValue = function(roomId, playerId) {
 
       }
       console.log("extraValue:"+extraValue);
+<<<<<<< HEAD
 
     if (room.round == 5) {
+=======
+    }
+    if (room.round == 5 && Math.floor(room.players[playerId].money / 3) >0) {
+>>>>>>> ac3021629c7dc2a1ea282475a771e641d434b43f
       extraValue += Math.floor(room.players[playerId].money / 3);
     }
 
     if (extraValue < 0) {
       extraValue = 0;
     }
+    fastaval=fastaval*room.raiseValue.fastaval;
+    figures=figures*room.raiseValue.figures;
+    music=music*room.raiseValue.music;
+    movie=movie*room.raiseValue.movie;
+    technology=technology*room.raiseValue.technology;
+
     extraValue = extraValue + fastaval + figures + music + movie + technology;
 
     room.players[playerId].currentScore = extraValue;

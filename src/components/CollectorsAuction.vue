@@ -53,7 +53,7 @@
       <button
         class="auctionButtons"
         v-if="players[playerId]"
-        :disabled="!players[playerId].turn || (1 > auctionPrice && 1 > bid) || auctionPrice< bid"
+        :disabled="!players[playerId].turn || (1 > auctionPrice && 1 > bid && !bidIsNotPossible()) || auctionPrice< bid"
         @click="placeBid()"
       >
         Skip
@@ -146,6 +146,19 @@ export default {
         this.$set(this.players[this.playerId].hand[i], "available", true);
       }
       this.openCloseBuyWithCard();
+    },
+    bidIsNotPossible: function() {
+      let moneyTot = this.players[this.playerId].money;
+      for (let i = 0; i < this.players[this.playerId].hand.length; i += 1) {
+        moneyTot += this.players[this.playerId].hand[i].value;
+      }
+      console.log("hehehheehfhefhehfhefh    "+moneyTot)
+      if(moneyTot < 1){
+        return true
+      }
+      else{
+        return false
+      }
     },
     bidWithCard: function (card) {
       let c = null;

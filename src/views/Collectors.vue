@@ -669,7 +669,7 @@
                   <div class="counter income">
                     +{{ players[playerId].income.length }}
                   </div>
-                  <!-- ÄNDRA TILL RÄTT income -->
+
                 </div>
 
                 <div class="b bottlecount">
@@ -1285,7 +1285,9 @@ export default {
       "collectorsBottleRecycled",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1293,7 +1295,9 @@ export default {
       "collectorsBottleRecycled4thRound",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1301,7 +1305,9 @@ export default {
       "collectorsWorkCardDrawn",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1309,7 +1315,9 @@ export default {
       "collectorsCardAndTokenDrawn",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1317,7 +1325,9 @@ export default {
       "collectorsCardAndPassiveIncomeDrawn",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
@@ -1341,7 +1351,9 @@ export default {
       "passiveIncomeAdded",
       function(d) {
         this.players = d;
-        this.nextPlayer();
+        if (this.players[this.playerId].turn == true) {
+          this.nextPlayer();
+        }
       }.bind(this)
     );
     //------------------------------
@@ -2362,6 +2374,7 @@ theColor:onclick {
   box-shadow: 0 0 1vw rgb(199, 199, 199);
 }
 .otherPlayerClosed {
+  font-size: 1.3vw;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 2vw 1vw;
@@ -3425,7 +3438,7 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
 
 .winnerBox .winnerBoxContent {
   height: 100%;
-
+  font-size: 1.3vw;
   background-color: pink;
   position: relative;
   background-color: #f0ead6;
