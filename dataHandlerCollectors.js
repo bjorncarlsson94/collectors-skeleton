@@ -1014,11 +1014,11 @@ Data.prototype.nextPlayer = function(roomId, playerId, auctionActive) {
             room.players[room.startingPlayerId].turn = true
 
             //Spelaren får sin inkomst
-            for (var player in room.players) {
+            for (const player in room.players) {
               if (room.players[player].income.length > 0) {
-                for (var card in room.players[player].income) {
+                for (const card in room.players[player].income) {
                   try {
-                    room.players[player].money += card.value;
+                    room.players[player].money += 1;
                     console.log("money added to: " + player);
                   } catch {
                     console.log("non player looped (nothing wrong)");
