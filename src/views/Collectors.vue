@@ -669,7 +669,7 @@
                   <div class="counter income">
                     +{{ players[playerId].income.length }}
                   </div>
-                  <!-- ÄNDRA TILL RÄTT income -->
+
                 </div>
 
                 <div class="b bottlecount">
