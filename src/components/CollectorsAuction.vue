@@ -1,13 +1,14 @@
 <template>
   <div>
     <div class="auctionCardPayment" v-show="auctionCardPaymentActive">
-      
       Cards to pay with:
       <button
         class="handPaymentButton"
         v-if="players[playerId]"
         @click="payWithHand()"
-      >x</button>
+      >
+        x
+      </button>
       <div class="handPayment">
         <CollectorsCard
           v-for="(card, index) in players[playerId].hand"
@@ -19,18 +20,24 @@
       </div>
     </div>
 
-    <div class="upforAuction" v-show="auctionActive" v-bind:class="{turnhighlight: players[playerId].turn}" v-if="players[playerId]">
+    <div
+      class="upforAuction"
+      v-show="auctionActive"
+      v-bind:class="{ turnhighlight: players[playerId].turn }"
+      v-if="players[playerId]"
+    >
       <div
         class="hiddenAuctionCard"
         v-show="hiddenAuctionCard"
         v-if="players[playerId]"
       ></div>
-      <div class="help1" @click="auctionHelpHover">
-                ?</div>
-      <h2 class="auctionHeader">{{labels.auction}}</h2>
-      <div class="auctionLeader">Leader: {{auctionLeaderName(auctionLeaderId)}}</div>
-      <div class="auctionBid" v-show="bid > auctionPrice">{{bid}}$</div>
-      <div class="auctionBidLess" v-show="bid <= auctionPrice">{{(bid)}}$</div>
+      <div class="help1" @click="auctionHelpHover">?</div>
+      <h2 class="auctionHeader">{{ labels.auction }}</h2>
+      <div class="auctionLeader">
+        Leader: {{ auctionLeaderName(auctionLeaderId) }}
+      </div>
+      <div class="auctionBid" v-show="bid > auctionPrice">{{ bid }}$</div>
+      <div class="auctionBidLess" v-show="bid <= auctionPrice">{{ bid }}$</div>
       <div class="auctionMoney">{{ auctionPrice }}$</div>
       <div class="auctionCardView">
         <CollectorsCard
@@ -47,13 +54,17 @@
       <button
         class="auctionCardPaymentButton"
         v-if="players[playerId]"
-        :disabled="!players[playerId].turn" 
+        :disabled="!players[playerId].turn"
         @click="payWithHand()"
       ></button>
       <button
         class="auctionButtons"
         v-if="players[playerId]"
-        :disabled="!players[playerId].turn || (1 > auctionPrice && 1 > bid && !bidIsNotPossible()) || auctionPrice< bid"
+        :disabled="
+          !players[playerId].turn ||
+          (1 > auctionPrice && 1 > bid && !bidIsNotPossible()) ||
+          auctionPrice < bid
+        "
         @click="placeBid()"
       >
         Skip
@@ -61,15 +72,19 @@
       <button
         class="auctionButtons"
         v-if="players[playerId]"
-        :disabled="bid < auctionPrice + 1 || !players[playerId].turn || !(players[playerId].money+cardBidTotal > auctionPrice)"
+        :disabled="
+          bid < auctionPrice + 1 ||
+          !players[playerId].turn ||
+          !(players[playerId].money + cardBidTotal > auctionPrice)
+        "
         @click="placeBid()"
       >
-        {{labels.placeBid}}
+        {{ labels.placeBid }}
       </button>
       <button
         class="auctionButtons"
         v-if="players[playerId]"
-        :disabled="!players[playerId].turn || bid-cardBidTotal <= 0"
+        :disabled="!players[playerId].turn || bid - cardBidTotal <= 0"
         @click="subBid()"
       >
         -
@@ -77,23 +92,32 @@
       <button
         class="auctionButtons"
         v-if="players[playerId]"
-        :disabled="!players[playerId].turn || players[playerId].money+cardBidTotal < bid + 1"
+        :disabled="
+          !players[playerId].turn ||
+          players[playerId].money + cardBidTotal < bid + 1
+        "
         @click="addBid()"
       >
         +
       </button>
     </div>
-    <div class=auctionPlaceBidHelp v-if="this.auctionHelpShow">
-      <div><h3><strong>{{labels.auctionHelp.title}}</strong></h3>
-      <p>{{labels.auctionHelp.intro}}</p>
+    <div class="auctionPlaceBidHelp" v-if="this.auctionHelpShow">
+      <div>
+        <h3>
+          <strong>{{ labels.auctionHelp.title }}</strong>
+        </h3>
+        <p>{{ labels.auctionHelp.intro }}</p>
       </div>
-      <div><h3><strong>{{labels.auctionHelp.areaInfoTitle}}</strong></h3>
-      <p> {{labels.auctionHelp.areaInfo1}}</p>
-      <p>{{labels.auctionHelp.areaInfo2}}</p>
-      <p>{{labels.auctionHelp.areaInfo3}}</p>
-      <p>{{labels.auctionHelp.areaInfo4}}</p>
+      <div>
+        <h3>
+          <strong>{{ labels.auctionHelp.areaInfoTitle }}</strong>
+        </h3>
+        <p>{{ labels.auctionHelp.areaInfo1 }}</p>
+        <p>{{ labels.auctionHelp.areaInfo2 }}</p>
+        <p>{{ labels.auctionHelp.areaInfo3 }}</p>
+        <p>{{ labels.auctionHelp.areaInfo4 }}</p>
       </div>
-      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -121,13 +145,12 @@ export default {
     openCloseBuyWithCard: Function,
     biddingCards: Array,
     cardBidTotal: Number,
-    addNumber: Function
+    addNumber: Function,
   },
-   data:function(){
-    return{
-      auctionHelpShow:false,
-    }
-
+  data: function () {
+    return {
+      auctionHelpShow: false,
+    };
   },
   // data: function () {
   //    return {
@@ -136,9 +159,9 @@ export default {
   // },
 
   methods: {
-    auctionLeaderName: function(playerId){
-      if(playerId !== null){
-        return this.players[playerId].name 
+    auctionLeaderName: function (playerId) {
+      if (playerId !== null) {
+        return this.players[playerId].name;
       }
     },
     payWithHand: function () {
@@ -147,32 +170,29 @@ export default {
       }
       this.openCloseBuyWithCard();
     },
-    bidIsNotPossible: function() {
+    bidIsNotPossible: function () {
       let moneyTot = this.players[this.playerId].money;
       for (let i = 0; i < this.players[this.playerId].hand.length; i += 1) {
         moneyTot += this.players[this.playerId].hand[i].value;
       }
-      if(moneyTot < 1){
-        return true
-      }
-      else{
-        return false
+      if (moneyTot < 1) {
+        return true;
+      } else {
+        return false;
       }
     },
     bidWithCard: function (card) {
       let c = null;
       this.addNumber(card.value);
-      this.addBid()
-      if(card.value == 2){
-        this.addBid()
+      this.addBid();
+      if (card.value == 2) {
+        this.addBid();
       }
-       
 
-      
       for (let i = 0; i < this.players[this.playerId].hand.length; i += 1) {
         this.$set(this.players[this.playerId].hand[i], "available", false);
       }
-      
+
       for (let i = 0; i < this.players[this.playerId].hand.length; i += 1) {
         // since card comes from the client, it is NOT the same object (reference)
         // so we need to compare properties for determining equality
@@ -186,7 +206,6 @@ export default {
       }
       this.biddingCards.push(...c);
       this.openCloseBuyWithCard();
-
     },
 
     placeBid: function () {
@@ -198,11 +217,9 @@ export default {
         auctionPrice: this.auctionPrice,
       });
     },
-    auctionHelpHover:function(){
-      this.auctionHelpShow=!this.auctionHelpShow;
-
-    }
-    
+    auctionHelpHover: function () {
+      this.auctionHelpShow = !this.auctionHelpShow;
+    },
   },
 };
 </script>
@@ -359,7 +376,7 @@ export default {
   font-size: 5vw;
   grid-column-start: 4;
   text-align: center;
-  color:red;
+  color: red;
 }
 .auctionLeader {
   font-size: 2.5vw;
@@ -377,20 +394,20 @@ export default {
   color: black;
   font-size: 3vw;
 }
-.handPaymentButton{
+.handPaymentButton {
   background-color: red;
-    grid-row: 1;
-    width: 4vw;
-    text-align: center;
-    border: 0;
-    top: -1vw;
-    right: -1vw;
-    border-radius: inherit;
-    height: 4vw;
-    font-size: 2vw;
-    align-self: right;
-    position: absolute;
-    cursor: pointer;
+  grid-row: 1;
+  width: 4vw;
+  text-align: center;
+  border: 0;
+  top: -1vw;
+  right: -1vw;
+  border-radius: inherit;
+  height: 4vw;
+  font-size: 2vw;
+  align-self: right;
+  position: absolute;
+  cursor: pointer;
 }
 .help1 {
   width: 3.0833vw;
@@ -398,7 +415,7 @@ export default {
   border-radius: 50%;
   position: absolute;
   left: 0;
- 
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -406,26 +423,27 @@ export default {
   cursor: pointer;
   border: solid;
   border-color: black;
-  border-width:  0.02604vw;;
-  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466), 0 0.05208vw  0.20833vw rgba(0, 0, 0, 0.24);
+  border-width: 0.02604vw;
+  box-shadow: 0 0.2604vw 0.3125vw rgba(0, 0, 0, 0.466),
+    0 0.05208vw 0.20833vw rgba(0, 0, 0, 0.24);
 }
-.auctionPlaceBidHelp{
- -webkit-animation: auctionSlide 1.5s forwards;
+.auctionPlaceBidHelp {
+  -webkit-animation: auctionSlide 1.5s forwards;
   -webkit-animation-delay: 0.01s;
   animation: auctionSlide 0.5s forwards;
   animation-delay: 0.01;
   background-color: #90917b;
-    --scrollbarBG: #90917b;
+  --scrollbarBG: #90917b;
   --thumbBG: #f5ef9e;
-   scrollbar-width: thin;
+  scrollbar-width: thin;
   scrollbar-color: var(--thumbBG) var(--scrollbarBG);
-  
+
   border-radius: 1vw;
   -webkit-box-shadow: 0px 0px 0.3125vw 0.3125vw rgba(102, 163, 255, 0.59);
   box-shadow: 0px 0px 0.3125vw 0.3125vw rgba(102, 163, 255, 0.59);
   background-color: inherit;
   padding: 1vw;
-  
+
   max-width: 19.791666666666668vw;
   min-width: 14vw;
   max-height: 43.833333333333332vw;
@@ -440,8 +458,7 @@ export default {
   height: 30vw;
   background: #b1c592;
 }
-.auctionPlaceBidHelp div{
-
+.auctionPlaceBidHelp div {
   background-color: #f5ef9e;
   padding: 0.26041vw;
   margin-bottom: 0.10416vw;
@@ -450,7 +467,7 @@ export default {
   border-color: black;
   border-radius: 0.5vw;
 }
-.auctionPlaceBidHelp h3{
+.auctionPlaceBidHelp h3 {
   border-radius: 0.5vw;
   padding: 0.55vw;
 
@@ -458,31 +475,45 @@ export default {
   border-width: 0.0104166vw;
   border-color: black;
   background-color: #90917b;
-
 }
-.auctionPlaceBidHelp p{
+.auctionPlaceBidHelp p {
   background-color: #90917b;
-   border-radius: 0.5vw;
+  border-radius: 0.5vw;
   margin-top: -0.52vw;
   padding: 0.55vw;
   border: solid;
   border-width: 0.0104166vw;
   border-color: black;
-
 }
- @-webkit-keyframes auctionSlide {
-    0%{left: 0%;}
-    0%{top: 13%;}
-    
-    100% { left: 4%; }
-    100% { top: 13%; }
+@-webkit-keyframes auctionSlide {
+  0% {
+    left: 0%;
+  }
+  0% {
+    top: 13%;
+  }
+
+  100% {
+    left: 4%;
+  }
+  100% {
+    top: 13%;
+  }
 }
 
 @keyframes auctionSlide {
-  0%{left: 0%;}
-    0%{top:13%}
-   
-    100% { left: 4%; }
-    100% { top: 13%; }
+  0% {
+    left: 0%;
+  }
+  0% {
+    top: 13%;
+  }
+
+  100% {
+    left: 4%;
+  }
+  100% {
+    top: 13%;
+  }
 }
 </style>
