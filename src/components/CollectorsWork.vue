@@ -143,8 +143,7 @@ export default {
       }
       if (
         this.workPlacement.drawACardAndFirstPlayerToken === null &&
-        this.player.bottles > 0 &&
-        !this.player.firstPlayerToken
+        this.player.bottles > 0
       ) {
         this.applySkills();
         this.$emit("drawACardAndFirstPlayerToken");
