@@ -122,7 +122,6 @@ export default {
   },
   methods: {
     log() {
-      console.log("hejsan " + this.raiseItems);
     },
     cardCost: function (values) {
       switch (values) {

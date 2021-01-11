@@ -179,11 +179,9 @@ export default {
       if (this.round === 4) {
         this.popUpTestActive();
         this.recycle4thHint = true;
-        console.log(this.recycle4thHint);
         return;
       }
       if (this.player.bottles > 0) {
-        console.log("player bottles > 0");
         this.$emit("recycleBottle");
       } else {
         this.recycleBottleActive = !this.recycleBottleActive;
@@ -251,27 +249,21 @@ export default {
       }
     },
     placeWorker: function(where) {
-      console.log("setWorkPlacement");
       this.$emit("placeWorker", where);
     },
     applySkills: function() {
-      console.log("applySKills()");
       var extraCard = false;
       var extraMoney = false;
       let cards = this.player.skills;
       for (var i = 0; i < this.player.skills.length; i++) {
-        console.log(cards[i].skill);
         if (cards[i].skill === "workerIncome" && !extraMoney) {
-          console.log("workerIncome applied");
           extraMoney = true;
           this.$emit("addMoney", 2);
         } else if (cards[i].skill === "workerCard" && !extraCard) {
           extraCard = true;
-          console.log("workerCard applied");
           this.$emit("drawCard");
         }
       }
-      console.log("*************");
     },
     getWorkslot5Image: function() {
       // quarter_tile_1st.png, quarter_tile_2nd.png, quarter_tile_3rd.png, Work5_png.png
@@ -289,34 +281,11 @@ export default {
       }
     },
     popUpTestActive: function() {
-      console.log("kom hit");
       this.popUpTestActiveBol = true;
     },
     removeRecycleHint: function() {
       this.recycle4thHint = false
     },
-    /*showPopup: function(typeOfAlert){
-      if(typeOfAlert=="aaa"){
-
-
-      }else if(typeOfAlert=="aa"){
-
-
-      }
-      else if(typeOfAlert=="aaaa"){
-
-        
-      }
-      else if(typeOfAlert=="aaaaa"){
-
-        
-      }
-      else if(typeOfAlert=="aaaaa"){
-
-        
-      }
-
-    }*/
   },
 };
 </script>

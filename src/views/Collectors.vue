@@ -804,7 +804,7 @@
       </section>
     </main>
 
-    {{ players }}
+    <!-- {{ players }}
     {{ raiseValue }}
     <button v-if="players[playerId]" @click="players[playerId].money += 1">
       fake more money
@@ -814,7 +814,7 @@
     </button>
     <button v-if="players[playerId]" @click="round += 1">
       fake more rounds
-    </button>
+    </button> -->
     <HelpCollectors
       :labels="labels"
       :player="players[playerId]"
@@ -1199,7 +1199,6 @@ export default {
             this.auctionWinner = false;
             this.cardBidTotal = 0;
             this.players = d.players;
-            console.log("22 längd" + this.biddingCards.length);
             if (this.biddingCards.length > 0) {
               this.restoreHand();
             }
@@ -1451,12 +1450,9 @@ export default {
       }
     },
     auctionBoard: function() {
-      console.log("auction rutaa");
       this.auctionActive = !this.auctionActive;
-      console.log("status: " + this.auctionActive);
     },
     expandPlayerBoard: function() {
-      console.log("Player click");
 
       // returnerar ifall den redan är öppen
       if (this.isActive === true) {
@@ -1471,64 +1467,46 @@ export default {
       this.topIsActive = false;
       this.leftIsActive = false;
 
-      console.log("Status: " + this.isActive);
     },
     expandOtherPlayer: function(player) {
-      console.log("klicky macdicky");
       player.playerIsActive = !player.playerIsActive;
-
-      console.log(player.name + " has opened " + player.playerIsActive);
     },
     openBoard: function() {
-      console.log("Open board");
       // Sätter till true för att öppna brädet
       this.isActive = true;
-      console.log("Status: " + this.isActive);
     },
     closeBoard: function() {
-      console.log("Close BUTTON!");
 
       // Sätter till false för att stänga brädet
       this.isActive = false;
       this.playerHandHelpIsActive = false;
-      console.log("Status: " + this.isActive);
     },
     expandLeftBoard: function() {
-      console.log("Left click");
-      this.leftIsActive = !this.leftIsActive;
 
       /* Stänger de andra */
       this.rightIsActive = false;
       this.topIsActive = false;
       this.isActive = false;
-
-      console.log("status: " + this.leftIsActive);
     },
     expandRightBoard: function() {
-      console.log("Right click");
       this.rightIsActive = !this.rightIsActive;
 
       /* Stänger de andra */
       this.leftIsActive = false;
       this.topIsActive = false;
       this.isActive = false;
-      console.log("status: " + this.rightIsActive);
     },
     expandTopBoard: function() {
-      console.log("Top click");
       this.topIsActive = !this.topIsActive;
 
       /* Stänger de andra */
       this.leftIsActive = false;
       this.rightIsActive = false;
       this.isActive = false;
-
-      console.log("status: " + this.topIsActive);
     },
     auctionOver: function(placementType) {
       this.auctionPrice -= this.cardBidTotal;
       this.cardBidTotal = 0;
-      console.log(placementType);
       this.$store.state.socket.emit("auctionOver", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1578,7 +1556,6 @@ export default {
     endRoundFunction: function () {
       this.playSound('/images/sport_badminton_racket_fast_movement_swoosh_001.mp3');
       this.tempBottlePlacement = [false, false, false, false, false];
-      console.log("inne i runda lopp" + this.players[this.playerId].bottles);
       for (let i = 0; i < this.players[this.playerId].bottles; i += 1) {
         if (i > 1) {
           break;
@@ -1588,7 +1565,6 @@ export default {
       this.endRound = true;
     },
     pushToSecret: function(card) {
-      console.log("funkar nnnnnuuu");
       this.choosingSecret = false;
       this.$store.state.socket.emit("pushToSecret", {
         roomId: this.$route.params.id,
@@ -1810,10 +1786,8 @@ export default {
       }
     },
     showHelpOptions: function() {
-      console.log("hej");
       var otherPlayersTurn = false;
       if (this.helpAction) {
-        console.log("inte här");
         this.skillsHelpActive = false;
         this.auctionHelpActive = false;
         this.menuSpaceActive = false;
@@ -1821,8 +1795,6 @@ export default {
         this.workHelpActive = false;
         this.itemsHelpActive = false;
         this.raiseValueHelpActive = false;
-
-        console.log("kommer hit");
         for (const player in this.players) {
           if (this.players[player].turn == true) {
             otherPlayersTurn = true;

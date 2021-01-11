@@ -152,7 +152,6 @@ export default {
       for (let i = 0; i < this.players[this.playerId].hand.length; i += 1) {
         moneyTot += this.players[this.playerId].hand[i].value;
       }
-      console.log("hehehheehfhefhehfhefh    "+moneyTot)
       if(moneyTot < 1){
         return true
       }
@@ -168,7 +167,6 @@ export default {
         this.addBid()
       }
        
-      console.log("cardbidtotal"+this.cardBidTotal);
 
       
       for (let i = 0; i < this.players[this.playerId].hand.length; i += 1) {
@@ -187,13 +185,11 @@ export default {
         }
       }
       this.biddingCards.push(...c);
-      console.log(this.biddingCards);
       this.openCloseBuyWithCard();
 
     },
 
     placeBid: function () {
-      console.log("bid innan:" + this.bid);
       this.$store.state.socket.emit("auctionBid", {
         roomId: this.$route.params.id,
         playerId: this.playerId,

@@ -151,12 +151,10 @@ export default {
       }
       
       for (let i =0; i<this.player.hand.length;  i += 1) {
-        console.log(this.player.hand[i].item);
         if (this.currentValues[this.player.hand[i].item] <= this.player.money) {
           this.$set(this.player.hand[i],"available" ,true);
           this.chosenPlacementCost = cost;
           
-          console.log(this.player.hand[i].available)
         }
         else {
 
@@ -167,20 +165,17 @@ export default {
       }
     },
     buyCard: function (card) {
-      console.log("inne i buyCard")
       var cardFromHandAvailable=false;
        for (let i = 0; i < this.player.hand.length; i += 1) {
         if(this.player.hand[i].available==true ){
           
           cardFromHandAvailable=true;
          
-          console.log("kom in i buyCard loopen");
           break;
 
         }
         }
       if (card.available || cardFromHandAvailable ) {
-        console.log("kom in i buyCard if satsen mannen");
         this.cardCostUppdate(0)
         this.$emit('buyCard', card)
         this.highlightAvailableCards(0)

@@ -139,7 +139,6 @@ function sockets(io, socket, data) {
 
   socket.on("auctionBid", function (d) {
     data.auctionBids(d.roomId, d.playerId, d.bid, d.auctionPrice, d.players);
-    console.log("socket bid " + d.bid);
     io.to(d.roomId).emit("auctionRound", {
       players: data.getPlayers(d.roomId),
       auctionPrice: data.getAuctionPrice(d.roomId),
@@ -147,7 +146,6 @@ function sockets(io, socket, data) {
       cardInAuction: data.getCardInAuction(d.roomId),
       auctionWinner: data.getAuctionWinner(d.roomId),
     });
-    console.log(data.getCardInAuction(d.roomId));
   });
 
   socket.on("auctionOver", function (d) {
@@ -161,7 +159,6 @@ function sockets(io, socket, data) {
       raiseValue: data.getCardValue(d.roomId),
       currentScore:data.currentValue(d.roomId, d.playerId),
     });
-    console.log(data.getCardInAuction(d.roomId));
   });
 
   socket.on("placeBottleOnPlayerboard", function (d) {
@@ -169,7 +166,6 @@ function sockets(io, socket, data) {
     io.to(d.roomId).emit("bottleOnPlayerboardPlaced", {
       players: data.getPlayers(d.roomId)
     });
-    console.log(data.getCardInAuction(d.roomId));
   });
   socket.on("restoreHand", function (d) {
     data.restoreHands(d.roomId, d.playerId, d.biddingCards);
@@ -194,21 +190,18 @@ socket.on('nameAndColor', function (d) {
     );
   });
   socket.on("collectorsBottleRecycle", function (d) {
-    console.log("socket körs");
     io.to(d.roomId).emit(
       "collectorsBottleRecycled",
       data.bottleRecycled(d.roomId, d.playerId)
     );
   });
   socket.on("collectorsBottleRecycle4thRound", function (d) {
-    console.log("socket körs");
     io.to(d.roomId).emit(
       "collectorsBottleRecycled4thRound",
       data.bottleRecycled4thRound(d.roomId, d.playerId)
     );
   });
   socket.on("collectorsDrawACardAndToken", function (d) {
-    console.log("Draw card and a token socket körs");
     io.to(d.roomId).emit(
       "collectorsCardAndTokenDrawn",
       data.drawCard(d.roomId, d.playerId),
@@ -216,7 +209,6 @@ socket.on('nameAndColor', function (d) {
     );
   });
   socket.on("collectorsDrawACardAndPassiveIncome", function (d) {
-    console.log("Draw card and draw a passive income");
     io.to(d.roomId).emit(
       "collectorsCardAndPassiveIncomeDrawn",
       data.drawCard(d.roomId, d.playerId),
@@ -224,7 +216,6 @@ socket.on('nameAndColor', function (d) {
     );
   });
   socket.on("placeWorker", function (d) {
-    console.log("hej");
     io.to(d.roomId).emit(
       "workerPlaced",
       data.setWorkPlacementTrue(d.roomId, d.where, d.playerId)
@@ -237,7 +228,6 @@ socket.on('nameAndColor', function (d) {
     );
   });
   socket.on("addMoney", function (d) {
-    console.log("addMoney i socketsCollecors körs");
     io.to(d.roomId).emit(
       "moneyAdded",
       data.addMoney(d.roomId, d.playerId, d.amount)
