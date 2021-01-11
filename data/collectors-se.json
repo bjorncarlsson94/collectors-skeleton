@@ -41,6 +41,7 @@
 	"faceUp":"Uppvänt",
 	"faceDown":"Nervänt",
 	"card":" kort",
+	"earn":"Tjäna",
 	"pickFromPlayerBoard":"Välj ett kort från spelplanen:",
 	"pickFromAuction":"Välj kort från auction pool",
 	"pickFromSkills":"Välj kort från skill pool",
