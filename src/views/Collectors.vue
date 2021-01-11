@@ -853,7 +853,8 @@
     <footer>
       <p>
         {{ labels.invite }}
-        <input
+        <input 
+          class="invite"
           type="text"
           :value="publicPath + $route.path"
           @click="selectAll"
@@ -3434,6 +3435,10 @@ alltså lol vet ej vad raderna under gör med det löser mitt problem just nu lo
   text-shadow: 0.05208vw 0.05208vw 0.05208vw rgb(59, 58, 58),
     0.104166vw 0.104166vw 0.05208vw rgb(59, 58, 58);
   background-color: #005a87;
+}
+
+.invite {
+  width: 20%;
 }
 
 .winnerBox .winnerBoxContent {
