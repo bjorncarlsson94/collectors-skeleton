@@ -40,6 +40,7 @@
 	"faceUp":"Face up",
 	"faceDown":"Face down",
 	"card":" cards",
+	"earn":"Earn",
 	"pickFromPlayerBoard":"Pick a card from player board:",
 	"pickFromAuction":"Pick card from auction pool",
 	"pickFromSkills":"Pick card from skill pool",
