@@ -116,7 +116,7 @@ export default {
   },
   watch: {
     recycle4thHint: function() {
-      setTimeout(this.javaScriptSuger, 2000);
+      setTimeout(this.removeRecycleHint, 2000);
     }
   },
   methods: {
@@ -292,7 +292,7 @@ export default {
       console.log("kom hit");
       this.popUpTestActiveBol = true;
     },
-    javaScriptSuger: function() {
+    removeRecycleHint: function() {
       this.recycle4thHint = false
     },
     /*showPopup: function(typeOfAlert){

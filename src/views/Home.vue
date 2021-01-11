@@ -12,6 +12,10 @@
             <button class="buttons" @click="setupCollectors(i+1, 'se')">Spela Collectors med {{i+1}} spelare</button>
           </div>
         </div>
+        <br>
+        <div class="gameSetUp"> 
+          <button class="buttons" onClick="window.open('https:youtube.com');">Click here for tutorial</button>
+          </div> 
       </div>
     </div>
   </div>
