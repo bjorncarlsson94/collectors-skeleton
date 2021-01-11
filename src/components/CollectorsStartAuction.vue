@@ -14,21 +14,33 @@
       </div>
       <div class="auctionColumn">
         <div class="buttons" v-for="(p, index) in placement" :key="'A' + index">
-          <button class="button"
-            v-if="p.playerId===null"
-            :disabled="notYourTurn() || cannotAfford(p.cost)" 
-            @click="placeBottle(p)" >
-            {{labels.earn + " $" + -p.cost}}
+          <button
+            class="button"
+            v-if="p.playerId === null"
+            :disabled="notYourTurn() || cannotAfford(p.cost)"
+            @click="placeBottle(p)"
+          >
+            {{ labels.earn + " $" + -p.cost }}
           </button>
-          <div class="bottlePlace" :style="{backgroundColor: players[p.playerId].color}" v-if="p.playerId !== null">
+          <div
+            class="bottlePlace"
+            :style="{ backgroundColor: players[p.playerId].color }"
+            v-if="p.playerId !== null"
+          >
             <!-- {{p.playerId}} -->
           </div>
         </div>
       </div>
     </div>
 
-    <div class="auctionCardsAvailable" v-show="aboutToStartAuction" v-if="player">
-      <h1 class="startAuctionHeadings">{{labels.chooseCardFromPlayerBoard}}:</h1>
+    <div
+      class="auctionCardsAvailable"
+      v-show="aboutToStartAuction"
+      v-if="player"
+    >
+      <h1 class="startAuctionHeadings">
+        {{ labels.chooseCardFromPlayerBoard }}:
+      </h1>
       <div class="startAuctionCardGrid">
         <div
           class="cardsFromBoard"
@@ -42,7 +54,9 @@
           />
         </div>
       </div>
-      <h1 class="startAuctionHeadings">{{labels.chooseCardFromPlayerHand}}:</h1>
+      <h1 class="startAuctionHeadings">
+        {{ labels.chooseCardFromPlayerHand }}:
+      </h1>
       <div class="startAuctionCardGrid">
         <div
           class="cardsFromHand"
@@ -57,13 +71,19 @@
         </div>
       </div>
       <div class="buttonGrid">
-               <button class="cancelBuy" @click="hideWindow()">{{labels.cancelBuy}}</button>
-              </div>
+        <button class="cancelBuy" @click="hideWindow()">
+          {{ labels.cancelBuy }}
+        </button>
+      </div>
     </div>
     <div class="secretOptionBox" v-show="secretOptionBoxAvailable">
-      <div class="secretOptionText">{{labels.auctionHow}}?</div>
-      <button class="secretOptionBoxButton A" @click="secretChoice(false)" >{{labels.faceUp}}</button>
-      <button class="secretOptionBoxButton B" @click="secretChoice(true)" >{{labels.faceDown}}</button>
+      <div class="secretOptionText">{{ labels.auctionHow }}?</div>
+      <button class="secretOptionBoxButton A" @click="secretChoice(false)">
+        {{ labels.faceUp }}
+      </button>
+      <button class="secretOptionBoxButton B" @click="secretChoice(true)">
+        {{ labels.faceDown }}
+      </button>
     </div>
   </div>
 </template>
@@ -87,14 +107,14 @@ export default {
     hiddenAuctionCard: Boolean,
     notYourTurn: Function,
     hiddenAuctionCardFN: Function,
-    aboutToStartAuction: Boolean
+    aboutToStartAuction: Boolean,
   },
-   data: function () {
-      return {
-        secretOptionBoxAvailable: false,
-        secretOptionCard: Object,
-        currentPlacement: null,
-     };
+  data: function () {
+    return {
+      secretOptionBoxAvailable: false,
+      secretOptionCard: Object,
+      currentPlacement: null,
+    };
   },
   methods: {
     cannotAfford: function (cost) {
@@ -139,18 +159,18 @@ export default {
       }
     },
 
-    secretOption: function (card){
+    secretOption: function (card) {
       //this.aboutToStartAuction = false;
       this.secretOptionCard = card;
-      this.secretOptionBoxAvailable = true; 
-      this.highlightAvailableCards(); 
+      this.secretOptionBoxAvailable = true;
+      this.highlightAvailableCards();
     },
-    secretChoice: function (ifSecret){
-      if(ifSecret){
+    secretChoice: function (ifSecret) {
+      if (ifSecret) {
         this.hiddenAuctionCardFN();
       }
       this.$emit("startAuction", this.secretOptionCard);
-      this.secretOptionBoxAvailable = false;  
+      this.secretOptionBoxAvailable = false;
     },
     startAuction: function (card) {
       if (card.available) {
@@ -158,19 +178,15 @@ export default {
         this.highlightAvailableCards();
       }
     },
-    hideWindow: function(){
+    hideWindow: function () {
       for (let i = 0; i < this.auctionCards.length; i += 1) {
-        
-        
-          this.$set(this.auctionCards[i], "available", false);
-    }
+        this.$set(this.auctionCards[i], "available", false);
+      }
       for (let i = 0; i < this.player.hand.length; i += 1) {
-        
-        
-          this.$set(this.player.hand[i], "available", false);
-    }
-      this.$emit('cancelBuy', this.currentPlacement);
-    }
+        this.$set(this.player.hand[i], "available", false);
+      }
+      this.$emit("cancelBuy", this.currentPlacement);
+    },
     // notYourTurn: function () {
     //   return (this.player.turn== false)
     // }
@@ -201,8 +217,8 @@ export default {
 .button:hover {
   background-color: #d6ce58;
 }
-.auctionColumn{
-  align-self:center;
+.auctionColumn {
+  align-self: center;
 }
 .auctiongrid {
   display: grid;
@@ -222,29 +238,29 @@ export default {
   justify-self: center;
   align-self: center;
 }
-.secretOptionText {   
-    color: black;
-    grid-column: 1/5;
-    text-align: center;
-    margin: auto;
-    font-size: 2vw;
+.secretOptionText {
+  color: black;
+  grid-column: 1/5;
+  text-align: center;
+  margin: auto;
+  font-size: 2vw;
 }
 .secretOptionBox {
-    display: grid;
-    position: absolute;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 3fr 3fr 1fr;
-    width: 30vw;
-    height: 12vw;
-    background-color: #fff782;
-    border-radius: 2vw;
-    border-style: solid;
-    border-width: 0.4vw;
-    border-color: black;
-    z-index: 50;
-    top: 22%;
-    left: 50%;
-    padding: 1vw;
+  display: grid;
+  position: absolute;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 3fr 3fr 1fr;
+  width: 30vw;
+  height: 12vw;
+  background-color: #fff782;
+  border-radius: 2vw;
+  border-style: solid;
+  border-width: 0.4vw;
+  border-color: black;
+  z-index: 50;
+  top: 22%;
+  left: 50%;
+  padding: 1vw;
 }
 .secretOptionBoxButton {
   color: black;
@@ -273,86 +289,83 @@ export default {
   z-index: 50;
   top: 50%;
   left: 50%;
-  transform: translate(-20%, -45%);  
+  transform: translate(-20%, -45%);
 }
 
-  .startAuctionCardGrid{
-    display: grid;
-    align-content: center;
-    grid-auto-flow: column;
-    grid-column: 1/6;
-  }
+.startAuctionCardGrid {
+  display: grid;
+  align-content: center;
+  grid-auto-flow: column;
+  grid-column: 1/6;
+}
 
-  .startAuctionHeadings{
-    justify-content: center;
-    text-align: center;
-    color: black;
-    grid-column: 1/6;
-  }
+.startAuctionHeadings {
+  justify-content: center;
+  text-align: center;
+  color: black;
+  grid-column: 1/6;
+}
 
-  .cardsFromBoard{
-    display: grid;
-    justify-items:center;
-    align-items: center;
-    zoom: 2;
-    overflow: hidden;
-  }
+.cardsFromBoard {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  zoom: 2;
+  overflow: hidden;
+}
 
-  .cardsFromHand{
-    display: grid;
-    justify-items:center;
-    align-items: center;
-    zoom: 2;
-    overflow: hidden;
-
-  }
-
+.cardsFromHand {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  zoom: 2;
+  overflow: hidden;
+}
 
 .bottlePlace {
-    background-image: url(/images/player-bottle.png);
-height: 2.5vw;
-    margin: 1.9vw;
-    width: 2.5vw;
-    background-color: rgb(95, 216, 253);
-    border-radius: 3vw;
-    z-index: 60;
-    border-style: ridge;
-    box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
-    border-width: 0.2vw;
-    border-color: rgba(77, 58, 58, 0.658);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+  background-image: url(/images/player-bottle.png);
+  height: 2.5vw;
+  margin: 1.9vw;
+  width: 2.5vw;
+  background-color: rgb(95, 216, 253);
+  border-radius: 3vw;
+  z-index: 60;
+  border-style: ridge;
+  box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+  border-width: 0.2vw;
+  border-color: rgba(77, 58, 58, 0.658);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
- .buttonGrid{
-    color: inherit;
-    justify-content: center;
-    position: absolute;
-    
-     top: -0.15625vw;
-    right: -0.078125vw;
-    
-  }
+.buttonGrid {
+  color: inherit;
+  justify-content: center;
+  position: absolute;
 
+  top: -0.15625vw;
+  right: -0.078125vw;
+}
 
-  .cancelBuy{
-    border-top-right-radius: 30%;
-    border:solid;
-    background-color: #f5ef9e;
-    filter:brightness(105%);
-    width: 5.208vw;
-    height: 5.208vw;
-    font-size: 1vw;
-    font-weight: bold;
-    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
-  }
-  .cancelBuy:hover{
-    background-color: #d6ce58;
-  }
+.cancelBuy {
+  border-top-right-radius: 30%;
+  border: solid;
+  background-color: #f5ef9e;
+  filter: brightness(105%);
+  width: 5.208vw;
+  height: 5.208vw;
+  font-size: 1vw;
+  font-weight: bold;
+  box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2),
+    0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
+}
+.cancelBuy:hover {
+  background-color: #d6ce58;
+}
 
-.auctionColumn{
-    grid-row: 1/2;
-    grid-template-rows: 7vw 7vw 7vw 7vw;
-    display: grid
+.auctionColumn {
+  grid-row: 1/2;
+  grid-template-rows: 7vw 7vw 7vw 7vw;
+  display: grid;
 }
 </style>

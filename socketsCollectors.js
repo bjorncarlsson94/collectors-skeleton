@@ -11,9 +11,9 @@ function sockets(io, socket, data) {
         players: data.getPlayers(d.roomId),
         itemsOnSale: data.getItemsOnSale(d.roomId),
         marketValues: data.getMarketValues(d.roomId),
-        raiseItems:data.getRaiseItems(d.roomId),
-        playerColor:data.getPlayerColor(d.roomId),
-        
+        raiseItems: data.getRaiseItems(d.roomId),
+        playerColor: data.getPlayerColor(d.roomId),
+
         //här kallar vi på getCardValue
         raiseValue: data.getCardValue(d.roomId),
         skillsOnSale: data.getSkillsOnSale(d.roomId),
@@ -44,11 +44,11 @@ function sockets(io, socket, data) {
       players: data.getPlayers(d.roomId),
       itemsOnSale: data.getItemsOnSale(d.roomId),
       itemValues: data.getItemValue(d.roomId, d.playerId),
-       
+
     });
   });
- 
-  
+
+
   socket.on("collectorsBuySkill", function (d) {
     data.buySkill(d.roomId, d.playerId, d.card, d.cost);
     io.to(d.roomId).emit("collectorsSkillBought", {
@@ -98,19 +98,19 @@ function sockets(io, socket, data) {
   });
   socket.on("startTurn", function (d) {
     data.startTurn(d.roomId);
-    io.to(d.roomId).emit("playerPicked", 
-    data.getPlacements(d.roomId)
+    io.to(d.roomId).emit("playerPicked",
+      data.getPlacements(d.roomId)
     );
   });
   socket.on("pushToSecret", function (d) {
     data.pushToSecret(d.roomId, d.playerId, d.card);
-    io.to(d.roomId).emit("secretPicked",{
-    players: data.getPlayers(d.roomId),
-  });
+    io.to(d.roomId).emit("secretPicked", {
+      players: data.getPlayers(d.roomId),
+    });
   });
   socket.on("nextPlayer", function (d) {
     data.nextPlayer(d.roomId, d.playerId, d.auctionActive);
-    io.to(d.roomId).emit("playerPicked", 
+    io.to(d.roomId).emit("playerPicked",
       data.getPlacements(d.roomId)
     );
     io.to(d.roomId).emit("cardsMoved", {
@@ -157,7 +157,7 @@ function sockets(io, socket, data) {
       cardInAuction: data.getCardInAuction(d.roomId),
       raiseItems: data.getRaiseItems(d.roomId),
       raiseValue: data.getCardValue(d.roomId),
-      currentScore:data.currentValue(d.roomId, d.playerId),
+      currentScore: data.currentValue(d.roomId, d.playerId),
     });
   });
 
@@ -174,18 +174,18 @@ function sockets(io, socket, data) {
     });
   });
 
-socket.on('nameAndColor', function (d) {
-  data.nameAndColor(d.roomId, d.playerId, d.name, d.color);
-  io.to(d.roomId).emit('nameAndColorSeleced', {
-    players: data.getPlayers(d.roomId),
-    playerColor:data.getPlayerColor(d.roomId),
+  socket.on('nameAndColor', function (d) {
+    data.nameAndColor(d.roomId, d.playerId, d.name, d.color);
+    io.to(d.roomId).emit('nameAndColorSeleced', {
+      players: data.getPlayers(d.roomId),
+      playerColor: data.getPlayerColor(d.roomId),
+    });
   });
-});
   //------------------WORK metoder----------------------
   socket.on("collectorsWorkDrawTwoCards", function (d) {
     //funktion för att dra 2 kort genom WORK
     io.to(d.roomId).emit(
-      "collectorsWorkCardDrawn", 
+      "collectorsWorkCardDrawn",
       data.workDrawCardTwoCards(d.roomId, d.playerId)
     );
   });
@@ -224,7 +224,7 @@ socket.on('nameAndColor', function (d) {
   socket.on("currentValue", function (d) {
     io.to(d.roomId).emit(
       "currentScores",
-      data.currentValue(d.roomId, d.playerId,d.currentValue)
+      data.currentValue(d.roomId, d.playerId, d.currentValue)
     );
   });
   socket.on("addMoney", function (d) {
@@ -240,8 +240,8 @@ socket.on('nameAndColor', function (d) {
     );
   });
   //---------------------------------------------------
-  
-  
+
+
 }
 
 module.exports = sockets;
