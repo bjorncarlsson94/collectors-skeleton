@@ -3117,8 +3117,8 @@ theColor:onclick {
 .start-auction {
   width: 3.3vw;
   position: absolute;
-  right: -0.5vw;
-  top: 0.2vw;
+    right: -1vw;
+    top: -0.5vw;
   z-index: 4;
 }
 .menuSpace {
