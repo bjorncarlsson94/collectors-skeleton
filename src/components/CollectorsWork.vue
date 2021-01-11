@@ -9,7 +9,7 @@
         :style="{ backgroundImage: 'url(' + getWorkslot5Image() + ')' }"
         v-on:click="quarterTilePressed"
         v-bind:class="{
-          highlight: recycle4thHint && round === 4,
+          highlight: (recycle4thHint && round === 4)
         }"
       >
         <span v-if="quarterTilePressedActive" class="tooltiptext">{{
@@ -45,7 +45,7 @@
         }}</span>
       </button>
     </div>
-
+    
     <div
       class="bottlePlace"
       id="workBottle0"
@@ -103,7 +103,7 @@ export default {
     //drawACardAndFirstPlayerToken = 0
     //drawCardAndPassiveIncome = 0
   },
-  data: function () {
+  data: function() {
     return {
       popUpTestActiveBol: false,
       drawCardAndPassiveIncomeActive: false,
@@ -115,15 +115,15 @@ export default {
     };
   },
   watch: {
-    recycle4thHint: function () {
+    recycle4thHint: function() {
       setTimeout(this.removeRecycleHint, 2000);
-    },
+    }
   },
   methods: {
     //  (this.workPlacement[0] === false) detta är en fuling quick fix tänk silvertejp. Det funkar det är det viktigaste än så länge.
-    helpButtonPressed: function () {},
+    helpButtonPressed: function() {},
     //Lägg en flaska här och dra 2st kort
-    drawTwoCards: function () {
+    drawTwoCards: function() {
       if (!this.player.turn) {
         return;
       }
@@ -137,7 +137,7 @@ export default {
       }
     },
     //Lägg en flaska här och dra ett kort samt ta First Player Token
-    drawACardAndFirstPlayerToken: function () {
+    drawACardAndFirstPlayerToken: function() {
       if (!this.player.turn) {
         return;
       }
@@ -154,7 +154,7 @@ export default {
       }
     },
     //Lägg en flaska här och dra ett kort samt ett kort som passiv inkomst
-    drawCardAndPassiveIncome: function () {
+    drawCardAndPassiveIncome: function() {
       if (!this.player.turn) {
         return;
       }
@@ -171,7 +171,7 @@ export default {
       }
     },
     //Panta en flaska så får du en peng, går att gö hur många gånger som helst
-    recycleBottle: function () {
+    recycleBottle: function() {
       if (!this.player.turn) {
         return;
       }
@@ -187,7 +187,7 @@ export default {
       }
     },
     //På fjärde omgången kan du panta en flaska och få 3 pengar ist
-    quarterTilePressed: function () {
+    quarterTilePressed: function() {
       if (this.player.bottles == 0) {
         this.quarterTilePressedActive = !this.quarterTilePressedActive;
       }
@@ -247,10 +247,10 @@ export default {
           break;
       }
     },
-    placeWorker: function (where) {
+    placeWorker: function(where) {
       this.$emit("placeWorker", where);
     },
-    applySkills: function () {
+    applySkills: function() {
       var extraCard = false;
       var extraMoney = false;
       let cards = this.player.skills;
@@ -264,7 +264,7 @@ export default {
         }
       }
     },
-    getWorkslot5Image: function () {
+    getWorkslot5Image: function() {
       // quarter_tile_1st.png, quarter_tile_2nd.png, quarter_tile_3rd.png, Work5_png.png
       switch (this.round) {
         case 0:
@@ -279,11 +279,11 @@ export default {
           return "/images/Work5_png.png";
       }
     },
-    popUpTestActive: function () {
+    popUpTestActive: function() {
       this.popUpTestActiveBol = true;
     },
-    removeRecycleHint: function () {
-      this.recycle4thHint = false;
+    removeRecycleHint: function() {
+      this.recycle4thHint = false
     },
   },
 };

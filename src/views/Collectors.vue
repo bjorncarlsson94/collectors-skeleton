@@ -1,9 +1,10 @@
 <template>
-  <!--Sound from Zapsplat.com-->
+<!--Sound from Zapsplat.com-->
   <div class="bodytest">
     <main>
       <let-it-snow v-bind="snowConf" :show="show1"></let-it-snow>
-      <section id="wrapper">
+      <section id="wrapper" >
+        
         <div id="grid">
           <div class="helpBoard" @click="showHelpOptions">
             <p><strong>?</strong></p>
@@ -230,9 +231,8 @@
                       <div id="resources" class="divtitle">Resources:</div>
                       <div
                         class="bottlesGrid"
-                        v-for="(
-                          bottlePlace, index
-                        ) in player.bottlesOnPlayerbord"
+                        v-for="(bottlePlace,
+                        index) in player.bottlesOnPlayerbord"
                         :key="index"
                       >
                         <div
@@ -505,9 +505,9 @@
 
             <!-- Visas när handen är öppen-->
             <div class="playerBoardGrid" v-if="isActive">
-              <div class="help" id="helpHandPos" @click="helpPlayerHandHover">
+              <div class="help" id="helpHandPos"  @click="helpPlayerHandHover" >
                 ?
-
+               
                 <div id="playerHelp" v-show="helpPlayerHandActive">
                   <h3>
                     <strong>{{ labels.helpPlayerHand.title }}</strong>
@@ -669,6 +669,7 @@
                   <div class="counter income">
                     +{{ players[playerId].income.length }}
                   </div>
+
                 </div>
 
                 <div class="b bottlecount">
@@ -771,6 +772,7 @@
               @click="startTurn()"
               class="menuButton"
             >
+           
               {{ labels.randomplayer }}
             </button>
             <!-- <button
@@ -851,7 +853,7 @@
     <footer>
       <p>
         {{ labels.invite }}
-        <input
+        <input 
           class="invite"
           type="text"
           :value="publicPath + $route.path"
@@ -890,7 +892,7 @@ export default {
     CollectorsBottles,
     HelpCollectors,
   },
-  data: function () {
+  data: function() {
     return {
       gameStarted: false,
       isActive: false,
@@ -1002,7 +1004,7 @@ export default {
   },
   props: {},
   computed: {
-    playerId: function () {
+    playerId: function() {
       return this.$store.state.playerId;
     },
   },
@@ -1013,7 +1015,7 @@ export default {
     });
   },
   watch: {
-    players: function (newP, oldP) {
+    players: function(newP, oldP) {
       console.log(newP, oldP);
       for (let p in this.players) {
         for (let c = 0; c < this.players[p].hand.length; c += 1) {
@@ -1023,7 +1025,7 @@ export default {
       }
     },
   },
-  created: function () {
+  created: function() {
     this.$store.commit("SET_PLAYER_ID", this.$route.query.id);
     //TODO! Fix this ugly hack
     //background: https://github.com/quasarframework/quasar/issues/5672
@@ -1038,7 +1040,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsInitialize",
-      function (d) {
+      function(d) {
         this.labels = d.labels;
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
@@ -1065,16 +1067,17 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsBottlePlaced",
-      function (d) {
+      function(d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
         this.auctionPlacement = d.auctionPlacement;
+        
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsBottleRemoved",
-      function (d) {
+      function(d) {
         this.buyPlacement = d.buyPlacement;
         this.skillPlacement = d.skillPlacement;
         this.marketPlacement = d.marketPlacement;
@@ -1085,19 +1088,19 @@ export default {
 
     this.$store.state.socket.on(
       "bottleOnPlayerboardPlaced",
-      function (d) {
+      function(d) {
         this.players = d.players;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "secretPicked",
-      function (d) {
+      function(d) {
         this.players = d.players;
       }.bind(this)
     );
     this.$store.state.socket.on(
       "secretPicked",
-      function (d) {
+      function(d) {
         this.players = d.players;
       }.bind(this)
     );
@@ -1114,7 +1117,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsCardDrawn",
-      function (d) {
+      function(d) {
         //this has been refactored to not single out one player's cards
         //better to update the state of all cards
         console.log(d.playerId, "drew a card");
@@ -1124,18 +1127,18 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsCardBought",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "bought a card");
         this.players = d.players;
         this.itemsOnSale = d.itemsOnSale;
         this.itemValues = d.itemValues;
         this.currentScore = d.currentScore;
-        this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
+         this.playSound("/images/zapsplat_human_tongue_cluck_005_33359.mp3");
       }.bind(this)
     );
     this.$store.state.socket.on(
       "collectorsSkillBought",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "bought a skill");
         this.players = d.players;
         this.skillsOnSale = d.skillsOnSale;
@@ -1145,7 +1148,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsAuctionStarted",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "started auction " + this.cardInAuction);
         this.players = d.players;
         this.auctionCards = d.auctionCards;
@@ -1159,7 +1162,7 @@ export default {
 
     this.$store.state.socket.on(
       "collectorsValueRaised",
-      function (d) {
+      function(d) {
         console.log(d.playerId, "raised value");
         this.players = d.players;
         this.raiseItems = d.raiseItems;
@@ -1173,7 +1176,7 @@ export default {
 
     this.$store.state.socket.on(
       "auctionRound",
-      function (d) {
+      function(d) {
         console.log("är det en vinnare?" + d.auctionWinner);
         if (d.auctionWinner == true) {
           if (this.playerId == d.auctionLeaderId) {
@@ -1211,7 +1214,7 @@ export default {
     );
     this.$store.state.socket.on(
       "auctionFin",
-      function (d) {
+      function(d) {
         this.hiddenAuctionCard = false;
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
@@ -1229,14 +1232,14 @@ export default {
     );
     this.$store.state.socket.on(
       "handRestord",
-      function (d) {
+      function(d) {
         this.players = d.players;
         this.biddingCards = [];
       }.bind(this)
     );
     this.$store.state.socket.on(
       "cardsMoved",
-      function (d) {
+      function(d) {
         this.raiseValue = d.raiseValue;
         this.raiseItems = d.raiseItems;
         this.skillsOnSale = d.skillsOnSale;
@@ -1249,7 +1252,7 @@ export default {
 
     this.$store.state.socket.on(
       "playerPicked",
-      function (d) {
+      function(d) {
         console.log("spelare vald");
         if (!this.gameStarted) {
           this.choosingSecret = true;
@@ -1271,7 +1274,7 @@ export default {
 
     this.$store.state.socket.on(
       "nameAndColorSeleced",
-      function (d) {
+      function(d) {
         this.players = d.players;
         this.playerColor = d.playerColor;
       }.bind(this)
@@ -1280,7 +1283,7 @@ export default {
     //--------WORK--------------
     this.$store.state.socket.on(
       "collectorsBottleRecycled",
-      function (d) {
+      function(d) {
         this.players = d;
         if (this.players[this.playerId].turn == true) {
           this.nextPlayer();
@@ -1290,7 +1293,7 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsBottleRecycled4thRound",
-      function (d) {
+      function(d) {
         this.players = d;
         if (this.players[this.playerId].turn == true) {
           this.nextPlayer();
@@ -1300,7 +1303,7 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsWorkCardDrawn",
-      function (d) {
+      function(d) {
         this.players = d;
         if (this.players[this.playerId].turn == true) {
           this.nextPlayer();
@@ -1310,7 +1313,7 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsCardAndTokenDrawn",
-      function (d) {
+      function(d) {
         this.players = d;
         if (this.players[this.playerId].turn == true) {
           this.nextPlayer();
@@ -1320,7 +1323,7 @@ export default {
     );
     this.$store.state.socket.on(
       "collectorsCardAndPassiveIncomeDrawn",
-      function (d) {
+      function(d) {
         this.players = d;
         if (this.players[this.playerId].turn == true) {
           this.nextPlayer();
@@ -1330,14 +1333,14 @@ export default {
     );
     this.$store.state.socket.on(
       "currentScores",
-      function (d) {
+      function(d) {
         this.players[this.playerId].currentScore = d;
       }.bind(this)
     );
 
     this.$store.state.socket.on(
       "workerPlaced",
-      function (d) {
+      function(d) {
         this.workPlacement = d;
       }.bind(this)
     );
@@ -1346,7 +1349,7 @@ export default {
 
     this.$store.state.socket.on(
       "passiveIncomeAdded",
-      function (d) {
+      function(d) {
         this.players = d;
         if (this.players[this.playerId].turn == true) {
           this.nextPlayer();
@@ -1361,8 +1364,8 @@ export default {
   },
 
   methods: {
-    playSound(sound) {
-      if (sound) {
+    playSound (sound) {
+      if(sound) {
         var audio = new Audio(sound);
         audio.play();
       }
@@ -1370,7 +1373,7 @@ export default {
     playerJoinedFn: function () {
       this.playerJoined = true;
     },
-    playerInfo: function () {
+    playerInfo: function() {
       this.playerJoined = false;
       this.$store.state.socket.emit("nameAndColor", {
         roomId: this.$route.params.id,
@@ -1379,34 +1382,34 @@ export default {
         name: this.pname,
       });
     },
-    selectAll: function (n) {
+    selectAll: function(n) {
       n.target.select();
     },
-    addBid: function () {
+    addBid: function() {
       this.bid += 1;
     },
-    subBid: function () {
+    subBid: function() {
       this.bid -= 1;
     },
 
-    playerName: function (pId) {
+    playerName: function(pId) {
       if (pId !== null) {
         return this.players[pId].name;
       } else {
         return "";
       }
     },
-    addNumber: function (add) {
+    addNumber: function(add) {
       this.cardBidTotal += add;
     },
-    winnerSelection: function (ifWinner) {
+    winnerSelection: function(ifWinner) {
       if (ifWinner == true) {
         this.winnerAvailable = true;
       } else {
         this.loserAvailable = true;
       }
     },
-    currentPlayer: function () {
+    currentPlayer: function() {
       var keys = Object.keys(this.players);
 
       for (var i = 0; i < keys.length; i++) {
@@ -1416,14 +1419,14 @@ export default {
         }
       }
     },
-    hiddenAuctionCardFN: function () {
+    hiddenAuctionCardFN: function() {
       if (!this.hiddenAuctionCard) {
         this.hiddenAuctionCard = true;
       } else {
         this.hiddenAuctionCard = false;
       }
     },
-    checkAmountOfRaiseValue: function () {
+    checkAmountOfRaiseValue: function() {
       let cardCounter = 0;
       for (let i = 0; i < this.skillsOnSale.length; i += 1) {
         if (this.skillsOnSale[i].market != undefined) {
@@ -1446,10 +1449,11 @@ export default {
         return true;
       }
     },
-    auctionBoard: function () {
+    auctionBoard: function() {
       this.auctionActive = !this.auctionActive;
     },
-    expandPlayerBoard: function () {
+    expandPlayerBoard: function() {
+
       // returnerar ifall den redan är öppen
       if (this.isActive === true) {
         return;
@@ -1462,26 +1466,29 @@ export default {
       this.rightIsActive = false;
       this.topIsActive = false;
       this.leftIsActive = false;
+
     },
-    expandOtherPlayer: function (player) {
+    expandOtherPlayer: function(player) {
       player.playerIsActive = !player.playerIsActive;
     },
-    openBoard: function () {
+    openBoard: function() {
       // Sätter till true för att öppna brädet
       this.isActive = true;
     },
-    closeBoard: function () {
+    closeBoard: function() {
+
       // Sätter till false för att stänga brädet
       this.isActive = false;
       this.playerHandHelpIsActive = false;
     },
-    expandLeftBoard: function () {
+    expandLeftBoard: function() {
+
       /* Stänger de andra */
       this.rightIsActive = false;
       this.topIsActive = false;
       this.isActive = false;
     },
-    expandRightBoard: function () {
+    expandRightBoard: function() {
       this.rightIsActive = !this.rightIsActive;
 
       /* Stänger de andra */
@@ -1489,7 +1496,7 @@ export default {
       this.topIsActive = false;
       this.isActive = false;
     },
-    expandTopBoard: function () {
+    expandTopBoard: function() {
       this.topIsActive = !this.topIsActive;
 
       /* Stänger de andra */
@@ -1497,7 +1504,7 @@ export default {
       this.rightIsActive = false;
       this.isActive = false;
     },
-    auctionOver: function (placementType) {
+    auctionOver: function(placementType) {
       this.auctionPrice -= this.cardBidTotal;
       this.cardBidTotal = 0;
       this.$store.state.socket.emit("auctionOver", {
@@ -1507,13 +1514,13 @@ export default {
         auctionPrice: this.auctionPrice,
       });
     },
-    showHelp: function (label) {
+    showHelp: function(label) {
       label;
       //do stuff
     },
-    playerHandHelpIsActive: function () {},
+    playerHandHelpIsActive: function() {},
 
-    openCloseBuyWithCard: function () {
+    openCloseBuyWithCard: function() {
       if (this.auctionCardPaymentActive == false) {
         this.auctionCardPaymentActive = true;
         this.auctionActive = false;
@@ -1522,7 +1529,7 @@ export default {
         this.auctionActive = true;
       }
     },
-    placeBottle: function (action, placement) {
+    placeBottle: function(action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = true;
       }
@@ -1535,7 +1542,7 @@ export default {
       if (action === "market") {
         this.aboutToRaiseValue = true;
       }
-
+      
       this.chosenPlacementCost = placement.cost;
       this.$store.state.socket.emit("collectorsPlaceBottle", {
         players: this.players,
@@ -1544,11 +1551,10 @@ export default {
         action: action,
         placement: placement,
       });
+      
     },
     endRoundFunction: function () {
-      this.playSound(
-        "/images/sport_badminton_racket_fast_movement_swoosh_001.mp3"
-      );
+      this.playSound('/images/sport_badminton_racket_fast_movement_swoosh_001.mp3');
       this.tempBottlePlacement = [false, false, false, false, false];
       for (let i = 0; i < this.players[this.playerId].bottles; i += 1) {
         if (i > 1) {
@@ -1558,7 +1564,7 @@ export default {
       }
       this.endRound = true;
     },
-    pushToSecret: function (card) {
+    pushToSecret: function(card) {
       this.choosingSecret = false;
       this.$store.state.socket.emit("pushToSecret", {
         roomId: this.$route.params.id,
@@ -1566,7 +1572,7 @@ export default {
         card: card,
       });
     },
-    drawCard: function () {
+    drawCard: function() {
       if (!this.helpAction) {
         this.$store.state.socket.emit("collectorsDrawCard", {
           roomId: this.$route.params.id,
@@ -1577,7 +1583,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    buyCard: function (card) {
+    buyCard: function(card) {
       console.log("buyCard", card);
       this.aboutToBuyItem = false;
       this.$store.state.socket.emit("collectorsBuyCard", {
@@ -1589,7 +1595,7 @@ export default {
 
       this.nextPlayer();
     },
-    buySkill: function (card) {
+    buySkill: function(card) {
       console.log("buySkill", card);
       this.aboutToBuySkill = false;
       this.$store.state.socket.emit("collectorsBuySkill", {
@@ -1601,7 +1607,7 @@ export default {
       this.nextPlayer();
     },
 
-    raisingValue: function (card, firstCard) {
+    raisingValue: function(card, firstCard) {
       this.$store.state.socket.emit("collectorsRaiseValue", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1617,7 +1623,7 @@ export default {
       }
     },
 
-    getLastElement: function (cardArray) {
+    getLastElement: function(cardArray) {
       for (let i = cardArray.length - 1; i >= 0; i--) {
         if (cardArray[i].market) {
           return cardArray[i];
@@ -1626,7 +1632,7 @@ export default {
       return {};
     },
 
-    notYourTurn: function () {
+    notYourTurn: function() {
       if (this.players[this.playerId].turn == false) {
         return true;
       } else if (this.auctionActive || this.auctionMiniActive) {
@@ -1635,7 +1641,7 @@ export default {
         return false;
       }
     },
-    startAuction: function (card) {
+    startAuction: function(card) {
       this.auctionAvailable = false;
       this.aboutToStartAuction = false;
       this.$store.state.socket.emit("collectorsStartAuction", {
@@ -1646,10 +1652,10 @@ export default {
         cost: this.chosenPlacementCost,
       });
     },
-    changeTempBottle: function (index) {
+    changeTempBottle: function(index) {
       this.tempBottlePlacement[index] = true;
     },
-    auctionMiniActiveNow: function () {
+    auctionMiniActiveNow: function() {
       if (this.auctionMiniActive == true) {
         this.auctionMiniActive = false;
         this.auctionActive = true;
@@ -1659,7 +1665,7 @@ export default {
       }
     },
 
-    restoreHand: function () {
+    restoreHand: function() {
       this.$store.state.socket.emit("restoreHand", {
         roomId: this.$route.params.id,
         biddingCards: this.biddingCards,
@@ -1668,34 +1674,34 @@ export default {
       });
     },
     startTurn: function () {
-      this.playSound(
-        "/images/zapsplat_leisure_playing_card_dealing_table_single_001_20443.mp3"
-      );
+      this.playSound('/images/zapsplat_leisure_playing_card_dealing_table_single_001_20443.mp3');
       console.log("hola");
 
       this.$store.state.socket.emit("startTurn", {
         roomId: this.$route.params.id,
       });
     },
-    moveCards: function () {
+    moveCards: function() {
       this.$store.state.socket.emit("moveCards", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
       });
     },
-    currentScore: function () {
+    currentScore: function() {
       this.$store.state.socket.emit("currentValue", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
         currentValue: this.currentValue,
       });
     },
-    getWinner: function () {
+    getWinner: function() {
       var currentWinner = -10;
       var tie = false;
       var winnerName;
       var biggestHand = -10;
       if (this.players !== "undefined") {
+        
+
         for (const player in this.players) {
           if (this.players[player].currentScore > currentWinner) {
             currentWinner = this.players[player].currentScore;
@@ -1727,12 +1733,12 @@ export default {
       }
       return [currentWinner, tie, winnerName];
     },
-    finalScoreUpdate: function () {
+    finalScoreUpdate: function() {
       //this.players[this.playerId].item.push(this.players[this.playerId].hidden);
       this.currentScore();
     },
 
-    nextPlayer: function () {
+    nextPlayer: function() {
       this.$store.state.socket.emit("nextPlayer", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1740,7 +1746,7 @@ export default {
       });
     },
 
-    removeBottle: function (action, placement) {
+    removeBottle: function(action, placement) {
       if (action === "buy") {
         this.aboutToBuyItem = false;
       }
@@ -1762,7 +1768,7 @@ export default {
         players: this.players,
       });
     },
-    placeBottleOnPlayerboard: function () {
+    placeBottleOnPlayerboard: function() {
       this.endRound = false;
       this.$store.state.socket.emit("placeBottleOnPlayerboard", {
         roomId: this.$route.params.id,
@@ -1772,13 +1778,14 @@ export default {
     },
 
     //playerHandShow
-    helpPlayerHandHover: function () {
+    helpPlayerHandHover: function() {
       this.helpPlayerHandActive = !this.helpPlayerHandActive;
-      if (this.helpPlayerHandActive) {
-        this.playSound("/images/zapsplat_leisure_glow_band_snap_003_43005.mp3");
+      if(this.helpPlayerHandActive){
+         this.playSound('/images/zapsplat_leisure_glow_band_snap_003_43005.mp3');
+
       }
     },
-    showHelpOptions: function () {
+    showHelpOptions: function() {
       var otherPlayersTurn = false;
       if (this.helpAction) {
         this.skillsHelpActive = false;
@@ -1807,8 +1814,8 @@ export default {
       if (this.players[this.playerId].turn == true && this.helpAction) {
         this.players[this.playerId].turn = false;
       }
-      if (this.helpAction) {
-        this.playSound("/images/zapsplat_leisure_glow_band_snap_003_43005.mp3");
+      if(this.helpAction){
+        this.playSound('/images/zapsplat_leisure_glow_band_snap_003_43005.mp3');
       }
       /* if(this.helpAuctionActive){
         console.log("hejhej");
@@ -1826,7 +1833,7 @@ export default {
     helpSkillsAreaHover();
     */
     },
-    skillsHelp: function () {
+    skillsHelp: function() {
       if (this.helpAction) {
         if (
           this.auctionHelpActive ||
@@ -1846,7 +1853,7 @@ export default {
         this.skillsHelpActive = !this.skillsHelpActive;
       }
     },
-    auctionHelp: function () {
+    auctionHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1866,7 +1873,7 @@ export default {
         this.auctionHelpActive = !this.auctionHelpActive;
       }
     },
-    menuSpaceHelp: function () {
+    menuSpaceHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1886,7 +1893,7 @@ export default {
         this.menuSpaceActive = !this.menuSpaceActive;
       }
     },
-    buttonsHelp: function () {
+    buttonsHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1906,7 +1913,7 @@ export default {
         this.buttonsHelpActive = !this.buttonsHelpActive;
       }
     },
-    workHelp: function () {
+    workHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1926,7 +1933,7 @@ export default {
         this.workHelpActive = !this.workHelpActive;
       }
     },
-    itemsHelp: function () {
+    itemsHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1947,7 +1954,7 @@ export default {
       }
     },
 
-    raiseValueHelp: function () {
+    raiseValueHelp: function() {
       if (this.helpAction) {
         if (
           this.skillsHelpActive ||
@@ -1969,7 +1976,7 @@ export default {
     },
 
     //---------------------------WORK metoder-------------------
-    recycleBottle: function () {
+    recycleBottle: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
@@ -1979,7 +1986,7 @@ export default {
         playerId: this.playerId,
       });
     },
-    recycleBottle4thRound: function () {
+    recycleBottle4thRound: function() {
       //Här ska en flaska växlas för pengar
       //Än så länge är inte den där spess panten för 4de omgången impelemterad!!!!
       console.log("pant knappen trycks (Collectors.vue)");
@@ -1989,7 +1996,7 @@ export default {
         playerId: this.playerId,
       });
     },
-    workDrawTwoCards: function () {
+    workDrawTwoCards: function() {
       this.$store.state.socket.emit("collectorsWorkDrawTwoCards", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -1998,7 +2005,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    drawACardAndFirstPlayerToken: function () {
+    drawACardAndFirstPlayerToken: function() {
       console.log("draw card and first player token");
       this.$store.state.socket.emit("collectorsDrawACardAndToken", {
         roomId: this.$route.params.id,
@@ -2008,7 +2015,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    drawCardAndPassiveIncome: function () {
+    drawCardAndPassiveIncome: function() {
       console.log("Draw passive income i Collectors.vue");
       this.$store.state.socket.emit("collectorsDrawACardAndPassiveIncome", {
         roomId: this.$route.params.id,
@@ -2018,7 +2025,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    placeWorker: function (where) {
+    placeWorker: function(where) {
       console.log("placeWorker!");
       this.$store.state.socket.emit("placeWorker", {
         roomId: this.$route.params.id,
@@ -2029,7 +2036,7 @@ export default {
         roomId: this.$route.params.id,
       });
     },
-    addMoney: function (amount) {
+    addMoney: function(amount) {
       console.log("addMoney i Collectors.vue körs");
       this.$store.state.socket.emit("addMoney", {
         roomId: this.$route.params.id,
@@ -2037,7 +2044,7 @@ export default {
         amount: amount,
       });
     },
-    addPassiveIncome: function (amount) {
+    addPassiveIncome: function(amount) {
       this.$store.state.socket.emit("addPassiveIncome", {
         roomId: this.$route.params.id,
         playerId: this.playerId,
@@ -3110,8 +3117,8 @@ theColor:onclick {
 .start-auction {
   width: 3.3vw;
   position: absolute;
-  right: -1vw;
-  top: -0.5vw;
+    right: -1vw;
+    top: -0.5vw;
   z-index: 4;
 }
 .menuSpace {

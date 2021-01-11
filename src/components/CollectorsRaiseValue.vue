@@ -28,8 +28,9 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             :disabled="notYourTurn() || cannotAfford(p.cost)"
             @click="placeBottle(p)"
           >
-            ${{ p.cost }}
-            {{ p.amountOfCards + labels.card }}
+             ${{ p.cost }}
+            {{ p.amountOfCards+labels.card }}
+           
           </button>
           <div
             class="bottlePlace"
@@ -40,13 +41,11 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
       </div>
     </div>
     <div class="raiseCardsAvailable" v-show="aboutToRaiseValue" v-if="player">
-      <h1 class="raiseValueHeadings">{{ labels.pickFromPlayerBoard }}</h1>
+      <h1 class="raiseValueHeadings">{{labels.pickFromPlayerBoard}}</h1>
       <div class="raiseValueCardGrid">
         <div class="cardsFromBoard">
           <div class="auctionCard">
-            <h6 class="auctionOrSkill" v-if="auctionCard.market != undefined">
-              {{ labels.pickFromAuction }}
-            </h6>
+            <h6 class="auctionOrSkill" v-if="auctionCard.market!=undefined">{{labels.pickFromAuction}}</h6>
             <div class="card">
               <CollectorsCard
                 :card="auctionCard"
@@ -56,9 +55,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
             </div>
           </div>
           <div class="skillCard">
-            <h6 class="auctionOrSkill" v-if="skillOnSale.market != undefined">
-              {{ labels.pickFromSkills }}
-            </h6>
+            <h6 class="auctionOrSkill" v-if="skillOnSale.market!=undefined">{{labels.pickFromSkills}}</h6>
             <div class="card">
               <CollectorsCard
                 :card="skillOnSale"
@@ -69,7 +66,7 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
           </div>
         </div>
       </div>
-      <h1 class="raiseValueHeadings">{{ labels.pickFromHand }}</h1>
+      <h1 class="raiseValueHeadings">{{labels.pickFromHand}}</h1>
       <div class="raiseValueCardGrid">
         <div
           class="cardsFromHand"
@@ -83,13 +80,13 @@ Nu läggs kort in här automatiskt. Finns ingen uträkning för hur mycket poän
           />
         </div>
       </div>
-      <div class="buttonGrid">
-        <button class="cancelBuy" :disabled="cantCancel" @click="hideWindow()">
-          {{ labels.cancelBuy }}
-        </button>
-      </div>
+       <div class="buttonGrid">
+               <button class="cancelBuy" :disabled="cantCancel" @click="hideWindow()">{{labels.cancelBuy}}</button>
+              </div>
     </div>
+   
   </div>
+  
 </template>
 
 <script>
@@ -124,7 +121,8 @@ export default {
     checkAmountOfRaiseValue: Function,
   },
   methods: {
-    log() {},
+    log() {
+    },
     cardCost: function (values) {
       switch (values) {
         case "fastaval":
@@ -159,13 +157,14 @@ export default {
       }
     },
 
-    raiseValueNow: function (card) {
-      if (this.currentPlacementAmount === 2) {
-        this.$emit("raiseValueFirstCard", card);
+    raiseValueNow: function(card){
+      if(this.currentPlacementAmount === 2){
+        this.$emit('raiseValueFirstCard', card);
         this.cantCancel = true;
         this.currentPlacementAmount = 1;
-      } else {
-        this.$emit("raiseValue", card);
+      }
+      else{
+        this.$emit('raiseValue', card);
         this.cantCancel = false;
         console.log(card, "kortet i raise value");
       }
@@ -173,7 +172,7 @@ export default {
 
     placeBottle: function (p) {
       this.currentPlacementAmount = p.amountOfCards;
-      if (!this.checkAmountOfRaiseValue()) {
+      if(!this.checkAmountOfRaiseValue()){
         this.currentPlacementAmount = 1;
       }
       this.currentPlacement = p;
@@ -181,6 +180,7 @@ export default {
       this.$emit("placeBottle", p);
       this.highlightAvailableCards(p.cost);
     },
+
 
     cannotAfford: function (cost) {
       let minCost = 100;
@@ -191,46 +191,44 @@ export default {
       return this.player.money < minCost;
     },
 
-    highlightAvailableCards: function (cost = 100) {
-      if (
-        this.marketValues[this.auctionCard.item] <=
-        this.player.money - cost
-      ) {
+
+    highlightAvailableCards: function (cost=100) {
+
+      if (this.marketValues[this.auctionCard.item] <= this.player.money - cost) {
         this.$set(this.auctionCard, "available", true);
-        this.chosenPlacementCost = cost;
-      } else {
+        this.chosenPlacementCost = cost; 
+      }
+      else {
         this.$set(this.auctionCard, "available", false);
-        this.chosenPlacementCost = cost;
+        this.chosenPlacementCost = cost; 
       }
-
-      if (
-        this.marketValues[this.skillOnSale.item] <=
-        this.player.money - cost
-      ) {
+      
+      if (this.marketValues[this.skillOnSale.item] <= this.player.money - cost) {
         this.$set(this.skillOnSale, "available", true);
-        this.chosenPlacementCost = cost;
-      } else {
+        this.chosenPlacementCost = cost; 
+      }
+      else {
         this.$set(this.skillOnSale, "available", false);
-        this.chosenPlacementCost = cost;
+        this.chosenPlacementCost = cost; 
       }
 
+      
       for (let i = 0; i < this.player.hand.length; i += 1) {
-        if (
-          this.marketValues[this.player.hand[i].item] <=
-          this.player.money - cost
-        ) {
+        if (this.marketValues[this.player.hand[i].item] <= this.player.money - cost) {
           this.$set(this.player.hand[i], "available", true);
           this.chosenPlacementCost = cost;
-        } else {
+        }
+        else {
           this.$set(this.player.hand[i], "available", false);
-          this.chosenPlacementCost = cost;
+          this.chosenPlacementCost = cost; 
         }
       }
     },
 
-    hideWindow: function () {
-      this.$emit("cancelBuy", this.currentPlacement);
-    },
+    hideWindow: function(){
+      
+      this.$emit('cancelBuy', this.currentPlacement);
+    }
   },
 };
 //
@@ -290,14 +288,15 @@ export default {
   font-size: 0.7vw;
   margin: 1vw;
   padding: 0.2vw;
-
+  
+  
   color: black;
   background-color: rgb(130, 226, 255);
   border-radius: 1vw;
   box-shadow: 0 0.3vw #999;
 }
 .button:active {
-  background-color: rgb(95, 216, 253);
+  background-color:rgb(95, 216, 253);
   box-shadow: 0 0.2vw #999;
   transform: translateY(0.1vw);
 }
@@ -306,19 +305,19 @@ export default {
 }
 .bottlePlace {
   background-image: url(/images/player-bottle.png);
-  height: 2.5vw;
-  margin-top: 1vw;
-  width: 2.5vw;
-  background-color: rgb(95, 216, 253);
-  border-radius: 4vw;
-  border-style: ridge;
-  box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
-  border-width: 0.2vw;
-  border-color: rgba(77, 58, 58, 0.658);
-  z-index: 60;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+    height: 2.5vw;
+    margin-top: 1vw;
+    width: 2.5vw;
+    background-color: rgb(95, 216, 253);
+    border-radius: 4vw;
+    border-style: ridge;
+    box-shadow: 0.1vw 0.1vw rgba(0, 0, 0, 0.692);
+    border-width: 0.2vw;
+    border-color: rgba(77, 58, 58, 0.658);
+    z-index: 60;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .valueGrid {
@@ -327,17 +326,17 @@ export default {
   grid-auto-flow: row;
 }
 
-.auctionOrSkill {
+.auctionOrSkill{
   display: contents;
 }
 
-.card {
+.card{
   display: grid;
   justify-content: center;
 }
 
 /*Nedan är all css för rutan man får upp vid kortköp*/
-.raiseCardsAvailable {
+  .raiseCardsAvailable {
   display: grid;
   position: absolute;
   grid-template-rows: 10% 45% 10% auto;
@@ -351,64 +350,65 @@ export default {
   z-index: 50;
   top: 50%;
   left: 50%;
-  transform: translate(-110%, -70%);
-}
+  transform: translate(-110%, -70%);  
+  }
 
-.raiseValueCardGrid {
-  display: grid;
-  align-content: center;
-  grid-auto-flow: column;
-  grid-column: 1/6;
-}
+  .raiseValueCardGrid{
+    display: grid;
+    align-content: center;
+    grid-auto-flow: column;
+    grid-column: 1/6;
+  }
 
-.raiseValueHeadings {
-  justify-content: center;
-  text-align: center;
-  color: black;
-  grid-column: 1/6;
-  font-size: large;
-}
+  .raiseValueHeadings{
+    justify-content: center;
+    text-align: center;
+    color: black;
+    grid-column: 1/6;
+    font-size: large;
+  }
 
-.cardsFromBoard {
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  zoom: 2;
-  overflow: hidden;
-  grid-auto-flow: column;
-}
+  .cardsFromBoard{
+    display: grid;
+    justify-items:center;
+    align-items: center;
+    zoom: 2;
+    overflow: hidden;
+    grid-auto-flow: column;
+  }
 
-.cardsFromHand {
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  zoom: 2;
-  overflow: hidden;
-}
-.buttonGrid {
-  color: inherit;
-  justify-content: center;
-  position: absolute;
+  .cardsFromHand{
+    display: grid;
+    justify-items:center;
+    align-items: center;
+    zoom: 2;
+    overflow: hidden;
 
-  top: -0.15625vw;
-  right: -0.078125vw;
-}
+  }
+  .buttonGrid{
+    color: inherit;
+    justify-content: center;
+    position: absolute;
+    
+    top: -0.15625vw;
+    right: -0.078125vw;
+  }
 
-.cancelBuy {
-  border-top-right-radius: 30%;
-  border: solid;
-  background-color: rgb(95, 216, 253);
-  filter: brightness(105%);
-  width: 5.208vw;
-  height: 5.208vw;
-  font-size: 1vw;
-  font-weight: bold;
-  box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2),
-    0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
-}
-.cancelBuy:hover {
-  background-color: rgb(72, 172, 202);
-}
+
+  .cancelBuy{
+    border-top-right-radius: 30%;
+    border:solid;
+    background-color: rgb(95, 216, 253);
+    filter:brightness(105%);
+    width: 5.208vw;
+    height: 5.208vw;
+    font-size: 1vw;
+    font-weight: bold;
+    box-shadow: 0.0520833vw 0.26041vw 0.3125vw rgba(0, 0, 10, 2), 0 0.0520833vw 0.20833333333333334vw rgba(0, 0, 10, 0.24);
+  }
+  .cancelBuy:hover{
+    background-color: rgb(72, 172, 202);
+  }
 
 /*
   .available-to-choose {
