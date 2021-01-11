@@ -14,7 +14,7 @@
         </div>
         <br>
         <div class="gameSetUp"> 
-          <button class="buttons" onClick="window.open('https:youtube.com');">Click here for tutorial</button>
+          <button class="buttons" onClick="window.open('https://youtu.be/EBf3e07n5yk');">Click here for tutorial</button>
           </div> 
       </div>
     </div>
